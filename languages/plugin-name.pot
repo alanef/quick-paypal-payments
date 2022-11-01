@@ -1,0 +1,87 @@
+# Copyright (C) 2018 quick-paypal-payments
+# This file is distributed under the same license as the quick-paypal-payments package.
+msgid ""
+msgstr ""
+"Project-Id-Version: quick-paypal-payments\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/quick-paypal-payments.php:91
+msgid "Cannot execute as the plugin already exists, if you have a another version installed deactivate that and try again"
+msgstr ""
+
+#: src/admin/class-admin-pages.php:206
+msgid "Save Options"
+msgstr ""
+
+#: src/admin/class-admin-settings.php:34
+msgid "Quick_Paypal_Payments Settings"
+msgstr ""
+
+#: src/admin/class-admin-settings.php:102
+msgid "Settings 1"
+msgstr ""
+
+#: src/admin/class-admin-settings.php:110
+msgid "Settings 2"
+msgstr ""
+
+#: src/admin/class-admin-settings.php:128
+msgid "Checkbox"
+msgstr ""
+
+#: src/admin/class-admin-settings.php:135
+msgid "Checkbox description"
+msgstr ""
+
+#: src/admin/class-admin-settings.php:139
+msgid "Text"
+msgstr ""
+
+#: src/admin/class-admin-settings.php:147
+msgid "Text Description"
+msgstr ""
+
+#: src/admin/class-admin-settings.php:177
+msgid "Minutes"
+msgstr ""
+
+#: src/admin/class-admin-settings.php:181
+msgid "Hours"
+msgstr ""
+
+#: src/admin/class-admin-settings.php:185
+msgid "Days"
+msgstr ""
+
+#. undefined
+#: src/admin/class-admin-settings.php:192, src/admin/class-admin-settings.php:202
+msgid "Number"
+msgstr ""
+
+#: src/admin/class-admin-settings.php:200
+msgid "Integer"
+msgstr ""
+
+#: src/admin/class-admin-settings.php:207
+msgid "Number with units"
+msgstr ""
+
+#: src/admin/class-admin-settings.php:226
+msgid "Description"
+msgstr ""
+
+#: src/admin/class-admin.php:78
+msgid "By opting in you are agreeing to provide non-sensitive diagnostic tracking to help me improve %2$s sent via %5$s, this is not an email or marketin opt in. If you want to get teh benefits of email offers and deals you can use this form here - <a href=\"http://eepurl.com/c0FnmX\" target=\"_blank\"><strong>sign up now</strong></a>. You can always opt out of either at any time."
+msgstr ""
+
+#: src/includes/autoloader.php:61
+msgid "The system file attempting to be loaded at %1$s does not exist."
+msgstr ""

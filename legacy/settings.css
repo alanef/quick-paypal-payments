@@ -1,0 +1,31 @@
+.wrapper {padding: 0 15px;}
+.qpp-settings {width: 100%;}
+.qpp-options {border:1px solid #B52C00;background:#FFF;padding:0 10px 10px 10px;margin:10px 0 0 0;float:left;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;width:46%;}
+
+@media only screen and (max-width: 600px) {.qpp-options {width: 100%;}}
+
+.qpp-options p {margin: 4px 0;padding: 0;}
+.qpp-options h2 {color: #005F6B;}
+.qpp-options h3 {color: #717DD7;margin: 4px 0 0 0;padding: 0;}
+.qpp-options input[type=text], .qpp-options textarea, .qpp-options select {margin: 2px 0 2px 0;padding: 2px;color: #465069;font-size: 100%;border:1px solid #415063;width:100%;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;height:auto}
+.qpp-options input#submit {background: #343838;color: #FFF;}
+.qpp-options ul {margin: 0;padding: 0;}
+.qpp-options table {width:100%;}
+.qpp-options th {text-align:left;}
+.qpp-options td {vertical-align:top;}
+
+#qpp_sort { list-style-type: none; margin: 0; padding: 0; width:100%; }
+#qpp_sort li { margin: 3px 0; padding: 0.3em 0.8em 0.3em 0.5em; min-height:1.6em; cursor:pointer; border:1px solid #888; clear:left}
+#qpp_sort li.button_active { background-color: white;}
+#qpp_sort li.button_inactive { background-color: #E0E0E0;}
+#qpp_sort li div {overflow:hidden;}
+
+.wp-color-result {margin-bottom: 0 !important;}
+
+.qppupgrade {width:100%; margin: 12px 0;}
+.qppupgrade h3,.qppupgrade p{margin:0;padding:0; color:#FFF;}
+.qppupgrade p{margin:12px 0 0 0}
+.qppupgrade a {display:block;text-align: center;width: 100%;background: #8951A5;padding: 12px 6px;color: #FFF;margin: 0;border:4px solid #999;border-radius: 12px;text-decoration:none;font-size:240%;line-height:1em;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}
+.qppupgrade a:hover {color: #FFF;background: #343838;}
+.qppupgrade a span {font-size:50%;}
+

@@ -1,0 +1,385 @@
+== Changelog ==
+= 5.7.25 =
+* fix PHP 8.0 issue
+
+= 5.7.24 =
+* fix conflict with WooCommerce
+
+= 5.7.23 =
+* fix PHP 8.0 issue
+
+= 5.7.22 =
+* security update
+
+= 5.7.21 =
+* minor change to allow running on PHP 5.6.4
+
+= 5.7.20 =
+* Removed all legacy incontext / PayPal Express code
+* fix issue with other amount
+
+= 5.7.19.1 =
+* Fix issue with double dot
+
+= 5.7.19 =
+* Fix issue with products without quantities ( Pro only )
+
+= 5.7.18 =
+* fix compatability issue with 8.0.13
+
+= 5.7.17 =
+* Add front end to convert amount with comma decimal to point decimal
+* fix display issue on product list ( Pro )
+
+
+= 5.7.16 =
+* Add optional consent display to PayPal item description
+
+= 5.7.15 =
+* remove \ during setting sanitizations
+
+= 5.7.14 =
+* Correct missing field
+
+= 5.7.13 =
+* Allow links in consent label
+
+= 5.7.12 =
+* PHP 8.0 compatability
+
+= 5.7.11 =
+* Resolve compatibility with Genesis 2.5
+
+= 5.7.10 =
+* Improved Country Code selection in personal details and allowed a default and permitted countries
+
+
+= 5.7.9 =
+* fixed email confirmation address
+
+= 5.7.8 =
+* offer of gold pro plan
+* removed more debug warnings
+
+= 5.7.5 =
+* Library update
+
+= 5.7.4 =
+* Fix autoresponder shortcode [amount]
+* Add minimum value to variable amount input validation
+
+
+= 5.7.3
+* closes #23 coupons error message
+
+
+= 5.7.2
+* improve IPN, add IPN debug log, and fix duplicate payment records when using sandbox.
+
+= 5.6.12
+* change text
+
+= 5.6.11
+* add notices
+
+= 5.6.10
+* fix licence issue
+
+= 5.6.9
+* fix upgrade library notices
+
+= 5.6.8
+* Change of plugin developer
+
+= 5.6.7
+* Fixes undefined constant warning
+* Hides range slider styles if not used
+* Removes MIME from email headers
+* Optional paypal checkout logo (business accounts only)
+
+= 5.6.6 =
+*   Fixes php warning
+*   Fixes IPN bug
+*   Removes duplicate multiple products field
+
+= 5.6.5 =
+*   Changed CURL to HTTP
+
+= 5.6.4 =
+*   Reworked the data processing to make it faster, more secure and less buggy
+
+= 5.6.3 =
+*   Gutenberg block
+*   Better coupon management
+*   Fixes missing submit button on error
+
+= 5.6.2 =
+*   Fixes total amount calculations
+*   Fixes email formatting bug
+*   Added hook to only load scripts on settings page
+
+= 5.6.1 =
+*   Fixes processing percent bug
+*   Feature to include both fixed and percentage handling
+*   Improved notification email
+
+= 5.6 =
+*   Fixes the ‘other amount’ bug on dropdown
+*   Fixes the missing stock number
+*   Clears undefined indexes and variables
+*   Fixed styling inconsistencies
+*   Missing data added to notification email
+*   Fixes incorrect report headings
+*   Option to hide/delete completed transactions
+*   Fixes mailchimp/in-context conflict bug
+*   Notification emails now show total to pay
+
+= 5.5.3 =
+*   Removed some undefined variables
+*   Removed 'processing' option as no longer supported by PayPal
+*   New Codice Fiscale field
+*   Fixes amount query bug
+*   Fixes missing CSV column
+*   GDPR compliancy options
+
+= 5.5.2 =
+*   Fixes recurring payments bug
+*   Fixes undefined indexes
+*   Fixes processing fee bug
+*   Options for field label positions
+
+= 5.5.1 =
+*   Fixed bug in multiple products
+
+= 5.5 =
+*   Pro option for multiple products
+*   Fixed mailchimp bug
+*   Removed call to quick-paypal-style.php
+
+= 5.4.2 =
+*   PHP7 Compatibility
+*   Removed undefined indexes
+*   Added option to disable IPN log
+*   Fixed coupons bug
+
+= 5.4.1 =
+*   CSS bug fix
+
+= 5.4 =
+*   Required field option on email
+*   Option to select custom CSS location
+*   Even more bug fixes to recurring payments
+
+= 5.3 =
+*   Bug fix on notifications email
+*   Improved recurring payments settings
+
+= 5.2 =
+*   Checkbox option on Options field
+*   Improvements to Pro version registration
+*   Datepcker field for pro version
+*   Custom styles now an external file
+
+= 5.1 =
+*   Improved API
+*   Fixes combobox bug
+
+= 5.0 =
+*   In-context payments
+
+= 4.3 =
+*   Fixes MailPoet conflict
+*   Fixes CSV download bug
+*   Can use commas in preset references
+
+= 4.2 =
+*   Allow quotes and apostrophes in preset reference
+*   Fixed total label bug
+*   Handle corner styles for the slider
+*   Submit button hover styles
+*   Styling option for input margins and padding
+*   Bug fix on the custom CSS function
+
+= 4.1 =
+*   Slider thickness style
+*   User set recurring payments periodicity
+*   Fix custom css file bug
+*   Style option to centre the submit button
+
+= 4.0 =
+*   Validation and processing without page reload
+*   Improved validation
+*   Comments field
+*   More slider styles
+*   Hide styles that are not applicable
+*   IPN listener option
+*   Option to set periodicity of recurring payments
+*   Better CSS
+*   Bug fixes on the autoresponder
+*   Set email address for confirmation emails
+*   Lots of under the hood improvements
+
+= 3.17 =
+*   Autoresponder Shortcodes
+
+= 3.16 =
+*   All new Autoresponder
+*   Minor bug fixes
+*   Moved scripts to footer
+*   Option to combine shipping and processing with total
+
+= 3.15 =
+*   Improved error checking
+*   Required field selectors
+*   Border styles for required and normal fields
+*   Confirmation email after payment (IPN only)
+*   Clone settings option
+*   Color picker bug fix
+
+= 3.14 =
+*   Instant Payment Notifications
+*   Option to display inline radio buttons
+*   Updated Pre-population settings
+*   Notification emails
+*   Improvements to totals field
+*   Styling bug fixes
+*   Header size selection
+
+= 3.13 =
+*   Dropdown option on selectable fields
+*   Bug fix for the $1 problem
+*   Improved styling on submit button images
+
+= 3.12.2 =
+*   Bug fix number_format calculation
+
+= 3.12.1 =
+*   Bug fix for range slider
+*   Bug fix for the postage and handling fee calculation
+
+= 3.12 =
+*   Added option for form Reset
+*   Added message for invalid coupon code
+*   New range slider field
+*   Bug fixes for the Payment Lists
+*   Improved total calculation, it now works with radio fields.
+
+= 3.11 =
+*	Currency option to selected decimal points or comma
+*   When using multiple amounts you can now have radio or dropdown selectors
+*   Bug fix to the 'item number' field.
+
+= 3.10 =
+*	Umpteen bug fixes in the payment report/CSV download
+*   Added option to send payment lists as an email
+
+= 3.9 =
+*	Bug fix for recurring payments
+*   New field to add extra information to the form
+*   Live totals option
+*   Option to collect personal information
+*   Product options now display as a new line on the PayPal page
+*   Shipping and handling now display properly on the PayPal page
+
+= 3.8 =
+*	Added field for recurring payment
+*   Added code to allow multiple products/prices
+*   More shortcode options
+
+= 3.7 =
+*	Better error reporting
+*	Option to link to Terms and Conditions
+*	Set maximum quantity
+*	CSS fix to overide theme settings for line heights
+
+= 3.6.4 =
+*	Add as many coupons as you like
+*	Duplicate coupons across multiple forms
+*	Set reference and amount without using shortcodes
+*	Pass form variables using queries
+
+= 3.6.3 =
+*	Bug fix, amounts over 1000 now work properly
+*	Added URL queries for reference, amount and coupon
+
+= 3.6.2 =
+*	Improved coupon support
+*	Option to change PayPal locale
+*	Payment records now download properly
+
+= 3.6 =
+*	You can now add coupon codes to the form
+*	Updated payments reports
+
+= 3.5.3 =
+*	Fixed error when using % postage or processing fees
+*	Fixed bug in image image uploader
+
+= 3.5.1 =
+*	Bug fix to clear illegal offset warning
+
+= 3.5 =
+*	Added captcha option
+*   More forms fields
+*   Drag and drop ordering
+*   Loads of new styling options
+
+= 3.4 =
+*	Options to add postage and admin charges
+*	Option to add the item number to the order.
+*	More Wordpress 3.8 tweaks
+
+= 3.3 =
+*	Updated to support Wordpress 3.8
+
+= 3.2 =
+*	Added the option to display a PayPal logo on the form
+
+= 3.1 =
+*	Closed an XSS security hole
+*	Fixed the incorrect shortcode description
+
+= 3.0 =
+*	Multiple form support
+*	Dashboard link to display and download payment records
+*	Add options to your forms using shortcodes
+
+= 2.1.1 =
+*	Bug fix: Custom CSS option wasn't saving properly
+
+= 2.1 =
+*	Added styling options for Submit button
+*	Improved form validation and error checking
+
+= 2.0.4 =
+*	Bug fix: fixed duplicate function name error
+
+= 2.0.2 =
+*	Bug fix: error in sidebar widget
+
+= 2.0.1 =
+*	Bug fix: selected currency asn't being passed to paypal
+
+= 2.0 =
+*	Major upgrade to the admin pages
+*	Added loads of styling options
+*	Custom error messages and improved validation
+*	Faster paypal processing
+
+= 1.5 =
+*	Error checking went wonky. It's fixed now
+
+= 1.4 =
+*	Now with width options
+
+= 1.3 =
+*	Simplified the processing code
+
+= 1.2 =
+*	Added custom styles option
+
+= 1.1 =
+*	Added choice of plugin or theme styles
+
+= 1.0 =
+*	Initial Issue
