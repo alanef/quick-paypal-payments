@@ -1,3 +1,5 @@
+qpp_containers = []; to_list = []; to_totals = [];
+
 /* strip non number from ammount */
 document.addEventListener('DOMContentLoaded', function (event) {
 	var x = document.getElementsByName("amount");
@@ -192,7 +194,7 @@ function validateForm(ev) {
 	var fd = $(this).serialize();
 	fd += '&' + c.attr('name') + '=' + c.val() + '&action=qpp_validate_form';
      console.log('ajax call');
-	$.post(ajaxurl, fd,function(e) {
+	$.post(qpp_data.ajax_url, fd,function(e) {
 		handleValidationResponse(e,f)
 	},'JSON');
 
@@ -202,6 +204,7 @@ function validateForm(ev) {
 
 jQuery(document).ready(function() {
 	$ = jQuery;
+
 
 	/*
 		Scroll to .qpp-complete
@@ -257,7 +260,7 @@ jQuery(document).ready(function() {
 					console.log( 'ajax post')
 					$.ajax({
 						type:'POST',
-						url:ajaxurl,
+						url:qpp_data.ajax_url,
 						data:fd,
 						success:function(e) {
 							var data = handleValidationResponse(e,form);

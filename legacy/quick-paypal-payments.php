@@ -11,7 +11,6 @@ function qpp_shutdown()
 }
 
 register_shutdown_function( 'qpp_shutdown' );
-add_action( 'init', 'qpp_register_scripts' );
 /*
 	Add footer event to fire and include the javascript file only when needed
 */
@@ -24,7 +23,7 @@ add_filter(
     10,
     2
 );
-add_action( 'wp_enqueue_scripts', 'qpp_enqueue_scripts' );
+add_action( 'wp_enqueue_scripts', 'qpp_register_scripts' );
 add_action( 'template_redirect', 'qpp_ipn' );
 add_action( 'wp_head', 'qpp_head_css' );
 add_action( 'wp_ajax_qpp_validate_form', 'qpp_validate_form_callback' );
@@ -35,7 +34,7 @@ $qpp_end_loop = false;
 $qpp_current_custom = '';
 $qpp_attributes = array();
 require_once plugin_dir_path( __FILE__ ) . '/options.php';
-require_once plugin_dir_path( __FILE__ ) . '/mailchimp/mailchimp.init.php';
+global  $quick_paypal_payments_fs ;
 if ( is_admin() ) {
     require_once plugin_dir_path( __FILE__ ) . '/settings.php';
 }
@@ -59,20 +58,6 @@ function qpp_block_init()
 }
 
 add_action( 'init', 'qpp_block_init' );
-/*
-	Function which registers qpp scripts
-*/
-function qpp_register_scripts()
-{
-    wp_register_script(
-        'qpp_script',
-        plugins_url( 'payments.js', __FILE__ ),
-        array( 'jquery' ),
-        false,
-        true
-    );
-}
-
 /*
 	Function which displays registered scripts
 	ONLY IF $qpp_shortcode_exists EXISTS
@@ -103,7 +88,7 @@ function qpp_create_css_file( $update )
 
 }
 
-function qpp_enqueue_scripts()
+function qpp_register_scripts()
 {
     $qpp_setup = qpp_get_stored_setup();
     wp_register_script(
@@ -120,6 +105,9 @@ function qpp_enqueue_scripts()
         QUICK_PAYPAL_PAYMENTS_VERSION,
         true
     );
+    wp_localize_script( 'qpp_script', 'qpp_data', array(
+        'ajax_url' => admin_url( 'admin-ajax.php' ),
+    ) );
     wp_register_style( 'qpp_style', plugins_url( 'payments.css', __FILE__ ) );
     
     if ( $qpp_setup['location'] == 'php' ) {
@@ -146,6 +134,9 @@ function qpp_validate_form_callback( $degrade = false )
     if ( !wp_doing_ajax() ) {
         return;
     }
+    $sc = qpp_sanitize( $_POST['sc'] );
+    $combine = isset( $_REQUEST['combine'] ) && 'checked' == $_REQUEST['combine'];
+    $itemamount = ( isset( $_REQUEST['itemamount'] ) ? sanitize_text_field( $_REQUEST['itemamount'] ) : 0 );
     $setup = qpp_get_stored_setup();
     $json = new stdClass();
     
@@ -166,8 +157,14 @@ function qpp_validate_form_callback( $degrade = false )
             'error_color' => $style['error-colour'],
         );
         $info = qpp_default_merge_v( $_POST );
+        // dont bother validating if coupon being applied
         
-        if ( !qpp_verify_form( $info, $formerrors, $form ) ) {
+        if ( !isset( $_POST['qppapply' . $form] ) && !qpp_verify_form(
+            $info,
+            $formerrors,
+            $form,
+            $sc
+        ) ) {
             $json->success = false;
             /* Format Form Errors */
             foreach ( $formerrors as $k => $v ) {
@@ -197,7 +194,7 @@ function qpp_validate_form_callback( $degrade = false )
             $v = array();
             $form = $amount = $id = '';
             $v = formulate_v(
-                $_POST['sc'],
+                $sc,
                 $form,
                 $amount,
                 $id
@@ -208,8 +205,19 @@ function qpp_validate_form_callback( $degrade = false )
             if ( strlen( $id ) ) {
                 $v['reference'] = $id;
             }
-            $payment = qpp_process_values( $v, $form );
-            $json->html = qpp_process_form( $v, $form, $payment );
+            $payment = qpp_process_values(
+                $v,
+                $form,
+                $combine,
+                $itemamount
+            );
+            $json->html = qpp_process_form(
+                $v,
+                $form,
+                $payment,
+                $combine,
+                $itemamount
+            );
         }
     
     } else {
@@ -493,7 +501,7 @@ function formulate_v(
     $shortcodereference = '';
     // Will be used at the end
     $total = 0;
-    global  $_REQUEST, $qpp_attributes ;
+    global  $qpp_attributes ;
     $qpp_attributes[$form] = $atts;
     /*
     	Make sure this form is the form which is being submitted
@@ -501,16 +509,16 @@ function formulate_v(
     
     if ( isset( $_REQUEST['form_id'] ) && $_REQUEST['form_id'] == $form ) {
         if ( isset( $_REQUEST["reference"] ) ) {
-            $id = $_REQUEST["reference"];
+            $id = sanitize_text_field( $_REQUEST["reference"] );
         }
         if ( isset( $_REQUEST["amount"] ) ) {
-            $amount = $_REQUEST["amount"];
+            $amount = sanitize_text_field( $_REQUEST["amount"] );
         }
         if ( isset( $_REQUEST["item"] ) ) {
-            $qpp['stocklabel'] = $_REQUEST["item"];
+            $qpp['stocklabel'] = sanitize_text_field( $_REQUEST["item"] );
         }
         if ( isset( $_REQUEST["form"] ) ) {
-            $form = $_REQUEST["form"];
+            $form = sanitize_text_field( $_REQUEST["form"] );
         }
     }
     
@@ -719,90 +727,6 @@ function qpp_get_total( $a )
     return $total;
 }
 
-function qpp_display_success( $form, $tid, $amt )
-{
-    $f = ( $form == 'default' ? '' : $form );
-    $style = qpp_get_stored_style( $f );
-    $message = qpp_get_stored_messages();
-    $send = qpp_get_stored_send( $f );
-    $c = qpp_currency( $f );
-    $post = $_POST['sc']['post'];
-    $url = get_permalink( $post );
-    $display = '';
-    
-    if ( strlen( $send['thanksurl'] ) ) {
-        $display .= "<script type='text/javascript'>";
-        $display .= "window.location.href = '{$send['thanksurl']}';";
-        $display .= "</script>";
-    }
-    
-    $display .= <<<Form
-\t<div class="qpp-style qpp-complete {$form}"><div id="{$style['border']}">
-\t\t<form id="frmPayment{$f}" name="frmPayment{$f}" method="post" action="">
-\t\t\t<h2>{$message['confirmationtitle']}</h2>
-            <p class="qpp-blurb">{$message['confirmationblurb']}</p>
-\t\t\t<p class="qpp-blurb"><b>{$message['confirmationreference']}</b> {$tid}</p>
-\t\t\t<p class="qpp-blurb"><b>{$message['confirmationamount']}</b> {$c['b']}{$amt}{$c['a']}</p>
-\t\t\t<p><a href="{$url}">{$message['confirmationanchor']}</a></p>
-\t\t</form>
-\t</div></div>
-Form;
-    echo  $display ;
-}
-
-function qpp_display_pending( $form, $token, $payerid )
-{
-    $f = ( $form == 'default' ? '' : $form );
-    $style = qpp_get_stored_style( $f );
-    $message = qpp_get_stored_messages();
-    $send = qpp_get_stored_send( $f );
-    $post = $_POST['sc']['post'];
-    $url = get_permalink( $post );
-    $display = <<<Form
-\t<div class="qpp-style qpp-complete {$form}"><div id="{$style['border']}">
-\t\t<form id="frmPayment{$f}" name="frmPayment{$f}" method="post" action="">
-\t\t\t<h2>{$message['pendingtitle']}</h2>
-\t\t\t<p class="qpp-blurb">{$message['pendingblurb']}</p>
-\t\t\t<p><a href="{$url}?token={$token}&PayerID={$payerid}">{$message['pendinganchor']}</a></p>
-\t\t</form>
-\t</div></div>
-Form;
-    echo  $display ;
-}
-
-function qpp_display_failure( $form, $result = false )
-{
-    $f = ( $form == 'default' ? '' : $form );
-    $style = qpp_get_stored_style( $f );
-    $message = qpp_get_stored_messages();
-    $send = qpp_get_stored_send( $f );
-    $post = $_POST['sc']['post'];
-    $url = get_permalink( $post );
-    $display = '';
-    
-    if ( strlen( $send['cancelurl'] ) ) {
-        $display .= "<script type='text/javascript'>";
-        $display .= "window.location.href = '{$send['cancelurl']}';";
-        $display .= "</script>";
-    }
-    
-    $display .= <<<Form
-\t<div class="qpp-style qpp-complete {$form}"><div id="{$style['border']}">
-\t\t<form id="frmPayment{$f}" name="frmPayment{$f}" method="post" action="">
-\t\t<h2>{$message['failuretitle']}</h2>
-Form;
-    if ( $result && isset( $result['L_LONGMESSAGE0'] ) ) {
-        $display .= '<p class="qpp-blurb">' . $result['L_LONGMESSAGE0'] . '</p><br />';
-    }
-    $display .= <<<Form
-\t\t\t<p class="qpp-blurb">{$message['failureblurb']}</p><br />
-\t\t\t<a href="{$url}">{$message['failureanchor']}</a>
-\t\t</form>
-\t</div></div>
-Form;
-    echo  $display ;
-}
-
 function qpp_loop( $atts )
 {
     $qpp_setup = qpp_get_stored_setup();
@@ -847,9 +771,18 @@ function qpp_loop( $atts )
     );
     
     if ( isset( $_POST['qppsubmit' . $form] ) || isset( $_POST['qppsubmit' . $form . '_x'] ) ) {
+        $sc = qpp_sanitize( $_POST['sc'] );
+        $combine = isset( $_REQUEST['combine'] ) && 'checked' == $_REQUEST['combine'];
+        $itemamount = ( isset( $_REQUEST['itemamount'] ) ? sanitize_text_field( $_REQUEST['itemamount'] ) : 0 );
         $formerrors = array();
+        // dont validate if only activating a coupon
         
-        if ( !qpp_verify_form( $v, $formerrors, $form ) ) {
+        if ( !isset( $_POST['qppapply' . $form] ) && !qpp_verify_form(
+            $v,
+            $formerrors,
+            $form,
+            $sc
+        ) ) {
             qpp_display_form(
                 $v,
                 $formerrors,
@@ -863,9 +796,21 @@ function qpp_loop( $atts )
             if ( $id ) {
                 $v['reference'] = $id;
             }
-            $payment = qpp_process_values( $v, $form );
-            echo  qpp_process_form( $v, $form, $payment ) ;
-            echo  '<script language="JavaScript">document.getElementById("frmCart").submit();</script>' ;
+            $payment = qpp_process_values(
+                $v,
+                $form,
+                $combine,
+                $itemamount
+            );
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- need to ensure escaped in origin of use wp_kses @TODO
+            echo  qpp_process_form(
+                $v,
+                $form,
+                $payment,
+                $combine,
+                $itemamount
+            ) ;
+            wp_add_inline_script( 'qpp_script', 'document.getElementById("frmCart").submit()', 'after' );
         }
     
     } else {
@@ -906,22 +851,33 @@ function qpp_display_form(
         $attr = array();
     }
     $qpp = qpp_get_stored_options( $id );
+    /**
+     * @TODO review if needed
+     * this code block seems to allow external data submission deliberately
+     */
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- no action, nonce is not required
     if ( isset( $_GET["form"] ) && !$id ) {
-        $id = santitize_text_field( $_GET["form"] );
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- no action, nonce is not required
+        $id = sanitize_text_field( $_GET["form"] );
     }
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- no action, nonce is not required
     
     if ( isset( $_GET["reference"] ) ) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- no action, nonce is not required
         $values['reference'] = sanitize_text_field( $_GET["reference"] );
         $values['setref'] = true;
     }
     
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- no action, nonce is not required
     if ( isset( $_GET["amount"] ) ) {
         // $values['amount'] = $qpp['shortcodeamount'].' '.$_GET["amount"];
         // $values['fixedamount'] = $_GET["amount"];
         // $values['setpay'] = true;
     }
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- no action, nonce is not required
     
     if ( isset( $_GET["coupon"] ) ) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- no action, nonce is not required
         $values['couponblurb'] = sanitize_text_field( $_GET["coupon"] );
         $values['couponget'] = $values['couponget'];
     }
@@ -956,7 +912,7 @@ function qpp_display_form(
     $c = qpp_currency( $id );
     $t = ( $id ? $id : 'default' );
     $hd = $style['header-type'];
-    $content = "<script type='text/javascript'>ajaxurl = '" . admin_url( 'admin-ajax.php' ) . "';</script>";
+    $content = '';
     
     if ( $id ) {
         $formstyle = $id;
@@ -974,7 +930,7 @@ function qpp_display_form(
     $content .= '<form id="frmPayment' . $t . '" name="frmPayment' . $t . '" method="post" action="">';
     
     if ( count( $errors ) > 0 || $values['noproduct'] ) {
-        $content .= "<script type='text/javascript' language='javascript'>document.querySelector('#qpp_reload').scrollIntoView();</script>";
+        wp_add_inline_script( 'qpp_script', 'document.querySelector("#qpp_reload").scrollIntoView()' );
         $content .= "<" . $hd . " class='qpp-header' id='qpp_reload' style='color:" . $style['error-colour'] . ";'>" . $error['errortitle'] . "</" . $hd . ">\n        <p class='qpp-blurb' style='color:" . $style['error-colour'] . ";'>" . $error['errorblurb'] . "</p>";
         $arr = array(
             'amount',
@@ -996,23 +952,33 @@ function qpp_display_form(
             'night_phone_b'
         );
         foreach ( $arr as $item ) {
-            if ( $errors[$item] == 'error' ) {
-                $errors[$item] = ' style="border:1px solid ' . $style['error-colour'] . ';" ';
+            if ( isset( $errors[$item] ) ) {
+                if ( $errors[$item] == 'error' ) {
+                    $errors[$item] = ' style="border:1px solid ' . $style['error-colour'] . ';" ';
+                }
             }
         }
-        if ( $errors['useterms'] ) {
-            $errors['useterms'] = 'border:1px solid ' . $style['error-colour'] . ';';
+        if ( isset( $errors['useterms'] ) ) {
+            if ( $errors['useterms'] ) {
+                $errors['useterms'] = 'border:1px solid ' . $style['error-colour'] . ';';
+            }
         }
-        if ( $errors['captcha'] ) {
-            $errors['captcha'] = 'border:1px solid ' . $style['error-colour'] . ';';
+        if ( isset( $errors['captcha'] ) ) {
+            if ( $errors['captcha'] ) {
+                $errors['captcha'] = 'border:1px solid ' . $style['error-colour'] . ';';
+            }
         }
-        if ( $errors['quantity'] ) {
-            $errors['quantity'] = 'border:1px solid ' . $style['error-colour'] . ';';
+        if ( isset( $errors['quantity'] ) ) {
+            if ( $errors['quantity'] ) {
+                $errors['quantity'] = 'border:1px solid ' . $style['error-colour'] . ';';
+            }
         }
     } else {
         $content .= $qpp['title'];
-        if ( $qpp['paypal-url'] && $qpp['paypal-location'] == 'imageabove' ) {
-            $content .= "<img src='" . $qpp['paypal-url'] . "' />";
+        if ( isset( $qpp['paypal-url'] ) ) {
+            if ( $qpp['paypal-url'] && $qpp['paypal-location'] == 'imageabove' ) {
+                $content .= "<img src='" . $qpp['paypal-url'] . "' />";
+            }
         }
         $content .= $qpp['blurb'];
     }
@@ -1075,7 +1041,7 @@ function qpp_display_form(
             case 'field2':
                 
                 if ( $qpp['use_stock'] ) {
-                    $requiredstock = ( !$errors['use_stock'] && $qpp['ruse_stock'] ? ' class="required" ' : '' );
+                    $requiredstock = ( !qpp_get_element( $errors, 'use_stock' ) && $qpp['ruse_stock'] ? ' class="required" ' : '' );
                     
                     if ( $qpp['fixedstock'] || isset( $_REQUEST["item"] ) ) {
                         $content .= '<p class="input" >' . $values['stock'] . '</p>';
@@ -1099,7 +1065,7 @@ function qpp_display_form(
                 if ( $qpp['use_quantity'] && !$qpp['use_multiples'] ) {
                     $content .= '<p>
                 <span class="input">' . $qpp['quantitylabel'] . '</span>
-                <input type="text" style=" ' . $errors['quantity'] . 'width:3em;margin-left:5px" id="qppquantity' . $t . '" label="quantity" name="quantity" value="' . $values['quantity'] . '" onfocus="qppclear(this, \'' . $values['quantity'] . '\')" onblur="qpprecall(this, \'' . $values['quantity'] . '\')" />';
+                <input type="text" style=" ' . qpp_get_element( $errors, 'quantity' ) . 'width:3em;margin-left:5px" id="qppquantity' . $t . '"  name="quantity"  placeholder="' . $values['quantity'] . '" />';
                     if ( $qpp['quantitymax'] ) {
                         $content .= '&nbsp;' . $qpp['quantitymaxblurb'];
                     }
@@ -1307,7 +1273,7 @@ function qpp_display_form(
                     $content .= '<p>' . $qpp['recurringblurb'] . '<br>';
                     
                     if ( $qpp['variablerecurring'] ) {
-                        $content .= '<input type="text" style=" ' . $errors['srt'] . 'width:3em;margin-left:5px" id="srt' . $t . '" label="srt" name="srt" value="' . $values['srt'] . '" onfocus="qppclear(this, \'' . $values['srt'] . '\')" onblur="qpprecall(this, \'' . $values['srt'] . '\')" /> ' . $qpp['every'] . ' ' . $qpp[$recurringperiod];
+                        $content .= '<input type="text" style=" ' . $errors['srt'] . 'width:3em;margin-left:5px" id="srt' . $t . '" label="srt" name="srt"  placeholder="' . $values['srt'] . '"  /> ' . $qpp['every'] . ' ' . $qpp[$recurringperiod];
                     } else {
                         $content .= $qpp['recurringhowmany'] . ' ' . $qpp['every'] . ' ' . $qpp[$recurringperiod];
                     }
@@ -1408,14 +1374,14 @@ function qpp_display_form(
             case 'field17':
                 
                 if ( $qpp['use_message'] ) {
-                    $requiredmessage = ( !$errors['yourmessage'] && $qpp['ruse_message'] ? ' class="required" ' : '' );
+                    $requiredmessage = ( !qpp_get_element( $errors, 'yourmessage' ) && $qpp['ruse_message'] ? ' class="required" ' : '' );
                     $content .= qpp_nice_label(
                         'yourmessage' . $id,
                         'yourmessage',
                         'textarea',
                         $qpp['messagelabel'],
                         $label,
-                        $requiredmessage . $errors['use_message'],
+                        $requiredmessage . qpp_get_element( $errors, 'use_message' ),
                         $values['yourmessage']
                     );
                     // $content .= '<textarea rows="4" name="yourmessage" '.$requiredmessage.$errors['use_message'].' onblur="if (this.value == \'\') {this.value = \''.$values['yourmessage'].'\';}" onfocus="if (this.value == \''.$values['yourmessage'].'\') {this.value = \'\';}" />' . stripslashes($values['yourmessage']) . '</textarea>';
@@ -1455,7 +1421,7 @@ function qpp_display_form(
     $caption = $qpp['submitcaption'];
     
     if ( $style['submit-button'] ) {
-        $content .= '<p class="submit pay-button"><input type="image" id="submitimage" value="' . $caption . '" src="' . $style['submit-button'] . '" name="qppsubmit' . $id . '" /></p>';
+        $content .= '<p class="submit pay-button"><input type="image" id="submitimage" alt="' . $caption . '" value="' . $caption . '" src="' . $style['submit-button'] . '" name="qppsubmit' . $id . '" /></p>';
     } else {
         $content .= '<p class="submit pay-button"><input type="submit" value="' . $caption . '" id="submit" name="qppsubmit' . $id . '" /></p>';
     }
@@ -1465,7 +1431,7 @@ function qpp_display_form(
     }
     $content .= '<div id="qppchecking">' . $messages['validating'] . '</div>';
     $content .= '</form>' . "\r\t";
-    $content .= '<script type="text/javascript"> to_list.push("#frmPayment' . (( $id ? $id : 'default' )) . '"); </script></script>';
+    wp_add_inline_script( 'qpp_script', 'to_list.push("#frmPayment' . (( $id ? $id : 'default' )) . '");', 'after' );
     $content .= "<div class='qpp-loading'>" . $send['waiting'] . "</div>";
     $content .= "<div class='qpp-validating-form'>" . $messages['validating'] . "</div>";
     $content .= "<div class='qpp-processing-form'>" . $messages['waiting'] . "</div>";
@@ -1473,10 +1439,69 @@ function qpp_display_form(
         $content .= '<img src="' . $qpp['paypal-url'] . '" />';
     }
     if ( $qpp['usetotals'] || $qpp['use_slider'] || isset( $qpp['combobox'] ) && $qpp['combobox'] == 'checked' ) {
-        $content .= '<script type="text/javascript">to_totals.push("#frmPayment' . $t . '");</script>';
+        wp_add_inline_script( 'qpp_script', 'to_totals.push("#frmPayment' . $t . '");', 'after' );
     }
     $content .= '<div style="clear:both;"></div></div></div>' . "\r\t";
-    echo  $content ;
+    echo  qpp_kses_forms( $content ) ;
+}
+
+function qpp_kses_forms( $html )
+{
+    $kses_defaults = wp_kses_allowed_html( 'post' );
+    $svg_args = array(
+        'form'     => array(
+        'class'   => true,
+        'method'  => true,
+        'action'  => true,
+        'enctype' => true,
+        'id'      => true,
+    ),
+        'select'   => array(
+        'class' => true,
+        'name'  => true,
+        'style' => true,
+    ),
+        'option'   => array(
+        'class' => true,
+        'value' => true,
+        'style' => true,
+    ),
+        'input'    => array(
+        'id'               => true,
+        'class'            => true,
+        'name'             => true,
+        'type'             => true,
+        'value'            => true,
+        'style'            => true,
+        'data-default'     => true,
+        'data-rangeslider' => true,
+        'min'              => true,
+        'max'              => true,
+        'step'             => true,
+        'placeholder'      => true,
+        'size'             => true,
+        'checked'          => true,
+        'src'              => true,
+        'alt'              => true,
+    ),
+        'textarea' => array(
+        'id'           => true,
+        'class'        => true,
+        'name'         => true,
+        'type'         => true,
+        'value'        => true,
+        'style'        => true,
+        'data-default' => true,
+        'placeholder'  => true,
+    ),
+        'output'   => array(
+        'id'    => true,
+        'class' => true,
+        'style' => true,
+    ),
+    );
+    $allowed_tags = array_merge( $kses_defaults, $svg_args );
+    return wp_kses( $html, $allowed_tags );
 }
 
 function qpp_coupon_value( $qpp, $values )
@@ -1512,7 +1537,7 @@ function qpp_display_multiples( $id, $values )
         if ( $multiples['product' . $i] ) {
             
             if ( $multiples['use_quantity'] ) {
-                $content .= '<div style="clear:both;"><span style="float:left;padding:7px 0">' . $label . '</span><span style="float:right;"><input type="text" style="width:4em;text-align:right" name="qtyproduct' . $i . '" id="qtyproduct' . $i . '" value="' . $values['qtyproduct' . $i] . '" onfocus="qppclear(this, \'' . $values['qtyproduct' . $i] . '\')" onblur="qpprecall(this,\'' . $values['qtyproduct' . $i] . '\')" /></span></div>';
+                $content .= '<div style="clear:both;"><span style="float:left;padding:7px 0">' . $label . '</span><span style="float:right;"><input type="text" style="width:4em;text-align:right" name="qtyproduct' . $i . '" id="qtyproduct' . $i . '"  placeholder="' . $values['qtyproduct' . $i] . '" /></span></div>';
             } else {
                 $content .= '<p><input type="checkbox" style="margin:0; padding: 0;width:auto;" name="qtyproduct' . $i . '" value="checked" ' . $values['qtyproduct' . $i] . '>&nbsp;' . $label . '</p>';
             }
@@ -1533,7 +1558,7 @@ function qpp_amount_choice( $type, $data )
     $other = $data['other'];
     $otherinput = <<<other
 <div id="otheramount">
-<input type="text" label="{$other['instruction']}" onfocus="qppclear(this, '{$other['instruction']}')" onblur="qpprecall(this, '{$other['instruction']}')" value="{$other['value']}" name="otheramount" style="display: none;" />
+<input type="text" label="{$other['instruction']}" placeholder="{$other['instruction']}"  name="otheramount" style="display: none;" />
 </div>
 <input type="hidden" name="use_other_amount" value="false" />
 other;
@@ -1764,35 +1789,47 @@ function qpp_format_amount( $currency, $qpp, $amount )
     return $check;
 }
 
-function qpp_verify_form( &$v, &$errors, $form )
+function qpp_verify_form(
+    &$v,
+    &$errors,
+    $form,
+    $sc
+)
 {
-    /*
-    	Skip this step if all we're doing is activating a coupon
-    */
-    if ( isset( $_POST['qppapply' . $form] ) ) {
-        return 1;
-    }
     global  $qpp_attributes ;
-    $qpp_attributes[$form] = $_POST['sc'];
+    $qpp_attributes[$form] = $sc;
     $data = collect_data( $form );
     $qpp = qpp_get_stored_options( $form );
     $address = qpp_get_stored_address( $form );
     $check = preg_replace( '/[^.,0-9]/', '', $v['amount'] );
     $arr = array(
-        'amount',
-        'reference',
-        'quantity',
-        'stock',
-        'email',
-        'yourmessage'
+        'amount'      => 'absint',
+        'reference'   => 'sanitize_text_field',
+        'quantity'    => 'sanitize_text_field',
+        'stock'       => 'sanitize_text_field',
+        'email'       => 'sanitize_email',
+        'yourmessage' => 'sanitize_textarea_field',
     );
-    foreach ( $arr as $item ) {
-        $v[$item] = filter_var( $v[$item], FILTER_SANITIZE_STRING );
+    foreach ( $arr as $item => $func ) {
+        
+        if ( !isset( $v[$item] ) ) {
+            $v[$item] = '';
+        } else {
+            
+            if ( function_exists( $func ) ) {
+                $v[$item] = $func( $v[$item] );
+            } else {
+                wp_die( 'Function ' . $func . ' does not exist' );
+            }
+        
+        }
+    
     }
     $v['yourmessage'] = nl2br( $v['yourmessage'] );
     
     if ( $qpp['use_multiples'] ) {
         $qpp['use_quantity'] = false;
+        $checkmultiple = false;
         $v['setpay'] = $v['setref'] = true;
         for ( $i = 1 ;  $i <= 9 ;  $i++ ) {
             if ( $v['qtyproduct' . $i] ) {
@@ -1875,6 +1912,7 @@ function qpp_verify_form( &$v, &$errors, $form )
                     break;
             }
             // Validate amount
+            $currency = qpp_get_stored_curr();
             $errors['amount'] = 'error';
             $minamount = 1.0E-5;
             if ( isset( $qpp['minamount'] ) && $qpp['minamount'] > 0 ) {
@@ -1967,7 +2005,12 @@ function qpp_verify_form( &$v, &$errors, $form )
     return count( $errors ) == 0;
 }
 
-function qpp_process_values( $values, $id )
+function qpp_process_values(
+    $values,
+    $id,
+    $combine,
+    $itemamount
+)
 {
     $currency = qpp_get_stored_curr();
     $qpp = qpp_get_stored_options( $id );
@@ -1976,17 +2019,17 @@ function qpp_process_values( $values, $id )
     if ( $values['srt'] ) {
         $qpp['recurringhowmany'] = $values['srt'];
     }
-    $custom = ( $qpp['custom'] ? $qpp['custom'] : md5( mt_rand() ) );
+    $custom = ( isset( $qpp['custom'] ) && !empty($qpp['custom']) ? $qpp['custom'] : md5( mt_rand() ) );
     
-    if ( isset( $_REQUEST['combine'] ) && 'checked' == sanitize_text_field( $_REQUEST['combine'] ) ) {
+    if ( $combine ) {
         $arr = explode( '&', $values['reference'] );
         $values['reference'] = $arr[0];
         $values['amount'] = (double) qpp_format_amount( $currency[$id], $qpp, $arr[1] );
     }
     
     $amount = (double) $values['items'][0]['amount'];
-    if ( isset( $_POST['itemamount'] ) && sanitize_text_field( $_POST['itemamount'] ) >= $values['items'][0]['amount'] ) {
-        $amount = (double) qpp_format_amount( $currency[$id], $qpp, sanitize_text_field( $_POST['itemamount'] ) );
+    if ( $itemamount >= $values['items'][0]['amount'] ) {
+        $amount = (double) qpp_format_amount( $currency[$id], $qpp, $itemamount );
     }
     $quantity = (double) (( $values['items'][0]['quantity'] < 1 ? '1' : strip_tags( $values['items'][0]['quantity'] ) ));
     $percent = $fixedpostage = $percentpostage = 0;
@@ -2098,7 +2141,13 @@ function qpp_process_values( $values, $id )
     return (object) $returning;
 }
 
-function qpp_process_form( $values, $id, $payment )
+function qpp_process_form(
+    $values,
+    $id,
+    $payment,
+    $combine,
+    $itemamount
+)
 {
     /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
     global  $quick_paypal_payments_fs ;
@@ -2116,31 +2165,46 @@ function qpp_process_form( $values, $id, $payment )
     $page_url = qpp_current_page_url();
     $page_url = ( $ajaxurl == $page_url ? $_SERVER['HTTP_REFERER'] : $page_url );
     $paypalurl = 'https://www.paypal.com/cgi-bin/webscr';
-    if ( $values['srt'] ) {
-        $qpp['recurringhowmany'] = $values['srt'];
+    if ( isset( $values['srt'] ) ) {
+        if ( $values['srt'] ) {
+            $qpp['recurringhowmany'] = $values['srt'];
+        }
     }
-    if ( $send['customurl'] ) {
-        $paypalurl = $send['customurl'];
+    if ( isset( $send['customurl'] ) ) {
+        if ( $send['customurl'] ) {
+            $paypalurl = $send['customurl'];
+        }
     }
-    if ( $qpp_setup['sandbox'] ) {
-        $paypalurl = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
+    if ( isset( $qpp_setup['sandbox'] ) ) {
+        if ( $qpp_setup['sandbox'] ) {
+            $paypalurl = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
+        }
     }
-    if ( empty($send['thanksurl']) ) {
-        $send['thanksurl'] = $page_url;
+    if ( isset( $send['thanksurl'] ) ) {
+        if ( empty($send['thanksurl']) ) {
+            $send['thanksurl'] = $page_url;
+        }
     }
-    if ( empty($send['cancelurl']) ) {
-        $send['cancelurl'] = $page_url;
+    if ( isset( $send['cancelurl'] ) ) {
+        if ( empty($send['cancelurl']) ) {
+            $send['cancelurl'] = $page_url;
+        }
     }
     
-    if ( $send['target'] == 'newpage' ) {
+    if ( isset( $send['target'] ) && $send['target'] == 'newpage' ) {
         $target = ' target="_blank" ';
     } else {
         $target = '';
     }
     
     $custom = $payment->custom;
-    $email = ( $send['email'] ? $send['email'] : $qpp_setup['email'] );
-    $payment = qpp_process_values( $values, $id );
+    $email = ( isset( $send['email'] ) && !empty($send['email']) ? $send['email'] : $qpp_setup['email'] );
+    $payment = qpp_process_values(
+        $values,
+        $id,
+        $combine,
+        $itemamount
+    );
     $values['amount'] = $payment->totalamount + $payment->handling;
     $qpp_messages = get_option( 'qpp_messages' . $id );
     if ( !is_array( $qpp_messages ) ) {
@@ -2210,10 +2274,9 @@ function qpp_process_form( $values, $id, $payment )
         }
     
     }
+    wp_add_inline_script( 'qpp_script', 'document.querySelector("#qpp_reload").scrollIntoView()' );
     $content = '<span><h2 id="qpp_reload">' . $send['waiting'] . '</h2>
-    <script type="text/javascript" language="javascript">
-    document.querySelector("#qpp_reload").scrollIntoView();
-    </script>
+   
     <form action="' . $paypalurl . '" method="post" name="frmCart" id="frmCart" ' . $target . '>
     <input type="hidden" name="custom" value="' . trim( $payment->custom ) . '"/>
     <input type="hidden" name="tax" value="0.00">
@@ -2429,15 +2492,24 @@ function qpp_currency( $id )
     return $c;
 }
 
-function qpp_sanitize( $input )
+function qpp_sanitize( $array_or_string )
 {
-    $output = array();
-    if ( is_array( $input ) ) {
-        foreach ( $input as $var => $val ) {
-            $output[$var] = filter_var( $val, FILTER_SANITIZE_STRING );
+    
+    if ( is_string( $array_or_string ) ) {
+        $array_or_string = sanitize_text_field( $array_or_string );
+    } elseif ( is_array( $array_or_string ) ) {
+        foreach ( $array_or_string as $key => &$value ) {
+            
+            if ( is_array( $value ) ) {
+                $value = qpp_sanitize( $value );
+            } else {
+                $value = sanitize_text_field( $value );
+            }
+        
         }
     }
-    return $output;
+    
+    return $array_or_string;
 }
 
 function register_qpp_widget()
@@ -2682,8 +2754,7 @@ function qpp_head_css()
 {
     $qpp_setup = qpp_get_stored_setup();
     $mode = ( $qpp_setup['sandbox'] ? 'SANDBOX' : 'PRODUCTION' );
-    $data = '<style type="text/css" media="screen">' . "\r\n" . qpp_generate_css() . "\r\n" . '</style>
-    <script type="text/javascript">qpp_containers = new Array(); to_list = new Array(); to_totals = new Array();</script>';
+    $data = '<style type="text/css" media="screen">' . "\r\n" . qpp_generate_css() . "\r\n" . '</style>';
     echo  $data ;
 }
 
@@ -2717,6 +2788,9 @@ function qpp_messagetable( $id, $email )
     $address = qpp_get_stored_address( $id );
     $c = qpp_currency( $id );
     $showthismany = '9999';
+    $report = false;
+    $dashboard = '';
+    $coups = false;
     $content = $padding = $count = $arr = '';
     if ( $messageoptions['messageqty'] == 'fifty' ) {
         $showthismany = '50';
@@ -2763,7 +2837,7 @@ function qpp_messagetable( $id, $email )
                 }
                 break;
             case 'field3':
-                $dashboard .= '<th style="text-align:left">' . $options['inputamount'] . '</th>';
+                $dashboard .= '<th style="text-align:left">' . esc_html__( 'Amount', 'quick-paypal-payments' ) . '</th>';
                 break;
             case 'field4':
                 if ( $options['use_stock'] ) {
@@ -2890,7 +2964,7 @@ function qpp_messagetable( $id, $email )
     }
     
     for ( $i = 1 ;  $i <= $coupon['couponnumber'] ;  $i++ ) {
-        if ( $coupon['qty' . $i] > 0 ) {
+        if ( isset( $coupon['qty' . $i] ) && $coupon['qty' . $i] > 0 ) {
             $coups .= '<p>' . $coupon['code' . $i] . ' - ' . $coupon['qty' . $i] . '</p>';
         }
     }
@@ -3053,6 +3127,7 @@ function qpp_messagecontent(
 
 function qpp_ipn()
 {
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended --  IPN has own callback security
     if ( !isset( $_REQUEST['qpp_ipn'] ) ) {
         return;
     }
@@ -3120,6 +3195,7 @@ function qpp_ipn()
     
     
     if ( 'VERIFIED' == $status ) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing --  Already VERFIED by PayPal
         $custom = sanitize_text_field( $_POST['custom'] );
         $arr = explode( ",", $qpp_setup['alternative'] );
         foreach ( $arr as $item ) {
@@ -3383,19 +3459,6 @@ function qpp_create_user( $values )
 
 }
 
-function qpp_mailchimp( $values, $send )
-{
-    $content = '<form action="https://mailchimp.us8.list-manage.com/subscribe/post" method="POST" id="mailchimpsubmit">
-    <input type="hidden" name="u" value="' . $send['mailchimpuser'] . '">
-    <input type="hidden" name="id" value="' . $send['mailchimpid'] . '">
-    <input type="hidden" name="MERGE0" id="MERGE0" value=' . $values['email'] . '>
-    <input type="hidden" name="FNAME" id="FNAME" value=' . $values['firstname'] . '>
-    <input type="hidden" name="LNAME" id="LNAME" value=' . $values['lastname'] . '>
-    </form>
-    <script language="JavaScript">document.getElementById("mailchimpsubmit").submit();</script>';
-    return $content;
-}
-
 function qpp_start_transaction(
     &$paypal,
     $currency,
@@ -3558,7 +3621,7 @@ function qpp_nice_label(
                 break;
             case 2:
                 $returning = '<div class="qpp_nice_label qpp_label_blur">';
-                $returning .= '<input type="text" id="' . $id . '"' . $class . ' name="' . $name . '" value="' . $value . '" ' . $error . ' onfocus="qppclear(this, \'' . $value . '\')" onblur="qpprecall(this, \'' . $value . '\')"/>';
+                $returning .= '<input type="text" id="' . $id . '"' . $class . ' name="' . $name . '"  ' . $error . ' placeholder="' . $value . '" />';
                 break;
             case 3:
                 $v = ( $value == $label ? '' : $value );
@@ -3583,7 +3646,7 @@ function qpp_nice_label(
                 break;
             case 2:
                 $returning = '<div class="qpp_nice_label qpp_label_blur">';
-                $returning .= '<textarea rows="4" label="message" name="' . $name . '"' . $error . ' onfocus="qppclear(this, \'' . $value . '\')" onblur="qpprecall(this, \'' . $value . '\')" />' . stripslashes( $value ) . '</textarea>';
+                $returning .= '<textarea rows="4" label="message" name="' . $name . '"' . $error . ' placeholder="' . $value . '" /></textarea>';
                 break;
             case 3:
                 $v = ( $value == $label ? '' : $value );

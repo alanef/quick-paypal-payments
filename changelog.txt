@@ -1,4 +1,7 @@
 == Changelog ==
+= 5.7.26 =
+* improve sanitization of form data in admin and add nonce check
+
 = 5.7.25 =
 * fix PHP 8.0 issue
 

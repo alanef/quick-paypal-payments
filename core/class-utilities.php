@@ -95,17 +95,19 @@ class Utilities {
 	}
 
 	public function display_tabs() {
-		$split     = explode( "-", $_GET['page'] );
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
+		$split     = explode( "-", sanitize_text_field($_GET['page']) );
 		$page_type = $split[ count( $split ) - 1 ];
 		$tabs      = $this->get_settings_page_tabs( $page_type );
 		?>
 		<h2 class="nav-tab-wrapper">
 			<?php foreach ( $tabs as $key => $tab ) {
 				$active = '';
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
 				if ( preg_match( '#' . $_GET['page'] . '$#', $tab['href'] ) ) {
 					$active = ' nav-tab-active';
 				}
-				echo '<a href="' . $tab['href'] . '" class="nav-tab' . $active . '">' . $tab['title'] . '</a>';
+				echo '<a href="' . esc_attr($tab['href']) . '" class="nav-tab' . esc_attr($active) . '">' . esc_attr( $tab['title'] ) . '</a>';
 			}
 			?>
 		</h2>

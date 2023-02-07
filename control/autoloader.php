@@ -51,6 +51,6 @@ spl_autoload_register( function ( $class_name ) {
 		include_once( $filepath );
 	} else {
 		// changed to be translatable
-		wp_die( sprintf( __( 'The system file attempting to be loaded at %1$s does not exist.', 'quick-paypal-payments' ), esc_html( $filepath ) ) );
+		wp_die( sprintf( esc_html__( 'The system file attempting to be loaded at %1$s does not exist.', 'quick-paypal-payments' ), esc_html( $filepath ) ) );
 	}
 } );

@@ -24,7 +24,7 @@
  * Plugin Name: Quick Paypal Payments
  * Plugin URI: https://quick-plugins.com/quick-paypal-payments/
  * Description: Accept any amount or payment ID before submitting to paypal.
- * Version: 5.7.25
+ * Version: 5.7.26
  * Requires at least: 5.0
  * Requires PHP: 5.6
  * Author: Fullworks
@@ -32,7 +32,8 @@
  * Text-domain: quick-paypal-payments
  *
  * Original Author: Aerin
- */
+ *
+  */
 
 namespace Quick_Paypal_Payments;
 
@@ -46,7 +47,7 @@ if ( ! defined( 'WPINC' ) ) {
 if ( ! function_exists( 'Quick_Paypal_Payments\run_Quick_Paypal_Payments' ) ) {
 	define( 'QUICK_PAYPAL_PAYMENTS_PLUGIN_DIR', trailingslashit( plugin_dir_path( __FILE__ ) ) );
 	define( 'QUICK_PAYPAL_PAYMENTS_PLUGIN_FILE', plugin_basename( __FILE__ ) );
-	define( 'QUICK_PAYPAL_PAYMENTS_VERSION', '5.7.25' );
+	define( 'QUICK_PAYPAL_PAYMENTS_VERSION', '5.7.26' );
 
 // Include the autoloader so we can dynamically include the classes.
 	require_once QUICK_PAYPAL_PAYMENTS_PLUGIN_DIR . 'control/autoloader.php';
@@ -75,6 +76,14 @@ if ( ! function_exists( 'Quick_Paypal_Payments\run_Quick_Paypal_Payments' ) ) {
 
 	run_Quick_Paypal_Payments();
 } else {
-	die( __( 'Cannot execute as the plugin already exists, if you have a free version installed deactivate that and try again', 'quick-paypal-payments' ) );
+	global $quick_paypal_payments_fs;
+	if ( ! $quick_paypal_payments_fs->is_premium() ) {
+		$quick_paypal_payments_fs->set_basename( true, __FILE__ );
+	} else {
+		die( esc_html__( 'You already have a pro version of Quick PayPal Payments (Premium) installed, please check versions and delete one of them. The correct one should be in the folder wp-content/quick-paypal-payments-premium - this one you are trying is in folder wp-content/plugins/', 'display-eventbrite-events' ) . esc_html(basename( plugin_dir_path( __FILE__ ))) );
+	}
+
+	return;
+
 }
 

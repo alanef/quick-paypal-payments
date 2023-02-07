@@ -83,6 +83,8 @@ class Admin
         if ( !is_array( $um ) ) {
             $um = [];
         }
+        // @TODO for neatness could apply a nonce but not a risk
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- just dismissing a notice
         $um[sanitize_text_field( $_POST['id'] )] = true;
         update_user_meta( $user_id, 'qpp_dismissed_notices', $um );
         wp_die();
@@ -192,7 +194,7 @@ https://fullworks.net/account/</a> to get your download and licence key
         
         // Output notice HTML.
         if ( !empty($notice) ) {
-            printf( '<div id="qpp_notice_1" class="qpp_notice is-dismissible notice notice-warning" style="overflow:hidden;font-size: 150%%;"><p>%1$s</p></div>', $notice );
+            printf( '<div id="qpp_notice_1" class="qpp_notice is-dismissible notice notice-warning" style="overflow:hidden;font-size: 150%%;"><p>%1$s</p></div>', wp_kses_post( $notice ) );
         }
     }
     
@@ -204,9 +206,8 @@ https://fullworks.net/account/</a> to get your download and licence key
         if ( !isset( $_REQUEST['action'] ) || 'qppfreemius' !== $_REQUEST['action'] ) {
             return;
         }
-        $nonce = esc_attr( $_REQUEST['_wpnonce'] );
-        if ( !wp_verify_nonce( $nonce, 'qpp_freemius_licence' ) ) {
-            die( __( 'Security check invalid, expired or missing', 'quick-paypal-payments' ) );
+        if ( !wp_verify_nonce( $_REQUEST['_wpnonce'], 'qpp_freemius_licence' ) ) {
+            die( esc_html__( 'Security check invalid, expired or missing', 'quick-paypal-payments' ) );
         }
         $user = wp_get_current_user();
         $qpp_key = get_option( 'qpp_key' );

@@ -112,7 +112,7 @@ class Admin_Settings extends Admin_Pages {
 	public function add_meta_boxes() {
 		add_meta_box(
 			'settings-1',                  /* Meta Box ID */
-			__( 'Settings 1', 'quick-paypal-payments' ),               /* Title */
+			esc_html__( 'Settings 1', 'quick-paypal-payments' ),               /* Title */
 			array( $this, 'meta_box_1' ),  /* Function Callback */
 			$this->settings_page_id,               /* Screen: Our Settings Page */
 			'normal',                 /* Context */
@@ -120,7 +120,7 @@ class Admin_Settings extends Admin_Pages {
 		);
 		add_meta_box(
 			'settings-2',                  /* Meta Box ID */
-			__( 'Settings 2', 'quick-paypal-payments' ),               /* Title */
+			esc_html__( 'Settings 2', 'quick-paypal-payments' ),               /* Title */
 			array( $this, 'meta_box_2' ),  /* Function Callback */
 			$this->settings_page_id,               /* Screen: Our Settings Page */
 			'normal',                 /* Context */
@@ -136,26 +136,26 @@ class Admin_Settings extends Admin_Pages {
         <table class="form-table">
             <tbody>
             <tr valign="top" class="alternate">
-                <th scope="row"><?php _e( 'Checkbox', 'quick-paypal-payments' ); ?></th>
+                <th scope="row"><?php esc_html_e( 'Checkbox', 'quick-paypal-payments' ); ?></th>
                 <td>
                     <label for="quick-paypal-payments-settings-1[checkbox]"><input type="checkbox"
                                                                          name="quick-paypal-payments-settings-1[checkbox]"
                                                                          id="quick-paypal-payments-settings-1[checkbox]"
                                                                          value="1"
 							<?php checked( '1', $options['checkbox'] ); ?>>
-						<?php _e( 'Checkbox description', 'quick-paypal-payments' ); ?></label>
+						<?php esc_html_e( 'Checkbox description', 'quick-paypal-payments' ); ?></label>
                 </td>
             </tr>
             <tr valign="top">
-                <th scope="row"><?php _e( 'Text', 'quick-paypal-payments' ); ?></th>
+                <th scope="row"><?php esc_html_e( 'Text', 'quick-paypal-payments' ); ?></th>
                 <td>
                     <input type="text"
                            class="regular-text"
                            name="quick-paypal-payments-settings-1[text]"
                            id="quick-paypal-payments-settings-1[text]"
-                           value="<?php echo $options['text'] ?>">
+                           value="<?php echo esc_attr( $options['text'] ) ?>">
                     <p>
-                        <span class="description"><?php _e( 'Text Description', 'quick-paypal-payments' ); ?></span>
+                        <span class="description"><?php esc_html_e( 'Text Description', 'quick-paypal-payments' ); ?></span>
                     </p>
                 </td>
             </tr>
@@ -185,43 +185,43 @@ class Admin_Settings extends Admin_Pages {
 		$units   = array(
 			array(
 				'MINUTE',
-				__( 'Minutes', 'quick-paypal-payments' )
+				esc_html__( 'Minutes', 'quick-paypal-payments' )
 			),
 			array(
 				'HOUR',
-				__( 'Hours', 'quick-paypal-payments' )
+				esc_html__( 'Hours', 'quick-paypal-payments' )
 			),
 			array(
 				'DAY',
-				__( 'Days', 'quick-paypal-payments' )
+				esc_html__( 'Days', 'quick-paypal-payments' )
 			),
 		);
 		?>
         <table class="form-table">
             <tbody>
             <tr valign="top">
-                <th scope="row"><?php _e( 'Number', 'quick-paypal-payments' ); ?></th>
+                <th scope="row"><?php esc_html_e( 'Number', 'quick-paypal-payments' ); ?></th>
                 <td>
                     <label for="quick-paypal-payments-settings-2[option1]"><input type="number"
                                                                         name="quick-paypal-payments-settings-2[option1]"
                                                                         id="quick-paypal-payments-settings-2[option1]"
                                                                         class="small-text"
-                                                                        value="<?php echo $options['option1']; ?>"
+                                                                        value="<?php echo esc_attr( $options['option1'] ); ?>"
                                                                         min="0">
-						<?php _e( 'Integer', 'quick-paypal-payments' ); ?></label>
+						<?php esc_html_e( 'Integer', 'quick-paypal-payments' ); ?></label>
                     <p>
-                        <span class="description"><?php _e( 'Number', 'quick-paypal-payments' ); ?></span>
+                        <span class="description"><?php esc_html_e( 'Number', 'quick-paypal-payments' ); ?></span>
                     </p>
                 </td>
             </tr>
             <tr valign="top" class="alternate">
-                <th scope="row"><?php _e( 'Number with units', 'quick-paypal-payments' ); ?></th>
+                <th scope="row"><?php esc_html_e( 'Number with units', 'quick-paypal-payments' ); ?></th>
                 <td>
                     <input type="number"
                            name="quick-paypal-payments-settings-2[option2][number]"
                            id="quick-paypal-payments-settings-2[option2][number]"
                            class="small-text"
-                           value="<?php echo $options['option2']['number']; ?>"
+                           value="<?php echo esc_attr( $options['option2']['number'] ); ?>"
                            min="1"
                            max="60">
                     <select name="quick-paypal-payments-settings-2[option2][unit]"
@@ -229,12 +229,13 @@ class Admin_Settings extends Admin_Pages {
                             class="small-text">
 						<?php foreach ( $units as $unit ) {
 							?>
-                            <option value="<?php echo $unit[0]; ?>"
-								<?php echo ( $options['option2']['unit'] == $unit[0] ) ? " selected" : ""; ?>><?php echo $unit[1]; ?></option>
+                            <option value="<?php echo esc_attr( $unit[0] ); ?>"
+								<?php echo ( $options['option2']['unit'] == $unit[0] ) ? " selected" : ""; ?>>
+                                <?php echo esc_html( $unit[1] ); ?></option>
 						<?php } ?>
                     </select>
                     <p>
-                        <span class="description"><?php _e( 'Description', 'quick-paypal-payments' ); ?></span>
+                        <span class="description"><?php esc_html_e( 'Description', 'quick-paypal-payments' ); ?></span>
                     </p>
                 </td>
             </tr>

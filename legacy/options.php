@@ -48,13 +48,19 @@ function qpp_get_default_email () {
 
 function qpp_get_stored_msg () {
     $messageoptions = get_option('qpp_messageoptions');
-    if(!is_array($messageoptions)) $messageoptions = array();
-    $default = array(
-        'messageqty'    => 'fifty',
-        'messageorder'  => 'newest'
-    );
-    $messageoptions = array_merge($default, $messageoptions);
-    return $messageoptions;
+
+    return qpp_merge_msg($messageoptions);
+}
+function qpp_merge_msg ($messageoptions) {
+	if(!is_array($messageoptions)) $messageoptions = array();
+	$default = array(
+		'messageqty'    => 'fifty',
+		'messageorder'  => 'newest',
+		'hidepaid'      => '',
+		'showaddress'   => '',
+	);
+	$messageoptions = array_merge($default, $messageoptions);
+	return $messageoptions;
 }
 
 function qpp_get_stored_options($id) {
@@ -155,7 +161,19 @@ function qpp_get_stored_options($id) {
         'use_quantity'          => false,
         'useterms'              => false,
         'use_message'           => false,
-        'postagetype'           => false
+        'postagetype'           => false,
+	    'optionselector' => '',
+	    'allow_amount' => '',
+	    'combobox' => '',
+	    'fixedstock' => '',
+	    'ruse_stock' => '',
+	    'quantitymax' => '',
+	    'inline_options' => '',
+	    'variablerecurring' => '',
+	    'ruseemail' => '',
+	    'ruse_message' => '',
+	    'ruse_datepicker' => '',
+
     );
     $qpp = array_merge($default, $qpp);
 

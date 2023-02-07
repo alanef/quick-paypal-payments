@@ -1,3 +1,6 @@
+.qpp-style input:focus::placeholder {
+    color: transparent;
+}
 .qpp-style {text-align:left;margin: 0 0 10px 0;padding: 0;}
 .qpp-style form {margin:0;padding: 0;}
 .qpp-style #none {border:0 solid #FFF;padding: 0;}
