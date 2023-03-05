@@ -358,7 +358,7 @@ function collect_data( $form )
             if ( isset( $d['reference'] ) ) {
                 $returning['reference']['value'] = $d['reference'];
             } else {
-                $returning['reference']['value'] = implode( '&', $options[0] );
+                $returning['reference']['value'] = trim( implode( '&', $options[0] ) );
             }
             
             $returning['reference']['type'] = 'choice';
@@ -1642,7 +1642,7 @@ function qpp_reference_choice( $type, $data )
         case 'refdropdown':
             $returning .= "<select name='reference'>";
             foreach ( $choices as $v ) {
-                $value = implode( '&', $v );
+                $value = trim( implode( '&', $v ) );
                 
                 if ( $combined ) {
                     $display = $v['name'] . ' (' . $currency['b'] . $v['value'] . $currency['a'] . ')';
@@ -1658,7 +1658,7 @@ function qpp_reference_choice( $type, $data )
         default:
             $returning = '';
             foreach ( $choices as $v ) {
-                $value = implode( '&', $v );
+                $value = trim( implode( '&', $v ) );
                 
                 if ( $combined ) {
                     $display = $v['name'] . ' (' . $currency['b'] . $v['value'] . $currency['a'] . ')';

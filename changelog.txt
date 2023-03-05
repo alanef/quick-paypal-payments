@@ -1,4 +1,7 @@
 == Changelog ==
+= 5.7.26.2 =
+* fix reference compares to trim spaces
+
 = 5.7.26.1 =
 * fix issue with preset amounts
 
