@@ -1,4 +1,7 @@
 == Changelog ==
+= 5.7.26.1 =
+* fix issue with preset amounts
+
 = 5.7.26 =
 * improve sanitization of form data in admin and add nonce check
 

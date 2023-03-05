@@ -94,14 +94,14 @@ function qpp_register_scripts()
     wp_register_script(
         'paypal_checkout_js',
         "https://www.paypalobjects.com/api/checkout.js",
-        array(),
+        array( 'qpp_script' ),
         false,
         true
     );
     wp_register_script(
         'qpp_script',
         plugins_url( 'payments.js', __FILE__ ),
-        array(),
+        array( 'jquery' ),
         QUICK_PAYPAL_PAYMENTS_VERSION,
         true
     );
@@ -1457,14 +1457,23 @@ function qpp_kses_forms( $html )
         'id'      => true,
     ),
         'select'   => array(
-        'class' => true,
-        'name'  => true,
-        'style' => true,
+        'class'    => true,
+        'name'     => true,
+        'style'    => true,
+        'id'       => true,
+        'disabled' => true,
+        'required' => true,
+        'multiple' => true,
     ),
         'option'   => array(
-        'class' => true,
-        'value' => true,
-        'style' => true,
+        'id'       => true,
+        'class'    => true,
+        'value'    => true,
+        'style'    => true,
+        'selected' => true,
+        'disabled' => true,
+        'required' => true,
+        'multiple' => true,
     ),
         'input'    => array(
         'id'               => true,
@@ -1483,6 +1492,8 @@ function qpp_kses_forms( $html )
         'checked'          => true,
         'src'              => true,
         'alt'              => true,
+        'disabled'         => true,
+        'required'         => true,
     ),
         'textarea' => array(
         'id'           => true,
@@ -1493,6 +1504,8 @@ function qpp_kses_forms( $html )
         'style'        => true,
         'data-default' => true,
         'placeholder'  => true,
+        'disabled'     => true,
+        'required'     => true,
     ),
         'output'   => array(
         'id'    => true,
@@ -1885,7 +1898,7 @@ function qpp_verify_form(
             $dRef = $data['reference']['value'];
             $errors['reference'] = 'error';
             foreach ( $data['reference']['options'] as $obj ) {
-                if ( implode( '&', $obj ) == $dRef ) {
+                if ( trim( implode( '&', $obj ) ) == trim( $dRef ) ) {
                     $errors['reference'] = '';
                 }
             }

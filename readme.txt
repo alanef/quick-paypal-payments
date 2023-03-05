@@ -2,7 +2,7 @@
 Contributors: Fullworks
 Tags: paypal payment form, paypal, payments
 Tested up to: 6.1
-Stable tag: 5.7.26
+Stable tag: 5.7.26.1
 Type: freemium
 
 Zero to PayPal with just one shortcode. Jam packed with features and options with easy to use custom settings.
@@ -79,6 +79,9 @@ At the bottom of the dashboard is a link called 'Payments'.
 If it all goes wrong, just reinstall the plugin and start again. If you need help then [you can use the support forum](https://wordpress.org/support/plugin/quick-paypal-payments/).
 
 == Changelog ==
+= 5.7.26.1 =
+* fix issue with preset amounts
+
 = 5.7.26 =
 * improve sanitization of form data in admin and add nonce checks
 

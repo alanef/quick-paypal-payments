@@ -24,7 +24,7 @@
  * Plugin Name: Quick Paypal Payments
  * Plugin URI: https://quick-plugins.com/quick-paypal-payments/
  * Description: Accept any amount or payment ID before submitting to paypal.
- * Version: 5.7.26
+ * Version: 5.7.26.1
  * Requires at least: 5.0
  * Requires PHP: 5.6
  * Author: Fullworks
