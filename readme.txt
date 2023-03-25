@@ -1,8 +1,8 @@
 === Quick Paypal Payments ===
 Contributors: Fullworks
 Tags: paypal payment form, paypal, payments
-Tested up to: 6.1
-Stable tag: 5.7.26.2
+Tested up to: 6.2
+Stable tag: 5.7.26.4
 Type: freemium
 
 Zero to PayPal with just one shortcode. Jam packed with features and options with easy to use custom settings.
@@ -79,6 +79,13 @@ At the bottom of the dashboard is a link called 'Payments'.
 If it all goes wrong, just reinstall the plugin and start again. If you need help then [you can use the support forum](https://wordpress.org/support/plugin/quick-paypal-payments/).
 
 == Changelog ==
+= 5.7.26.4 =
+* fix minor XSS issue
+* fix issue with no store settings
+
+= 5.7.26.3 =
+* fix remembering message report options
+
 = 5.7.26.2 =
 * fix reference compares to trim spaces
 
@@ -88,10 +95,5 @@ If it all goes wrong, just reinstall the plugin and start again. If you need hel
 = 5.7.26 =
 * improve sanitization of form data in admin and add nonce checks
 
-= 5.7.25 =
-* fix PHP 8.0 issue
-
-= 5.7.24 =
-* fix conflict with WooCommerce
 
 [Full Change History](https://plugins.trac.wordpress.org/browser/quick-paypal-payments/trunk/changelog.txt)

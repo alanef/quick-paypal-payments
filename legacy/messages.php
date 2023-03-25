@@ -120,14 +120,14 @@ function qpp_show_messages( $id ) {
 	$dashboard                         = '<form method="post" action="">';
 	$dashboard                         .= wp_nonce_field( 'qpp_payments_form', 'qpp_payments_form_nonce', true, false );
 	$dashboard                         .= '<p><b>Show</b> <input style="margin:0; padding:0; border:none;" type="radio" name="messageqty" value="fifty" "' . esc_attr($fifty) . ' /> 50 
-    <input style="margin:0; padding:0; border:none;" type="radio" name="messageqty" value="hundred" "' . esc_attr($hundred) . ' /> 100 
-    <input style="margin:0; padding:0; border:none;" type="radio" name="messageqty" value="all" "' . esc_attr($all) . ' /> all messages.&nbsp;&nbsp;
-    <b>List</b> <input style="margin:0; padding:0; border:none;" type="radio" name="messageorder" value="oldest" "' . esc_attr($oldest) . ' /> oldest first 
-    <input style="margin:0; padding:0; border:none;" type="radio" name="messageorder" value="newest" "' . esc_attr($newest) . ' /> newest first
+    <input style="margin:0; padding:0; border:none;" type="radio" name="messageqty" value="hundred" ' . esc_attr($hundred) . ' /> 100 
+    <input style="margin:0; padding:0; border:none;" type="radio" name="messageqty" value="all" ' . esc_attr($all) . ' /> all messages.&nbsp;&nbsp;
+    <b>List</b> <input style="margin:0; padding:0; border:none;" type="radio" name="messageorder" value="oldest" ' . esc_attr($oldest) . ' /> oldest first 
+    <input style="margin:0; padding:0; border:none;" type="radio" name="messageorder" value="newest" ' . esc_attr($newest) . ' /> newest first
     &nbsp;&nbsp;
-    <input style="margin:0; padding:0; border:none;" type="checkbox" name="hidepaid" value="checked" "' . esc_attr($messageoptions['hidepaid']) . ' /> Hide paid transactions
+    <input style="margin:0; padding:0; border:none;" type="checkbox" name="hidepaid" value="checked" ' . esc_attr($messageoptions['hidepaid']) . ' /> Hide paid transactions
     &nbsp;&nbsp;
-    <input style="margin:0; padding:0; border:none;" type="checkbox" name="showaddress" value="checked" "' . esc_attr($messageoptions['showaddress']) . ' /> Show addresses
+    <input style="margin:0; padding:0; border:none;" type="checkbox" name="showaddress" value="checked" ' . esc_attr($messageoptions['showaddress']) . ' /> Show addresses
     &nbsp;&nbsp;
     <input type="submit" name="Submit" class="button-secondary" value="Update options" />
     </form></p>';

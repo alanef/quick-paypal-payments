@@ -1,4 +1,11 @@
 == Changelog ==
+= 5.7.26.4 =
+* fix minor XSS issue
+* fix issue with no store settings
+
+= 5.7.26.3 =
+* fix remembering message report options
+
 = 5.7.26.2 =
 * fix reference compares to trim spaces
 

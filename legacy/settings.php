@@ -130,7 +130,7 @@ function qpp_setup( $id )
         $qpp_setup['location'] = ( isset( $_POST['location'] ) ? sanitize_text_field( $_POST['location'] ) : '' );
         $qpp_setup['sandbox'] = ( isset( $_POST['sandbox'] ) ? sanitize_text_field( $_POST['sandbox'] ) : '' );
         $qpp_setup['disable_error'] = ( isset( $_POST['disable_error'] ) ? sanitize_text_field( $_POST['disable_error'] ) : '' );
-        $qpp_setup['nostore'] = ( isset( $_POST['nostore'] ) ? sanitize_text_field( $_POST['nopstore'] ) : '' );
+        $qpp_setup['nostore'] = ( isset( $_POST['nostore'] ) ? sanitize_text_field( $_POST['nostore'] ) : '' );
         update_option( 'qpp_curr', $qpp_curr );
         update_option( 'qpp_email', $qpp_email );
         update_option( 'qpp_setup', $qpp_setup );
@@ -250,9 +250,9 @@ function qpp_setup( $id )
     
     $content .= '<p><a href="' . $upurl . '">Pro-version only</a></p>';
     $content .= '<h2>Global Settings</h2>
-    <p><input type="checkbox" name="sandbox"' . esc_attr( $qpp_setup['sandbox'] ) . ' value="checked" /> Use Paypal sandbox (developer use only)</p>
-    <p><input type="checkbox" name="disable_error"' . esc_attr( $qpp_setup['disable_error'] ) . ' value="checked" /> Disable IPN Error logging</p>
-    <p><input type="checkbox" name="nostore"' . esc_attr( $qpp_setup['nostore'] ) . ' value="checked"> Do not store messages in the database (this will disable all notifications).</p>
+    <p><input type="checkbox" name="sandbox" ' . checked( $qpp_setup['sandbox'], 'checked', false ) . ' value="checked" /> Use Paypal sandbox (developer use only)</p>
+    <p><input type="checkbox" name="disable_error" ' . checked( $qpp_setup['disable_error'], 'checked', false ) . ' value="checked" /> Disable IPN Error logging</p>
+    <p><input type="checkbox" name="nostore"' . checked( $qpp_setup['nostore'], 'checked', false ) . ' value="checked"> Do not store messages in the database (this will disable all notifications).</p>
     <p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="Update Settings" /> <input type="submit" name="Reset" class="button-secondary" value="Reset Everything" onclick="return window.confirm( \'This will delete all your forms and settings.\\nAre you sure you want to reset everything?\' );"/></p>';
     $content .= wp_nonce_field( "save_qpp" );
     $content .= '</form>';
@@ -509,26 +509,26 @@ function qpp_form_options( $id )
                 $type = 'Reference';
                 $input = 'inputreference';
                 $checked = 'checked';
-                $options = '<input type="checkbox" name="fixedreference"' . esc_attr( $qpp['fixedreference'] ) . ' value="checked" /> Display as a pre-set reference<br><span class="description">Use commas to seperate options: Red,Green, Blue<br>Use semi-colons to combine with amount: Red;$5,Green;$10,Blue;£20</span><br>
-            Options Selector: <input type="radio" name="refselector" value="refradio"' . esc_attr( $refradio ) . ' /> Radio&nbsp;
-            <input type="radio" name="refselector" value="refdropdown"' . esc_attr( $refdropdown ) . ' /> Dropdown&nbsp;
-            <input type="radio" name="refselector" value="refnone"' . esc_attr( $refnone ) . ' /> Inline&nbsp;
-            <input type="radio" name="refselector" value="ignore"' . esc_attr( $ignore ) . ' /> None</br>';
+                $options = '<input type="checkbox" name="fixedreference" ' . checked( $qpp['fixedreference'], 'checked', false ) . ' value="checked" /> Display as a pre-set reference<br><span class="description">Use commas to seperate options: Red,Green, Blue<br>Use semi-colons to combine with amount: Red;$5,Green;$10,Blue;£20</span><br>
+            Options Selector: <input type="radio" name="refselector" value="refradio" ' . esc_attr( $refradio ) . ' /> Radio&nbsp;
+            <input type="radio" name="refselector" value="refdropdown" ' . esc_attr( $refdropdown ) . ' /> Dropdown&nbsp;
+            <input type="radio" name="refselector" value="refnone" ' . esc_attr( $refnone ) . ' /> Inline&nbsp;
+            <input type="radio" name="refselector" value="ignore" ' . esc_attr( $ignore ) . ' /> None</br>';
                 break;
             case 'field2':
-                $check = '<input type="checkbox" name="use_stock"' . esc_attr( $qpp['use_stock'] ) . ' value="checked" />';
+                $check = '<input type="checkbox" name="use_stock" ' . checked( $qpp['use_stock'], 'checked', false ) . ' value="checked" />';
                 $type = 'Use Item Number';
                 $input = 'stocklabel';
                 $checked = $qpp['use_stock'];
-                $options = '<input type="checkbox" name="fixedstock"' . esc_attr( $qpp['fixedstock'] ) . ' value="checked" /> Display as a pre-set item number<br>
-<input type="checkbox" name="ruse_stock"' . esc_attr( $qpp['ruse_stock'] ) . ' value="checked" /> Required Field';
+                $options = '<input type="checkbox" name="fixedstock" ' . checked( $qpp['fixedstock'], 'checked', false ) . ' value="checked" /> Display as a pre-set item number<br>
+<input type="checkbox" name="ruse_stock" ' . esc_attr( $qpp['ruse_stock'] ) . ' value="checked" /> Required Field';
                 break;
             case 'field3':
-                $check = ( $qpp['userecurring'] ? '&nbsp;' : '<input type="checkbox"   name="use_quantity"' . esc_attr( $qpp['use_quantity'] ) . ' value="checked" />' );
+                $check = ( $qpp['userecurring'] ? '&nbsp;' : '<input type="checkbox"   name="use_quantity" ' . esc_attr( $qpp['use_quantity'] ) . ' value="checked" />' );
                 $type = 'Quantity';
                 $input = 'quantitylabel';
                 $checked = $qpp['use_quantity'];
-                $options = '<input type="checkbox" name="quantitymax"' . esc_attr( $qpp['quantitymax'] ) . ' value="checked" /> Display and validate a maximum quantity<br><span class="description">Message that will display on the form:</span><br>
+                $options = '<input type="checkbox" name="quantitymax" ' . checked( $qpp['quantitymax'], 'checked', false ) . ' value="checked" /> Display and validate a maximum quantity<br><span class="description">Message that will display on the form:</span><br>
             <input type="text" name="quantitymaxblurb" value="' . esc_attr( $qpp['quantitymaxblurb'] ) . '" />';
                 break;
             case 'field4':
@@ -536,32 +536,32 @@ function qpp_form_options( $id )
                 $type = 'Amount';
                 $input = 'inputamount';
                 $checked = 'checked';
-                $options = '<input type="checkbox" name="allow_amount"' . esc_attr( $qpp['allow_amount'] ) . ' value="checked" /> Do not validate (use default amount value)<br>
-            <input type="checkbox" name="fixedamount"' . esc_attr( $qpp['fixedamount'] ) . ' value="checked" /> Display as a pre-set amount<br>
+                $options = '<input type="checkbox" name="allow_amount" ' . checked( $qpp['allow_amount'], 'checked', false ) . ' value="checked" /> Do not validate (use default amount value)<br>
+            <input type="checkbox" name="fixedamount" ' . checked( $qpp['fixedamount'], 'checked', false ) . ' value="checked" /> Display as a pre-set amount<br>
              <input type="text" style="border:1px solid #415063; width:3em;" name="minamount" . value ="' . esc_attr( $qpp['minamount'] ) . '" />&nbsp;Minimum value<br>
             <span class="description">Use commas to create an options list: £10,£20,£30</span><br>
-            Options Selector: <input type="radio" name="selector" value="radio"' . esc_attr( $radio ) . ' /> Radio&nbsp;
-            <input type="radio" name="selector" value="dropdown"' . esc_attr( $dropdown ) . ' /> Dropdown<br>
-            <input type="checkbox" name="inline_amount"' . esc_attr( $qpp['inline_amount'] ) . ' value="checked" />&nbsp;Display inline radio fields<br>
-            <input type="checkbox" name="combobox"' . esc_attr( $qpp['combobox'] ) . ' value="checked" /> Add input field to dropdown<br>
+            Options Selector: <input type="radio" name="selector" value="radio" ' . esc_attr( $radio ) . ' /> Radio&nbsp;
+            <input type="radio" name="selector" value="dropdown" ' . esc_attr( $dropdown ) . ' /> Dropdown<br>
+            <input type="checkbox" name="inline_amount" ' . checked( $qpp['inline_amount'], 'checked', false ) . ' value="checked" />&nbsp;Display inline radio fields<br>
+            <input type="checkbox" name="combobox" ' . checked( $qpp['combobox'], 'checked', false ) . ' value="checked" /> Add input field to dropdown<br>
             Caption:&nbsp;<input type="text" style="width:7em;" name="comboboxword" value="' . esc_attr( $qpp['comboboxword'] ) . '" />
             <br>
             Instruction:&nbsp;<input type="text" style="width:10em;" name="comboboxlabel" value="' . esc_attr( $qpp['comboboxlabel'] ) . '" />
             ';
                 break;
             case 'field5':
-                $check = ( $qpp['userecurring'] ? '&nbsp;' : '<input type="checkbox"   name="use_options"' . esc_attr( $qpp['use_options'] ) . ' value="checked" />' );
+                $check = ( $qpp['userecurring'] ? '&nbsp;' : '<input type="checkbox"   name="use_options" ' . esc_attr( $qpp['use_options'] ) . ' value="checked" />' );
                 $type = 'Options';
                 $input = 'optionlabel';
                 $checked = $qpp['use_options'];
                 $options = '<span class="description">Options (separate with a comma):</span><br><textarea  name="optionvalues" label="Radio" rows="2">' . $qpp['optionvalues'] . '</textarea><br>
-            Options Selector: <input type="radio" name="optionselector" value="optionsradio"' . esc_attr( $optionsradio ) . ' /> Radio&nbsp;
-            <input type="radio" name="optionselector" value="optionscheckbox"' . esc_attr( $optionscheckbox ) . ' /> Checkbox&nbsp;
-            <input type="radio" name="optionselector" value="optionsdropdown"' . esc_attr( $optionsdropdown ) . ' /> Dropdown<br>
-            <input type="checkbox" name="inline_options"' . esc_attr( $qpp['inline_options'] ) . ' value="checked" />&nbsp;Display inline radio and checkbox fields';
+            Options Selector: <input type="radio" name="optionselector" value="optionsradio" ' . esc_attr( $optionsradio ) . ' /> Radio&nbsp;
+            <input type="radio" name="optionselector" value="optionscheckbox" ' . esc_attr( $optionscheckbox ) . ' /> Checkbox&nbsp;
+            <input type="radio" name="optionselector" value="optionsdropdown" ' . esc_attr( $optionsdropdown ) . ' /> Dropdown<br>
+            <input type="checkbox" name="inline_options" ' . esc_attr( $qpp['inline_options'] ) . ' value="checked" />&nbsp;Display inline radio and checkbox fields';
                 break;
             case 'field6':
-                $check = ( $qpp['userecurring'] ? '&nbsp;' : '<input type="checkbox" name="usepostage"' . esc_attr( $qpp['usepostage'] ) . ' value="checked" />' );
+                $check = ( $qpp['userecurring'] ? '&nbsp;' : '<input type="checkbox" name="usepostage" ' . checked( $qpp['usepostage'], 'checked', false ) . ' value="checked" />' );
                 $type = 'Handling';
                 $input = 'postageblurb';
                 $checked = $qpp['usepostage'];
@@ -569,14 +569,14 @@ function qpp_form_options( $id )
             ' . esc_html__( 'Percentage of the total', 'quick-event-manager' ) . ': <input type="text" style="width:4em;padding:2px" label="postagepercent" name="postagepercent" value="' . esc_attr( $qpp['postagefixed'] ) . '" /> ' . $currency[$id];
                 break;
             case 'field8':
-                $check = '<input type="checkbox"   name="captcha"' . esc_attr( $qpp['captcha'] ) . ' value="checked" />';
+                $check = '<input  type="checkbox"   name="captcha"' . checked( $qpp['captcha'], 'checked', false ) . ' value="checked" />';
                 $type = 'Maths Captcha';
                 $input = 'mathscaption';
                 $checked = $qpp['captcha'];
                 $options = '<span class="description">Add a maths checker to the form to (hopefully) block most of the spambots.</span>';
                 break;
             case 'field9':
-                $check = ( $qpp['userecurring'] ? '&nbsp;' : '<input type="checkbox" name="usecoupon"' . esc_attr( $qpp['usecoupon'] ) . ' value="checked" />' );
+                $check = ( $qpp['userecurring'] ? '&nbsp;' : '<input  type="checkbox" name="usecoupon"' . checked( $qpp['usecoupon'], 'checked', false ) . ' value="checked" />' );
                 $type = 'Coupon Code';
                 $input = 'couponblurb';
                 $checked = $qpp['usecoupon'];
@@ -587,23 +587,23 @@ function qpp_form_options( $id )
             <a href="?page=quick-paypal-payments&tab=coupon">Set coupon codes</a>';
                 break;
             case 'field10':
-                $check = '<input type="checkbox" name="useterms"' . esc_attr( $qpp['useterms'] ) . ' value="checked" />';
+                $check = '<input  type="checkbox" name="useterms"' . checked( $qpp['useterms'], 'checked', false ) . ' value="checked" />';
                 $type = 'Terms and Conditions';
                 $input = 'termsblurb';
                 $checked = $qpp['termsblurb'];
                 $options = '<span class="description">URL of Terms and Conditions:</span><br>
             <input type="text" name="termsurl" value="' . esc_attr( $qpp['termsurl'] ) . '" /><br>
-            <input type="checkbox" name="termspage"' . esc_attr( $qpp['termspage'] ) . ' value="checked" /> Open link in a new page';
+            <input  type="checkbox" name="termspage"' . checked( $qpp['termspage'], 'checked', false ) . ' value="checked" /> Open link in a new page';
                 break;
             case 'field11':
-                $check = '<input type="checkbox" name="useblurb"' . esc_attr( $qpp['useblurb'] ) . ' value="checked" />';
+                $check = '<input  type="checkbox" name="useblurb"' . checked( $qpp['useblurb'], 'checked', false ) . ' value="checked" />';
                 $type = 'Additional Information';
                 $input = 'extrablurb';
                 $checked = $qpp['useblurb'];
                 $options = '<span class="description">Add additional information to your form</span>';
                 break;
             case 'field12':
-                $check = '<input type="checkbox" name="userecurring"' . esc_attr( $qpp['userecurring'] ) . ' value="checked" />';
+                $check = '<input  type="checkbox" name="userecurring"' . checked( $qpp['userecurring'], 'checked', false ) . ' value="checked" />';
                 $type = 'Recurring Payments';
                 $input = 'recurringblurb';
                 $checked = $qpp['userecurring'];
@@ -617,25 +617,25 @@ function qpp_form_options( $id )
             <input type="text" style="width:6em;padding:2px" name="Mperiod" value="' . esc_attr( $qpp['Mperiod'] ) . '" /></p>
             <p><input type="radio" name="recurring" value="Y"' . esc_attr( $Y ) . ' /> 
             <input type="text" style="width:6em;padding:2px" name="Yperiod" value="' . esc_attr( $qpp['Yperiod'] ) . '" /></p>
-            <p><input type="checkbox" name="variablerecurring"' . esc_attr( $qpp['variablerecurring'] ) . ' value="checked" />&nbsp;Allow users to change number of payments.</p>
+            <p><input  type="checkbox" name="variablerecurring"' . checked( $qpp['variablerecurring'], 'checked', false ) . ' value="checked" />&nbsp;Allow users to change number of payments.</p>
             <p><span style="color:red">WARNING!</span> Recurring payments only work if you have a Business or Premier account.<br>Using recurring payments will disable some form fields.</p>';
                 break;
             case 'field13':
-                $check = '<input type="checkbox" name="useaddress"' . esc_attr( $qpp['useaddress'] ) . ' value="checked" />';
+                $check = '<input  type="checkbox" name="useaddress"' . checked( $qpp['useaddress'], 'checked', false ) . ' value="checked" />';
                 $type = 'Personal Details';
                 $input = 'addressblurb';
                 $checked = $qpp['useaddress'];
                 $options = '<p><a href="?page=quick-paypal-payments&tab=address">Personal details Settings</a></p>';
                 break;
             case 'field14':
-                $check = '<input type="checkbox" name="usetotals"' . esc_attr( $qpp['usetotals'] ) . ' value="checked" />';
+                $check = '<input  type="checkbox" name="usetotals"' . checked( $qpp['usetotals'], 'checked', false ) . ' value="checked" />';
                 $type = 'Show totals';
                 $input = 'totalsblurb';
                 $checked = $qpp['usetotals'];
                 $options = '<span class="description">Show live totals on your form. Warning: Only works if you have one form on the page and you aren\'t using multiple amounts</span>';
                 break;
             case 'field15':
-                $check = '<input type="checkbox" name="use_slider"' . esc_attr( $qpp['use_slider'] ) . ' value="checked" />';
+                $check = '<input  type="checkbox" name="use_slider"' . checked( $qpp['use_slider'], 'checked', false ) . ' value="checked" />';
                 $type = 'Range slider';
                 $input = 'sliderlabel';
                 $checked = $qpp['use_slider'];
@@ -646,19 +646,19 @@ function qpp_form_options( $id )
             <input type="text" style="border:1px solid #415063; width:3em;" name="step" . value ="' . esc_attr( $qpp['step'] ) . '" />&nbspStep';
                 break;
             case 'field16':
-                $check = '<input type="checkbox" name="useemail"' . esc_attr( $qpp['useemail'] ) . ' value="checked" />';
+                $check = '<input  type="checkbox" name="useemail"' . checked( $qpp['useemail'], 'checked', false ) . ' value="checked" />';
                 $type = 'Email Address';
                 $input = 'emailblurb';
                 $checked = $qpp['useemail'];
                 $options = '<span class="description">Use this to collect the Payers email address.</span><br>
-            <input type="checkbox" name="ruseemail"' . esc_attr( $qpp['ruseemail'] ) . ' value="checked" /> Required Field';
+            <input  type="checkbox" name="ruseemail"' . checked( $qpp['ruseemail'], 'checked', false ) . ' value="checked" /> Required Field';
                 break;
             case 'field17':
-                $check = '<input type="checkbox" name="use_message"' . esc_attr( $qpp['use_message'] ) . ' value="checked" />';
+                $check = '<input  type="checkbox" name="use_message"' . checked( $qpp['use_message'], 'checked', false ) . ' value="checked" />';
                 $type = 'Add textbox for comments';
                 $input = 'messagelabel';
                 $checked = $qpp['use_message'];
-                $options = '<input type="checkbox" name="ruse_message"' . esc_attr( $qpp['ruse_message'] ) . ' value="checked" /> Required Field';
+                $options = '<input  type="checkbox" name="ruse_message"' . checked( $qpp['ruse_message'], 'checked', false ) . ' value="checked" /> Required Field';
                 break;
             case 'field18':
                 $type = 'Add datepicker';
@@ -671,14 +671,14 @@ function qpp_form_options( $id )
                 $options = 'The multiple products option is only available in the Pro Version';
                 break;
             case 'field21':
-                $check = '<input type="checkbox" name="use_cf"' . esc_attr( $qpp['use_cf'] ) . ' value="checked" />';
+                $check = '<input  type="checkbox" name="use_cf"' . checked( $qpp['use_cf'], 'checked', false ) . ' value="checked" />';
                 $type = 'Codice Fiscale (Solo Italia)';
                 $input = 'cflabel';
                 $checked = $qpp['use_cf'];
-                $options = '<input type="checkbox" name="ruse_cf"' . esc_attr( $qpp['ruse_cf'] ) . ' value="checked" /> Required Field';
+                $options = '<input  type="checkbox" name="ruse_cf"' . checked( $qpp['ruse_cf'], 'checked', false ) . ' value="checked" /> Required Field';
                 break;
             case 'field22':
-                $check = '<input type="checkbox" name="use_consent"' . esc_attr( $qpp['use_consent'] ) . ' value="checked" />';
+                $check = '<input  type="checkbox" name="use_consent"' . checked( $qpp['use_consent'], 'checked', false ) . ' value="checked" />';
                 $type = 'Consent';
                 $input = 'consentlabel';
                 $checked = $qpp['use_consent'];
@@ -713,7 +713,7 @@ function qpp_form_options( $id )
     <h2>Submit button caption</h2>
     <input type="text" name="submitcaption" value="' . esc_attr( $qpp['submitcaption'] ) . '" />
     <h2>Reset button</h2>
-    <p><input type="checkbox" name="use_reset"' . esc_attr( $qpp['use_reset'] ) . ' value="checked" /> Show Reset Button</p>
+    <p><input  type="checkbox" name="use_reset"' . checked( $qpp['use_reset'], 'checked', false ) . ' value="checked" /> Show Reset Button</p>
     <input type="text" name="resetcaption" value="' . esc_attr( $qpp['resetcaption'] ) . '" />
     <h2>PayPal Image</h2>
     <p>Upload an image and select where you want it to display (Leave blank if you don\'t want to use an image).</p>
@@ -1071,7 +1071,7 @@ function qpp_styles( $id )
     $content .= '</table>
 
     <h2>Custom CSS</h2>
-    <p><input type="checkbox" style="margin:0; padding: 0; border: none" name="use_custom"' . esc_attr( $style['use_custom'] ) . ' value="checked" /> Use Custom CSS</p>
+    <p><input  type="checkbox" style="margin:0; padding: 0; border: none" name="use_custom"' . checked( $style['use_custom'], 'checked', false ) . ' value="checked" /> Use Custom CSS</p>
     <p><textarea style="width:100%; height: 200px" name="custom">' . $style['custom'] . '</textarea></p>
     <p>The main style wrapper is the <code>.qpp-style</code> id.</p>
     <p>The form borders are: #none, #plain, #rounded, #shadow, #roundshadow.</p>
@@ -1184,7 +1184,7 @@ function qpp_send_page( $id )
     
     <h2>Force Locale</h2>
     <p clsss="description">This may or may not work, Paypal has some very strange rule regarding language</p>
-    <p><input type="checkbox" name="use_lc"' . esc_attr( $send['use_lc'] ) . ' value="checked" /> Use Locale</p>
+    <p><input  type="checkbox" name="use_lc"' . checked( $send['use_lc'], 'checked', false ) . ' value="checked" /> Use Locale</p>
     <select name="lc">
     <option value="AU" ' . $AU . '>Australia</option>
     <option value="AT" ' . $AT . '>Austria</option>
@@ -1225,13 +1225,13 @@ function qpp_send_page( $id )
     <p>URL of thank you page</p>
     <input type="text" style="width:100%" name="thanksurl" value="' . esc_attr( qpp_get_element( $send, 'thanksurl' ) ) . '" />
     <h2>Confirmation Message</h2>
-    <p><input type="checkbox" name="confirmmessage"' . esc_attr( qpp_get_element( $send, 'confirmmessage' ) ) . ' value="checked" /> Send yourself a copy of the payment details.</p>
+    <p><input  type="checkbox" name="confirmmessage"' . checked( qpp_get_element( $send, 'confirmmessage' ), 'checked', false ) . ' value="checked" /> Send yourself a copy of the payment details.</p>
     <p><input type="text" style="width:100%" name="confirmemail" value="' . esc_attr( qpp_get_element( $send, 'confirmemail' ) ) . '" /></p>
     <p>You can send the payer a confirmation message using the <a href="?page=quick-paypal-payments&tab=autoresponce">Auto Responder</a> options.</p>
     
     <h2>Custom Paypal Settings</h2>
-    <p><input type="checkbox" name="donate"' . esc_attr( qpp_get_element( $send, 'donate' ) ) . ' value="checked" /> Form is for donations only</p>
-    <p><input type="checkbox" name="combine"' . esc_attr( qpp_get_element( $send, 'combine' ) ) . ' value="checked" /> Include Postage and Processing in the amount to pay.</p>
+    <p><input  type="checkbox" name="donate"' . checked( qpp_get_element( $send, 'donate' ), 'checked', false ) . ' value="checked" /> Form is for donations only</p>
+    <p><input  type="checkbox" name="combine"' . checked( qpp_get_element( $send, 'combine' ), 'checked', false ) . ' value="checked" /> Include Postage and Processing in the amount to pay.</p>
     <p>If you have a custom PayPal page enter the URL here. Leave blank to use the standard PayPal payment page</p>
     <p><input type="text" style="width:100%" name="customurl" value="' . esc_attr( qpp_get_element( $send, 'customurl' ) ) . '" /></p>
     <p>Alternate PayPal email address:</p>
@@ -1243,7 +1243,7 @@ function qpp_send_page( $id )
     <p><input type="text" style="width:100%" name="google_onclick" value="' . esc_attr( qpp_get_element( $send, 'google_onclick' ) ) . '" /></p>
     
     <h2>Create New User</h2>
-    <p><input type="checkbox" name="createuser"' . esc_attr( qpp_get_element( $send, 'createuser' ) ) . ' value="checked" /> Creates a new WordPress user when the form is submitted.</p>
+    <p><input  type="checkbox" name="createuser"' . checked( qpp_get_element( $send, 'createuser' ), 'checked', false ) . ' value="checked" /> Creates a new WordPress user when the form is submitted.</p>
     <p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="Save Changes" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="Reset" onclick="return window.confirm( \'Are you sure you want to reset the form settings?\' );"/></p>';
     $content .= wp_nonce_field( "save_qpp" );
     $content .= '</form>';
@@ -1377,7 +1377,7 @@ function qpp_ipn_page()
 	<form method="post" action="">
     <table>
     <tr>
-    <td><input type="checkbox" name="ipn"' . esc_attr( $ipn['ipn'] ) . ' value="checked" /></td>
+    <td><input  type="checkbox" name="ipn"' . checked( $ipn['ipn'], 'checked', false ) . ' value="checked" /></td>
     <td colspan="2"> Enable IPN.</td>
     </tr>
     <tr>
@@ -1396,7 +1396,7 @@ function qpp_ipn_page()
     <td><input type="text"  style="width:100%" name="listener" value="' . esc_attr( qpp_get_element( $ipn, 'listener' ) ) . '" /></td>
     </tr>
     <tr>
-    <td><input type="checkbox" name="deleterecord"' . esc_attr( qpp_get_element( $ipn, 'deleterecord' ) ) . ' value="checked" /></td>
+    <td><input  type="checkbox" name="deleterecord"' . checked( qpp_get_element( $ipn, 'deleterecord' ), 'checked', false ) . ' value="checked" /></td>
     <td colspan="2"> Delete record after payment.</td>
     </tr>
     </table>
@@ -1637,55 +1637,55 @@ function qpp_address( $id )
     
     <td width="20%">First Name</td>
     <td><input type="text"  style="width:100%" name="firstname" value="' . esc_attr( $address['firstname'] ) . '" /></td>
-    <td width="5%"><input type="checkbox" name="rfirstname"' . esc_attr( $address['rfirstname'] ) . ' value="checked" /></td>
+    <td width="5%"><input  type="checkbox" name="rfirstname"' . checked( $address['rfirstname'], 'checked', false ) . ' value="checked" /></td>
     </tr>
     <tr>
     
     <td>Last Name</td>
     <td><input type="text"  style="width:100%" name="lastname" value="' . esc_attr( $address['lastname'] ) . '" /></td>
-    <td><input type="checkbox" name="rlastname"' . esc_attr( $address['rlastname'] ) . ' value="checked" /></td>
+    <td><input  type="checkbox" name="rlastname"' . checked( $address['rlastname'], 'checked', false ) . ' value="checked" /></td>
     </tr>
     <tr>
     
     <td>Email</td>
     <td><input type="text" style="width:100%" name="email" value="' . esc_attr( $address['email'] ) . '" /></td>
-    <td><input type="checkbox" name="remail"' . esc_attr( $address['remail'] ) . ' value="checked" /></td>
+    <td><input  type="checkbox" name="remail"' . checked( $address['remail'], 'checked', false ) . ' value="checked" /></td>
     </tr>
     <tr>
     
     <td>Address Line 1</td>
     <td><input type="text" style="width:100%" name="address1" value="' . esc_attr( $address['address1'] ) . '" /></td>
-    <td><input type="checkbox" name="raddress1"' . esc_attr( $address['raddress1'] ) . ' value="checked" /></td>
+    <td><input  type="checkbox" name="raddress1"' . checked( $address['raddress1'], 'checked', false ) . ' value="checked" /></td>
     </tr>
     <tr>
     
     <td>Address Line 2</td>
     <td><input type="text" style="width:100%" name="address2" value="' . esc_attr( $address['address2'] ) . '" /></td>
-    <td><input type="checkbox" name="raddress2"' . esc_attr( $address['raddress2'] ) . ' value="checked" /></td>
+    <td><input  type="checkbox" name="raddress2"' . checked( $address['raddress2'], 'checked', false ) . ' value="checked" /></td>
     </tr>
     <tr>
     
     <td>City</td>
     <td><input type="text" style="width:100%" name="city" value="' . esc_attr( $address['city'] ) . '" /></td>
-    <td><input type="checkbox" name="rcity"' . esc_attr( $address['rcity'] ) . ' value="checked" /></td>
+    <td><input  type="checkbox" name="rcity"' . checked( $address['rcity'], 'checked', false ) . ' value="checked" /></td>
     </tr>
     <tr>
     
     <td>State</td>
     <td><input type="text" style="width:100%" name="state" value="' . esc_attr( $address['state'] ) . '" /></td>
-    <td><input type="checkbox" name="rstate"' . esc_attr( $address['rstate'] ) . ' value="checked" /></td>
+    <td><input  type="checkbox" name="rstate"' . checked( $address['rstate'], 'checked', false ) . ' value="checked" /></td>
     </tr>
     <tr>
     
     <td>Zip</td>
     <td><input type="text" style="width:100%" name="zip" value="' . esc_attr( $address['zip'] ) . '" /></td>
-    <td><input type="checkbox" name="rzip"' . esc_attr( $address['rzip'] ) . ' value="checked" /></td>
+    <td><input  type="checkbox" name="rzip"' . checked( $address['rzip'], 'checked', false ) . ' value="checked" /></td>
     </tr>
     <tr>
     
     <td>Country</td>
     <td><input type="text" style="width:100%" name="country" value="' . esc_attr( $address['country'] ) . '" /></td>
-    <td><input type="checkbox" name="rcountry"' . esc_attr( $address['rcountry'] ) . ' value="checked" /></td>
+    <td><input  type="checkbox" name="rcountry"' . checked( $address['rcountry'], 'checked', false ) . ' value="checked" /></td>
     </tr>
     <tr>
     
@@ -1702,7 +1702,7 @@ function qpp_address( $id )
     
     <td>Phone</td>
     <td><input type="text" style="width:100%" name="night_phone_b" value="' . esc_attr( $address['night_phone_b'] ) . '" /></td>
-    <td><input type="checkbox" name="rnight_phone_b"' . esc_attr( $address['rnight_phone_b'] ) . ' value="checked" /></td>
+    <td><input  type="checkbox" name="rnight_phone_b"' . checked( $address['rnight_phone_b'], 'checked', false ) . ' value="checked" /></td>
     </tr>
     </table>
     <p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="Save Changes" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="Reset" onclick="return window.confirm( \'Are you sure you want to reset the error message?\' );"/></p>';
@@ -1867,7 +1867,7 @@ function qpp_coupon_codes( $id )
     <p>You can add coupon codes to URLs which will autofill the field. The URL format is: mysite.com/mypaymentpage/?coupon=code. The code you set will appear on the form with the following caption:<br>
     <input id="couponget" type="text" name="couponget" value="' . esc_attr( $coupon['couponget'] ) . '" /></p>
     <h2>Clone Coupon Settings</h2>
-    <p><input type="checkbox" name="duplicate"' . esc_attr( $coupon['duplicate'] ) . ' value="checked" /> Duplicate coupon codes across all forms</p>
+    <p><input  type="checkbox" name="duplicate"' . checked( $coupon['duplicate'], 'checked', false ) . ' value="checked" /> Duplicate coupon codes across all forms</p>
     <p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="Save Changes" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="Reset" onclick="return window.confirm( \'Are you sure you want to reset the coupon codes?\' );"/></p>';
     $content .= wp_nonce_field( "save_qpp" );
     $content .= '</form>
