@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-03-25 12:33+0000\n"
+"POT-Creation-Date: 2023-07-05 10:42+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -1150,35 +1150,35 @@ msgstr ""
 msgid "Consent NOT Given"
 msgstr ""
 
-#: src/legacy/quick-paypal-payments.php:2674, src/legacy/settings.php:1995
+#: src/legacy/quick-paypal-payments.php:2677, src/legacy/settings.php:2029
 msgid "Amount"
 msgstr ""
 
-#: src/legacy/settings.php:711
+#: src/legacy/settings.php:721
 msgid "Add a checkbox to permit data storage. You may use html links above."
 msgstr ""
 
-#: src/legacy/settings.php:713
+#: src/legacy/settings.php:723
 msgid "Add consent info to PayPal item line. Blank out if not required."
 msgstr ""
 
-#: src/legacy/settings.php:716
+#: src/legacy/settings.php:726
 msgid "if consent given"
 msgstr ""
 
-#: src/legacy/settings.php:718
+#: src/legacy/settings.php:728
 msgid "if consent NOT given"
 msgstr ""
 
-#: src/legacy/settings.php:1685
+#: src/legacy/settings.php:1701
 msgid "Default Country"
 msgstr ""
 
-#: src/legacy/settings.php:1688
+#: src/legacy/settings.php:1704
 msgid "Permitted ( Multi-select)"
 msgstr ""
 
-#: src/legacy/settings.php:1992
+#: src/legacy/settings.php:2026
 msgid "Date Sent"
 msgstr ""
 

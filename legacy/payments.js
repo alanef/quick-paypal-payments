@@ -1,5 +1,6 @@
 qpp_containers = []; to_list = []; to_totals = [];
 
+
 /* strip non number from ammount */
 document.addEventListener('DOMContentLoaded', function (event) {
 	var x = document.getElementsByName("amount");
@@ -670,6 +671,7 @@ jQuery(document).ready(function() {
 		// Set up price factoring elements
 		form[instance].find('select, input').each(function() {
 
+
 			// Give the parent form id as unique ID
 			$(this).data("instance",instance);
 
@@ -880,6 +882,7 @@ jQuery(document).ready(function() {
 		/*
 			Apply coupon
 		*/
+
 		if (f.couponapplied.qpp_value() == 'checked') {
 
 			DISC = f.couponvalue.qpp_value();

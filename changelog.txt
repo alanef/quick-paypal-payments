@@ -1,4 +1,13 @@
 == Changelog ==
+= 5.7.28 =
+* Update Freemius library
+
+= 5.7.27 =
+* fix coupon issues
+
+= 5.7.26.5 =
+* fix handling charge settings
+
 = 5.7.26.4 =
 * fix minor XSS issue
 * fix issue with no store settings

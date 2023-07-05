@@ -630,14 +630,14 @@ function formulate_v(
         if ( $ticket = qpp_get_coupon( $couponcode, $form ) ) {
             // Is the coupon expired?
             
-            if ( $ticket['expired'] ) {
-                $v['couponerror'] = $coupon['couponexpired'];
+            if ( qpp_get_element( $ticket, 'expired' ) || 0 === qpp_get_element( $ticket, 'qty' ) ) {
+                $v['couponerror'] = qpp_get_element( $coupon, 'couponexpired' );
             } else {
                 // There is an available coupon
                 
                 if ( qpp_get_element( $ticket, 'qty', 0 ) !== 0 ) {
                     $v['couponapplied'] = 'checked';
-                    $v['couponblurb'] = $couponblurb;
+                    $v['couponblurb'] = $couponcode;
                     $v['coupon'] = array(
                         'type'  => $ticket['type'],
                         'value' => $ticket['value'],
@@ -647,12 +647,12 @@ function formulate_v(
             
             }
             
-            if ( !$v['couponapplied'] && !$v['couponerror'] ) {
-                $v['couponerror'] = $coupon['couponerror'];
+            if ( !qpp_get_element( $v, 'couponapplied' ) && !qpp_get_element( $v, 'couponerror' ) ) {
+                $v['couponerror'] = qpp_get_element( $coupon, 'couponerror' );
             }
         } else {
             //invalid
-            $v['couponerror'] = $coupon['couponerror'];
+            $v['couponerror'] = qpp_get_element( $coupon, 'couponerror' );
         }
     
     }
@@ -1065,7 +1065,7 @@ function qpp_display_form(
                 if ( $qpp['use_quantity'] && !$qpp['use_multiples'] ) {
                     $content .= '<p>
                 <span class="input">' . $qpp['quantitylabel'] . '</span>
-                <input type="text" style=" ' . qpp_get_element( $errors, 'quantity' ) . 'width:3em;margin-left:5px" id="qppquantity' . $t . '"  name="quantity"  placeholder="' . $values['quantity'] . '" />';
+                <input type="text" style=" ' . qpp_get_element( $errors, 'quantity' ) . 'width:3em;margin-left:5px" id="qppquantity' . $t . '"  name="quantity"  placeholder="' . $values['quantity'] . '" value="' . $values['quantity'] . '"/>';
                     if ( $qpp['quantitymax'] ) {
                         $content .= '&nbsp;' . $qpp['quantitymaxblurb'];
                     }
@@ -1211,7 +1211,7 @@ function qpp_display_form(
                 }
                 
                 
-                if ( $qpp['usecoupon'] && $values['couponapplied'] != 'checked' ) {
+                if ( $qpp['usecoupon'] && qpp_get_element( $values, 'couponapplied' ) != 'checked' ) {
                     if ( $values['couponerror'] ) {
                         
                         if ( $values['noproduct'] ) {
@@ -1221,7 +1221,7 @@ function qpp_display_form(
                         }
                     
                     }
-                    $content .= '<p>' . $values['couponget'] . '</p>';
+                    $content .= '<p>' . qpp_get_element( $values, 'couponget' ) . '</p>';
                     $content .= qpp_nice_label(
                         'coupon' . $id,
                         'couponblurb',
@@ -1356,16 +1356,16 @@ function qpp_display_form(
                 break;
             case 'field16':
                 
-                if ( $qpp['useemail'] && !$qpp['useaddress'] ) {
-                    $requiredemail = ( !$errors['useemail'] && $qpp['ruseemail'] ? ' class="required" ' : '' );
+                if ( qpp_get_element( $qpp, 'useemail' ) && !$qpp['useaddress'] ) {
+                    $requiredemail = ( !qpp_get_element( $errors, 'useemail' ) && $qpp['ruseemail'] ? ' class="required" ' : '' );
                     $content .= qpp_nice_label(
                         'email' . $id,
                         'email',
                         'text',
                         $qpp['emailblurb'],
                         $label,
-                        $requiredemail . $errors['email'],
-                        $values['email']
+                        $requiredemail . qpp_get_element( $errors, 'email' ),
+                        qpp_get_element( $values, 'email' )
                     );
                     // $content .= '<input type="text" id="email" name="email"'.$requiredstock.$errors['email'].'value="' . $values['email'] . '" rel="' . $values['email'] . ' "onfocus="qppclear(this, \'' . $values['email'] . '\')" onblur="qpprecall(this, \'' . $values['email'] . '\')"/>';
                 }
@@ -2297,9 +2297,9 @@ function qpp_process_form(
     <input type="hidden" name="business" value="' . trim( $email ) . '">
     <input type="hidden" name="return" value="' . trim( $send['thanksurl'] ) . '">
     <input type="hidden" name="cancel_return" value="' . trim( $send['cancelurl'] ) . '">
-    <input type="hidden" name="currency_code" value="' . trim( $currency[$id] ) . '">';
+    <input type="hidden" name="currency_code" value="' . trim( substr( $currency[$id], 0, 3 ) ) . '">';
     if ( $qpp_setup['image_url'] ) {
-        $content .= '<input type="hidden" name="image_url" value="' . $qpp_setup['image_url'] . '">';
+        $content .= '<input type="hidden" name="image_url" value="' . esc_url( $qpp_setup['image_url'] ) . '">';
     }
     
     if ( $qpp['use_multiples'] ) {
@@ -2319,12 +2319,12 @@ function qpp_process_form(
             if ( 0 == $k ) {
                 $display_consent = $consent;
             }
-            $content .= '<input type="hidden" name="item_name_' . ((int) $k + 1) . '" value="' . $item['item_name'] . $display_consent . '">
+            $content .= '<input type="hidden" name="item_name_' . ((int) $k + 1) . '" value="' . substr( strip_tags( $item['item_name'] ), 0, 127 ) . $display_consent . '">
 				<input type="hidden" name="amount_' . ((int) $k + 1) . '" value="' . $item['amount'] . '">
 				<input type="hidden" name="quantity_' . ((int) $k + 1) . '" value="' . $item['quantity'] . '">';
         }
     } else {
-        $content .= '<input type="hidden" name="item_name" value="' . strip_tags( $payment->reference ) . $consent . '"/>';
+        $content .= '<input type="hidden" name="item_name" value="' . substr( strip_tags( $payment->reference ), 0, 127 ) . $consent . '"/>';
     }
     
     $ipn_listener = ( $ipn['listener'] ? $ipn['listener'] : $ipn['default'] );
@@ -2343,7 +2343,7 @@ function qpp_process_form(
     }
     
     if ( $qpp['use_stock'] ) {
-        $content .= '<input type="hidden" name="item_number" value="' . strip_tags( $values['stock'] ) . '">';
+        $content .= '<input type="hidden" name="item_number" value="' . substr( strip_tags( $values['stock'] ), 0, 127 ) . '">';
     }
     $multi_p_s = '';
     $multi_p_h = '';
@@ -2382,8 +2382,8 @@ function qpp_process_form(
         }
         
         if ( $qpp['use_options'] ) {
-            $content .= '<input type="hidden" name="on0" value="' . $qpp['optionlabel'] . '" />
-            <input type="hidden" name="os0" value="' . $values['option1'] . '" />';
+            $content .= '<input type="hidden" name="on0" value="' . substr( strip_tags( $qpp['optionlabel'] ), 0, 64 ) . '" />
+            <input type="hidden" name="os0" value="' . substr( strip_tags( $values['option1'] ), 0, 64 ) . '" />';
         }
         
         if ( $qpp['usepostage'] ) {
@@ -2395,8 +2395,8 @@ function qpp_process_form(
     }
     
     if ( isset( $send['use_lc'] ) && $send['use_lc'] ) {
-        $content .= '<input type="hidden" name="lc" value="' . $send['lc'] . '">
-        <input type="hidden" name="country" value="' . $send['lc'] . '">';
+        $content .= '<input type="hidden" name="lc" value="' . substr( strip_tags( $send['lc'] ), 0, 2 ) . '">
+        <input type="hidden" name="country" value="' . substr( strip_tags( $send['lc'] ), 0, 2 ) . '">';
     }
     
     if ( $qpp['useaddress'] ) {
@@ -2976,9 +2976,18 @@ function qpp_messagetable( $id, $email )
         $dashboard .= '</table><p>No messages found</p>';
     }
     
+    $coups = '';
     for ( $i = 1 ;  $i <= $coupon['couponnumber'] ;  $i++ ) {
-        if ( isset( $coupon['qty' . $i] ) && $coupon['qty' . $i] > 0 ) {
-            $coups .= '<p>' . $coupon['code' . $i] . ' - ' . $coupon['qty' . $i] . '</p>';
+        if ( isset( $coupon['qty' . $i] ) && !empty($coupon['code' . $i]) ) {
+            
+            if ( $coupon['qty' . $i] === '' ) {
+                $coups .= '<p>' . $coupon['code' . $i] . ' - unlimited</p>';
+            } elseif ( $coupon['qty' . $i] === '0' ) {
+                $coups .= '<p>' . $coupon['code' . $i] . ' - expired</p>';
+            } else {
+                $coups .= '<p>' . $coupon['code' . $i] . ' - ' . $coupon['qty' . $i] . '</p>';
+            }
+        
         }
     }
     if ( $coups ) {
@@ -3303,12 +3312,16 @@ function qpp_check_coupon( $couponcode, $id )
 {
     $coupon = qpp_get_stored_coupon( $id );
     $c = qpp_get_coupon( $couponcode, $id );
+    if ( '' === trim( $c['qty'] ) ) {
+        return;
+    }
+    $c['qty'] = (int) $c['qty'];
     if ( $c['qty'] > 0 ) {
-        $c['qty' . $c['id']]--;
+        $coupon['qty' . $c['id']]--;
     }
     
-    if ( $c['qty' . $c['id']] <= 0 ) {
-        $coupon['code' . $c['id']] = $coupon['qty' . $c['id']] = '';
+    if ( $c['qty'] <= 0 ) {
+        $coupon['qty' . $c['id']] = '';
         $coupon['expired' . $c['id']] = true;
     }
     
@@ -3620,24 +3633,22 @@ function qpp_nice_label(
     }
     
     if ( $type == 'text' ) {
+        $v = ( $value == $label ? '' : $value );
         switch ( $labelType ) {
             case 0:
-                $v = ( $value == $label ? '' : $value );
                 $returning = '<div class="qpp_nice_label qpp_label_none">';
                 $returning .= '<input type="text" id="' . $id . '"' . $class . ' name="' . $name . '" value="' . $v . '" ' . $error . ' />';
                 break;
             case 1:
-                $v = ( $value == $label ? '' : $value );
                 $returning = '<div class="qpp_nice_label qpp_label_tiny">';
                 $returning .= '<label for="' . $id . '">' . $label . '</label>';
                 $returning .= '<input type="text" id="' . $id . '"' . $class . ' name="' . $name . '" value="' . $v . '" ' . $error . ' />';
                 break;
             case 2:
                 $returning = '<div class="qpp_nice_label qpp_label_blur">';
-                $returning .= '<input type="text" id="' . $id . '"' . $class . ' name="' . $name . '"  ' . $error . ' placeholder="' . $value . '" />';
+                $returning .= '<input type="text" id="' . $id . '"' . $class . ' name="' . $name . '"  ' . $error . ' value="' . $v . '" placeholder="' . $value . '" />';
                 break;
             case 3:
-                $v = ( $value == $label ? '' : $value );
                 $returning = '<div class="qpp_nice_label qpp_label_line">';
                 $returning .= '<label for="' . $id . '">' . $label . '</label>';
                 $returning .= '<input type="text" id="' . $id . '"' . $class . ' name="' . $name . '" value="' . $v . '" ' . $error . ' />';
