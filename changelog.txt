@@ -1,4 +1,7 @@
 == Changelog ==
+= 5.7.29 =
+* Remove warning notice from Widget editor
+
 = 5.7.28 =
 * Update Freemius library
 

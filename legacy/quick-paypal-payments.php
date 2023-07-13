@@ -44,12 +44,7 @@ function qpp_block_init()
         return;
     }
     // Register our block editor script.
-    wp_register_script( 'qpp_block', plugins_url( 'block.js', __FILE__ ), array(
-        'wp-blocks',
-        'wp-element',
-        'wp-components',
-        'wp-editor'
-    ) );
+    wp_register_script( 'qpp_block', plugins_url( 'block.js', __FILE__ ), array( 'wp-blocks', 'wp-element', 'wp-components' ) );
     // Register our block, and explicitly define the attributes we accept.
     register_block_type( 'quick-paypal-payments/block', array(
         'editor_script'   => 'qpp_block',

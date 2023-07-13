@@ -5,8 +5,7 @@ var el = wp.element.createElement,
 	RadioControl = wp.components.RadioControl,
     SelectControl = wp.components.SelectControl,
 	TextareaControl = wp.components.TextareaControl,
-	CheckboxControl = wp.components.CheckboxControl,
-	InspectorControls = wp.editor.InspectorControls;
+	CheckboxControl = wp.components.CheckboxControl;
 
 registerBlockType( 'quick-paypal-payments/block', {
 	title: 'Quick PayPal Payments',
