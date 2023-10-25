@@ -262,10 +262,10 @@ function qpp_setup( $id )
     
     if ( $quick_paypal_payments_fs->is_trial() || $quick_paypal_payments_fs->is_trial_utilized() ) {
         $upurl = $quick_paypal_payments_fs->get_upgrade_url();
-        $upmsg = '<p>From only $14.99 per annum</p>';
+        $upmsg = '<p>See plans and prices here</p>';
     } else {
         $upurl = $quick_paypal_payments_fs->get_trial_url();
-        $upmsg = '<p>Free 14 Day Trial, then from $14.99 per annum</p>';
+        $upmsg = '<p>Free 14 Day Trial</p>';
     }
     
     $content .= '<div class="qppupgrade"><a href="' . $upurl . '">
@@ -512,9 +512,9 @@ function qpp_form_options( $id )
                 $checked = 'checked';
                 $options = '<input type="checkbox" name="fixedreference" ' . checked( $qpp['fixedreference'], 'checked', false ) . ' value="checked" /> Display as a pre-set reference<br><span class="description">Use commas to seperate options: Red,Green, Blue<br>Use semi-colons to combine with amount: Red;$5,Green;$10,Blue;£20</span><br>
             Options Selector: <input type="radio" name="refselector" value="refradio" ' . esc_attr( $refradio ) . ' /> Radio&nbsp;
-            <input type="radio" name="refselector" value="refdropdown" ' . checked( $refdropdown, 'refdropdown', false ) . ' /> Dropdown&nbsp;
-            <input type="radio" name="refselector" value="refnone" ' . checked( $refnone, 'refnone', false ) . ' /> Inline&nbsp;
-            <input type="radio" name="refselector" value="ignore" ' . checked( $ignore, 'ignore', false ) . ' /> None</br>';
+            <input type="radio" name="refselector" value="refdropdown" ' . checked( $qpp['refselector'], 'refdropdown', false ) . ' /> Dropdown&nbsp;
+            <input type="radio" name="refselector" value="refnone" ' . checked( $qpp['refselector'], 'refnone', false ) . ' /> Inline&nbsp;
+            <input type="radio" name="refselector" value="ignore" ' . checked( $qpp['refselector'], 'ignore', false ) . ' /> None</br>';
                 break;
             case 'field2':
                 $check = '<input type="checkbox" name="use_stock" ' . checked( $qpp['use_stock'], 'checked', false ) . ' value="checked" />';
@@ -541,8 +541,8 @@ function qpp_form_options( $id )
             <input type="checkbox" name="fixedamount" ' . checked( $qpp['fixedamount'], 'checked', false ) . ' value="checked" /> Display as a pre-set amount<br>
              <input type="text" style="border:1px solid #415063; width:3em;" name="minamount" . value ="' . esc_attr( $qpp['minamount'] ) . '" />&nbsp;Minimum value<br>
             <span class="description">Use commas to create an options list: £10,£20,£30</span><br>
-            Options Selector: <input type="radio" name="selector" value="radio" ' . checked( $radio, 'radio', false ) . ' /> Radio&nbsp;
-            <input type="radio" name="selector" value="dropdown" ' . checked( $dropdown, 'dropdown', false ) . ' /> Dropdown<br>
+            Options Selector: <input type="radio" name="selector" value="radio" ' . checked( $qpp['selector'], 'radio', false ) . ' /> Radio&nbsp;
+            <input type="radio" name="selector" value="dropdown" ' . checked( $qpp['selector'], 'dropdown', false ) . ' /> Dropdown<br>
             <input type="checkbox" name="inline_amount" ' . checked( $qpp['inline_amount'], 'checked', false ) . ' value="checked" />&nbsp;Display inline radio fields<br>
             <input type="checkbox" name="combobox" ' . checked( $qpp['combobox'], 'checked', false ) . ' value="checked" /> Add input field to dropdown<br>
             Caption:&nbsp;<input type="text" style="width:7em;" name="comboboxword" value="' . esc_attr( $qpp['comboboxword'] ) . '" />
@@ -556,9 +556,9 @@ function qpp_form_options( $id )
                 $input = 'optionlabel';
                 $checked = $qpp['use_options'];
                 $options = '<span class="description">Options (separate with a comma):</span><br><textarea  name="optionvalues" label="Radio" rows="2">' . $qpp['optionvalues'] . '</textarea><br>
-            Options Selector: <input type="radio" name="optionselector" value="optionsradio" ' . checked( $optionsradio, 'optionradio', false ) . ' /> Radio&nbsp;
-            <input type="radio" name="optionselector" value="optionscheckbox" ' . checked( $optionscheckbox, 'optionscheckbox', false ) . ' /> Checkbox&nbsp;
-            <input type="radio" name="optionselector" value="optionsdropdown" ' . checked( $optionsdropdown, 'optionscheckbox', false ) . ' /> Dropdown<br>
+            Options Selector: <input type="radio" name="optionselector" value="optionsradio" ' . checked( $qpp['optionselector'], 'optionsradio', false ) . ' /> Radio&nbsp;
+            <input type="radio" name="optionselector" value="optionscheckbox" ' . checked( $qpp['optionselector'], 'optionscheckbox', false ) . ' /> Checkbox&nbsp;
+            <input type="radio" name="optionselector" value="optionsdropdown" ' . checked( $qpp['optionselector'], 'optionscheckbox', false ) . ' /> Dropdown<br>
             <input type="checkbox" name="inline_options" ' . checked( $qpp['inline_options'], 'checked', false ) . ' value="checked" />&nbsp;Display inline radio and checkbox fields';
                 break;
             case 'field6':
@@ -1416,7 +1416,7 @@ function qpp_ipn_page()
     <li>Enable the PayPal Sandbox on the <a href="?page=quick-paypal-payments&tab=setup">plugin setup page</a></li>
     <li>Fill in and send your payment form (you do not need to make an actual payment)</li>
     <li>Go to the <a href="?page=quick-paypal-payments-messages">Payments Report</a> and copy the long number in the last column from the payment you have just made</li>
-    <li>Go to the IPN simulation page: <a href="https://developer.paypal.com/developer/ipnSimulator" target="_blank">https://developer.paypal.com/developer/ipnSimulator</a></li>
+    <li>Go to the IPN simulation page: <a href="https://developer.paypal.com/dashboard/ipnSimulator" target="_blank">https://developer.paypal.com/dashboard/ipnSimulator</a></li>
     <li>Login and enter the IPN listener URL</li>
     <li>Select \'Express Checkout\' from the drop down</li>
     <li>Scroll to the bottom of the page and enter the long number you copied at step 3 into the \'Custom\' field</li>
@@ -1482,8 +1482,8 @@ function qpp_autoresponce_page( $id )
     <p class="description">If you want to receive notificationmessages use the option on the <a href="?page=quick-paypal-payments&tab=send">Send Options</a> tab.</p>
     <form method="post" action="">
     <p><input type="checkbox" name="enable"' . checked( $auto['enable'], 'checked', false ) . ' value="checked" /> Enable Auto Responder</p> 
-    <p><input type="radio" name="whenconfirm" value="aftersubmission"' . checked( $aftersubmission, 'aftersubmission', false ) . ' /> After submission to PayPal<br>
-    <input type="radio" name="whenconfirm" value="afterpayment"' . checked( $afterpayment, 'afterpayment', false ) . ' /> After payment (only works if <a href="?page=quick-paypal-payments&tab=ipn">IPN</a> is enabled)</span></p>
+    <p><input type="radio" name="whenconfirm" value="aftersubmission"' . checked( $auto['whenconfirm'], 'aftersubmission', false ) . ' /> After submission to PayPal<br>
+    <input type="radio" name="whenconfirm" value="afterpayment"' . checked( $auto['whenconfirm'], 'afterpayment', false ) . ' /> After payment (only works if <a href="?page=quick-paypal-payments&tab=ipn">IPN</a> is enabled)</span></p>
     <p>From Name (<span class="description">Defaults to your <a href="' . get_admin_url() . 'options-general.php">Site Title</a> if left blank.</span>):<br>
     <input type="text" style="width:50%" name="fromname" value="' . esc_attr( $auto['fromname'] ) . '" /></p>
     <p>From Email (<span class="description">Defaults to the your <a href="?page=quick-paypal-payments&tab=setup">PayPal email address</a> if left blank.</span>):<br>
@@ -2065,7 +2065,7 @@ function qpp_generate_csv()
         );
         foreach ( array_reverse( $message ) as $value ) {
             $cells = array();
-            array_push( $cells, $value['field0'] );
+            array_push( $cells, qpp_wp_date( 'Y-m-d H:i:s', $value['field0'] ) );
             array_push( $cells, $value['field1'] );
             array_push( $cells, $value['field2'] );
             array_push( $cells, $value['field3'] );

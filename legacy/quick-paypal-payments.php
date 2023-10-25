@@ -1545,7 +1545,7 @@ function qpp_display_multiples( $id, $values )
         if ( $multiples['product' . $i] ) {
             
             if ( $multiples['use_quantity'] ) {
-                $content .= '<div style="clear:both;"><span style="float:left;padding:7px 0">' . $label . '</span><span style="float:right;"><input type="text" style="width:4em;text-align:right" name="qtyproduct' . $i . '" id="qtyproduct' . $i . '"  placeholder="' . $values['qtyproduct' . $i] . '" /></span></div>';
+                $content .= '<div style="clear:both;"><span class="qpp-p-style" style="float:left;padding:7px 0">' . $label . '</span><span style="float:right;"><input type="text" style="width:4em;text-align:right" name="qtyproduct' . $i . '" id="qtyproduct' . $i . '"  placeholder="' . $values['qtyproduct' . $i] . '" /></span></div>';
             } else {
                 $content .= '<p><input type="checkbox" style="margin:0; padding: 0;width:auto;" name="qtyproduct' . $i . '" value="checked" ' . $values['qtyproduct' . $i] . '>&nbsp;' . $label . '</p>';
             }
@@ -2020,6 +2020,8 @@ function qpp_process_values(
     $itemamount
 )
 {
+    /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
+    global  $quick_paypal_payments_fs ;
     $currency = qpp_get_stored_curr();
     $qpp = qpp_get_stored_options( $id );
     $coupon = qpp_get_stored_coupon( $id );
@@ -2218,7 +2220,7 @@ function qpp_process_form(
     if ( !is_array( $qpp_messages ) ) {
         $qpp_messages = array();
     }
-    $sentdate = date_i18n( 'd M Y' );
+    $sentdate = time();
     if ( qpp_get_element( $qpp, 'stock' ) == qpp_get_element( $values, 'stock' ) && !qpp_get_element( $qpp, 'fixedstock', false ) ) {
         $values['stock'] = '';
     }
@@ -2607,7 +2609,8 @@ class qpp_widget extends WP_Widget
         }
         ?>
         </select>
-        <h3>Presets:</h3>
+
+        <h3>Settings</h3>
         <p><label for="<?php 
         echo  $this->get_field_id( 'id' ) ;
         ?>">Payment Reference: <input class="widefat"
@@ -2636,7 +2639,19 @@ class qpp_widget extends WP_Widget
         echo  attribute_escape( $amount ) ;
         ?>"/></label>
         </p>
-        <p>Leave blank to use the default settings.</p>
+        <div class="notice notice-warning" style="display:block!important">
+			<?php 
+        esc_html_e( 'DEPRECATION NOTICE', 'quick-paypal-payments' );
+        ?>
+            <br/>
+			<?php 
+        esc_html_e( 'This is a legacy Widget and is limited in functionality and may be withdrawn in the future', 'quick-paypal-payments' );
+        ?>
+            <br/>
+			<?php 
+        esc_html_e( 'Replace with a shortcode e.g. [qpp form=myform]', 'quick-paypal-payments' );
+        ?>
+        </div>
         <p>To configure the payment form use the <a
                     href="'.get_admin_url().'options-general.php?page=quick-paypal-payments/quick-paypal-payments.php">Settings</a>
             page</p>
@@ -2673,9 +2688,10 @@ function qpp_generate_css()
         
         $input = ".qpp-style" . $id . " input[type=text], .qpp-style" . $id . " textarea {border: " . $style['input-border'] . ";" . $inputfont . ";height:auto;line-height:normal; " . $style['line_margin'] . ";}";
         $input .= ".qpp-style" . $id . " select {border: " . $style['input-border'] . ";" . $selectfont . ";height:auto;line-height:normal;}";
+        $input .= ".qpp-style" . $id . " select option {color: " . $style['font-colour'] . ";}";
         $input .= ".qpp-style" . $id . " .qppcontainer input + label, .qpp-style" . $id . " .qppcontainer textarea + label {" . $inputfont . "}";
         $required = ".qpp-style" . $id . " input[type=text].required, .qpp-style" . $id . " textarea.required {border: " . $style['required-border'] . ";}";
-        $paragraph = ".qpp-style" . $id . " p, .qpp-style" . $id . " li {margin:4px 0 4px 0;padding:0;" . $font . ";}";
+        $paragraph = ".qpp-style" . $id . " p, .qpp-style" . $id . " .qpp-p-style, .qpp-style" . $id . " li {margin:4px 0 4px 0;padding:0;" . $font . ";}";
         if ( $style['submitwidth'] == 'submitpercent' ) {
             $submitwidth = 'width:100%;';
         }
@@ -2791,6 +2807,9 @@ function qpp_messagetable( $id, $email )
     $qpp_ipn = qpp_get_stored_ipn();
     $options = qpp_get_stored_options( $id );
     $message = get_option( 'qpp_messages' . $id );
+    if ( !is_array( $message ) ) {
+        $message = array();
+    }
     $coupon = qpp_get_stored_coupon( $id );
     $messageoptions = qpp_get_stored_msg();
     $address = qpp_get_stored_address( $id );
@@ -2808,9 +2827,6 @@ function qpp_messagetable( $id, $email )
     }
     ${$messageoptions['messageqty']} = "checked";
     ${$messageoptions['messageorder']} = "checked";
-    if ( !is_array( $message ) ) {
-        $message = array();
-    }
     $title = $id;
     if ( $id == '' ) {
         $title = 'Default';
@@ -3013,7 +3029,9 @@ function qpp_messagecontent(
     if ( !$email ) {
         $content .= '<td><input type="checkbox" name="' . $i . '" value="checked" /></td>';
     }
-    $content .= '<td>' . strip_tags( $value['field0'] ) . '</td>';
+    // get wp date format and time from options
+    $format = apply_filters( 'qpp_message_date_format', 'd M y H:i' );
+    $content .= '<td>' . strip_tags( qpp_wp_date( $format, $value['field0'] ) ) . '</td>';
     foreach ( explode( ',', $options['sort'] ) as $name ) {
         $title = '';
         $amount = preg_replace( '/[^.,0-9]/', '', $value['field3'] );
@@ -3125,7 +3143,7 @@ function qpp_messagecontent(
             'field17'
         );
         foreach ( $arr as $item ) {
-            if ( $value[$item] == $address[$item] ) {
+            if ( qpp_get_element( $value, $item ) == qpp_get_element( $address, $item ) ) {
                 $value[$item] = '';
             }
             $content .= '<td>' . $value[$item] . '</td>';
@@ -3171,17 +3189,8 @@ function qpp_ipn()
     }
     // see https://developer.paypal.com/docs/ipn/integration-guide/ht-ipn/#do-it
     $req = 'cmd=_notify-validate';
-    if ( function_exists( 'get_magic_quotes_gpc' ) ) {
-        $get_magic_quotes_exists = true;
-    }
     foreach ( $myPost as $key => $value ) {
-        
-        if ( $get_magic_quotes_exists == true && get_magic_quotes_gpc() == 1 ) {
-            $value = urlencode( stripslashes( $value ) );
-        } else {
-            $value = urlencode( $value );
-        }
-        
+        $value = urlencode( $value );
         $req .= "&{$key}={$value}";
     }
     
@@ -3217,12 +3226,18 @@ function qpp_ipn()
         $arr = explode( ",", $qpp_setup['alternative'] );
         foreach ( $arr as $item ) {
             $message = get_option( 'qpp_messages' . $item );
+            if ( $message === false ) {
+                continue;
+            }
             $count = count( $message );
             for ( $i = 0 ;  $i <= $count ;  $i++ ) {
                 
-                if ( $message[$i]['field18'] == $custom && $message[$i]['field1'] ) {
+                if ( isset( $message[$i]['field18'] ) && $message[$i]['field18'] == $custom ) {
                     $message[$i]['field18'] = 'Paid';
                     $auto = qpp_get_stored_autoresponder( $item );
+                    if ( false !== IPN_DEBUG_LOG_FILE ) {
+                        error_log( date( '[Y-m-d H:i e] ' ) . "Found Custom" . print_r( $auto, true ) . PHP_EOL, 3, IPN_DEBUG_LOG_FILE );
+                    }
                     $send = qpp_get_stored_send( $item );
                     qpp_check_coupon( $message[$i]['field6'], $item );
                     
@@ -3248,6 +3263,9 @@ function qpp_ipn()
                             'cf'            => $message[$i]['field21'],
                             'consent'       => $message[$i]['field22'],
                         );
+                        if ( false !== IPN_DEBUG_LOG_FILE ) {
+                            error_log( date( '[Y-m-d H:i e] ' ) . "About to send confirm: " . $message[$i]['field8'] . PHP_EOL, 3, IPN_DEBUG_LOG_FILE );
+                        }
                         qpp_send_confirmation( $values, $item );
                     }
                     
@@ -3269,7 +3287,7 @@ function qpp_ipn()
         
         if ( false !== IPN_DEBUG_LOG_FILE ) {
             error_log( date( '[Y-m-d H:i e] ' ) . "IPN response: {$status} {$req}" . PHP_EOL, 3, IPN_DEBUG_LOG_FILE );
-            error_log( date( '[Y-m-d H:i e] ' ) . "RAW DATA: {$response}" . PHP_EOL, 3, IPN_DEBUG_LOG_FILE );
+            error_log( date( '[Y-m-d H:i e] ' ) . "RAW DATA: " . print_r( $response, true ) . PHP_EOL, 3, IPN_DEBUG_LOG_FILE );
         }
     
     }
@@ -3404,7 +3422,8 @@ function qpp_send_confirmation( $values, $form )
         $content .= $details;
     }
     if ( $auto['enable'] && $values['email'] ) {
-        wp_mail(
+        qpp_wp_mail(
+            'Auto Responder',
             $values['email'],
             $subject,
             '<html>' . $content . '</html>',
@@ -3431,7 +3450,8 @@ function qpp_send_confirmation( $values, $form )
             </table>';
         }
         $content = '<html>' . $details . $contentb . '</html>';
-        wp_mail(
+        qpp_wp_mail(
+            'Confirm Email',
             $confirmemail,
             $subject,
             $content,
@@ -3706,4 +3726,81 @@ function qpp_is_platinum()
         'authorised' => false,
     ) );
     return $qpp_key['authorised'];
+}
+
+function qpp_wp_mail(
+    $type,
+    $qpp_email,
+    $title,
+    $content,
+    $headers
+)
+{
+    add_action(
+        'wp_mail_failed',
+        function ( $wp_error ) {
+        /**  @var $wp_error \WP_Error */
+        if ( defined( 'WP_DEBUG' ) && true == WP_DEBUG && is_wp_error( $wp_error ) ) {
+            trigger_error( 'QPP Email - wp_mail error msg : ' . esc_html( $wp_error->get_error_message() ), E_USER_WARNING );
+        }
+    },
+        10,
+        1
+    );
+    if ( defined( 'WP_DEBUG' ) && true == WP_DEBUG ) {
+        trigger_error( 'QPP Email message about to send: ' . esc_html( $type ) . ' To: ' . esc_html( $qpp_email ), E_USER_NOTICE );
+    }
+    $decode_title = html_entity_decode( $title, ENT_QUOTES );
+    $headers .= "X-Entity-Ref-ID: " . uniqid() . "\r\n";
+    $headers = apply_filters(
+        'qpp_email_headers',
+        $headers,
+        $type,
+        $qpp_email,
+        $title,
+        $content,
+        $headers
+    );
+    $decode_title = apply_filters(
+        'qpp_email_title',
+        $decode_title,
+        $type,
+        $qpp_email,
+        $title,
+        $content,
+        $headers
+    );
+    $qpp_email = apply_filters(
+        'qpp_email_to',
+        $qpp_email,
+        $type,
+        $qpp_email,
+        $title,
+        $content,
+        $headers
+    );
+    $res = wp_mail(
+        $qpp_email,
+        $decode_title,
+        $content,
+        $headers
+    );
+    if ( defined( 'WP_DEBUG' ) && true == WP_DEBUG ) {
+        
+        if ( true === $res ) {
+            trigger_error( 'QPP Email - wp_mail responded OK : ' . esc_html( $type ) . ' To: ' . esc_html( $qpp_email ), E_USER_NOTICE );
+        } else {
+            trigger_error( 'QPP Email - wp_mail responded FAILED to send : ' . esc_html( $type ) . ' To: ' . esc_html( $qpp_email ), E_USER_WARNING );
+        }
+    
+    }
+}
+
+function qpp_wp_date( $format, $date )
+{
+    // check if date is not a epoch int timestamp but a string
+    if ( !is_numeric( $date ) ) {
+        return $date;
+    }
+    return wp_date( $format, $date );
 }

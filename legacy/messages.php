@@ -15,7 +15,7 @@ echo '<h1>Quick Paypal Payments</h1>';
 // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
 if ( isset ( $_GET['tab'] ) ) {
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
-	$tab = sanitize_text_field($_GET['tab']);
+	$tab = sanitize_text_field( $_GET['tab'] );
 	qpp_messages_admin_tabs( $tab );
 
 } else {
@@ -33,11 +33,11 @@ function qpp_messages_admin_tabs( $current = 'default' ) {
 	$message = get_option( 'qpp_message' );
 	echo '<h2 class="nav-tab-wrapper qpp-messages">';
 	foreach ( $tabs as $tab => $name ) {
-		if ( empty($name)) {
+		if ( empty( $name ) ) {
 			continue;
 		}
 		$class = ( $name == $current ) ? ' nav-tab-active' : '';
-		echo '<a class="nav-tab'. esc_attr($class) . '" href="?page=quick-paypal-payments-messages&tab='. esc_attr($name) . '">'. esc_attr($name) . '</a>';
+		echo '<a class="nav-tab' . esc_attr( $class ) . '" href="?page=quick-paypal-payments-messages&tab=' . esc_attr( $name ) . '">' . esc_attr( $name ) . '</a>';
 	}
 	echo '</h2>';
 }
@@ -61,7 +61,7 @@ function qpp_show_messages( $id ) {
 		$sendtoemail = $_POST['sendtoemail'];
 		$headers     = "From: {<{$sendtoemail}>\r\n"
 		               . "Content-Type: text/html; charset=\"utf-8\"\r\n";
-		wp_mail( $sendtoemail, $title, $content, $headers );
+		qpp_wp_mail( 'Message Email', $sendtoemail, $title, $content, $headers );
 		qpp_admin_notice( 'Message list has been sent to ' . $sendtoemail . '.' );
 	}
 
@@ -88,10 +88,12 @@ function qpp_show_messages( $id ) {
 		check_admin_referer( 'qpp_download_form', 'qpp_download_form_nonce' );
 		$id      = sanitize_text_field( $_POST['formname'] );
 		$message = get_option( 'qpp_messages' . $id );
-		$count   = count( $message );
-		for ( $i = 0; $i <= $count; $i ++ ) {
-			if ( $_POST[ $i ] == 'checked' ) {
-				unset( $message[ $i ] );
+		if ( $message !== false ) {
+			$count = count( $message );
+			for ( $i = 0; $i <= $count; $i ++ ) {
+				if ( $_POST[ $i ] == 'checked' ) {
+					unset( $message[ $i ] );
+				}
 			}
 		}
 		$message = array_values( $message );
@@ -119,23 +121,23 @@ function qpp_show_messages( $id ) {
 	${$messageoptions['messageorder']} = "checked";
 	$dashboard                         = '<form method="post" action="">';
 	$dashboard                         .= wp_nonce_field( 'qpp_payments_form', 'qpp_payments_form_nonce', true, false );
-	$dashboard                         .= '<p><b>Show</b> <input style="margin:0; padding:0; border:none;" type="radio" name="messageqty" value="fifty" "' . esc_attr($fifty) . ' /> 50 
-    <input style="margin:0; padding:0; border:none;" type="radio" name="messageqty" value="hundred" ' . esc_attr($hundred) . ' /> 100 
-    <input style="margin:0; padding:0; border:none;" type="radio" name="messageqty" value="all" ' . esc_attr($all) . ' /> all messages.&nbsp;&nbsp;
-    <b>List</b> <input style="margin:0; padding:0; border:none;" type="radio" name="messageorder" value="oldest" ' . esc_attr($oldest) . ' /> oldest first 
-    <input style="margin:0; padding:0; border:none;" type="radio" name="messageorder" value="newest" ' . esc_attr($newest) . ' /> newest first
+	$dashboard                         .= '<p><b>Show</b> <input style="margin:0; padding:0; border:none;" type="radio" name="messageqty" value="fifty" "' . esc_attr( $fifty ) . ' /> 50 
+    <input style="margin:0; padding:0; border:none;" type="radio" name="messageqty" value="hundred" ' . esc_attr( $hundred ) . ' /> 100 
+    <input style="margin:0; padding:0; border:none;" type="radio" name="messageqty" value="all" ' . esc_attr( $all ) . ' /> all messages.&nbsp;&nbsp;
+    <b>List</b> <input style="margin:0; padding:0; border:none;" type="radio" name="messageorder" value="oldest" ' . esc_attr( $oldest ) . ' /> oldest first 
+    <input style="margin:0; padding:0; border:none;" type="radio" name="messageorder" value="newest" ' . esc_attr( $newest ) . ' /> newest first
     &nbsp;&nbsp;
-    <input style="margin:0; padding:0; border:none;" type="checkbox" name="hidepaid" value="checked" ' . esc_attr($messageoptions['hidepaid']) . ' /> Hide paid transactions
+    <input style="margin:0; padding:0; border:none;" type="checkbox" name="hidepaid" value="checked" ' . esc_attr( $messageoptions['hidepaid'] ) . ' /> Hide paid transactions
     &nbsp;&nbsp;
-    <input style="margin:0; padding:0; border:none;" type="checkbox" name="showaddress" value="checked" ' . esc_attr($messageoptions['showaddress']) . ' /> Show addresses
+    <input style="margin:0; padding:0; border:none;" type="checkbox" name="showaddress" value="checked" ' . esc_attr( $messageoptions['showaddress'] ) . ' /> Show addresses
     &nbsp;&nbsp;
     <input type="submit" name="Submit" class="button-secondary" value="Update options" />
     </form></p>';
 	$dashboard                         .= '<form method="post" id="download_form" action="">';
 	$dashboard                         .= wp_nonce_field( 'qpp_download_form', 'qpp_download_form_nonce', true, false );
 	$dashboard                         .= qpp_messagetable( $id, '' );
-	$dashboard                         .= '<input type="hidden" name="formname" value = "' . esc_attr($id) . '" />
-    <p>Send to this email address: <input type="text" name="sendtoemail" value="' . esc_attr($sendtoemail) . '">&nbsp;
+	$dashboard                         .= '<input type="hidden" name="formname" value = "' . esc_attr( $id ) . '" />
+    <p>Send to this email address: <input type="text" name="sendtoemail" value="' . esc_attr( $sendtoemail ) . '">&nbsp;
     <input type="submit" name="qpp_emaillist" class="button-primary" value="Email List" />&nbsp;
     <input type="submit" name="download_qpp_csv" class="button-primary" value="Export to CSV" />
     
@@ -147,12 +149,12 @@ function qpp_show_messages( $id ) {
 	if ( ! qpp_is_platinum() ) {
 		if ( $quick_paypal_payments_fs->is_trial() || $quick_paypal_payments_fs->is_trial_utilized() ) {
 			$upurl = $quick_paypal_payments_fs->get_upgrade_url();
-			$upmsg = '<p>From only $14.99 per annum</p>';;
+			$upmsg = '<p>See plans here</p>';;
 		} else {
 			$upurl = $quick_paypal_payments_fs->get_trial_url();
-			$upmsg = '<p>Free 14 Day Trial, then from $14.99 per annum</p>';
+			$upmsg = '<p>Free 14 Day Trial</p>';
 		}
-		$dashboard .= '<div class="qppupgrade"><a href="' . esc_url($upurl) . '">
+		$dashboard .= '<div class="qppupgrade"><a href="' . esc_url( $upurl ) . '">
         <h3>Upgrade to Pro Platinum</h3>
         <p>Upgrading gives Mailchimp data collection, Multiple products and Personalised Support.</p>
         <p>Click to find out more</p>' . wp_kses_post( $upmsg ) . '

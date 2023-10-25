@@ -1,8 +1,8 @@
 === Quick Paypal Payments ===
 Contributors: Fullworks
 Tags: paypal payment form, paypal, payments
-Tested up to: 6.2
-Stable tag: 5.7.29
+Tested up to: 6.4
+Stable tag: 5.7.37
 Type: freemium
 
 Zero to PayPal with just one shortcode. Jam packed with features and options with easy to use custom settings.
@@ -78,7 +78,38 @@ At the bottom of the dashboard is a link called 'Payments'.
 = It's all gone wrong! =
 If it all goes wrong, just reinstall the plugin and start again. If you need help then [you can use the support forum](https://wordpress.org/support/plugin/quick-paypal-payments/).
 
+= How can I report security bugs? =
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/quick-paypal-payments)
+
 == Changelog ==
+= 5.7.37 =
+* Fix style when product qty selected
+
+= 5.7.36 =
+* Set dropdown colour option
+
+= 5.7.35 =
+* Fix date in front end report
+* remove check of reference for IPN
+
+= 5.7.34 =
+* Change upsell messages
+
+= 5.7.33 =
+* fix count on CSV export for multi product ( Pro )
+
+= 5.7.32 =
+* fix issue with Autoresponder settings
+* improve IPN and Email debug logging
+
+= 5.7.31 =
+* fix PHP 8 issue with IPN
+* remove a PHP 8 deprecated warning
+
+= 5.7.30 =
+* Fix display of some radio options
+
 = 5.7.29 =
 * Remove warning notice from Widget editor
 

@@ -1,4 +1,31 @@
 == Changelog ==
+= 5.7.37 =
+* Fix style when product qty selected
+
+= 5.7.36 =
+* Set dropdown colour option
+
+= 5.7.35 =
+* Fix date in front end report
+* remove check of reference for IPN
+
+= 5.7.34 =
+* Change upsell messages
+
+= 5.7.33 =
+* fix count on CSV export for multi product ( Pro )
+
+= 5.7.32 =
+* fix issue with Autoresponder settings
+* improve IPN and Email debug logging
+
+= 5.7.31 =
+* fix PHP 8 issue with IPN
+* remove a PHP 8 deprecated warnin
+
+= 5.7.30 =
+* Fix display of some radio options
+
 = 5.7.29 =
 * Remove warning notice from Widget editor
 
