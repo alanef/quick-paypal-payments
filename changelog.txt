@@ -1,4 +1,7 @@
 == Changelog ==
+= 5.7.38 =
+* Fix total colour and script issue
+
 = 5.7.37 =
 * Fix style when product qty selected
 

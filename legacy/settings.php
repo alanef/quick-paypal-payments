@@ -634,7 +634,7 @@ function qpp_form_options( $id )
                 $type = 'Show totals';
                 $input = 'totalsblurb';
                 $checked = $qpp['usetotals'];
-                $options = '<span class="description">Show live totals on your form. Warning: Only works if you have one form on the page and you aren\'t using multiple amounts</span>';
+                $options = '<span class="description">Show live totals on your form. Warning: Only works if you have one form of a type on the page</span>';
                 break;
             case 'field15':
                 $check = '<input  type="checkbox" name="use_slider"' . checked( $qpp['use_slider'], 'checked', false ) . ' value="checked" />';

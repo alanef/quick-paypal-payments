@@ -725,6 +725,9 @@ function qpp_get_total( $a )
 function qpp_loop( $atts )
 {
     $qpp_setup = qpp_get_stored_setup();
+    if ( !wp_script_is( 'qpp_script', 'registered' ) ) {
+        qpp_register_scripts();
+    }
     wp_enqueue_script( 'paypal_checkout_js' );
     wp_enqueue_script( 'qpp_script' );
     wp_enqueue_style( 'qpp_style' );
@@ -2766,7 +2769,7 @@ function qpp_generate_css()
         }
         
         $code .= ".qpp-style" . $id . " {width:" . $width . ";max-width:100%; }" . $border . $corners . $header . $paragraph . $input . $required . $background . $submitbutton . $submithover . $couponbutton . $slider;
-        $code .= '.qpp-style' . $id . ' input#qpptotal {font-weight:bold;font-size:inherit;padding: 0;margin-left:3px;border:none;' . $bg . '}';
+        $code .= '.qpp-style' . $id . ' input#qpptotal {color:' . $style['text-font-colour'] . ';font-weight:bold;font-size:inherit;padding: 0;margin-left:3px;border:none;' . $bg . '}';
         if ( $style['use_custom'] == 'checked' ) {
             $code .= $style['custom'];
         }
