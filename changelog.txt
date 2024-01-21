@@ -1,4 +1,7 @@
 == Changelog ==
+= 5.7.39 =
+* Fix mis match when drop down starts with a space
+
 = 5.7.38 =
 * Fix total colour and script issue
 

@@ -343,7 +343,7 @@ function collect_data( $form )
                 $temp = explode( ',', $qpp['inputreference'] );
                 foreach ( $temp as $v ) {
                     $options[] = [
-                        'name' => $v,
+                        'name' => trim( $v ),
                     ];
                 }
             }
