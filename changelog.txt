@@ -1,4 +1,7 @@
 == Changelog ==
+= 5.7.40 =
+* Allow consent to be specified as mandatory
+
 = 5.7.39 =
 * Fix mis match when drop down starts with a space
 

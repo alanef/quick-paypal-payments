@@ -113,7 +113,7 @@ function handleValidationResponse(e,f) {
 			for (i = 0; i < data.errors.length; i++) {
 				error = data.errors[i];
 				element = f.find('[name='+error.name+']');
-				if (element.length) element.css({'border':'1px solid '+data.error_color});
+				if (element.length) element.css({'outline':'1px solid '+data.error_color});
 			}
 
 			/*

@@ -1407,11 +1407,14 @@ function qpp_display_form(
                 
                 break;
             case 'field22':
+                
                 if ( $qpp['use_consent'] ) {
-                    $content .= '<p class="input">
-                <input type="checkbox" name="consent" value="checked" ' . qpp_get_element( $values, 'consent' ) . '>
+                    $required = ( !$errors['use_constent'] && $qpp['ruse_consent'] ? 'required' : '' );
+                    $content .= '<p class="input ' . esc_attr( $required ) . '">
+                <input ' . esc_attr( $required ) . ' type="checkbox" name="consent" value="checked" ' . qpp_get_element( $values, 'consent' ) . '>
                 &nbsp;' . $qpp['consentlabel'] . '</p>';
                 }
+                
                 break;
         }
     }
@@ -2005,6 +2008,9 @@ function qpp_verify_form(
     $match = preg_match( "/^[a-zA-Z]{6}[0-9]{2}[a-zA-Z][0-9]{2}[a-zA-Z][0-9]{3}[a-zA-Z]\$/", $v['cf'] );
     if ( $qpp['use_cf'] && $qpp['ruse_cf'] && ($v['cf'] == $qpp['cflabel'] || empty($v['cf']) || $match == false) ) {
         $errors['use_cf'] = 'error';
+    }
+    if ( $qpp['use_consent'] && $qpp['ruse_consent'] && empty($v['consent']) ) {
+        $errors['consent'] = 'error';
     }
     if ( $qpp['use_message'] && $qpp['ruse_message'] && ($v['yourmessage'] == $qpp['messagelabel'] || empty($v['yourmessage'])) ) {
         $errors['use_message'] = 'error';

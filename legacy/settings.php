@@ -346,6 +346,7 @@ function qpp_form_options( $id )
             'ruse_cf',
             'cflabel',
             'use_consent',
+            'ruse_consent',
             'consentlabel',
             'consentpaypal',
             'noconsentpaypal',
@@ -677,7 +678,7 @@ function qpp_form_options( $id )
                 $type = 'Codice Fiscale (Solo Italia)';
                 $input = 'cflabel';
                 $checked = $qpp['use_cf'];
-                $options = '<input  type="checkbox" name="ruse_cf"' . checked( $qpp['ruse_cf'], 'checked', false ) . ' value="checked" /> Required Field';
+                $options = '<input  type="checkbox" name="ruse_cf"' . checked( $qpp['field22'], 'checked', false ) . ' value="checked" /> Required Field';
                 break;
             case 'field22':
                 $check = '<input  type="checkbox" name="use_consent"' . checked( $qpp['use_consent'], 'checked', false ) . ' value="checked" />';
@@ -685,6 +686,7 @@ function qpp_form_options( $id )
                 $input = 'consentlabel';
                 $checked = $qpp['use_consent'];
                 $options = '<span class="description">' . esc_html__( 'Add a checkbox to permit data storage. You may use html links above.', 'quick-paypal-payments' ) . '</span><br>' . '<span class="description">' . esc_html__( 'Add consent info to PayPal item line. Blank out if not required.', 'quick-paypal-payments' ) . '</span><br>' . '<input type="text" name="consentpaypal" value="' . esc_attr( $qpp['consentpaypal'] ) . '" />' . esc_html__( 'if consent given', 'quick-paypal-payments' ) . '<br>' . '<input type="text" name="noconsentpaypal" value="' . esc_attr( $qpp['noconsentpaypal'] ) . '" />' . esc_html__( 'if consent NOT given', 'quick-paypal-payments' ) . '<br>';
+                $options .= '<input  type="checkbox" name="ruse_consent"' . checked( $qpp['ruse_consent'], 'checked', false ) . ' value="checked" /> Required Field';
                 break;
         }
         $li_class = ( $checked ? 'button_active' : 'button_inactive' );
