@@ -1,7 +1,7 @@
 <?php
 
-use  Quick_Paypal_Payments\Core\Utilities ;
-global  $quick_paypal_payments_fs ;
+use Quick_Paypal_Payments\Core\Utilities;
+global $quick_paypal_payments_fs;
 add_action( 'init', 'qpp_settings_init' );
 add_action( 'admin_menu', 'qpp_page_init' );
 add_action( 'admin_menu', 'qpp_admin_pages' );
@@ -12,10 +12,9 @@ add_action(
     2
 );
 add_action( 'wp_head', 'qpp_head_css' );
-function qpp_admin_tabs( $current = 'settings' )
-{
+function qpp_admin_tabs(  $current = 'settings'  ) {
     /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
-    global  $quick_paypal_payments_fs ;
+    global $quick_paypal_payments_fs;
     $tabs = array(
         'setup'        => esc_html__( 'Setup', 'quick-event-manager' ),
         'settings'     => esc_html__( 'Form Settings', 'quick-event-manager' ),
@@ -26,22 +25,20 @@ function qpp_admin_tabs( $current = 'settings' )
         'coupon'       => esc_html__( 'Coupons', 'quick-event-manager' ),
         'ipn'          => 'IPN',
     );
-    echo  '<h2 class="nav-tab-wrapper">' ;
+    echo '<h2 class="nav-tab-wrapper">';
     foreach ( $tabs as $tab => $name ) {
         $class = ( $tab == $current ? ' nav-tab-active' : '' );
-        echo  '<a class="nav-tab' . esc_attr( $class ) . '" href="?page=quick-paypal-payments&tab=' . esc_attr( $tab ) . '">' . esc_attr( $name ) . '</a>' ;
+        echo '<a class="nav-tab' . esc_attr( $class ) . '" href="?page=quick-paypal-payments&tab=' . esc_attr( $tab ) . '">' . esc_attr( $name ) . '</a>';
     }
-    echo  '</h2>' ;
+    echo '</h2>';
 }
 
-function qpp_tabbed_page()
-{
-    global  $quick_paypal_payments_fs ;
+function qpp_tabbed_page() {
+    global $quick_paypal_payments_fs;
     $qpp_setup = qpp_get_stored_setup();
     $id = $qpp_setup['current'];
-    echo  '<h1>Quick Paypal Payments</h1>' ;
+    echo '<h1>Quick Paypal Payments</h1>';
     // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required.
-    
     if ( isset( $_GET['tab'] ) ) {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required.
         $tab = sanitize_text_field( $_GET['tab'] );
@@ -50,7 +47,6 @@ function qpp_tabbed_page()
         qpp_admin_tabs( 'setup' );
         $tab = 'setup';
     }
-    
     switch ( $tab ) {
         case 'setup':
             qpp_setup( $id );
@@ -90,18 +86,15 @@ function qpp_tabbed_page()
     }
 }
 
-function qpp_setup( $id )
-{
+function qpp_setup(  $id  ) {
     /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
-    global  $quick_paypal_payments_fs ;
+    global $quick_paypal_payments_fs;
     $qpp_setup = qpp_get_stored_setup();
     $new_curr = $php = $head = '';
-    
     if ( isset( $_POST['Submit'] ) && check_admin_referer( "save_qpp" ) ) {
         $qpp_setup['alternative'] = filter_var( $_POST['alternative'], FILTER_SANITIZE_STRING );
         $qpp_setup['email'] = filter_var( $_POST['email'], FILTER_SANITIZE_STRING );
-        
-        if ( !empty($_POST['new_form']) ) {
+        if ( !empty( $_POST['new_form'] ) ) {
             $qpp_setup['current'] = stripslashes( $_POST['new_form'] );
             $qpp_setup['current'] = filter_var( $qpp_setup['current'], FILTER_SANITIZE_STRING );
             $qpp_setup['current'] = preg_replace( "/[^A-Za-z]/", '', $qpp_setup['current'] );
@@ -109,8 +102,7 @@ function qpp_setup( $id )
         } else {
             $qpp_setup['current'] = filter_var( $_POST['current'], FILTER_SANITIZE_STRING );
         }
-        
-        if ( empty($qpp_setup['current']) ) {
+        if ( empty( $qpp_setup['current'] ) ) {
             $qpp_setup['current'] = '';
         }
         $arr = explode( ",", $qpp_setup['alternative'] );
@@ -120,13 +112,11 @@ function qpp_setup( $id )
             $qpp_email[$item] = ( isset( $_POST['qpp_email' . $item] ) ? stripslashes( $_POST['qpp_email' . $item] ) : '' );
             $qpp_email[$item] = filter_var( $qpp_email[$item], FILTER_SANITIZE_STRING );
         }
-        
-        if ( !empty($_POST['new_form']) ) {
+        if ( !empty( $_POST['new_form'] ) ) {
             $email = $qpp_setup['current'];
             $qpp_curr[$email] = stripslashes( $_POST['new_curr'] );
             $qpp_curr[$email] = filter_var( $qpp_curr[$email], FILTER_SANITIZE_STRING );
         }
-        
         $qpp_setup['image_url'] = ( isset( $_POST['image_url'] ) ? esc_url_raw( $_POST['image_url'] ) : '' );
         $qpp_setup['location'] = ( isset( $_POST['location'] ) ? sanitize_text_field( $_POST['location'] ) : '' );
         $qpp_setup['sandbox'] = ( isset( $_POST['sandbox'] ) ? sanitize_text_field( $_POST['sandbox'] ) : '' );
@@ -137,21 +127,17 @@ function qpp_setup( $id )
         update_option( 'qpp_setup', $qpp_setup );
         $qpp_setup = qpp_get_stored_setup();
         qpp_admin_notice( "The forms have been updated." );
-        if ( $_POST['qpp_clone'] && !empty($_POST['new_form']) ) {
+        if ( $_POST['qpp_clone'] && !empty( $_POST['new_form'] ) ) {
             qpp_clone( $qpp_setup['current'], sanitize_text_field( $_POST['qpp_clone'] ) );
         }
     }
-    
-    
     if ( isset( $_POST['Reset'] ) && check_admin_referer( "save_qpp" ) ) {
         qpp_delete_everything();
         qpp_admin_notice( "Everything has been reset." );
         $qpp_setup = qpp_get_stored_setup();
     }
-    
     $arr = explode( ",", $qpp_setup['alternative'] );
     foreach ( $arr as $item ) {
-        
         if ( isset( $_POST['deleteform' . $item] ) && $_POST['deleteform' . $item] == $item && isset( $_POST['delete' . $item] ) && $item != '' ) {
             $forms = $qpp_setup['alternative'];
             qpp_delete_things( $_POST['deleteform' . $item] );
@@ -162,7 +148,6 @@ function qpp_setup( $id )
             qpp_admin_notice( "<b>The form named " . $item . " has been deleted.</b>" );
             $id = '';
         }
-    
     }
     $qpp_curr = qpp_get_stored_curr();
     $qpp_email = qpp_get_stored_email();
@@ -185,33 +170,27 @@ function qpp_setup( $id )
     $arr = explode( ",", $qpp_setup['alternative'] );
     sort( $arr );
     foreach ( $arr as $item ) {
-        
         if ( $qpp_setup['current'] == $item ) {
             $checked = 'checked';
         } else {
             $checked = '';
         }
-        
         if ( !$qpp_email[$item] ) {
             $qpp_email[$item] = $qpp_setup['email'];
         }
-        
         if ( $item == '' ) {
             $formname = 'default';
         } else {
             $formname = $item;
         }
-        
         $content .= '<tr>
         <td><input  type="radio" name="current" value="' . esc_attr( $item ) . '" ' . checked( $checked, 'checked', false ) . ' /> ' . $formname . '</td>
         <td><input type="text" style="width:3em;padding:1px;" name="qpp_curr' . esc_attr( $item ) . '" value="' . esc_attr( $qpp_curr[$item] ) . '" /></td>';
-        
         if ( $item ) {
             $shortcode = ' form="' . $item . '"';
         } else {
             $shortcode = '';
         }
-        
         $content .= '<td><code>[qpp' . $shortcode . ']</code></td><td>';
         if ( $item ) {
             $content .= '<input type="hidden" name="deleteform' . $item . '" value="' . esc_attr( $item ) . '">
@@ -242,13 +221,11 @@ function qpp_setup( $id )
     
     <h2>Checkout Logo</h2>
     <p>The URL of the 150x50-pixel image displayed as your logo in the upper left corner of the PayPal checkout pages.</p>';
-    
     if ( $quick_paypal_payments_fs->is_trial() || $quick_paypal_payments_fs->is_trial_utilized() ) {
         $upurl = $quick_paypal_payments_fs->get_upgrade_url();
     } else {
         $upurl = $quick_paypal_payments_fs->get_trial_url();
     }
-    
     $content .= '<p><a href="' . $upurl . '">Pro-version only</a></p>';
     $content .= '<h2>Global Settings</h2>
     <p><input type="checkbox" name="sandbox" ' . checked( $qpp_setup['sandbox'], 'checked', false ) . ' value="checked" /> Use Paypal sandbox (developer use only)</p>
@@ -259,7 +236,6 @@ function qpp_setup( $id )
     $content .= '</form>';
     $content .= '</div>
     <div class="qpp-options" style="float:right">';
-    
     if ( $quick_paypal_payments_fs->is_trial() || $quick_paypal_payments_fs->is_trial_utilized() ) {
         $upurl = $quick_paypal_payments_fs->get_upgrade_url();
         $upmsg = '<p>See plans and prices here</p>';
@@ -267,7 +243,6 @@ function qpp_setup( $id )
         $upurl = $quick_paypal_payments_fs->get_trial_url();
         $upmsg = '<p>Free 14 Day Trial</p>';
     }
-    
     $content .= '<div class="qppupgrade"><a href="' . $upurl . '">
         <h3>Upgrade to Pro Platinum</h3>
         <p>Upgrading gives Mailchimp data collection, Multiple products and Personalised Support.</p>
@@ -296,11 +271,10 @@ function qpp_setup( $id )
 <p>If you require urgent or personal support please <a href="' . esc_url( $quick_paypal_payments_fs->get_upgrade_url() ) . '" >upgrade to a paid plan</a></p>';
     $content .= '</div>
     </div>';
-    echo  $content ;
+    echo $content;
 }
 
-function qpp_clone( $id, $clone )
-{
+function qpp_clone(  $id, $clone  ) {
     if ( $clone == 'default' ) {
         $clone = '';
     }
@@ -318,12 +292,10 @@ function qpp_clone( $id, $clone )
     update_option( 'qpp_address' . $id, $update );
 }
 
-function qpp_form_options( $id )
-{
+function qpp_form_options(  $id  ) {
     /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
-    global  $quick_paypal_payments_fs ;
+    global $quick_paypal_payments_fs;
     qpp_change_form_update( $id );
-    
     if ( isset( $_POST['qpp_submit'] ) && check_admin_referer( "save_qpp" ) ) {
         $options = array(
             'title',
@@ -430,19 +402,18 @@ function qpp_form_options( $id )
             'b'      => array(),
             'i'      => array(),
             'a'      => array(
-            'href'   => array(),
-            'target' => array(),
-            'class'  => array(),
-            'rel'    => array(),
-            'title'  => array(),
-        ),
+                'href'   => array(),
+                'target' => array(),
+                'class'  => array(),
+                'rel'    => array(),
+                'title'  => array(),
+            ),
         );
         foreach ( $options as $item ) {
             if ( isset( $_POST[$item] ) ) {
                 $qpp[$item] = wp_kses_post( stripslashes( $_POST[$item] ) );
             }
         }
-        
         if ( qpp_get_element( $qpp, 'userecurring', false ) ) {
             $qpp['use_quantity'] = '';
             $qpp['usepostage'] = '';
@@ -450,17 +421,13 @@ function qpp_form_options( $id )
             $qpp['useprocess'] = '';
             $qpp['use_stock'] = '';
         }
-        
         update_option( 'qpp_options' . $id, $qpp );
         qpp_admin_notice( "The form and submission settings have been updated." );
     }
-    
-    
     if ( isset( $_POST['Reset'] ) && check_admin_referer( "save_qpp" ) ) {
         delete_option( 'qpp_options' . $id );
         qpp_admin_notice( "The form and submission settings have been reset." );
     }
-    
     $qpp_setup = qpp_get_stored_setup();
     $id = $qpp_setup['current'];
     $currency = qpp_get_stored_curr();
@@ -485,13 +452,11 @@ function qpp_form_options( $id )
     });});
     </script>';
     $content .= '<div class="qpp-settings"><div class="qpp-options">';
-    
     if ( $id ) {
         $content .= '<h2>Form settings for ' . $id . '</h2>';
     } else {
         $content .= '<h2>Default form settings</h2>';
     }
-    
     $content .= qpp_change_form( $qpp_setup );
     $content .= '<form action="" method="POST">
     <p>Paypal form heading (optional)</p>
@@ -538,10 +503,14 @@ function qpp_form_options( $id )
                 $type = 'Amount';
                 $input = 'inputamount';
                 $checked = 'checked';
-                $options = '<input type="checkbox" name="allow_amount" ' . checked( $qpp['allow_amount'], 'checked', false ) . ' value="checked" /> Do not validate (use default amount value)<br>
-            <input type="checkbox" name="fixedamount" ' . checked( $qpp['fixedamount'], 'checked', false ) . ' value="checked" /> Display as a pre-set amount<br>
-             <input type="text" style="border:1px solid #415063; width:3em;" name="minamount" . value ="' . esc_attr( $qpp['minamount'] ) . '" />&nbsp;Minimum value<br>
-            <span class="description">Use commas to create an options list: £10,£20,£30</span><br>
+                $options = '
+                <input type="number" style="border:1px solid #415063; width:10em;" step="any" name="minamount" . value ="' . esc_attr( $qpp['minamount'] ) . '" />&nbsp;Minimum value<br>
+                <input type="checkbox" name="allow_amount" ' . checked( $qpp['allow_amount'], 'checked', false ) . ' value="checked" /> Do not validate (use default amount value)<br>
+            <input type="checkbox" class="qpp_fixed_amount" name="fixedamount" ' . checked( $qpp['fixedamount'], 'checked', false ) . ' value="checked" /> Display as a pre-set amount e.g. £10 or
+            use commas to create an options list: £10,£20,£30<br><br>
+             
+            <fieldset class="qpp_option_list_settings" style="border:1px solid black; padding: 3px;">
+            <legend>Option List Settings</legend>
             Options Selector: <input type="radio" name="selector" value="radio" ' . checked( $qpp['selector'], 'radio', false ) . ' /> Radio&nbsp;
             <input type="radio" name="selector" value="dropdown" ' . checked( $qpp['selector'], 'dropdown', false ) . ' /> Dropdown<br>
             <input type="checkbox" name="inline_amount" ' . checked( $qpp['inline_amount'], 'checked', false ) . ' value="checked" />&nbsp;Display inline radio fields<br>
@@ -549,6 +518,7 @@ function qpp_form_options( $id )
             Caption:&nbsp;<input type="text" style="width:7em;" name="comboboxword" value="' . esc_attr( $qpp['comboboxword'] ) . '" />
             <br>
             Instruction:&nbsp;<input type="text" style="width:10em;" name="comboboxlabel" value="' . esc_attr( $qpp['comboboxlabel'] ) . '" />
+            </fieldset>
             ';
                 break;
             case 'field5':
@@ -690,7 +660,6 @@ function qpp_form_options( $id )
                 break;
         }
         $li_class = ( $checked ? 'button_active' : 'button_inactive' );
-        
         if ( $check ) {
             $content .= '<li class="' . esc_attr( $li_class ) . '" id="' . esc_attr( $name ) . '">
             <div style="float:left; width:5%;">' . $check . '</div>
@@ -705,7 +674,6 @@ function qpp_form_options( $id )
             $content .= '</div>
             <div style="clear:left"></div></li>';
         }
-    
     }
     $content .= '</ul>
     <h2>Fixed payment and shortcode labels</h2>
@@ -743,17 +711,15 @@ function qpp_form_options( $id )
         'id'     => '',
         'amount' => '',
     );
-    $content .= qpp_loop( $args );
+    $content .= qpp_loop( $args, true );
     $content .= '<p>There are some more examples of payment forms <a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">on this page</a>.</p>
     <p>And there are loads of shortcode options <a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">on this page</a>.</p>
     </div></div>';
-    echo  $content ;
+    echo $content;
 }
 
-function qpp_styles( $id )
-{
+function qpp_styles(  $id  ) {
     qpp_change_form_update();
-    
     if ( isset( $_POST['Submit'] ) && check_admin_referer( "save_qpp" ) ) {
         $options = array(
             'font',
@@ -803,23 +769,18 @@ function qpp_styles( $id )
             'labeltype'
         );
         foreach ( $options as $item ) {
-            
             if ( isset( $_POST[$item] ) ) {
                 $styles[$item] = stripslashes( $_POST[$item] );
                 $styles[$item] = filter_var( $styles[$item], FILTER_SANITIZE_STRING );
             }
-        
         }
         update_option( 'qpp_style' . $id, $styles );
         qpp_admin_notice( "The form styles have been updated." );
     }
-    
-    
     if ( isset( $_POST['Reset'] ) && check_admin_referer( "save_qpp" ) ) {
         delete_option( 'qpp_style' . $id );
         qpp_admin_notice( "The form styles have been reset." );
     }
-    
     $font = $h2 = $h3 = $h4 = $percent = $pixel = $none = $plain = $shadow = $roundshadow = false;
     $corner = $square = $round = $rounded = $color = $white = $square = $theme = $submitrandom = false;
     $submitmiddle = $submitpixel = $submitleft = $submitmiddle = $submitright = false;
@@ -852,13 +813,11 @@ function qpp_styles( $id )
     }
     $content = qpp_head_css();
     $content .= '<div class="qpp-settings"><div class="qpp-options">';
-    
     if ( $id ) {
         $content .= '<h2>Style options for ' . $id . '</h2>';
     } else {
         $content .= '<h2>Default form style options</h2>';
     }
-    
     $content .= qpp_change_form( $qpp_setup );
     $qpp = qpp_get_stored_options( $id );
     $content .= '
@@ -1093,21 +1052,19 @@ function qpp_styles( $id )
         'id'     => '',
         'amount' => '',
     );
-    $content .= qpp_loop( $args );
+    $content .= qpp_loop( $args, true );
     $content .= '<p>There are some more examples of payment forms <a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">on this page</a>.</p>
     <p>And there are loads of shortcode options <a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">on this page</a>.</p>
     </div></div>';
-    echo  $content ;
+    echo $content;
 }
 
-function qpp_send_page( $id )
-{
+function qpp_send_page(  $id  ) {
     /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
-    global  $quick_paypal_payments_fs ;
+    global $quick_paypal_payments_fs;
     $AU = $AT = $BE = $BR = $pt_BR = $CA = $CH = $CN = $da_DK = $FR = $DE = $he_IL = $id_ID = $IT = $ja_JP = $NL = $no_NO = false;
     $PL = $PT = $RU = $ru_RU = $zh_CN = $zh_HK = $zh_TW = $ES = $sv_SE = $th_TH = $tr_TR = $GB = $US = false;
     qpp_change_form_update();
-    
     if ( isset( $_POST['Submit'] ) && check_admin_referer( "save_qpp" ) ) {
         $options = array(
             'waiting',
@@ -1133,8 +1090,6 @@ function qpp_send_page( $id )
         update_option( 'qpp_send' . $id, $send );
         qpp_admin_notice( "The submission settings have been updated." );
     }
-    
-    
     if ( isset( $_POST['Mailchimp'] ) && check_admin_referer( "save_qpp" ) ) {
         $options = array(
             'enable',
@@ -1148,13 +1103,10 @@ function qpp_send_page( $id )
         update_option( 'qpp_mailinglist', $list );
         qpp_admin_notice( "The mailinglist settings have been updated." );
     }
-    
-    
     if ( isset( $_POST['Reset'] ) && check_admin_referer( "save_qpp" ) ) {
         delete_option( 'qpp_send' . $id );
         qpp_admin_notice( "The submission settings have been reset." );
     }
-    
     $qpp_setup = qpp_get_stored_setup();
     $id = $qpp_setup['current'];
     $send = qpp_get_stored_send( $id );
@@ -1166,18 +1118,16 @@ function qpp_send_page( $id )
     if ( isset( $send['lc'] ) ) {
         ${$send['lc']} = 'selected';
     }
-    if ( empty(qpp_get_element( $send, 'confirmemail' )) ) {
+    if ( empty( qpp_get_element( $send, 'confirmemail' ) ) ) {
         $send['confirmemail'] = get_bloginfo( 'admin_email' );
     }
     $content = qpp_head_css();
     $content .= '<div class="qpp-settings"><div class="qpp-options">';
-    
     if ( $id ) {
         $content .= '<h2>Send settings for ' . $id . '</h2>';
     } else {
         $content .= '<h2>Default form send options</h2>';
     }
-    
     $content .= qpp_change_form( $qpp_setup );
     $content .= '
     <form action="" method="POST">
@@ -1252,14 +1202,12 @@ function qpp_send_page( $id )
     $content .= wp_nonce_field( "save_qpp" );
     $content .= '</form>';
     $content .= '<h2>Mailchimp</h2>';
-    global  $quick_paypal_payments_fs ;
-    
+    global $quick_paypal_payments_fs;
     if ( $quick_paypal_payments_fs->is_trial() || $quick_paypal_payments_fs->is_trial_utilized() ) {
         $upurl = $quick_paypal_payments_fs->get_upgrade_url();
     } else {
         $upurl = $quick_paypal_payments_fs->get_trial_url();
     }
-    
     $content .= '<p>Upgrade to Pro Platinum to use the Mailchimp data collection option. <a href="' . $upurl . '">Upgrade</a></p>';
     $content .= '</div>
     <div class="qpp-options" style="float:right;">
@@ -1274,19 +1222,17 @@ function qpp_send_page( $id )
         'id'     => '',
         'amount' => '',
     );
-    $content .= qpp_loop( $args );
+    $content .= qpp_loop( $args, true );
     $content .= '<p>There are some more examples of payment forms <a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">on this page</a>.</p>
     <p>And there are loads of shortcode options <a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">on this page</a>.</p>
     </div></div>';
-    echo  $content ;
+    echo $content;
 }
 
-function qpp_error_page( $id )
-{
+function qpp_error_page(  $id  ) {
     qpp_change_form_update();
-    
     if ( isset( $_POST['Submit'] ) && check_admin_referer( "save_qpp" ) ) {
-        $options = array( 'errortitle', 'errorblurb' );
+        $options = array('errortitle', 'errorblurb');
         foreach ( $options as $item ) {
             $error[$item] = stripslashes( $_POST[$item] );
             $error[$item] = filter_var( $error[$item], FILTER_SANITIZE_STRING );
@@ -1294,25 +1240,20 @@ function qpp_error_page( $id )
         update_option( 'qpp_error' . $id, $error );
         qpp_admin_notice( "The error settings have been updated." );
     }
-    
-    
     if ( isset( $_POST['Reset'] ) && check_admin_referer( "save_qpp" ) ) {
         delete_option( 'qpp_error' . $id );
         qpp_admin_notice( "The error messages have been reset." );
     }
-    
     $qpp_setup = qpp_get_stored_setup();
     $id = $qpp_setup['current'];
     $error = qpp_get_stored_error( $id );
     $content = qpp_head_css();
     $content .= '<div class="qpp-settings"><div class="qpp-options">';
-    
     if ( $id ) {
         $content .= '<h2>Eror message settings for ' . $id . '</h2>';
     } else {
         $content .= '<h2>Default form error message</h2>';
     }
-    
     $content .= qpp_change_form( $qpp_setup );
     $content .= '<form method="post" action="">
     <p<span<b>Note:</b> Leave fields blank if you don\'t want to use them</span></p>
@@ -1341,16 +1282,14 @@ function qpp_error_page( $id )
         'id'     => '',
         'amount' => '',
     );
-    $content .= qpp_loop( $args );
+    $content .= qpp_loop( $args, true );
     $content .= '<p>There are some more examples of payment forms <a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">on this page</a>.</p>
     <p>And there are loads of shortcode options <a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">on this page</a>.</p>
     </div></div>';
-    echo  $content ;
+    echo $content;
 }
 
-function qpp_ipn_page()
-{
-    
+function qpp_ipn_page() {
     if ( isset( $_POST['Submit'] ) && check_admin_referer( "save_qpp" ) ) {
         $options = array(
             'ipn',
@@ -1366,13 +1305,10 @@ function qpp_ipn_page()
         update_option( 'qpp_ipn', $ipn );
         qpp_admin_notice( "The IPN settings have been updated." );
     }
-    
-    
     if ( isset( $_POST['Reset'] ) && check_admin_referer( "save_qpp" ) ) {
         delete_option( 'qpp_ipn' );
         qpp_admin_notice( "The IPN settings have been reset." );
     }
-    
     $ipn = qpp_get_stored_ipn();
     $content = '<div class="qpp-settings"><div class="qpp-options">
 	<h2>Instant Payment Notifications</h2>
@@ -1427,14 +1363,12 @@ function qpp_ipn_page()
     </ol>
     </div>
     </div>';
-    echo  $content ;
+    echo $content;
 }
 
-function qpp_autoresponce_page( $id )
-{
+function qpp_autoresponce_page(  $id  ) {
     qpp_change_form_update();
     $afterpayment = $aftersubmission = false;
-    
     if ( isset( $_POST['Submit'] ) && check_admin_referer( "save_qpp" ) ) {
         $options = array(
             'enable',
@@ -1449,21 +1383,16 @@ function qpp_autoresponce_page( $id )
             $auto[$item] = stripslashes( $_POST[$item] );
         }
         update_option( 'qpp_autoresponder' . $id, $auto );
-        
         if ( $id ) {
             qpp_admin_notice( "The autoresponder settings for " . $id . " have been updated." );
         } else {
             qpp_admin_notice( "The default form autoresponder settings have been updated." );
         }
-    
     }
-    
-    
     if ( isset( $_POST['Reset'] ) && check_admin_referer( "save_qpp" ) ) {
         delete_option( 'qpp_autoresponder' . $id );
         qpp_admin_notice( "The autoresponder settings for the form called " . $id . " have been reset." );
     }
-    
     $qpp_setup = qpp_get_stored_setup();
     $id = $qpp_setup['current'];
     $qpp = qpp_get_stored_options( $id );
@@ -1471,13 +1400,11 @@ function qpp_autoresponce_page( $id )
     ${$auto['whenconfirm']} = 'checked';
     $message = $auto['message'];
     $content = '<div class="qpp-settings"><div class="qpp-options" style="width:90%;">';
-    
     if ( $id ) {
         $content .= '<h2 style="color:#B52C00">Autoresponse settings for ' . $id . '</h2>';
     } else {
         $content .= '<h2 style="color:#B52C00">Default form autoresponse settings</h2>';
     }
-    
     $content .= qpp_change_form( $qpp_setup );
     $content .= '<p>The auto responder sends a confirmation message to the Payer. Use the editor below to send links, images and anything else you normally add to a post or page.</p>
     <p class="description">Note that the autoresponder only works if you collect an email address on the <a href="?page=quick-paypal-payments&tab=settings">Form Settings</a>.</p>
@@ -1493,7 +1420,7 @@ function qpp_autoresponce_page( $id )
     <p>Subject</p>
     <input style="width:100%" type="text" name="subject" value="' . esc_attr( $auto['subject'] ) . '"/><br>
     <p>Message Content</p>';
-    echo  $content ;
+    echo $content;
     wp_editor( $message, 'message', $settings = array(
         'textarea_rows' => '20',
         'wpautop'       => false,
@@ -1551,13 +1478,11 @@ function qpp_autoresponce_page( $id )
     $content .= '</form>
     </div>
     </div>';
-    echo  $content ;
+    echo $content;
 }
 
-function qpp_address( $id )
-{
+function qpp_address(  $id  ) {
     qpp_change_form_update();
-    
     if ( isset( $_POST['Submit'] ) && check_admin_referer( "save_qpp" ) ) {
         $options = array(
             'useaddress',
@@ -1590,24 +1515,19 @@ function qpp_address( $id )
         update_option( 'qpp_address' . $id, $address );
         qpp_admin_notice( "The form settings have been updated." );
     }
-    
-    
     if ( isset( $_POST['Reset'] ) && check_admin_referer( "save_qpp" ) ) {
         delete_option( 'qpp_error' . $id );
         qpp_admin_notice( "The form settings have been reset." );
     }
-    
     $qpp_setup = qpp_get_stored_setup();
     $id = $qpp_setup['current'];
     $address = qpp_get_stored_address( $id );
     $content = '<div class="qpp-settings"><div class="qpp-options">';
-    
     if ( $id ) {
         $content .= '<h2>Personal Information Fields for ' . $id . '</h2>';
     } else {
         $content .= '<h2>Personal Information Fields</h2>';
     }
-    
     $content .= qpp_change_form( $qpp_setup );
     $ccodes = Utilities::get_instance()->get_paypal_locales();
     $default_countries = '';
@@ -1723,17 +1643,15 @@ function qpp_address( $id )
         'id'     => '',
         'amount' => '',
     );
-    $content .= qpp_loop( $args );
+    $content .= qpp_loop( $args, true );
     $content .= '<p>There are some more examples of payment forms <a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">on this page</a>.</p>
     <p>And there are loads of shortcode options <a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">on this page</a>.</p>
     </div></div>';
-    echo  $content ;
+    echo $content;
 }
 
-function qpp_coupon_codes( $id )
-{
+function qpp_coupon_codes(  $id  ) {
     qpp_change_form_update();
-    
     if ( isset( $_POST['Submit'] ) && check_admin_referer( "save_qpp" ) ) {
         $arr = array(
             'couponnumber',
@@ -1743,12 +1661,10 @@ function qpp_coupon_codes( $id )
             'couponexpired'
         );
         foreach ( $arr as $item ) {
-            
             if ( isset( $_POST[$item] ) ) {
                 $coupon[$item] = stripslashes( $_POST[$item] );
                 $coupon[$item] = filter_var( $coupon[$item], FILTER_SANITIZE_STRING );
             }
-        
         }
         $options = array(
             'code',
@@ -1761,15 +1677,13 @@ function qpp_coupon_codes( $id )
         if ( $coupon['couponnumber'] < 1 ) {
             $coupon['couponnumber'] = 1;
         }
-        for ( $i = 1 ;  $i <= $coupon['couponnumber'] ;  $i++ ) {
+        for ($i = 1; $i <= $coupon['couponnumber']; $i++) {
             foreach ( $options as $item ) {
-                
                 if ( isset( $_POST[$item . $i] ) ) {
                     $coupon[$item . $i] = stripslashes( sanitize_text_field( $_POST[$item . $i] ) );
                 } else {
                     $coupon[$item . $i] = '';
                 }
-            
             }
             if ( $coupon['qty' . $i] > 0 || $coupon['qty' . $i] === '' ) {
                 $coupon['expired' . $i] = false;
@@ -1785,7 +1699,6 @@ function qpp_coupon_codes( $id )
             }
         }
         update_option( 'qpp_coupon' . $id, $coupon );
-        
         if ( isset( $coupon['duplicate'] ) && $coupon['duplicate'] ) {
             $qpp_setup = qpp_get_stored_setup();
             $arr = explode( ",", $qpp_setup['alternative'] );
@@ -1793,16 +1706,12 @@ function qpp_coupon_codes( $id )
                 update_option( 'qpp_coupon' . $item, $coupon );
             }
         }
-        
         qpp_admin_notice( "The coupon settings have been updated." );
     }
-    
-    
     if ( isset( $_POST['Reset'] ) && check_admin_referer( "save_qpp" ) ) {
         delete_option( 'qpp_coupon' . $id );
         qpp_admin_notice( "The coupon settings have been reset." );
     }
-    
     $qpp_setup = qpp_get_stored_setup();
     $id = $qpp_setup['current'];
     $currency = qpp_get_stored_curr();
@@ -1849,20 +1758,18 @@ function qpp_coupon_codes( $id )
     }
     $coupon = qpp_get_stored_coupon( $id );
     $content = '<div class="qpp-settings"><div class="qpp-options">';
-    
     if ( $id ) {
         $content .= '<h2>Coupons codes for ' . $id . '</h2>';
     } else {
         $content .= '<h2>Default form coupons codes</h2>';
     }
-    
     $content .= qpp_change_form( $qpp_setup );
     $content .= '<form method="post" action="">
     <p<span<b>Note:</b> Leave fields blank if you don\'t want to use them</span></p>
     <p>Number of Coupons: <input type="text" name="couponnumber" value="' . esc_attr( $coupon['couponnumber'] ) . '" style="width:4em"></p>
     <table>
     <tr><td>Code</td><td>Percentage</td><td>Fixed Amount</td><td>Qty<br>(remaining <br>/ blank unlimited)</td></tr>';
-    for ( $i = 1 ;  $i <= $coupon['couponnumber'] ;  $i++ ) {
+    for ($i = 1; $i <= $coupon['couponnumber']; $i++) {
         $percent = ( $coupon['coupontype' . $i] == 'percent' . $i ? 'checked' : '' );
         $fixed = ( $coupon['coupontype' . $i] == 'fixed' . $i ? 'checked' : '' );
         $content .= '<tr><td><input placeholder="Enter Coupon Code" type="text" name="code' . $i . '" value="' . esc_attr( qpp_get_element( $coupon, 'code' . $i ) ) . '" /></td>
@@ -1899,15 +1806,14 @@ function qpp_coupon_codes( $id )
         'id'     => '',
         'amount' => '',
     );
-    $content .= qpp_loop( $args );
+    $content .= qpp_loop( $args, true );
     $content .= '<p>There are some more examples of payment forms <a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">on this page</a>.</p>
     <p>And there are loads of shortcode options <a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">on this page</a>.</p>
     </div></div>';
-    echo  $content ;
+    echo $content;
 }
 
-function qpp_delete_everything()
-{
+function qpp_delete_everything() {
     $qpp_setup = qpp_get_stored_setup();
     $arr = explode( ",", $qpp_setup['alternative'] );
     foreach ( $arr as $item ) {
@@ -1919,38 +1825,31 @@ function qpp_delete_everything()
     delete_option( 'qpp_message' );
 }
 
-function qpp_delete_things( $id )
-{
+function qpp_delete_things(  $id  ) {
     delete_option( 'qpp_options' . $id );
     delete_option( 'qpp_send' . $id );
     delete_option( 'qpp_error' . $id );
     delete_option( 'qpp_style' . $id );
 }
 
-function qpp_change_form( $qpp_setup )
-{
+function qpp_change_form(  $qpp_setup  ) {
     $content = '';
-    
     if ( $qpp_setup['alternative'] ) {
         $content .= '<form style="margin-top: 8px" method="post" action="" >';
         $arr = explode( ",", $qpp_setup['alternative'] );
         sort( $arr );
         foreach ( $arr as $item ) {
-            
             if ( $qpp_setup['current'] == $item ) {
                 $checked = 'checked';
             } else {
                 $checked = '';
             }
-            
-            
             if ( $item == '' ) {
                 $formname = 'default';
                 $item = '';
             } else {
                 $formname = $item;
             }
-            
             $content .= '<input  type="radio" name="current" value="' . esc_attr( $item ) . '" ' . checked( $item, $qpp_setup['current'], false ) . '>' . esc_attr( $formname ) . ' &nbsp;';
         }
         $content .= wp_nonce_field(
@@ -1964,13 +1863,10 @@ function qpp_change_form( $qpp_setup )
         <input type="submit" name="Select" class="button-secondary" value="Select Form" />
         </form>';
     }
-    
     return $content;
 }
 
-function qpp_change_form_update()
-{
-    
+function qpp_change_form_update() {
     if ( isset( $_POST['Select'] ) ) {
         check_admin_referer( 'qpp_save' );
         $qpp_setup = qpp_get_stored_setup();
@@ -1979,14 +1875,11 @@ function qpp_change_form_update()
         $qpp_setup['email'] = sanitize_text_field( $_POST['email'] );
         update_option( 'qpp_setup', $qpp_setup );
     }
-
 }
 
-function qpp_generate_csv()
-{
+function qpp_generate_csv() {
     $qpp_setup = qpp_get_stored_setup();
     $ipn = qpp_get_stored_ipn();
-    
     if ( isset( $_POST['download_qpp_csv'] ) ) {
         check_admin_referer( 'qpp_download_form', 'qpp_download_form_nonce' );
         $id = $_POST['formname'];
@@ -2022,7 +1915,6 @@ function qpp_generate_csv()
         if ( $qpp['use_message'] ) {
             array_push( $headerrow, $qpp['messagelabel'] );
         }
-        
         if ( $messageoptions['showaddress'] ) {
             if ( $address['email'] ) {
                 array_push( $headerrow, $address['email'] );
@@ -2055,7 +1947,6 @@ function qpp_generate_csv()
                 array_push( $headerrow, $address['night_phone_b'] );
             }
         }
-        
         if ( $ipn['ipn'] ) {
             array_push( $headerrow, 'Paid' );
         }
@@ -2071,100 +1962,68 @@ function qpp_generate_csv()
             array_push( $cells, $value['field1'] );
             array_push( $cells, $value['field2'] );
             array_push( $cells, $value['field3'] );
-            
             if ( $qpp['use_stock'] ) {
                 $value['field4'] = ( $value['field4'] != $value['stocklabel'] ? $value['field4'] : '' );
                 array_push( $cells, $value['field4'] );
             }
-            
-            
             if ( $qpp['use_options'] ) {
                 $value['field5'] = ( $value['field5'] != $value['optionlabel'] ? $value['field5'] : '' );
                 array_push( $cells, $value['field5'] );
             }
-            
-            
             if ( $qpp['usecoupon'] ) {
                 $value['field6'] = ( $value['field6'] != $value['couponblurb'] ? $value['field6'] : '' );
                 array_push( $cells, $value['field6'] );
             }
-            
-            
             if ( $qpp['use_message'] ) {
                 $value['field19'] = ( $value['field19'] != $value['messagelabel'] ? $value['field19'] : '' );
                 array_push( $cells, $value['field19'] );
             }
-            
-            
             if ( $messageoptions['showaddress'] ) {
-                
                 if ( $address['email'] ) {
                     $value['field8'] = ( $value['field8'] != $address['email'] ? $value['field8'] : '' );
                     array_push( $cells, $value['field8'] );
                 }
-                
-                
                 if ( $address['firstname'] ) {
                     $value['field9'] = ( $value['field9'] != $address['firstname'] ? $value['field9'] : '' );
                     array_push( $cells, $value['field9'] );
                 }
-                
-                
                 if ( $address['lastname'] ) {
                     $value['field10'] = ( $value['field10'] != $address['lastname'] ? $value['field10'] : '' );
                     array_push( $cells, $value['field10'] );
                 }
-                
-                
                 if ( $address['address1'] ) {
                     $value['field11'] = ( $value['field11'] != $address['address1'] ? $value['field11'] : '' );
                     array_push( $cells, $value['field11'] );
                 }
-                
-                
                 if ( $address['address2'] ) {
                     $value['field12'] = ( $value['field12'] != $address['address2'] ? $value['field12'] : '' );
                     array_push( $cells, $value['field12'] );
                 }
-                
-                
                 if ( $address['city'] ) {
                     $value['field13'] = ( $value['field13'] != $address['city'] ? $value['field13'] : '' );
                     array_push( $cells, $value['field13'] );
                 }
-                
-                
                 if ( $address['state'] ) {
                     $value['field14'] = ( $value['field14'] != $address['state'] ? $value['field14'] : '' );
                     array_push( $cells, $value['field14'] );
                 }
-                
-                
                 if ( $address['zip'] ) {
                     $value['field15'] = ( $value['field15'] != $address['zip'] ? $value['field15'] : '' );
                     array_push( $cells, $value['field15'] );
                 }
-                
-                
                 if ( $address['country'] ) {
                     $value['field16'] = ( $value['field16'] != $address['country'] ? $value['field16'] : '' );
                     array_push( $cells, $value['field16'] );
                 }
-                
-                
                 if ( $address['night_phone_b'] ) {
                     $value['field17'] = ( $value['field17'] != $address['night_phone_b'] ? $value['field17'] : '' );
                     array_push( $cells, $value['field17'] );
                 }
-            
             }
-            
-            
             if ( $ipn['ipn'] ) {
                 $paid = ( $value['field18'] == 'Paid' ? 'Paid' : '' );
                 array_push( $cells, $paid );
             }
-            
             fputcsv(
                 $outstream,
                 $cells,
@@ -2175,17 +2034,14 @@ function qpp_generate_csv()
         fclose( $outstream );
         exit;
     }
-
 }
 
-function qpp_settings_init()
-{
+function qpp_settings_init() {
     qpp_generate_csv();
     return;
 }
 
-function qpp_scripts_init( $hook )
-{
+function qpp_scripts_init(  $hook  ) {
     if ( $hook != 'settings_page_quick-paypal-payments' && $hook != 'toplevel_page_quick-paypal-payments-messages' ) {
         return;
     }
@@ -2199,7 +2055,7 @@ function qpp_scripts_init( $hook )
     wp_enqueue_script(
         'qpp-media',
         plugins_url( 'media.js', __FILE__ ),
-        array( 'jquery', 'wp-color-picker' ),
+        array('jquery', 'wp-color-picker'),
         false,
         true
     );
@@ -2207,8 +2063,7 @@ function qpp_scripts_init( $hook )
 }
 
 add_action( 'admin_enqueue_scripts', 'qpp_scripts_init' );
-function qpp_page_init()
-{
+function qpp_page_init() {
     add_options_page(
         'Paypal Payments',
         'Paypal Payments',
@@ -2218,38 +2073,32 @@ function qpp_page_init()
     );
 }
 
-function qpp_admin_notice( $message = '' )
-{
-    if ( !empty($message) ) {
-        echo  '<div class="updated"><p>' . $message . '</p></div>' ;
+function qpp_admin_notice(  $message = ''  ) {
+    if ( !empty( $message ) ) {
+        echo '<div class="updated"><p>' . $message . '</p></div>';
     }
 }
 
-function qpp_admin_pages()
-{
+function qpp_admin_pages() {
     add_menu_page(
         'Payments',
         'Payments',
         'manage_options',
         'quick-paypal-payments-messages',
         function () {
-        require_once 'messages.php';
-    },
+            require_once 'messages.php';
+        },
         'dashicons-cart'
     );
 }
 
-function qpp_plugin_row_meta( $links, $file = '' )
-{
+function qpp_plugin_row_meta(  $links, $file = ''  ) {
     /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
-    global  $quick_paypal_payments_fs ;
-    
+    global $quick_paypal_payments_fs;
     if ( false !== strpos( $file, '/quick-paypal-payments.php' ) ) {
         $new_links[] = '<a href="https://fullworks.net/docs/quick-paypal-payments/"><strong>Help and Support</strong></a>';
-        
         if ( false === $quick_paypal_payments_fs->is_plan_or_trial( 'platinum' ) ) {
-            global  $quick_paypal_payments_fs ;
-            
+            global $quick_paypal_payments_fs;
             if ( $quick_paypal_payments_fs->is_trial() || $quick_paypal_payments_fs->is_trial_utilized() ) {
                 $upurl = $quick_paypal_payments_fs->get_upgrade_url();
                 $upmsg = 'Upgrade to Pro Platinum';
@@ -2259,11 +2108,8 @@ function qpp_plugin_row_meta( $links, $file = '' )
                 $upmsg = 'Pro Platinum: Free 14 Day Trial';
                 $new_links[] = '<a href="' . $upurl . '"><strong>' . $upmsg . '</strong></a>';
             }
-        
         }
-        
         $links = array_merge( $links, $new_links );
     }
-    
     return $links;
 }

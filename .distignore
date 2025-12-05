@@ -1,0 +1,69 @@
+# Development and version control
+.git
+.gitignore
+.gitattributes
+.github
+
+# Build tools and config
+.editorconfig
+.nvmrc
+composer.json
+composer.lock
+package.json
+package-lock.json
+phpcs.xml
+phpcs.xml.dist
+phpcs_sec.xml
+phpunit.xml
+phpunit.xml.dist
+.phpcs.xml
+.phpcs.xml.dist
+gulpfile.js
+
+# Dependencies
+node_modules
+
+# Testing
+tests
+bin
+.phpunit.result.cache
+
+# Build artifacts
+dist
+zipped
+*.zip
+
+# Documentation (keep readme.txt)
+*.md
+README*
+!readme.txt
+
+# WordPress.org assets
+.wordpress-org
+assets-wp-repo
+
+# IDE and editor files
+.travis.yml
+.gitlab-ci.yml
+.idea
+.vscode
+*.iml
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Temporary files
+.distignore
+*.tmp
+*.bak
+*~
+
+# WP-ENV
+.wp-env.json
+.wp-env.override.json

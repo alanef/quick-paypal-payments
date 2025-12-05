@@ -23,12 +23,12 @@
  */
 namespace Quick_Paypal_Payments\Control;
 
-class Freemius_Config
-{
-    public function init()
-    {
-        global  $quick_paypal_payments_fs ;
-        
+class Freemius_Config {
+    public function init() {
+        global $quick_paypal_payments_fs;
+        if ( !defined( 'QPP_DEMO' ) ) {
+            define( 'QPP_DEMO', false );
+        }
         if ( !isset( $quick_paypal_payments_fs ) ) {
             // Include Freemius SDK.
             require_once QUICK_PAYPAL_PAYMENTS_PLUGIN_DIR . 'vendor/freemius/wordpress-sdk/start.php';
@@ -42,35 +42,34 @@ class Freemius_Config
                 'has_addons'     => false,
                 'has_paid_plans' => true,
                 'trial'          => array(
-                'days'               => 14,
-                'is_require_payment' => true,
-            ),
+                    'days'               => 14,
+                    'is_require_payment' => true,
+                ),
                 'navigation'     => 'tabs',
                 'menu'           => array(
-                'slug'           => 'quick-paypal-payments',
-                'override_exact' => true,
-                'support'        => false,
-                'parent'         => array(
-                'slug' => 'options-general.php',
-            ),
-            ),
+                    'slug'           => 'quick-paypal-payments',
+                    'override_exact' => true,
+                    'support'        => false,
+                    'parent'         => array(
+                        'slug' => 'options-general.php',
+                    ),
+                ),
+                'anonymous_mode' => QPP_DEMO,
                 'is_live'        => true,
             ) );
         }
-        
         $quick_paypal_payments_fs->add_filter(
             'is_submenu_visible',
-            array( $this, '_fs_show_support_menu' ),
+            array($this, '_fs_show_support_menu'),
             10,
             2
         );
         return $quick_paypal_payments_fs;
     }
-    
-    public function _fs_show_support_menu( $is_visible, $menu_id )
-    {
+
+    public function _fs_show_support_menu( $is_visible, $menu_id ) {
         /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
-        global  $quick_paypal_payments_fs ;
+        global $quick_paypal_payments_fs;
         if ( 'support' === $menu_id ) {
             return $quick_paypal_payments_fs->is_free_plan();
         }

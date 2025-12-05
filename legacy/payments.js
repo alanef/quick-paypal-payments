@@ -178,26 +178,71 @@ function qppcheck() {
     $(".submit").hide();
 }
 
+function refreshNonce(callback) {
+	// Simple check if we can refresh the nonce
+	if (typeof qpp_data === 'undefined' || !qpp_data.ajax_url) {
+		if (typeof callback === 'function') callback();
+		return;
+	}
+	
+	// Check if we have a nonce field
+	if ($('#qpp_payment_nonce').length === 0) {
+		if (typeof callback === 'function') callback();
+		return;
+	}
+	
+	console.log('Refreshing nonce...');
+	console.debug(qpp_data.ajax_url);
+	$.post(qpp_data.ajax_url, {      //POST request
+		action: "qpp_refresh_nonce"
+	}, function(response) {            //callback
+		if (response && response.data && response.data.nonce) {
+			$('#qpp_payment_nonce').val(response.data.nonce);
+			console.log('Nonce refreshed successfully');       
+		}
+		// Always call the callback when done, regardless of success
+		if (typeof callback === 'function') callback();
+	}).fail(function() {
+		console.log('Failed to refresh nonce');
+		// Always call the callback when done, even on failure
+		if (typeof callback === 'function') callback();
+	});
+}
+
 function validateForm(ev) {
+	console.log('Form submission detected');
 	var f = $(this);
 	var c = f.find('input[clicked=true]');
 
 	if (c.attr('id') == 'couponsubmit') { // check if clicked button is the coupon apply button
+		console.log('Coupon submit button detected, proceeding with regular submission');
 		// just submit form regularly
 		return true;
 	}
+
+	console.log('Form being validated:', { 
+		form_id: f.attr('id'),
+		hasNonce: f.find('#qpp_payment_nonce').length > 0,
+		nonceValue: f.find('#qpp_payment_nonce').val()
+	});
 
 	qppcheck(f);
 	// reset the buttons' clicked state
 	f.find("input[type=image],input[type=submit]").removeAttr("clicked");
 
+	// Process the form directly without refreshing the nonce
+	// The nonce should already be refreshed by interaction
+	console.log('Processing form submission');
+
 	// Intercept request and handle with AJAX
-	var fd = $(this).serialize();
+	var fd = $(f).serialize();
 	fd += '&' + c.attr('name') + '=' + c.val() + '&action=qpp_validate_form';
-     console.log('ajax call');
-	$.post(qpp_data.ajax_url, fd,function(e) {
-		handleValidationResponse(e,f)
-	},'JSON');
+	
+	console.log('Posting form data to ' + qpp_data.ajax_url);
+	$.post(qpp_data.ajax_url, fd, function(e) {
+		console.log('Received validation response from server');
+		handleValidationResponse(e, f);
+	}, 'JSON');
 
 	ev.preventDefault();
 	return false;
@@ -205,12 +250,41 @@ function validateForm(ev) {
 
 jQuery(document).ready(function() {
 	$ = jQuery;
+	
+	// Check if qpp_data is available
+	console.debug('Document ready. Checking qpp_data object:', {
+		qpp_data_exists: (typeof qpp_data !== 'undefined'),
+		ajax_url_exists: (typeof qpp_data !== 'undefined' && qpp_data.ajax_url),
+		nonce_fields: $('#qpp_payment_nonce').length
+	});
+	
+	if (typeof qpp_data === 'undefined' || !qpp_data.ajax_url) {
+		console.error('qpp_data.ajax_url is not available. Nonce refresh functionality will not work.');
+	}
 
 
 	/*
 		Scroll to .qpp-complete
 	*/
 	qpp_show_form($('.qpp-complete'));
+
+	// Refresh nonce when user interacts with the form
+	// This helps prevent nonce validation failures due to cached pages
+	var nonceRefreshTimer;
+	$('.qpp-style form').on('focus click', 'input, select, textarea', function(e) {
+		console.debug('Form interaction detected:', {
+			type: e.type,
+			target: e.target.name || e.target.id || e.target.type,
+			hasNonceField: $('#qpp_payment_nonce').length > 0
+		});
+		
+		// Debounce the nonce refresh to avoid too many requests
+		clearTimeout(nonceRefreshTimer);
+		nonceRefreshTimer = setTimeout(function() {
+			console.debug('Calling refreshNonce() after debounce');
+			refreshNonce();
+		}, 500);
+	});
 
 	/*
 		Add in some catches to detect which button was clicked in a form!

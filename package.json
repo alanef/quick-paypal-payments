@@ -1,0 +1,16 @@
+{
+  "name": "quick-paypal-payments",
+  "version": "5.7.47",
+  "description": "Quick PayPal Payments WordPress Plugin",
+  "scripts": {
+    "build:admin-css": "sass ui/admin/css/admin.scss ui/admin/css/admin.css --style=compressed --no-source-map",
+    "build:frontend-css": "sass ui/user/css/frontend.scss ui/user/css/frontend.css --style=compressed --no-source-map",
+    "build": "npm run build:admin-css && npm run build:frontend-css",
+    "watch": "sass --watch ui/admin/css/admin.scss:ui/admin/css/admin.css ui/user/css/frontend.scss:ui/user/css/frontend.css"
+  },
+  "author": "Fullworks",
+  "license": "GPL-2.0-or-later",
+  "devDependencies": {
+    "sass": "^1.80.0"
+  }
+}

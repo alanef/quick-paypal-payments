@@ -40,4 +40,35 @@
 			});
 		});
 	})
+	$(document).ready(function () {
+		// Initially hide the fieldset
+		$(".qpp_option_list_settings").hide();
+		validateInputs();
+
+		function validateInputs() {
+			// Check if checkbox is checked
+			var fixedAmountChecked = $("input[name='fixedamount']").is(':checked');
+
+			// Check if there's a comma in the input value
+			var inputVal = $("input[name='inputamount']").val();
+			var containsComma = inputVal && inputVal.includes(',');
+
+
+			if (fixedAmountChecked && containsComma) {
+				$(".qpp_option_list_settings").show();
+			} else {
+				$(".qpp_option_list_settings").hide();
+			}
+		}
+
+		// Listen for changes in input text
+		$("input[name='inputamount']").on('input', function (E) {
+			validateInputs();
+		});
+
+		// Listen for changes in checkbox state
+		$("input[name='fixedamount']").on('change', function () {
+			validateInputs();
+		});
+	});
 })( jQuery );

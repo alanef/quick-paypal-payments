@@ -1,1292 +1,1320 @@
-# Copyright (C) 2024 quick-paypal-payments
-# This file is distributed under the same license as the quick-paypal-payments package.
+# Copyright (C) 2025 Fullworks
+# This file is distributed under the GPL-2.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: quick-paypal-payments\n"
+"Project-Id-Version: Quick Paypal Payments 5.7.48\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/quick-paypal-payments\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-02-14 15:37+0000\n"
-"X-Poedit-Basepath: ..\n"
-"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.js\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"POT-Creation-Date: 2025-12-05T15:08:54+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.10.0\n"
+"X-Domain: quick-paypal-payments\n"
 
-#: src/control/autoloader.php:54
+#. Plugin Name of the plugin
+#: quick-paypal-payments.php
+msgid "Quick Paypal Payments"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: quick-paypal-payments.php
+msgid "https://fullworksplugins.com/quick-paypal-payments/"
+msgstr ""
+
+#. Description of the plugin
+#: quick-paypal-payments.php
+msgid "Accept any amount or payment ID before submitting to paypal."
+msgstr ""
+
+#. Author of the plugin
+#: quick-paypal-payments.php
+msgid "Fullworks"
+msgstr ""
+
+#. Author URI of the plugin
+#: quick-paypal-payments.php
+msgid "https://fullworksplugins.com/"
+msgstr ""
+
+#: control/autoloader.php:54
 msgid "The system file attempting to be loaded at %1$s does not exist."
 msgstr ""
 
-#: src/core/class-utilities.php:307
+#: core/class-utilities.php:307
 msgid "Payment Reference"
 msgstr ""
 
-#: src/core/class-utilities.php:322
+#: core/class-utilities.php:322
 msgid "Item Number"
 msgstr ""
 
-#: src/core/class-utilities.php:341
+#: core/class-utilities.php:341
 msgid "Quantity"
 msgstr ""
 
-#: src/core/class-utilities.php:349
+#: core/class-utilities.php:349
 msgid "maximum of 99"
 msgstr ""
 
-#: src/core/class-utilities.php:360, src/core/class-utilities.php:585
+#: core/class-utilities.php:360
+#: core/class-utilities.php:585
 msgid "Amount to pay"
 msgstr ""
 
-#: src/core/class-utilities.php:384
+#: core/class-utilities.php:384
 msgid "Other"
 msgstr ""
 
-#: src/core/class-utilities.php:388
+#: core/class-utilities.php:388
 msgid "Enter Amount"
 msgstr ""
 
-#: src/core/class-utilities.php:403
+#: core/class-utilities.php:403
 msgid "Options"
 msgstr ""
 
-#: src/core/class-utilities.php:407
+#: core/class-utilities.php:407
 msgid "Large,Medium,Small"
 msgstr ""
 
-#: src/core/class-utilities.php:426
+#: core/class-utilities.php:426
 msgid "Handling charge will be added before payment"
 msgstr ""
 
-#: src/core/class-utilities.php:448
+#: core/class-utilities.php:448
 msgid "Spambot blocker question"
 msgstr ""
 
-#: src/core/class-utilities.php:463
+#: core/class-utilities.php:463
 msgid "Apply Coupon"
 msgstr ""
 
-#: src/core/class-utilities.php:467
+#: core/class-utilities.php:467
 msgid "Coupon Applied"
 msgstr ""
 
-#: src/core/class-utilities.php:471
+#: core/class-utilities.php:471
 msgid "Invalid Code"
 msgstr ""
 
-#: src/core/class-utilities.php:475
+#: core/class-utilities.php:475
 msgid "Coupon No Longer Available"
 msgstr ""
 
-#: src/core/class-utilities.php:479
+#: core/class-utilities.php:479
 msgid "Coupon Code:"
 msgstr ""
 
-#: src/core/class-utilities.php:490
+#: core/class-utilities.php:490
 msgid "I agree to the Terms and Conditions"
 msgstr ""
 
-#: src/core/class-utilities.php:509
+#: core/class-utilities.php:509
 msgid "Make sure you complete the next field"
 msgstr ""
 
-#: src/core/class-utilities.php:520
+#: core/class-utilities.php:520
 msgid "Subscription details:"
 msgstr ""
 
-#: src/core/class-utilities.php:528
+#: core/class-utilities.php:528
 msgid "payments every "
 msgstr ""
 
-#: src/core/class-utilities.php:536
+#: core/class-utilities.php:536
 msgid "day"
 msgstr ""
 
-#: src/core/class-utilities.php:540
+#: core/class-utilities.php:540
 msgid "week"
 msgstr ""
 
-#: src/core/class-utilities.php:544
+#: core/class-utilities.php:544
 msgid "month"
 msgstr ""
 
-#: src/core/class-utilities.php:548
+#: core/class-utilities.php:548
 msgid "year"
 msgstr ""
 
-#: src/core/class-utilities.php:563
+#: core/class-utilities.php:563
 msgid "Enter your details below"
 msgstr ""
 
-#: src/core/class-utilities.php:574
+#: core/class-utilities.php:574
 msgid "Total:"
 msgstr ""
 
-#: src/core/class-utilities.php:612
+#: core/class-utilities.php:612
 msgid "Your email address"
 msgstr ""
 
-#: src/core/class-utilities.php:627
+#: core/class-utilities.php:627
 msgid "Message"
 msgstr ""
 
-#: src/core/class-utilities.php:642
+#: core/class-utilities.php:642
 msgid "Select date"
 msgstr ""
 
-#: src/core/class-utilities.php:658
+#. translators: %1$s* = [product] %$2 = [cost] literals as shortcodes
+#: core/class-utilities.php:658
 msgid "%1$s at $%2$s each"
 msgstr ""
 
-#: src/core/class-utilities.php:683
+#: core/class-utilities.php:683
 msgid "Codice Fiscale"
 msgstr ""
 
-#: src/core/class-utilities.php:698, src/legacy/options.php:85
+#: core/class-utilities.php:698
+#: legacy/options.php:85
 msgid "I consent to my data being retained by the site owner after payment has been processed."
 msgstr ""
 
-#: src/core/class-utilities.php:921
+#: core/class-utilities.php:921
 msgid "Payment Form"
 msgstr ""
 
-#: src/core/class-utilities.php:925
+#: core/class-utilities.php:925
 msgid "Enter the payment details and submit"
 msgstr ""
 
-#: src/core/class-utilities.php:929
+#: core/class-utilities.php:929
 msgid "Payment for: "
 msgstr ""
 
-#: src/core/class-utilities.php:933
+#: core/class-utilities.php:933
 msgid "Amount: "
 msgstr ""
 
-#: src/core/class-utilities.php:937
+#: core/class-utilities.php:937
 msgid "Make Payment"
 msgstr ""
 
-#: src/core/class-utilities.php:945
+#: core/class-utilities.php:945
 msgid "Reset Form"
 msgstr ""
 
-#: src/core/class-utilities.php:949
+#: core/class-utilities.php:949
 msgid "Oops, got a problem here"
 msgstr ""
 
-#: src/core/class-utilities.php:953
+#: core/class-utilities.php:953
 msgid "Please check the payment details"
 msgstr ""
 
-#: src/core/class-utilities.php:987
+#: core/class-utilities.php:987
 msgid "Thank you for your payment."
 msgstr ""
 
-#: src/core/class-utilities.php:991
+#: core/class-utilities.php:991
 msgid "Once payment has been confirmed we will process your order and be in contact soon."
 msgstr ""
 
-#: src/core/class-utilities.php:1001
+#: core/class-utilities.php:1001
 msgid "First Name"
 msgstr ""
 
-#: src/core/class-utilities.php:1009
+#: core/class-utilities.php:1009
 msgid "Last Name"
 msgstr ""
 
-#: src/core/class-utilities.php:1017
+#: core/class-utilities.php:1017
 msgid "Your Email Address"
 msgstr ""
 
-#: src/core/class-utilities.php:1025
+#: core/class-utilities.php:1025
 msgid "Address Line 1"
 msgstr ""
 
-#: src/core/class-utilities.php:1033
+#: core/class-utilities.php:1033
 msgid "Address Line 2"
 msgstr ""
 
-#: src/core/class-utilities.php:1041
+#: core/class-utilities.php:1041
 msgid "City"
 msgstr ""
 
-#: src/core/class-utilities.php:1049
+#: core/class-utilities.php:1049
 msgid "State"
 msgstr ""
 
-#: src/core/class-utilities.php:1057
+#: core/class-utilities.php:1057
 msgid "Zip Code"
 msgstr ""
 
-#: src/core/class-utilities.php:1065
+#: core/class-utilities.php:1065
 msgid "Country"
 msgstr ""
 
-#: src/core/class-utilities.php:1073
+#: core/class-utilities.php:1073
 msgid "Phone Number"
 msgstr ""
 
-#: src/core/class-utilities.php:1221
+#: core/class-utilities.php:1221
 msgid "Join our mailing list"
 msgstr ""
 
-#: src/core/class-utilities.php:1241
+#: core/class-utilities.php:1241
 msgid "Waiting for PayPal..."
 msgstr ""
 
-#: src/core/class-utilities.php:1383
+#: core/class-utilities.php:1383
 msgid "United States dollar"
 msgstr ""
 
-#: src/core/class-utilities.php:1384
+#: core/class-utilities.php:1384
 msgid "Pound sterling"
 msgstr ""
 
-#: src/core/class-utilities.php:1385
+#: core/class-utilities.php:1385
 msgid "Euro"
 msgstr ""
 
-#: src/core/class-utilities.php:1386
+#: core/class-utilities.php:1386
 msgid "Australian dollar"
 msgstr ""
 
-#: src/core/class-utilities.php:1387
+#: core/class-utilities.php:1387
 msgid "Brazilian real "
 msgstr ""
 
-#: src/core/class-utilities.php:1388
+#: core/class-utilities.php:1388
 msgid "Canadian dollar"
 msgstr ""
 
-#: src/core/class-utilities.php:1389
+#: core/class-utilities.php:1389
 msgid "Czech koruna"
 msgstr ""
 
-#: src/core/class-utilities.php:1390
+#: core/class-utilities.php:1390
 msgid "Danish krone"
 msgstr ""
 
-#: src/core/class-utilities.php:1391
+#: core/class-utilities.php:1391
 msgid "Hong Kong dollar"
 msgstr ""
 
-#: src/core/class-utilities.php:1392
+#: core/class-utilities.php:1392
 msgid "Hungarian forint 1"
 msgstr ""
 
-#: src/core/class-utilities.php:1393
+#: core/class-utilities.php:1393
 msgid "Indian rupee "
 msgstr ""
 
-#: src/core/class-utilities.php:1394
+#: core/class-utilities.php:1394
 msgid "Israeli new shekel"
 msgstr ""
 
-#: src/core/class-utilities.php:1395
+#: core/class-utilities.php:1395
 msgid "Japanese yen "
 msgstr ""
 
-#: src/core/class-utilities.php:1396
+#: core/class-utilities.php:1396
 msgid "Malaysian ringgit 4"
 msgstr ""
 
-#: src/core/class-utilities.php:1397
+#: core/class-utilities.php:1397
 msgid "Mexican peso"
 msgstr ""
 
-#: src/core/class-utilities.php:1398
+#: core/class-utilities.php:1398
 msgid "New Taiwan dollar 1"
 msgstr ""
 
-#: src/core/class-utilities.php:1399
+#: core/class-utilities.php:1399
 msgid "New Zealand dollar"
 msgstr ""
 
-#: src/core/class-utilities.php:1400
+#: core/class-utilities.php:1400
 msgid "Norwegian krone"
 msgstr ""
 
-#: src/core/class-utilities.php:1401
+#: core/class-utilities.php:1401
 msgid "Philippine peso"
 msgstr ""
 
-#: src/core/class-utilities.php:1402
+#: core/class-utilities.php:1402
 msgid "Polish złoty"
 msgstr ""
 
-#: src/core/class-utilities.php:1403
+#: core/class-utilities.php:1403
 msgid "Russian ruble"
 msgstr ""
 
-#: src/core/class-utilities.php:1404
+#: core/class-utilities.php:1404
 msgid "Singapore dollar"
 msgstr ""
 
-#: src/core/class-utilities.php:1405
+#: core/class-utilities.php:1405
 msgid "Swedish krona"
 msgstr ""
 
-#: src/core/class-utilities.php:1406
+#: core/class-utilities.php:1406
 msgid "Swiss franc"
 msgstr ""
 
-#: src/core/class-utilities.php:1407
+#: core/class-utilities.php:1407
 msgid "Thai baht"
 msgstr ""
 
-#: src/core/class-utilities.php:1413
+#: core/class-utilities.php:1413
 msgid "Albania"
 msgstr ""
 
-#: src/core/class-utilities.php:1414
+#: core/class-utilities.php:1414
 msgid "Algeria"
 msgstr ""
 
-#: src/core/class-utilities.php:1415
+#: core/class-utilities.php:1415
 msgid "Andorra"
 msgstr ""
 
-#: src/core/class-utilities.php:1416
+#: core/class-utilities.php:1416
 msgid "Angola"
 msgstr ""
 
-#: src/core/class-utilities.php:1417
+#: core/class-utilities.php:1417
 msgid "Anguilla"
 msgstr ""
 
-#: src/core/class-utilities.php:1418
+#: core/class-utilities.php:1418
 msgid "Antigua & Barbuda"
 msgstr ""
 
-#: src/core/class-utilities.php:1419
+#: core/class-utilities.php:1419
 msgid "Argentina"
 msgstr ""
 
-#: src/core/class-utilities.php:1420
+#: core/class-utilities.php:1420
 msgid "Armenia"
 msgstr ""
 
-#: src/core/class-utilities.php:1421
+#: core/class-utilities.php:1421
 msgid "Aruba"
 msgstr ""
 
-#: src/core/class-utilities.php:1422
+#: core/class-utilities.php:1422
 msgid "Australia"
 msgstr ""
 
-#: src/core/class-utilities.php:1423
+#: core/class-utilities.php:1423
 msgid "Austria"
 msgstr ""
 
-#: src/core/class-utilities.php:1424
+#: core/class-utilities.php:1424
 msgid "Azerbaijan"
 msgstr ""
 
-#: src/core/class-utilities.php:1425
+#: core/class-utilities.php:1425
 msgid "Bahamas"
 msgstr ""
 
-#: src/core/class-utilities.php:1426
+#: core/class-utilities.php:1426
 msgid "Bahrain"
 msgstr ""
 
-#: src/core/class-utilities.php:1427
+#: core/class-utilities.php:1427
 msgid "Barbados"
 msgstr ""
 
-#: src/core/class-utilities.php:1428
+#: core/class-utilities.php:1428
 msgid "Belarus"
 msgstr ""
 
-#: src/core/class-utilities.php:1429
+#: core/class-utilities.php:1429
 msgid "Belgium"
 msgstr ""
 
-#: src/core/class-utilities.php:1430
+#: core/class-utilities.php:1430
 msgid "Belize"
 msgstr ""
 
-#: src/core/class-utilities.php:1431
+#: core/class-utilities.php:1431
 msgid "Benin"
 msgstr ""
 
-#: src/core/class-utilities.php:1432
+#: core/class-utilities.php:1432
 msgid "Bermuda"
 msgstr ""
 
-#: src/core/class-utilities.php:1433
+#: core/class-utilities.php:1433
 msgid "Bhutan"
 msgstr ""
 
-#: src/core/class-utilities.php:1434
+#: core/class-utilities.php:1434
 msgid "Bolivia"
 msgstr ""
 
-#: src/core/class-utilities.php:1435
+#: core/class-utilities.php:1435
 msgid "Bosnia & Herzegovina"
 msgstr ""
 
-#: src/core/class-utilities.php:1436
+#: core/class-utilities.php:1436
 msgid "Botswana"
 msgstr ""
 
-#: src/core/class-utilities.php:1437
+#: core/class-utilities.php:1437
 msgid "Brazil"
 msgstr ""
 
-#: src/core/class-utilities.php:1438
+#: core/class-utilities.php:1438
 msgid "British Virgin Islands"
 msgstr ""
 
-#: src/core/class-utilities.php:1439
+#: core/class-utilities.php:1439
 msgid "Brunei"
 msgstr ""
 
-#: src/core/class-utilities.php:1440
+#: core/class-utilities.php:1440
 msgid "Bulgaria"
 msgstr ""
 
-#: src/core/class-utilities.php:1441
+#: core/class-utilities.php:1441
 msgid "Burkina Faso"
 msgstr ""
 
-#: src/core/class-utilities.php:1442
+#: core/class-utilities.php:1442
 msgid "Burundi"
 msgstr ""
 
-#: src/core/class-utilities.php:1443
+#: core/class-utilities.php:1443
 msgid "Cambodia"
 msgstr ""
 
-#: src/core/class-utilities.php:1444
+#: core/class-utilities.php:1444
 msgid "Cameroon"
 msgstr ""
 
-#: src/core/class-utilities.php:1445
+#: core/class-utilities.php:1445
 msgid "Canada"
 msgstr ""
 
-#: src/core/class-utilities.php:1446
+#: core/class-utilities.php:1446
 msgid "Cape Verde"
 msgstr ""
 
-#: src/core/class-utilities.php:1447
+#: core/class-utilities.php:1447
 msgid "Cayman Islands"
 msgstr ""
 
-#: src/core/class-utilities.php:1448
+#: core/class-utilities.php:1448
 msgid "Chad"
 msgstr ""
 
-#: src/core/class-utilities.php:1449
+#: core/class-utilities.php:1449
 msgid "Chile"
 msgstr ""
 
-#: src/core/class-utilities.php:1450
+#: core/class-utilities.php:1450
 msgid "China"
 msgstr ""
 
-#: src/core/class-utilities.php:1451
+#: core/class-utilities.php:1451
 msgid "China Worldwide"
 msgstr ""
 
-#: src/core/class-utilities.php:1452
+#: core/class-utilities.php:1452
 msgid "Colombia"
 msgstr ""
 
-#: src/core/class-utilities.php:1453
+#: core/class-utilities.php:1453
 msgid "Comoros"
 msgstr ""
 
-#: src/core/class-utilities.php:1454
+#: core/class-utilities.php:1454
 msgid "Congo - Brazzaville"
 msgstr ""
 
-#: src/core/class-utilities.php:1455
+#: core/class-utilities.php:1455
 msgid "Congo - Kinshasa"
 msgstr ""
 
-#: src/core/class-utilities.php:1456
+#: core/class-utilities.php:1456
 msgid "Cook Islands"
 msgstr ""
 
-#: src/core/class-utilities.php:1457
+#: core/class-utilities.php:1457
 msgid "Costa Rica"
 msgstr ""
 
-#: src/core/class-utilities.php:1458
+#: core/class-utilities.php:1458
 msgid "Côte D’Ivoire"
 msgstr ""
 
-#: src/core/class-utilities.php:1459
+#: core/class-utilities.php:1459
 msgid "Croatia"
 msgstr ""
 
-#: src/core/class-utilities.php:1460
+#: core/class-utilities.php:1460
 msgid "Cyprus"
 msgstr ""
 
-#: src/core/class-utilities.php:1461
+#: core/class-utilities.php:1461
 msgid "Czech Republic"
 msgstr ""
 
-#: src/core/class-utilities.php:1462
+#: core/class-utilities.php:1462
 msgid "Denmark"
 msgstr ""
 
-#: src/core/class-utilities.php:1463
+#: core/class-utilities.php:1463
 msgid "Djibouti"
 msgstr ""
 
-#: src/core/class-utilities.php:1464
+#: core/class-utilities.php:1464
 msgid "Dominica"
 msgstr ""
 
-#: src/core/class-utilities.php:1465
+#: core/class-utilities.php:1465
 msgid "Dominican Republic"
 msgstr ""
 
-#: src/core/class-utilities.php:1466
+#: core/class-utilities.php:1466
 msgid "Ecuador"
 msgstr ""
 
-#: src/core/class-utilities.php:1467
+#: core/class-utilities.php:1467
 msgid "Egypt"
 msgstr ""
 
-#: src/core/class-utilities.php:1468
+#: core/class-utilities.php:1468
 msgid "El Salvador"
 msgstr ""
 
-#: src/core/class-utilities.php:1469
+#: core/class-utilities.php:1469
 msgid "Eritrea"
 msgstr ""
 
-#: src/core/class-utilities.php:1470
+#: core/class-utilities.php:1470
 msgid "Estonia"
 msgstr ""
 
-#: src/core/class-utilities.php:1471
+#: core/class-utilities.php:1471
 msgid "Ethiopia"
 msgstr ""
 
-#: src/core/class-utilities.php:1472
+#: core/class-utilities.php:1472
 msgid "Falkland Islands"
 msgstr ""
 
-#: src/core/class-utilities.php:1473
+#: core/class-utilities.php:1473
 msgid "Faroe Islands"
 msgstr ""
 
-#: src/core/class-utilities.php:1474
+#: core/class-utilities.php:1474
 msgid "Fiji"
 msgstr ""
 
-#: src/core/class-utilities.php:1475
+#: core/class-utilities.php:1475
 msgid "Finland"
 msgstr ""
 
-#: src/core/class-utilities.php:1476
+#: core/class-utilities.php:1476
 msgid "France"
 msgstr ""
 
-#: src/core/class-utilities.php:1477
+#: core/class-utilities.php:1477
 msgid "French Guiana"
 msgstr ""
 
-#: src/core/class-utilities.php:1478
+#: core/class-utilities.php:1478
 msgid "French Polynesia"
 msgstr ""
 
-#: src/core/class-utilities.php:1479
+#: core/class-utilities.php:1479
 msgid "Gabon"
 msgstr ""
 
-#: src/core/class-utilities.php:1480
+#: core/class-utilities.php:1480
 msgid "Gambia"
 msgstr ""
 
-#: src/core/class-utilities.php:1481
+#: core/class-utilities.php:1481
 msgid "Georgia"
 msgstr ""
 
-#: src/core/class-utilities.php:1482
+#: core/class-utilities.php:1482
 msgid "Germany"
 msgstr ""
 
-#: src/core/class-utilities.php:1483
+#: core/class-utilities.php:1483
 msgid "Gibraltar"
 msgstr ""
 
-#: src/core/class-utilities.php:1484
+#: core/class-utilities.php:1484
 msgid "Greece"
 msgstr ""
 
-#: src/core/class-utilities.php:1485
+#: core/class-utilities.php:1485
 msgid "Greenland"
 msgstr ""
 
-#: src/core/class-utilities.php:1486
+#: core/class-utilities.php:1486
 msgid "Grenada"
 msgstr ""
 
-#: src/core/class-utilities.php:1487
+#: core/class-utilities.php:1487
 msgid "Guadeloupe"
 msgstr ""
 
-#: src/core/class-utilities.php:1488
+#: core/class-utilities.php:1488
 msgid "Guatemala"
 msgstr ""
 
-#: src/core/class-utilities.php:1489
+#: core/class-utilities.php:1489
 msgid "Guinea"
 msgstr ""
 
-#: src/core/class-utilities.php:1490
+#: core/class-utilities.php:1490
 msgid "Guinea-Bissau"
 msgstr ""
 
-#: src/core/class-utilities.php:1491
+#: core/class-utilities.php:1491
 msgid "Guyana"
 msgstr ""
 
-#: src/core/class-utilities.php:1492
+#: core/class-utilities.php:1492
 msgid "Honduras"
 msgstr ""
 
-#: src/core/class-utilities.php:1493
+#: core/class-utilities.php:1493
 msgid "Hong Kong Sar China"
 msgstr ""
 
-#: src/core/class-utilities.php:1494
+#: core/class-utilities.php:1494
 msgid "Hungary"
 msgstr ""
 
-#: src/core/class-utilities.php:1495
+#: core/class-utilities.php:1495
 msgid "Iceland"
 msgstr ""
 
-#: src/core/class-utilities.php:1496
+#: core/class-utilities.php:1496
 msgid "India"
 msgstr ""
 
-#: src/core/class-utilities.php:1497
+#: core/class-utilities.php:1497
 msgid "Indonesia"
 msgstr ""
 
-#: src/core/class-utilities.php:1498
+#: core/class-utilities.php:1498
 msgid "Ireland"
 msgstr ""
 
-#: src/core/class-utilities.php:1499
+#: core/class-utilities.php:1499
 msgid "Israel"
 msgstr ""
 
-#: src/core/class-utilities.php:1500
+#: core/class-utilities.php:1500
 msgid "Italy"
 msgstr ""
 
-#: src/core/class-utilities.php:1501
+#: core/class-utilities.php:1501
 msgid "Jamaica"
 msgstr ""
 
-#: src/core/class-utilities.php:1502
+#: core/class-utilities.php:1502
 msgid "Japan"
 msgstr ""
 
-#: src/core/class-utilities.php:1503
+#: core/class-utilities.php:1503
 msgid "Jordan"
 msgstr ""
 
-#: src/core/class-utilities.php:1504
+#: core/class-utilities.php:1504
 msgid "Kazakhstan"
 msgstr ""
 
-#: src/core/class-utilities.php:1505
+#: core/class-utilities.php:1505
 msgid "Kenya"
 msgstr ""
 
-#: src/core/class-utilities.php:1506
+#: core/class-utilities.php:1506
 msgid "Kiribati"
 msgstr ""
 
-#: src/core/class-utilities.php:1507
+#: core/class-utilities.php:1507
 msgid "Kuwait"
 msgstr ""
 
-#: src/core/class-utilities.php:1508
+#: core/class-utilities.php:1508
 msgid "Kyrgyzstan"
 msgstr ""
 
-#: src/core/class-utilities.php:1509
+#: core/class-utilities.php:1509
 msgid "Laos"
 msgstr ""
 
-#: src/core/class-utilities.php:1510
+#: core/class-utilities.php:1510
 msgid "Latvia"
 msgstr ""
 
-#: src/core/class-utilities.php:1511
+#: core/class-utilities.php:1511
 msgid "Lesotho"
 msgstr ""
 
-#: src/core/class-utilities.php:1512
+#: core/class-utilities.php:1512
 msgid "Liechtenstein"
 msgstr ""
 
-#: src/core/class-utilities.php:1513
+#: core/class-utilities.php:1513
 msgid "Lithuania"
 msgstr ""
 
-#: src/core/class-utilities.php:1514
+#: core/class-utilities.php:1514
 msgid "Luxembourg"
 msgstr ""
 
-#: src/core/class-utilities.php:1515
+#: core/class-utilities.php:1515
 msgid "Macedonia"
 msgstr ""
 
-#: src/core/class-utilities.php:1516
+#: core/class-utilities.php:1516
 msgid "Madagascar"
 msgstr ""
 
-#: src/core/class-utilities.php:1517
+#: core/class-utilities.php:1517
 msgid "Malawi"
 msgstr ""
 
-#: src/core/class-utilities.php:1518
+#: core/class-utilities.php:1518
 msgid "Malaysia"
 msgstr ""
 
-#: src/core/class-utilities.php:1519
+#: core/class-utilities.php:1519
 msgid "Maldives"
 msgstr ""
 
-#: src/core/class-utilities.php:1520
+#: core/class-utilities.php:1520
 msgid "Mali"
 msgstr ""
 
-#: src/core/class-utilities.php:1521
+#: core/class-utilities.php:1521
 msgid "Malta"
 msgstr ""
 
-#: src/core/class-utilities.php:1522
+#: core/class-utilities.php:1522
 msgid "Marshall Islands"
 msgstr ""
 
-#: src/core/class-utilities.php:1523
+#: core/class-utilities.php:1523
 msgid "Martinique"
 msgstr ""
 
-#: src/core/class-utilities.php:1524
+#: core/class-utilities.php:1524
 msgid "Mauritania"
 msgstr ""
 
-#: src/core/class-utilities.php:1525
+#: core/class-utilities.php:1525
 msgid "Mauritius"
 msgstr ""
 
-#: src/core/class-utilities.php:1526
+#: core/class-utilities.php:1526
 msgid "Mayotte"
 msgstr ""
 
-#: src/core/class-utilities.php:1527
+#: core/class-utilities.php:1527
 msgid "Mexico"
 msgstr ""
 
-#: src/core/class-utilities.php:1528
+#: core/class-utilities.php:1528
 msgid "Micronesia"
 msgstr ""
 
-#: src/core/class-utilities.php:1529
+#: core/class-utilities.php:1529
 msgid "Moldova"
 msgstr ""
 
-#: src/core/class-utilities.php:1530
+#: core/class-utilities.php:1530
 msgid "Monaco"
 msgstr ""
 
-#: src/core/class-utilities.php:1531
+#: core/class-utilities.php:1531
 msgid "Mongolia"
 msgstr ""
 
-#: src/core/class-utilities.php:1532
+#: core/class-utilities.php:1532
 msgid "Montenegro"
 msgstr ""
 
-#: src/core/class-utilities.php:1533
+#: core/class-utilities.php:1533
 msgid "Montserrat"
 msgstr ""
 
-#: src/core/class-utilities.php:1534
+#: core/class-utilities.php:1534
 msgid "Morocco"
 msgstr ""
 
-#: src/core/class-utilities.php:1535
+#: core/class-utilities.php:1535
 msgid "Mozambique"
 msgstr ""
 
-#: src/core/class-utilities.php:1536
+#: core/class-utilities.php:1536
 msgid "Namibia"
 msgstr ""
 
-#: src/core/class-utilities.php:1537
+#: core/class-utilities.php:1537
 msgid "Nauru"
 msgstr ""
 
-#: src/core/class-utilities.php:1538
+#: core/class-utilities.php:1538
 msgid "Nepal"
 msgstr ""
 
-#: src/core/class-utilities.php:1539
+#: core/class-utilities.php:1539
 msgid "Netherlands"
 msgstr ""
 
-#: src/core/class-utilities.php:1540
+#: core/class-utilities.php:1540
 msgid "New Caledonia"
 msgstr ""
 
-#: src/core/class-utilities.php:1541
+#: core/class-utilities.php:1541
 msgid "New Zealand"
 msgstr ""
 
-#: src/core/class-utilities.php:1542
+#: core/class-utilities.php:1542
 msgid "Nicaragua"
 msgstr ""
 
-#: src/core/class-utilities.php:1543
+#: core/class-utilities.php:1543
 msgid "Niger"
 msgstr ""
 
-#: src/core/class-utilities.php:1544
+#: core/class-utilities.php:1544
 msgid "Nigeria"
 msgstr ""
 
-#: src/core/class-utilities.php:1545
+#: core/class-utilities.php:1545
 msgid "Niue"
 msgstr ""
 
-#: src/core/class-utilities.php:1546
+#: core/class-utilities.php:1546
 msgid "Norfolk Island"
 msgstr ""
 
-#: src/core/class-utilities.php:1547
+#: core/class-utilities.php:1547
 msgid "Norway"
 msgstr ""
 
-#: src/core/class-utilities.php:1548
+#: core/class-utilities.php:1548
 msgid "Oman"
 msgstr ""
 
-#: src/core/class-utilities.php:1549
+#: core/class-utilities.php:1549
 msgid "Palau"
 msgstr ""
 
-#: src/core/class-utilities.php:1550
+#: core/class-utilities.php:1550
 msgid "Panama"
 msgstr ""
 
-#: src/core/class-utilities.php:1551
+#: core/class-utilities.php:1551
 msgid "Papua New Guinea"
 msgstr ""
 
-#: src/core/class-utilities.php:1552
+#: core/class-utilities.php:1552
 msgid "Paraguay"
 msgstr ""
 
-#: src/core/class-utilities.php:1553
+#: core/class-utilities.php:1553
 msgid "Peru"
 msgstr ""
 
-#: src/core/class-utilities.php:1554
+#: core/class-utilities.php:1554
 msgid "Philippines"
 msgstr ""
 
-#: src/core/class-utilities.php:1555
+#: core/class-utilities.php:1555
 msgid "Pitcairn Islands"
 msgstr ""
 
-#: src/core/class-utilities.php:1556
+#: core/class-utilities.php:1556
 msgid "Poland"
 msgstr ""
 
-#: src/core/class-utilities.php:1557
+#: core/class-utilities.php:1557
 msgid "Portugal"
 msgstr ""
 
-#: src/core/class-utilities.php:1558
+#: core/class-utilities.php:1558
 msgid "Qatar"
 msgstr ""
 
-#: src/core/class-utilities.php:1559
+#: core/class-utilities.php:1559
 msgid "Réunion"
 msgstr ""
 
-#: src/core/class-utilities.php:1560
+#: core/class-utilities.php:1560
 msgid "Romania"
 msgstr ""
 
-#: src/core/class-utilities.php:1561
+#: core/class-utilities.php:1561
 msgid "Russia"
 msgstr ""
 
-#: src/core/class-utilities.php:1562
+#: core/class-utilities.php:1562
 msgid "Rwanda"
 msgstr ""
 
-#: src/core/class-utilities.php:1563
+#: core/class-utilities.php:1563
 msgid "Samoa"
 msgstr ""
 
-#: src/core/class-utilities.php:1564
+#: core/class-utilities.php:1564
 msgid "San Marino"
 msgstr ""
 
-#: src/core/class-utilities.php:1565
+#: core/class-utilities.php:1565
 msgid "São Tomé & Príncipe"
 msgstr ""
 
-#: src/core/class-utilities.php:1566
+#: core/class-utilities.php:1566
 msgid "Saudi Arabia"
 msgstr ""
 
-#: src/core/class-utilities.php:1567
+#: core/class-utilities.php:1567
 msgid "Senegal"
 msgstr ""
 
-#: src/core/class-utilities.php:1568
+#: core/class-utilities.php:1568
 msgid "Serbia"
 msgstr ""
 
-#: src/core/class-utilities.php:1569
+#: core/class-utilities.php:1569
 msgid "Seychelles"
 msgstr ""
 
-#: src/core/class-utilities.php:1570
+#: core/class-utilities.php:1570
 msgid "Sierra Leone"
 msgstr ""
 
-#: src/core/class-utilities.php:1571
+#: core/class-utilities.php:1571
 msgid "Singapore"
 msgstr ""
 
-#: src/core/class-utilities.php:1572
+#: core/class-utilities.php:1572
 msgid "Slovakia"
 msgstr ""
 
-#: src/core/class-utilities.php:1573
+#: core/class-utilities.php:1573
 msgid "Slovenia"
 msgstr ""
 
-#: src/core/class-utilities.php:1574
+#: core/class-utilities.php:1574
 msgid "Solomon Islands"
 msgstr ""
 
-#: src/core/class-utilities.php:1575
+#: core/class-utilities.php:1575
 msgid "Somalia"
 msgstr ""
 
-#: src/core/class-utilities.php:1576
+#: core/class-utilities.php:1576
 msgid "South Africa"
 msgstr ""
 
-#: src/core/class-utilities.php:1577
+#: core/class-utilities.php:1577
 msgid "South Korea"
 msgstr ""
 
-#: src/core/class-utilities.php:1578
+#: core/class-utilities.php:1578
 msgid "Spain"
 msgstr ""
 
-#: src/core/class-utilities.php:1579
+#: core/class-utilities.php:1579
 msgid "Sri Lanka"
 msgstr ""
 
-#: src/core/class-utilities.php:1580
+#: core/class-utilities.php:1580
 msgid "St. Helena"
 msgstr ""
 
-#: src/core/class-utilities.php:1581
+#: core/class-utilities.php:1581
 msgid "St. Kitts & Nevis"
 msgstr ""
 
-#: src/core/class-utilities.php:1582
+#: core/class-utilities.php:1582
 msgid "St. Lucia"
 msgstr ""
 
-#: src/core/class-utilities.php:1583
+#: core/class-utilities.php:1583
 msgid "St. Pierre & Miquelon"
 msgstr ""
 
-#: src/core/class-utilities.php:1584
+#: core/class-utilities.php:1584
 msgid "St. Vincent & Grenadines"
 msgstr ""
 
-#: src/core/class-utilities.php:1585
+#: core/class-utilities.php:1585
 msgid "Suriname"
 msgstr ""
 
-#: src/core/class-utilities.php:1586
+#: core/class-utilities.php:1586
 msgid "Svalbard & Jan Mayen"
 msgstr ""
 
-#: src/core/class-utilities.php:1587
+#: core/class-utilities.php:1587
 msgid "Swaziland"
 msgstr ""
 
-#: src/core/class-utilities.php:1588
+#: core/class-utilities.php:1588
 msgid "Sweden"
 msgstr ""
 
-#: src/core/class-utilities.php:1589
+#: core/class-utilities.php:1589
 msgid "Switzerland"
 msgstr ""
 
-#: src/core/class-utilities.php:1590
+#: core/class-utilities.php:1590
 msgid "Taiwan"
 msgstr ""
 
-#: src/core/class-utilities.php:1591
+#: core/class-utilities.php:1591
 msgid "Tajikistan"
 msgstr ""
 
-#: src/core/class-utilities.php:1592
+#: core/class-utilities.php:1592
 msgid "Tanzania"
 msgstr ""
 
-#: src/core/class-utilities.php:1593
+#: core/class-utilities.php:1593
 msgid "Thailand"
 msgstr ""
 
-#: src/core/class-utilities.php:1594
+#: core/class-utilities.php:1594
 msgid "Togo"
 msgstr ""
 
-#: src/core/class-utilities.php:1595
+#: core/class-utilities.php:1595
 msgid "Tonga"
 msgstr ""
 
-#: src/core/class-utilities.php:1596
+#: core/class-utilities.php:1596
 msgid "Trinidad & Tobago"
 msgstr ""
 
-#: src/core/class-utilities.php:1597
+#: core/class-utilities.php:1597
 msgid "Tunisia"
 msgstr ""
 
-#: src/core/class-utilities.php:1598
+#: core/class-utilities.php:1598
 msgid "Turkmenistan"
 msgstr ""
 
-#: src/core/class-utilities.php:1599
+#: core/class-utilities.php:1599
 msgid "Turks & Caicos Islands"
 msgstr ""
 
-#: src/core/class-utilities.php:1600
+#: core/class-utilities.php:1600
 msgid "Tuvalu"
 msgstr ""
 
-#: src/core/class-utilities.php:1601
+#: core/class-utilities.php:1601
 msgid "Uganda"
 msgstr ""
 
-#: src/core/class-utilities.php:1602
+#: core/class-utilities.php:1602
 msgid "Ukraine"
 msgstr ""
 
-#: src/core/class-utilities.php:1603
+#: core/class-utilities.php:1603
 msgid "United Arab Emirates"
 msgstr ""
 
-#: src/core/class-utilities.php:1604
+#: core/class-utilities.php:1604
 msgid "United Kingdom"
 msgstr ""
 
-#: src/core/class-utilities.php:1605
+#: core/class-utilities.php:1605
 msgid "United States"
 msgstr ""
 
-#: src/core/class-utilities.php:1606
+#: core/class-utilities.php:1606
 msgid "Uruguay"
 msgstr ""
 
-#: src/core/class-utilities.php:1607
+#: core/class-utilities.php:1607
 msgid "Vanuatu"
 msgstr ""
 
-#: src/core/class-utilities.php:1608
+#: core/class-utilities.php:1608
 msgid "Vatican City"
 msgstr ""
 
-#: src/core/class-utilities.php:1609
+#: core/class-utilities.php:1609
 msgid "Venezuela"
 msgstr ""
 
-#: src/core/class-utilities.php:1610
+#: core/class-utilities.php:1610
 msgid "Vietnam"
 msgstr ""
 
-#: src/core/class-utilities.php:1611
+#: core/class-utilities.php:1611
 msgid "Wallis & Futuna"
 msgstr ""
 
-#: src/core/class-utilities.php:1612
+#: core/class-utilities.php:1612
 msgid "Yemen"
 msgstr ""
 
-#: src/core/class-utilities.php:1613
+#: core/class-utilities.php:1613
 msgid "Zambia"
 msgstr ""
 
-#: src/core/class-utilities.php:1614
+#: core/class-utilities.php:1614
 msgid "Zimbabwe"
 msgstr ""
 
-#: src/legacy/options.php:86
+#: legacy/options.php:86
 msgid "Consent Given"
 msgstr ""
 
-#: src/legacy/options.php:87
+#: legacy/options.php:87
 msgid "Consent NOT Given"
 msgstr ""
 
-#: src/legacy/quick-paypal-payments.php:2502
+#: legacy/quick-paypal-payments.php:2501
 msgid "DEPRECATION NOTICE"
 msgstr ""
 
-#: src/legacy/quick-paypal-payments.php:2504
+#: legacy/quick-paypal-payments.php:2503
 msgid "This is a legacy Widget and is limited in functionality and may be withdrawn in the future"
 msgstr ""
 
-#: src/legacy/quick-paypal-payments.php:2506
+#: legacy/quick-paypal-payments.php:2505
 msgid "Replace with a shortcode e.g. [qpp form=myform]"
 msgstr ""
 
-#: src/legacy/quick-paypal-payments.php:2706, src/legacy/settings.php:2033
+#: legacy/quick-paypal-payments.php:2705
+#: legacy/settings.php:2038
 msgid "Amount"
 msgstr ""
 
-#: src/legacy/settings.php:722
+#: legacy/settings.php:727
 msgid "Add a checkbox to permit data storage. You may use html links above."
 msgstr ""
 
-#: src/legacy/settings.php:724
+#: legacy/settings.php:729
 msgid "Add consent info to PayPal item line. Blank out if not required."
 msgstr ""
 
-#: src/legacy/settings.php:727
+#: legacy/settings.php:732
 msgid "if consent given"
 msgstr ""
 
-#: src/legacy/settings.php:729
+#: legacy/settings.php:734
 msgid "if consent NOT given"
 msgstr ""
 
-#: src/legacy/settings.php:1703
+#: legacy/settings.php:1708
 msgid "Default Country"
 msgstr ""
 
-#: src/legacy/settings.php:1706
+#: legacy/settings.php:1711
 msgid "Permitted ( Multi-select)"
 msgstr ""
 
-#: src/legacy/settings.php:2030
+#: legacy/settings.php:2035
 msgid "Date Sent"
 msgstr ""
 
-#: src/ui/admin/class-admin-pages.php:95
+#: ui/admin/class-admin-pages.php:95
 msgid "Are you sure want to do this?"
 msgstr ""
 
-#: src/ui/admin/class-admin-pages.php:179
+#: ui/admin/class-admin-pages.php:179
 msgid "Save Options"
 msgstr ""
 
-#: src/ui/admin/class-admin-pages.php:204
+#: ui/admin/class-admin-pages.php:204
 msgid "Save"
 msgstr ""
 
-#: src/ui/admin/class-admin-pages.php:215
+#: ui/admin/class-admin-pages.php:215
 msgid "Settings reset to defaults."
 msgstr ""
 
-#: src/ui/admin/class-admin-settings.php:41
+#: ui/admin/class-admin-settings.php:41
 msgid "Quick_Paypal_Payments Settings"
 msgstr ""
 
-#: src/ui/admin/class-admin-settings.php:115
+#: ui/admin/class-admin-settings.php:115
 msgid "Settings 1"
 msgstr ""
 
-#: src/ui/admin/class-admin-settings.php:123
+#: ui/admin/class-admin-settings.php:123
 msgid "Settings 2"
 msgstr ""
 
-#: src/ui/admin/class-admin-settings.php:139
+#: ui/admin/class-admin-settings.php:139
 msgid "Checkbox"
 msgstr ""
 
-#: src/ui/admin/class-admin-settings.php:146
+#: ui/admin/class-admin-settings.php:146
 msgid "Checkbox description"
 msgstr ""
 
-#: src/ui/admin/class-admin-settings.php:150
+#: ui/admin/class-admin-settings.php:150
 msgid "Text"
 msgstr ""
 
-#: src/ui/admin/class-admin-settings.php:158
+#: ui/admin/class-admin-settings.php:158
 msgid "Text Description"
 msgstr ""
 
-#: src/ui/admin/class-admin-settings.php:188
+#: ui/admin/class-admin-settings.php:188
 msgid "Minutes"
 msgstr ""
 
-#: src/ui/admin/class-admin-settings.php:192
+#: ui/admin/class-admin-settings.php:192
 msgid "Hours"
 msgstr ""
 
-#: src/ui/admin/class-admin-settings.php:196
+#: ui/admin/class-admin-settings.php:196
 msgid "Days"
 msgstr ""
 
-#: src/ui/admin/class-admin-settings.php:203, src/ui/admin/class-admin-settings.php:213
+#: ui/admin/class-admin-settings.php:203
+#: ui/admin/class-admin-settings.php:213
 msgid "Number"
 msgstr ""
 
-#: src/ui/admin/class-admin-settings.php:211
+#: ui/admin/class-admin-settings.php:211
 msgid "Integer"
 msgstr ""
 
-#: src/ui/admin/class-admin-settings.php:218
+#: ui/admin/class-admin-settings.php:218
 msgid "Number with units"
 msgstr ""
 
-#: src/ui/admin/class-admin-settings.php:238
+#: ui/admin/class-admin-settings.php:238
 msgid "Description"
 msgstr ""
 
-#: src/ui/admin/class-admin.php:174
+#: ui/admin/class-admin.php:141
 msgid ""
-"%1$s<strong>Important action required - Your licence request was successful</strong>. <p>you MUST take action now!!<br>\n"
-" You have requested the Pro GOLD plugin free offer, please install it. Don't worry it is easy.\n"
-"</p><p>If you do not download and install the premium plugin - when version 6 is released you may lose features you depend on, so register now and be prepared.\n"
-"The email was sent to <strong>%2$s</strong>. </p><p>If you do not have access to <strong>%2$s</strong>( check your spam ) contact me at \n"
-"<a target=\"_blank\" href=\"mailto:support@fullworks.net\">support</a> with your details.</p><p>You can also use your email <strong>%2$s</strong>  to login at <a href=\"https://fullworks.net/account/\" target=\"_blank\">\n"
-"https://fullworks.net/account/</a> to get your download and licence key\n"
+"%1$s<strong>Important action required - Your Pro Install was successful - but you need to activate your licence</strong>. <p>Big changes are coming to Quick PayPal Payments  and you MUST take action now to keep your premium features!!<br>\n"
+" You have installed the PREMIUM plugin, but have not activated your <strong>licence</strong>. Don't worry it is easy.\n"
+"</p><p>If you do not have your licence you can use your email <strong>%2$s</strong>  to login at <a href=\"https://fullworks.net/account/\" target=\"_blank\">\n"
+"https://fullworks.net/account/</a> to get your licence key.\n"
 "</p>"
 msgstr ""
 
-#: src/ui/admin/class-admin.php:165
+#: ui/admin/class-admin.php:158
 msgid ""
-"%1$s<strong>Important Offer for FREE users of this plugin</strong>. %2$s<p>Version 6 of the plugin is a major rewrite, moving away from PayPal Standard and using PayPal Smart Buttons.\n"
-"</p><p>Paypal Smart Buttons require a business account - PayPal business accounts are free but if you are using a personal account you should upgrade now to prepare. \n"
-"The new free version will have slightly less features than the current free version, <strong>no one likes fre things being taken away</strong> so for a limited time we are offering a free upgrade to the Pro GOLD plan. </p>\n"
-"<p>The licence will be given to your email, if you do not have access to <strong>%3$s</strong> please change it before requesting!</p><p><a href=\"https://wordpress.org/support/topic/the-futures-of-this-plugin-understanding-why-there-is-an-offer-of-gold-plan/\" target=\"_blank\">Read more details as why this is happening here on the official WordPress support forum</a></p>\n"
-"<a target=\"_blank\" href=\"%4$s\" class=\"button\" >CLICK HERE TO GET YOUR DOWNLOAD AND LICENCE BY EMAIL</a>"
+"%1$s<strong>Important action required</strong>. %2$s<p>Big changes are coming to Quick PayPal Payments and you MUST take action now to keep your premium features!!<br>\n"
+" You will need to <strong>download and install the PREMIUM</strong> plugin to keep your premium features. Don't worry it is easy.</p>\n"
+"<p></p><a target=\"_blank\" href=\"%3$s\" class=\"button\" >CLICK HERE TO GET YOUR DOWNLOAD AND LICENCE BY EMAIL</a></p><p>If you do not download and install the premium plugin \n"
+"- when version 6 is released you may lose features you depend on, so register now and be prepared.</p>\n"
+"<p>The email will be sent to <strong>%4$s</strong> If you don't get the email soon, check your spam </p><p>To be clear if you already have paid for the Pro version - you do not have to pay again</p>"
 msgstr ""
 
-#: src/ui/admin/class-admin.php:145
+#: ui/admin/class-admin.php:170
 msgid ""
 "%1$s<strong>Important action required - Your licence request was successful</strong>. <p>Big changes are coming to Quick PayPal Payments  and you MUST take action now to keep your premium features!!<br>\n"
 " You have requested the PREMIUM plugin, please install it to keep your premium features. Don't worry it is easy.\n"
@@ -1297,24 +1325,26 @@ msgid ""
 "</p>"
 msgstr ""
 
-#: src/ui/admin/class-admin.php:133
+#: ui/admin/class-admin.php:190
 msgid ""
-"%1$s<strong>Important action required</strong>. %2$s<p>Big changes are coming to Quick PayPal Payments and you MUST take action now to keep your premium features!!<br>\n"
-" You will need to <strong>download and install the PREMIUM</strong> plugin to keep your premium features. Don't worry it is easy.</p>\n"
-"<p></p><a target=\"_blank\" href=\"%3$s\" class=\"button\" >CLICK HERE TO GET YOUR DOWNLOAD AND LICENCE BY EMAIL</a></p><p>If you do not download and install the premium plugin \n"
-"- when version 6 is released you may lose features you depend on, so register now and be prepared.</p>\n"
-"<p>The email will be sent to <strong>%4$s</strong> If you don't get the email soon, check your spam </p><p>To be clear if you already have paid for the Pro version - you do not have to pay again</p>"
+"%1$s<strong>Important NOTICE for FREE users of this plugin</strong>. %2$s<p>Version 6 of the plugin will have some features that are free today as paid only, this is necessary to be able to continue to support the free version.\n"
+"</p><p> \n"
+"As the new free version will have  less features than the current free version, <strong>no one likes fre things being taken away</strong> so for a limited time we are offering a free lifetime upgrade to the Pro GOLD plan, which is teh equivalent of the free version today. </p>\n"
+"<p>The licence will be given to your email, if you do not have access to <strong>%3$s</strong> please change it before requesting!</p><p><a href=\"https://wordpress.org/support/topic/the-futures-of-this-plugin-understanding-why-there-is-an-offer-of-gold-plan/\" target=\"_blank\">Read more details as why this is happening here on the official WordPress support forum</a></p>\n"
+"<a target=\"_blank\" href=\"%4$s\" class=\"button\" >CLICK HERE TO GET YOUR DOWNLOAD AND LICENCE BY EMAIL</a>"
 msgstr ""
 
-#: src/ui/admin/class-admin.php:116
+#: ui/admin/class-admin.php:199
 msgid ""
-"%1$s<strong>Important action required - Your Pro Install was successful - but you need to activate your licence</strong>. <p>Big changes are coming to Quick PayPal Payments  and you MUST take action now to keep your premium features!!<br>\n"
-" You have installed the PREMIUM plugin, but have not activated your <strong>licence</strong>. Don't worry it is easy.\n"
-"</p><p>If you do not have your licence you can use your email <strong>%2$s</strong>  to login at <a href=\"https://fullworks.net/account/\" target=\"_blank\">\n"
-"https://fullworks.net/account/</a> to get your licence key.\n"
+"%1$s<strong>Important action required - Your licence request was successful</strong>. <p>you MUST take action now!!<br>\n"
+" You have requested the Pro GOLD plugin free offer, please install it. Don't worry it is easy.\n"
+"</p><p>If you do not download and install the premium plugin - when version 6 is released you may lose features you depend on, so register now and be prepared.\n"
+"The email was sent to <strong>%2$s</strong>. </p><p>If you do not have access to <strong>%2$s</strong>( check your spam ) contact me at \n"
+"<a target=\"_blank\" href=\"mailto:support@fullworks.net\">support</a> with your details.</p><p>You can also use your email <strong>%2$s</strong>  to login at <a href=\"https://fullworks.net/account/\" target=\"_blank\">\n"
+"https://fullworks.net/account/</a> to get your download and licence key\n"
 "</p>"
 msgstr ""
 
-#: src/ui/admin/class-admin.php:203
+#: ui/admin/class-admin.php:230
 msgid "Security check invalid, expired or missing"
 msgstr ""

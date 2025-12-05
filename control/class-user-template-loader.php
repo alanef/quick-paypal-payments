@@ -23,11 +23,12 @@
 
 namespace Quick_Paypal_Payments\Control;
 
-use Gamajo_Template_Loader;
+use Fullworks_Template_Loader_Lib\BaseLoader;
 
-require_once QUICK_PAYPAL_PAYMENTS_PLUGIN_DIR . '/vendor/gamajo/template-loader/class-gamajo-template-loader.php';
 
-class User_Template_Loader extends Gamajo_Template_Loader {
+require_once QUICK_PAYPAL_PAYMENTS_PLUGIN_DIR . '/vendor/alanef/fullworks-template-loader-lib/src/BaseLoader.php';;
+
+class User_Template_Loader extends BaseLoader {
 
 	protected $filter_prefix = 'fullworks-quick-paypal-payments';
 

@@ -1,4 +1,30 @@
 == Changelog ==
+= 5.7.48 =
+*  Updated tested to WP 6.9
+
+= 5.7.47 =
+* Fixes minor securiy issue
+* Fix minor notices
+
+= 5.7.46 =
+* Update Libraries
+
+= 5.7.45 =
+* move block registration to avoid conflict with other plugins
+
+= 5.7.44 =
+* remove admin javascript undefined variable issue
+
+= 5.7.43 =
+* update libraries
+
+= 5.7.42 =
+* rearrange Amount options to  be more usable
+
+= 5.7.41 =
+* Fix 'other' option in values
+* Fix minimum value in 'other'
+
 = 5.7.40 =
 * Allow consent to be specified as mandatory
 

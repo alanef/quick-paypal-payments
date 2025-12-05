@@ -23,33 +23,53 @@
  */
 namespace Quick_Paypal_Payments\UI\Admin;
 
-use  Freemius ;
-class Admin
-{
-    private  $plugin_name ;
-    private  $version ;
+use Freemius;
+class Admin {
+    private $plugin_name;
+
+    private $version;
+
     /**
      * @param Freemius $freemius Object for freemius.
      */
-    private  $freemius ;
-    public function __construct( $plugin_name, $version, $freemius )
-    {
+    private $freemius;
+
+    public function __construct( $plugin_name, $version, $freemius ) {
         $this->plugin_name = $plugin_name;
         $this->version = $version;
         $this->freemius = $freemius;
     }
-    
-    public function hooks()
-    {
-        add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_styles' ) );
-        add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-        add_action( 'admin_notices', array( $this, 'admin_notice_freemius' ) );
-        add_action( 'init', array( $this, 'generate_freemius_licence' ) );
+
+    public function hooks() {
+        add_action( 'admin_enqueue_scripts', array($this, 'enqueue_styles') );
+        add_action( 'admin_enqueue_scripts', array($this, 'enqueue_scripts') );
+        add_action( 'admin_notices', array($this, 'admin_notice_freemius') );
+        add_action( 'init', array($this, 'generate_freemius_licence') );
         update_option( 'qpp_legacy_free', true );
+        // Add AJAX endpoint for refreshing nonces
+        add_action( 'wp_ajax_qpp_refresh_nonce', array($this, 'refresh_nonce_callback') );
+        add_action( 'wp_ajax_nopriv_qpp_refresh_nonce', array($this, 'refresh_nonce_callback') );
     }
-    
-    public function enqueue_styles()
-    {
+
+    /**
+     * AJAX callback to refresh the form submission nonce
+     */
+    public function refresh_nonce_callback() {
+        if ( !wp_doing_ajax() ) {
+            return;
+        }
+        // No nonce check here since we're actually getting a fresh nonce
+        // Generate a fresh nonce
+        $nonce = wp_create_nonce( 'qpp_payment_form' );
+        // Return the new nonce
+        wp_send_json_success( array(
+            'nonce' => $nonce,
+        ) );
+        // Make sure to exit properly
+        wp_die();
+    }
+
+    public function enqueue_styles() {
         wp_enqueue_style(
             $this->plugin_name,
             plugin_dir_url( __FILE__ ) . 'css/admin.css',
@@ -58,20 +78,18 @@ class Admin
             'all'
         );
     }
-    
-    public function enqueue_scripts()
-    {
+
+    public function enqueue_scripts() {
         wp_enqueue_script(
             $this->plugin_name,
             plugin_dir_url( __FILE__ ) . 'js/admin.js',
-            array( 'jquery' ),
+            array('jquery'),
             $this->version,
             false
         );
     }
-    
-    public function qpp_dismiss_notice()
-    {
+
+    public function qpp_dismiss_notice() {
         $user_id = get_current_user_id();
         if ( !wp_doing_ajax() ) {
             return;
@@ -89,9 +107,8 @@ class Admin
         update_user_meta( $user_id, 'qpp_dismissed_notices', $um );
         wp_die();
     }
-    
-    public function admin_notice_freemius()
-    {
+
+    public function admin_notice_freemius() {
         // Don't display notices to users that can't do anything about it.
         if ( !current_user_can( 'install_plugins' ) ) {
             return;
@@ -125,11 +142,9 @@ class Admin
         $user = wp_get_current_user();
         $freemius_nonce = wp_create_nonce( 'qpp_freemius_licence' );
         $notice = "";
-        $logo = '<img style="float:left;padding-right: 10px" height="64px" src="https://ps.w.org/quick-paypal-payments/assets/icon-128x128.png">';
-        global  $quick_paypal_payments_fs ;
-        
+        $logo = '<img style="float:left;padding-right: 10px" height="64px" quick-paypal-payments="https://ps.w.org/quick-paypal-payments/assets/icon-128x128.png">';
+        global $quick_paypal_payments_fs;
         if ( $qpp_key['authorised'] && $quick_paypal_payments_fs->is_free_plan() ) {
-            
             if ( 'generated' !== $qpp_freemius_licence ) {
                 $failed = '';
                 if ( 'failed' === $qpp_freemius_licence ) {
@@ -157,10 +172,8 @@ The email was sent to <strong>%2$s</strong>. </p><p>If you do not have access to
 https://fullworks.net/account/</a> to get your download and licence key
 </p>', 'quick-paypal-payments' ), $logo, $user->data->user_email );
             }
-        
         } else {
             // start of free offer
-            
             if ( 'generated' !== $qpp_freemius_licence ) {
                 $failed = '';
                 if ( 'failed' === $qpp_freemius_licence ) {
@@ -169,9 +182,9 @@ if after several attempts you still get this message contact me at
 <a target="_blank" href="mailto:support@fullworks.net">support</a> with your details, name , email, domain name etc</p>';
                 }
                 $notice .= sprintf(
-                    __( '%1$s<strong>Important Offer for FREE users of this plugin</strong>. %2$s<p>Version 6 of the plugin is a major rewrite, moving away from PayPal Standard and using PayPal Smart Buttons.
-</p><p>Paypal Smart Buttons require a business account - PayPal business accounts are free but if you are using a personal account you should upgrade now to prepare. 
-The new free version will have slightly less features than the current free version, <strong>no one likes fre things being taken away</strong> so for a limited time we are offering a free upgrade to the Pro GOLD plan. </p>
+                    __( '%1$s<strong>Important NOTICE for FREE users of this plugin</strong>. %2$s<p>Version 6 of the plugin will have some features that are free today as paid only, this is necessary to be able to continue to support the free version.
+</p><p> 
+As the new free version will have  less features than the current free version, <strong>no one likes fre things being taken away</strong> so for a limited time we are offering a free lifetime upgrade to the Pro GOLD plan, which is teh equivalent of the free version today. </p>
 <p>The licence will be given to your email, if you do not have access to <strong>%3$s</strong> please change it before requesting!</p><p><a href="https://wordpress.org/support/topic/the-futures-of-this-plugin-understanding-why-there-is-an-offer-of-gold-plan/" target="_blank">Read more details as why this is happening here on the official WordPress support forum</a></p>
 <a target="_blank" href="%4$s" class="button" >CLICK HERE TO GET YOUR DOWNLOAD AND LICENCE BY EMAIL</a>', 'quick-paypal-payments' ),
                     $logo,
@@ -189,17 +202,16 @@ The email was sent to <strong>%2$s</strong>. </p><p>If you do not have access to
 https://fullworks.net/account/</a> to get your download and licence key
 </p>', 'quick-paypal-payments' ), $logo, $user->data->user_email );
             }
-        
         }
-        
         // Output notice HTML.
-        if ( !empty($notice) ) {
-            printf( '<div id="qpp_notice_1" class="qpp_notice is-dismissible notice notice-warning" style="overflow:hidden;font-size: 150%%;"><p>%1$s</p></div>', wp_kses_post( $notice ) );
+        if ( !defined( 'QPP_DEMO' ) || !QPP_DEMO ) {
+            if ( !empty( $notice ) ) {
+                printf( '<div id="qpp_notice_1" class="qpp_notice is-dismissible notice notice-warning" style="overflow:hidden;font-size: 150%%;"><p>%1$s</p></div>', wp_kses_post( $notice ) );
+            }
         }
     }
-    
-    public function generate_freemius_licence()
-    {
+
+    public function generate_freemius_licence() {
         if ( wp_doing_ajax() ) {
             return;
         }
@@ -212,19 +224,15 @@ https://fullworks.net/account/</a> to get your download and licence key
         $user = wp_get_current_user();
         $qpp_key = get_option( 'qpp_key' );
         $suffix = '';
-        
         if ( isset( $_REQUEST['free'] ) ) {
             $qpp_key['key'] = 'free';
             $suffix = '-free';
         }
-        
         $request = wp_remote_get( 'https://fullworks.net/wp-json/fullworks-qpp-sync/v1/add/quick-paypal-payments' . $suffix . '/?key=' . $qpp_key['key'] . '&email=' . $user->data->user_email . '&domain=' . get_bloginfo( 'url' ) );
-        
         if ( is_wp_error( $request ) ) {
             update_option( 'qpp_licence_generated', 'failed' );
             return;
         }
-        
         $response_code = wp_remote_retrieve_response_code( $request );
         if ( 200 !== $response_code ) {
             update_option( 'qpp_licence_generated', 'failed' );

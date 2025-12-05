@@ -135,7 +135,7 @@ function qpp_get_stored_options($id) {
         'Wperiod'               => 'week',
         'Mperiod'               => 'month',
         'Yperiod'               => 'year',
-        'src'                   => 0,
+        'quick-paypal-payments'                   => 0,
         'srt'                   => 2,
         'payments'              => 'Number of payments:',
         'every'                 => 'payments every ',
