@@ -16,13 +16,13 @@ function qpp_admin_tabs(  $current = 'settings'  ) {
     /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
     global $quick_paypal_payments_fs;
     $tabs = array(
-        'setup'        => esc_html__( 'Setup', 'quick-event-manager' ),
-        'settings'     => esc_html__( 'Form Settings', 'quick-event-manager' ),
-        'styles'       => esc_html__( 'Styling', 'quick-event-manager' ),
-        'send'         => esc_html__( 'Send Options', 'quick-event-manager' ),
-        'error'        => esc_html__( 'Validation Messages', 'quick-event-manager' ),
-        'autoresponce' => esc_html__( 'Auto Responder', 'quick-event-manager' ),
-        'coupon'       => esc_html__( 'Coupons', 'quick-event-manager' ),
+        'setup'        => esc_html__( 'Setup', 'quick-paypal-payments' ),
+        'settings'     => esc_html__( 'Form Settings', 'quick-paypal-payments' ),
+        'styles'       => esc_html__( 'Styling', 'quick-paypal-payments' ),
+        'send'         => esc_html__( 'Send Options', 'quick-paypal-payments' ),
+        'error'        => esc_html__( 'Validation Messages', 'quick-paypal-payments' ),
+        'autoresponce' => esc_html__( 'Auto Responder', 'quick-paypal-payments' ),
+        'coupon'       => esc_html__( 'Coupons', 'quick-paypal-payments' ),
         'ipn'          => 'IPN',
     );
     echo '<h2 class="nav-tab-wrapper">';
@@ -538,8 +538,8 @@ function qpp_form_options(  $id  ) {
                 $input = 'postageblurb';
                 $checked = $qpp['usepostage'];
                 $options = '<span class="description">Post and Packing charge type:</span><br>
-            ' . esc_html__( 'Percentage of the total', 'quick-event-manager' ) . ': <input type="text" style="width:4em;padding:2px" label="postagepercent" name="postagepercent" value="' . esc_attr( $qpp['postagepercent'] ) . '" /> %<br>
-            ' . esc_html__( 'Fixed amount', 'quick-event-manager' ) . ': <input type="text" style="width:4em;padding:2px" label="postagefixed" name="postagefixed" value="' . esc_attr( $qpp['postagefixed'] ) . '" /> ' . esc_html( $currency[$id] );
+            ' . esc_html__( 'Percentage of the total', 'quick-paypal-payments' ) . ': <input type="text" style="width:4em;padding:2px" label="postagepercent" name="postagepercent" value="' . esc_attr( $qpp['postagepercent'] ) . '" /> %<br>
+            ' . esc_html__( 'Fixed amount', 'quick-paypal-payments' ) . ': <input type="text" style="width:4em;padding:2px" label="postagefixed" name="postagefixed" value="' . esc_attr( $qpp['postagefixed'] ) . '" /> ' . esc_html( $currency[$id] );
                 break;
             case 'field8':
                 $check = '<input  type="checkbox"   name="captcha"' . checked( $qpp['captcha'], 'checked', false ) . ' value="checked" />';
@@ -876,7 +876,7 @@ function qpp_styles(  $id  ) {
     <td colspan="2"><h2>Form Header</h2></td>
     </tr>
     <tr>
-    <td style="vertical-align:top;">' . esc_html__( 'Header', 'quick-event-manager' ) . '</td>
+    <td style="vertical-align:top;">' . esc_html__( 'Header', 'quick-paypal-payments' ) . '</td>
     <td><input type="radio" name="header-type" value="h2"' . esc_attr( $h2 ) . ' /> H2 
     <input type="radio" name="header-type" value="h3"' . esc_attr( $h3 ) . ' /> H3 
     <input type="radio" name="header-type" value="h4"' . esc_attr( $h4 ) . ' /> H4</td>
@@ -929,7 +929,7 @@ function qpp_styles(  $id  ) {
     <input type="radio" name="corners" value="square"' . esc_attr( $square ) . ' /> Square corners<br />
     <input type="radio" name="corners" value="round"' . esc_attr( $round ) . ' /> 5px rounded corners</td></tr>
     <tr>
-    <td style="vertical-align:top;">' . esc_html__( 'Margins and Padding', 'quick-event-manager' ) . '</td>
+    <td style="vertical-align:top;">' . esc_html__( 'Margins and Padding', 'quick-paypal-payments' ) . '</td>
     <td><span class="description">' . esc_html__( 'Set the margins and padding of each bit using CSS shortcodes', 'quick-contact-form' ) . ':</span><br>
     <input type="text" label="line margin" name="line_margin" value="' . esc_attr( $style['line_margin'] ) . '" /></td>
     </tr>

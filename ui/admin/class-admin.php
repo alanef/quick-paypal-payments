@@ -184,7 +184,7 @@ if after several attempts you still get this message contact me at
                 $notice .= sprintf(
                     __( '%1$s<strong>Important NOTICE for FREE users of this plugin</strong>. %2$s<p>Version 6 of the plugin will have some features that are free today as paid only, this is necessary to be able to continue to support the free version.
 </p><p> 
-As the new free version will have  less features than the current free version, <strong>no one likes fre things being taken away</strong> so for a limited time we are offering a free lifetime upgrade to the Pro GOLD plan, which is teh equivalent of the free version today. </p>
+As the new free version will have  less features than the current free version, <strong>no one likes free things being taken away</strong> so for a limited time we are offering a free lifetime upgrade to the Pro GOLD plan, which is teh equivalent of the free version today. </p>
 <p>The licence will be given to your email, if you do not have access to <strong>%3$s</strong> please change it before requesting!</p><p><a href="https://wordpress.org/support/topic/the-futures-of-this-plugin-understanding-why-there-is-an-offer-of-gold-plan/" target="_blank">Read more details as why this is happening here on the official WordPress support forum</a></p>
 <a target="_blank" href="%4$s" class="button" >CLICK HERE TO GET YOUR DOWNLOAD AND LICENCE BY EMAIL</a>', 'quick-paypal-payments' ),
                     $logo,

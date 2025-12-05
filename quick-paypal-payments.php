@@ -24,7 +24,7 @@
  * Plugin Name: Quick Paypal Payments
  * Plugin URI: https://fullworksplugins.com/quick-paypal-payments/
  * Description: Accept any amount or payment ID before submitting to paypal.
- * Version: 5.7.48
+ * Version: 5.7.49
  * Requires at least: 5.3
  * Requires PHP: 7.4
  * License:          GPL-2.0-or-later
@@ -49,7 +49,7 @@ if ( ! defined( 'WPINC' ) ) {
 if ( ! function_exists( 'Quick_Paypal_Payments\run_Quick_Paypal_Payments' ) ) {
 	define( 'QUICK_PAYPAL_PAYMENTS_PLUGIN_DIR', trailingslashit( plugin_dir_path( __FILE__ ) ) );
 	define( 'QUICK_PAYPAL_PAYMENTS_PLUGIN_FILE', plugin_basename( __FILE__ ) );
-	define( 'QUICK_PAYPAL_PAYMENTS_VERSION', '5.7.48' );
+	define( 'QUICK_PAYPAL_PAYMENTS_VERSION', '5.7.49' );
 
 // Include the autoloader so we can dynamically include the classes.
 	require_once QUICK_PAYPAL_PAYMENTS_PLUGIN_DIR . 'control/autoloader.php';
