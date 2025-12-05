@@ -25,9 +25,9 @@
  * Plugin URI: https://fullworksplugins.com/quick-paypal-payments/
  * Description: Accept any amount or payment ID before submitting to paypal.
  * Version: 5.7.48
- * Requires at least: 7.4
+ * Requires at least: 5.3
  * Requires PHP: 7.4
- * License:          GPL-2.0
+ * License:          GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Author: Fullworks
  * Author URI: https://fullworksplugins.com/

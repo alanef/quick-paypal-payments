@@ -3,7 +3,7 @@
         'name' => 'fullworks/quick-paypal-payments',
         'pretty_version' => '5.7.48',
         'version' => '5.7.48.0',
-        'reference' => '3983f8e8b214091cb39f497ba77255a44ac7ce22',
+        'reference' => 'd3d784d75a9d329b68bff729254e993487bf5e16',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -42,7 +42,7 @@
         'fullworks/quick-paypal-payments' => array(
             'pretty_version' => '5.7.48',
             'version' => '5.7.48.0',
-            'reference' => '3983f8e8b214091cb39f497ba77255a44ac7ce22',
+            'reference' => 'd3d784d75a9d329b68bff729254e993487bf5e16',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
