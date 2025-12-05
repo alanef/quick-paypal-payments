@@ -1,0 +1,39 @@
+name: Deploy to WordPress.org
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'    # Matches v2.4.0
+      - '*.*.*'      # Matches 2.4.0
+      - 'v*.*'       # Matches v2.4
+      - '*.*'        # Matches 2.4
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to deploy'
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup deployment
+      run: |
+        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          echo "Manual deployment for tag: ${{ github.event.inputs.tag }}"
+        else
+          echo "Automatic deployment for tag: ${{ github.ref_name }}"
+        fi
+
+    - name: WordPress Plugin Deploy
+      uses: 10up/action-wordpress-plugin-deploy@stable
+      env:
+        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        SLUG: quick-paypal-payments
+        BUILD_DIR: ./
+        ASSETS_DIR: .wordpress-org
+      continue-on-error: false
