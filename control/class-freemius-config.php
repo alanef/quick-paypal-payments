@@ -33,20 +33,20 @@ class Freemius_Config {
             // Include Freemius SDK.
             require_once QUICK_PAYPAL_PAYMENTS_PLUGIN_DIR . 'vendor/freemius/wordpress-sdk/start.php';
             $quick_paypal_payments_fs = fs_dynamic_init( array(
-                'id'             => '5623',
-                'slug'           => 'quick-paypal-payments',
-                'type'           => 'plugin',
-                'public_key'     => 'pk_fe42c0234babc6d6acb8ca8948f97',
-                'is_premium'     => false,
-                'premium_suffix' => 'Pro',
-                'has_addons'     => false,
-                'has_paid_plans' => true,
-                'trial'          => array(
+                'id'               => '5623',
+                'slug'             => 'quick-paypal-payments',
+                'type'             => 'plugin',
+                'public_key'       => 'pk_fe42c0234babc6d6acb8ca8948f97',
+                'is_premium'       => false,
+                'premium_suffix'   => 'Pro',
+                'has_addons'       => false,
+                'has_paid_plans'   => true,
+                'trial'            => array(
                     'days'               => 14,
                     'is_require_payment' => true,
                 ),
-                'navigation'     => 'tabs',
-                'menu'           => array(
+                'navigation'       => 'tabs',
+                'menu'             => array(
                     'slug'           => 'quick-paypal-payments',
                     'override_exact' => true,
                     'support'        => false,
@@ -54,8 +54,9 @@ class Freemius_Config {
                         'slug' => 'options-general.php',
                     ),
                 ),
-                'anonymous_mode' => QPP_DEMO,
-                'is_live'        => true,
+                'anonymous_mode'   => QPP_DEMO,
+                'is_live'          => true,
+                'is_org_compliant' => true,
             ) );
         }
         $quick_paypal_payments_fs->add_filter(

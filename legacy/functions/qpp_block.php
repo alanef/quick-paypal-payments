@@ -8,7 +8,7 @@ function qpp_block_init() {
 // Register our block editor script.
 	wp_register_script(
 		'qpp_block',
-		plugins_url( 'block.js', __FILE__ ),
+		plugins_url( '../block.js', __FILE__ ),
 		array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor' ),
 	);
 
