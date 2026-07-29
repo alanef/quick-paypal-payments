@@ -1,4 +1,9 @@
 <?php
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 
 function qpp_get_stored_setup () {
     $qpp_setup = get_option('qpp_setup');

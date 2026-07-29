@@ -32,7 +32,8 @@
 		$(document).on('click', '.qpp_notice .notice-dismiss', function( event ) {
 			let data = {
 				action : 'qpp_dismiss_notice',
-				id: $(this).closest('div').attr('id')
+				id: $(this).closest('div').attr('id'),
+				_ajax_nonce: ( typeof qpp_admin !== 'undefined' ) ? qpp_admin.dismiss_nonce : ''
 			};
 
 			$.post(ajaxurl, data, function (response) {

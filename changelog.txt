@@ -1,4 +1,9 @@
 == Changelog ==
+= 5.7.51 =
+* Security: the IPN listener now verifies the amount received, the currency, the receiving PayPal account and the payment status before marking an order paid. Previously a matching order token alone was enough, which allowed an order to be marked paid for less than its total. Thanks to Muni Nitish Kumar Yaddala for the report.
+* Security: IPN transactions are recorded so the same notification cannot be replayed.
+* Orders are now left pending, rather than marked paid, when a payment cannot be verified.
+
 = 5.7.50 =
 * Fix Gutenberg block.js path for block registration
 

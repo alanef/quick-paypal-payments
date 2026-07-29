@@ -1,11 +1,12 @@
 === Quick Paypal Payments ===
 Contributors: Fullworks
 Tags: paypal payment form, paypal, payments
-Tested up to: 6.9
-Stable tag: 5.7.50
+Requires at least: 6.0
+Tested up to: 7.0
+Requires PHP: 7.4
+Stable tag: 5.7.51-beta.1
 License: 	GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Type: freemium
 
 Zero to PayPal with just one shortcode. Jam packed with features and options with easy to use custom settings.
 
@@ -41,6 +42,38 @@ Tested with PHP 8.0
 = Developers plugin page =
 
 [quick paypal payments plugin](https://fullworks.net/products/quick-paypal-payments/).
+
+== External Services ==
+
+This plugin relies on PayPal to take payments. It cannot function without it.
+
+**PayPal checkout**
+When a visitor submits one of your payment forms, the plugin sends them to PayPal
+to complete the payment. The data submitted to PayPal is the payment amount,
+currency, item name and payment reference, together with any name, email address,
+postal address and telephone number the visitor entered on your form. This happens
+only at the point a visitor submits a payment form.
+
+On pages that contain a payment form, the plugin also loads PayPal's checkout
+script from https://www.paypalobjects.com/api/checkout.js.
+
+**PayPal Instant Payment Notification**
+If you enable IPN, PayPal sends your site a notification when a payment is made.
+Your site posts that notification back to PayPal at https://ipnpb.paypal.com (or
+https://ipnpb.sandbox.paypal.com in sandbox mode) so PayPal can confirm it is
+genuine. Only the notification PayPal sent is posted back.
+
+PayPal terms of service: https://www.paypal.com/uk/legalhub/useragreement-full
+PayPal privacy policy: https://www.paypal.com/uk/legalhub/privacy-full
+
+**Freemius**
+Licensing, updates and optional usage tracking are handled by Freemius. Usage
+tracking is opt in and you are asked when the plugin is activated. If you opt in,
+your site URL, WordPress and PHP versions and the administrator email address are
+sent to Freemius. If you decline, no data is sent.
+
+Freemius terms of service: https://freemius.com/terms/
+Freemius privacy policy: https://freemius.com/privacy/
 
 == Screenshots ==
 1.  This is the main admin screen.

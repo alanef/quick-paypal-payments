@@ -1,4 +1,9 @@
 <?php
+
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 function qpp_block_init() {
 
 	if ( ! function_exists( 'register_block_type' ) ) {

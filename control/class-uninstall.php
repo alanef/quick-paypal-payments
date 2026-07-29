@@ -23,6 +23,12 @@
 
 namespace Quick_Paypal_Payments\Control;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+
 class Uninstall {
 
 	public static function uninstall() {

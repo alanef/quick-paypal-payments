@@ -23,6 +23,10 @@
  */
 namespace Quick_Paypal_Payments\UI\Admin;
 
+// Prevent direct access.
+if ( !defined( 'ABSPATH' ) ) {
+    exit;
+}
 use Freemius;
 class Admin {
     private $plugin_name;
@@ -87,6 +91,9 @@ class Admin {
             $this->version,
             false
         );
+        wp_localize_script( $this->plugin_name, 'qpp_admin', array(
+            'dismiss_nonce' => wp_create_nonce( 'qpp_dismiss_notice' ),
+        ) );
     }
 
     public function qpp_dismiss_notice() {
@@ -97,13 +104,17 @@ class Admin {
         if ( !current_user_can( 'install_plugins' ) ) {
             return;
         }
-        $um = get_user_meta( $user_id, 'wfea_dismissed_notices', true );
+        check_ajax_referer( 'qpp_dismiss_notice' );
+        if ( empty( $_POST['id'] ) ) {
+            wp_die();
+        }
+        // Read and write the same key. This used to read wfea_dismissed_notices,
+        // a key belonging to another Fullworks plugin, so dismissals never stuck.
+        $um = get_user_meta( $user_id, 'qpp_dismissed_notices', true );
         if ( !is_array( $um ) ) {
             $um = [];
         }
-        // @TODO for neatness could apply a nonce but not a risk
-        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- just dismissing a notice
-        $um[sanitize_text_field( $_POST['id'] )] = true;
+        $um[sanitize_text_field( wp_unslash( $_POST['id'] ) )] = true;
         update_user_meta( $user_id, 'qpp_dismissed_notices', $um );
         wp_die();
     }
@@ -142,7 +153,8 @@ class Admin {
         $user = wp_get_current_user();
         $freemius_nonce = wp_create_nonce( 'qpp_freemius_licence' );
         $notice = "";
-        $logo = '<img style="float:left;padding-right: 10px" height="64px" quick-paypal-payments="https://ps.w.org/quick-paypal-payments/assets/icon-128x128.png">';
+        // Previously a remote logo from ps.w.org. Offloaded assets are not allowed, and the tag was malformed so it never rendered.
+        $logo = '';
         global $quick_paypal_payments_fs;
         if ( $qpp_key['authorised'] && $quick_paypal_payments_fs->is_free_plan() ) {
             if ( 'generated' !== $qpp_freemius_licence ) {
@@ -152,6 +164,7 @@ class Admin {
 if after several attempts you still get this message contact me at 
 <a target="_blank" href="mailto:support@fullworks.net">support</a> with your details, name , email, domain name etc</p>';
                 }
+                /* translators: %1$s is the plugin logo markup, %2$s is an optional failure message, %3$s is the download request URL, %4$s is the account email address. */
                 $notice .= sprintf(
                     __( '%1$s<strong>Important action required</strong>. %2$s<p>Big changes are coming to Quick PayPal Payments and you MUST take action now to keep your premium features!!<br>
  You will need to <strong>download and install the PREMIUM</strong> plugin to keep your premium features. Don\'t worry it is easy.</p>
@@ -164,6 +177,7 @@ if after several attempts you still get this message contact me at
                     $user->data->user_email
                 );
             } else {
+                /* translators: %1$s is the plugin logo markup, %2$s is the account email address. */
                 $notice .= sprintf( __( '%1$s<strong>Important action required - Your licence request was successful</strong>. <p>Big changes are coming to Quick PayPal Payments  and you MUST take action now to keep your premium features!!<br>
  You have requested the PREMIUM plugin, please install it to keep your premium features. Don\'t worry it is easy.
 </p><p>If you do not download and install the premium plugin - when version 6 is released you may lose features you depend on, so register now and be prepared.
@@ -181,6 +195,7 @@ https://fullworks.net/account/</a> to get your download and licence key
 if after several attempts you still get this message contact me at 
 <a target="_blank" href="mailto:support@fullworks.net">support</a> with your details, name , email, domain name etc</p>';
                 }
+                /* translators: %1$s is the plugin logo markup, %2$s is an optional failure message, %3$s is the account email address, %4$s is the download request URL. */
                 $notice .= sprintf(
                     __( '%1$s<strong>Important NOTICE for FREE users of this plugin</strong>. %2$s<p>Version 6 of the plugin will have some features that are free today as paid only, this is necessary to be able to continue to support the free version.
 </p><p> 
@@ -194,6 +209,7 @@ As the new free version will have  less features than the current free version, 
                 );
             } else {
                 // generated
+                /* translators: %1$s is the plugin logo markup, %2$s is the account email address. */
                 $notice .= sprintf( __( '%1$s<strong>Important action required - Your licence request was successful</strong>. <p>you MUST take action now!!<br>
  You have requested the Pro GOLD plugin free offer, please install it. Don\'t worry it is easy.
 </p><p>If you do not download and install the premium plugin - when version 6 is released you may lose features you depend on, so register now and be prepared.

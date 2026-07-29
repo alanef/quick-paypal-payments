@@ -23,6 +23,12 @@
 
 namespace Quick_Paypal_Payments\UI\Admin;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+
 class Admin_Settings extends Admin_Pages {
 	protected $settings_page;
 	// protected $settings_page_id = 'toplevel_page_quick-paypal-payments';  // top level

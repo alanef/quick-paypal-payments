@@ -1,4 +1,9 @@
 <?php
+
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * @copyright (c) 2020.
  * @author            Alan Fuller (support@fullworks)
@@ -51,6 +56,7 @@ spl_autoload_register( function ( $class_name ) {
 		include_once( $filepath );
 	} else {
 		// changed to be translatable
+		/* translators: %1$s is the path of the file that could not be loaded. */
 		wp_die( sprintf( esc_html__( 'The system file attempting to be loaded at %1$s does not exist.', 'quick-paypal-payments' ), esc_html( $filepath ) ) );
 	}
 } );

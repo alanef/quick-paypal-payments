@@ -26,6 +26,12 @@
 
 namespace Quick_Paypal_Payments\Core;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+
 /**
  * used for shared data
  */
@@ -95,16 +101,21 @@ class Utilities {
 	}
 
 	public function display_tabs() {
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
-		$split     = explode( "-", sanitize_text_field($_GET['page']) );
+		// Reading which settings tab to mark active. No action is taken and no
+		// state changes, so a nonce is not applicable here.
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read only, renders the tab strip.
+		$page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
+
+		$split     = explode( '-', $page );
 		$page_type = $split[ count( $split ) - 1 ];
 		$tabs      = $this->get_settings_page_tabs( $page_type );
 		?>
 		<h2 class="nav-tab-wrapper">
 			<?php foreach ( $tabs as $key => $tab ) {
 				$active = '';
-				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
-				if ( preg_match( '#' . $_GET['page'] . '$#', $tab['href'] ) ) {
+				// preg_quote() because $page is request data. Unescaped it could
+				// close the delimiter or inject pattern syntax.
+				if ( '' !== $page && preg_match( '#' . preg_quote( $page, '#' ) . '$#', $tab['href'] ) ) {
 					$active = ' nav-tab-active';
 				}
 				echo '<a href="' . esc_attr($tab['href']) . '" class="nav-tab' . esc_attr($active) . '">' . esc_attr( $tab['title'] ) . '</a>';
@@ -456,7 +467,7 @@ class Utilities {
 				),
 				// 'couponblurb'
 				'label'         => array(
-					'default'     => __( 'Enter coupon code', 'quick-paypal-manager' ),
+					'default'     => __( 'Enter coupon code', 'quick-paypal-payments' ),
 					'sanitize_cb' => 'sanitize_text_field'
 				),
 				'couponbutton'  => array(
@@ -655,8 +666,8 @@ class Utilities {
 				// 'product'
 				'label'                => array(
 					'default'     => sprintf(
+					/* translators: %1$s is the [product] shortcode literal, %2$s is the [cost] shortcode literal. */
 						esc_html__(
-						/* translators: %1$s* = [product] %$2 = [cost] literals as shortcodes */
 							'%1$s at $%2$s each',
 							'quick-paypal-payments'
 						),

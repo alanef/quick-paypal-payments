@@ -23,6 +23,11 @@
 
 namespace Quick_Paypal_Payments\Control;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use Fullworks_Template_Loader_Lib\BaseLoader;
 
 

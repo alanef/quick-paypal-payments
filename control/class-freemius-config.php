@@ -23,6 +23,10 @@
  */
 namespace Quick_Paypal_Payments\Control;
 
+// Prevent direct access.
+if ( !defined( 'ABSPATH' ) ) {
+    exit;
+}
 class Freemius_Config {
     public function init() {
         global $quick_paypal_payments_fs;

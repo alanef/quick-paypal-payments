@@ -23,6 +23,12 @@
 
 namespace Quick_Paypal_Payments\Control;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+
 use Quick_Paypal_Payments\UI\Admin\Admin;
 use Quick_Paypal_Payments\UI\Admin\Admin_Settings;
 use Quick_Paypal_Payments\UI\User\FrontEnd;

@@ -23,6 +23,12 @@
 
 namespace Quick_Paypal_Payments\UI\Admin;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+
 class Admin_Pages {
 	public $block_table_obj;
 	protected $settings_page;  // toplevel appearance etc  followed by slug

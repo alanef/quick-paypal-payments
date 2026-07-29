@@ -1,4 +1,9 @@
 <?php
+
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 	if (!class_exists('WPHttp')) {
 		class WPHttp {
 			public $response;

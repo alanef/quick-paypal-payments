@@ -1,8 +1,12 @@
 <?php
 
+// Prevent direct access.
+if ( !defined( 'ABSPATH' ) ) {
+    exit;
+}
 use Quick_Paypal_Payments\Core\Utilities;
 global $quick_paypal_payments_fs;
-add_action( 'init', 'qpp_settings_init' );
+add_action( 'admin_init', 'qpp_settings_init' );
 add_action( 'admin_menu', 'qpp_page_init' );
 add_action( 'admin_menu', 'qpp_admin_pages' );
 add_action(
@@ -271,7 +275,7 @@ function qpp_setup(  $id  ) {
 <p>If you require urgent or personal support please <a href="' . esc_url( $quick_paypal_payments_fs->get_upgrade_url() ) . '" >upgrade to a paid plan</a></p>';
     $content .= '</div>
     </div>';
-    echo $content;
+    echo wp_kses( $content, qpp_allowed_html() );
 }
 
 function qpp_clone(  $id, $clone  ) {
@@ -444,13 +448,12 @@ function qpp_form_options(  $id  ) {
     ${$qpp['optionselector']} = 'checked';
     ${$qpp['selector']} = 'checked';
     $content = qpp_head_css();
-    $content .= '<script>
-    jQuery(function() {var qpp_sort = jQuery( "#qpp_sort" ).sortable({ axis: "y" ,
+    // Printed directly rather than appended to $content, which is filtered through wp_kses() and would strip a script tag.
+    wp_print_inline_script_tag( 'jQuery(function() {var qpp_sort = jQuery( "#qpp_sort" ).sortable({ axis: "y" ,
     update:function(e,ui) {
     var order = qpp_sort.sortable("toArray").join();
     jQuery("#qpp_settings_sort").val(order);}
-    });});
-    </script>';
+    });});' );
     $content .= '<div class="qpp-settings"><div class="qpp-options">';
     if ( $id ) {
         $content .= '<h2>Form settings for ' . $id . '</h2>';
@@ -715,7 +718,7 @@ function qpp_form_options(  $id  ) {
     $content .= '<p>There are some more examples of payment forms <a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">on this page</a>.</p>
     <p>And there are loads of shortcode options <a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">on this page</a>.</p>
     </div></div>';
-    echo $content;
+    echo wp_kses( $content, qpp_allowed_html() );
 }
 
 function qpp_styles(  $id  ) {
@@ -892,9 +895,9 @@ function qpp_styles(  $id  ) {
     <td colspan="2"><h2>Field Label Locations</h2></td>
     <tr>
     <td colspan="2"><input type="radio" name="labeltype" value="tiny"' . esc_attr( $tiny ) . ' />
-     ' . esc_html__( 'Reduce in size on focus', 'quick-interest-slider' ) . '&nbsp;&nbsp;&nbsp;
-     <input type="radio" name="labeltype" value="hiding"' . esc_attr( $hiding ) . ' /> ' . esc_html__( 'Placeholders', 'quick-interest-slider' ) . '&nbsp;&nbsp;&nbsp;
-     <input type="radio" name="labeltype" value="plain"' . esc_attr( $plain ) . ' /> ' . esc_html__( 'Above Input Fields', 'quick-interest-slider' ) . '</td>
+     ' . esc_html__( 'Reduce in size on focus', 'quick-paypal-payments' ) . '&nbsp;&nbsp;&nbsp;
+     <input type="radio" name="labeltype" value="hiding"' . esc_attr( $hiding ) . ' /> ' . esc_html__( 'Placeholders', 'quick-paypal-payments' ) . '&nbsp;&nbsp;&nbsp;
+     <input type="radio" name="labeltype" value="plain"' . esc_attr( $plain ) . ' /> ' . esc_html__( 'Above Input Fields', 'quick-paypal-payments' ) . '</td>
     </tr>
     <tr>
     <td colspan="2"><h2>Input fields</h2></td>
@@ -930,7 +933,7 @@ function qpp_styles(  $id  ) {
     <input type="radio" name="corners" value="round"' . esc_attr( $round ) . ' /> 5px rounded corners</td></tr>
     <tr>
     <td style="vertical-align:top;">' . esc_html__( 'Margins and Padding', 'quick-paypal-payments' ) . '</td>
-    <td><span class="description">' . esc_html__( 'Set the margins and padding of each bit using CSS shortcodes', 'quick-contact-form' ) . ':</span><br>
+    <td><span class="description">' . esc_html__( 'Set the margins and padding of each bit using CSS shortcodes', 'quick-paypal-payments' ) . ':</span><br>
     <input type="text" label="line margin" name="line_margin" value="' . esc_attr( $style['line_margin'] ) . '" /></td>
     </tr>
     <tr>';
@@ -1056,7 +1059,7 @@ function qpp_styles(  $id  ) {
     $content .= '<p>There are some more examples of payment forms <a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">on this page</a>.</p>
     <p>And there are loads of shortcode options <a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">on this page</a>.</p>
     </div></div>';
-    echo $content;
+    echo wp_kses( $content, qpp_allowed_html() );
 }
 
 function qpp_send_page(  $id  ) {
@@ -1226,7 +1229,7 @@ function qpp_send_page(  $id  ) {
     $content .= '<p>There are some more examples of payment forms <a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">on this page</a>.</p>
     <p>And there are loads of shortcode options <a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">on this page</a>.</p>
     </div></div>';
-    echo $content;
+    echo wp_kses( $content, qpp_allowed_html() );
 }
 
 function qpp_error_page(  $id  ) {
@@ -1286,7 +1289,7 @@ function qpp_error_page(  $id  ) {
     $content .= '<p>There are some more examples of payment forms <a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">on this page</a>.</p>
     <p>And there are loads of shortcode options <a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">on this page</a>.</p>
     </div></div>';
-    echo $content;
+    echo wp_kses( $content, qpp_allowed_html() );
 }
 
 function qpp_ipn_page() {
@@ -1363,7 +1366,7 @@ function qpp_ipn_page() {
     </ol>
     </div>
     </div>';
-    echo $content;
+    echo wp_kses( $content, qpp_allowed_html() );
 }
 
 function qpp_autoresponce_page(  $id  ) {
@@ -1420,7 +1423,7 @@ function qpp_autoresponce_page(  $id  ) {
     <p>Subject</p>
     <input style="width:100%" type="text" name="subject" value="' . esc_attr( $auto['subject'] ) . '"/><br>
     <p>Message Content</p>';
-    echo $content;
+    echo wp_kses( $content, qpp_allowed_html() );
     wp_editor( $message, 'message', $settings = array(
         'textarea_rows' => '20',
         'wpautop'       => false,
@@ -1478,7 +1481,7 @@ function qpp_autoresponce_page(  $id  ) {
     $content .= '</form>
     </div>
     </div>';
-    echo $content;
+    echo wp_kses( $content, qpp_allowed_html() );
 }
 
 function qpp_address(  $id  ) {
@@ -1647,7 +1650,7 @@ function qpp_address(  $id  ) {
     $content .= '<p>There are some more examples of payment forms <a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">on this page</a>.</p>
     <p>And there are loads of shortcode options <a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">on this page</a>.</p>
     </div></div>';
-    echo $content;
+    echo wp_kses( $content, qpp_allowed_html() );
 }
 
 function qpp_coupon_codes(  $id  ) {
@@ -1810,7 +1813,7 @@ function qpp_coupon_codes(  $id  ) {
     $content .= '<p>There are some more examples of payment forms <a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">on this page</a>.</p>
     <p>And there are loads of shortcode options <a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">on this page</a>.</p>
     </div></div>';
-    echo $content;
+    echo wp_kses( $content, qpp_allowed_html() );
 }
 
 function qpp_delete_everything() {
@@ -1882,6 +1885,14 @@ function qpp_generate_csv() {
     $ipn = qpp_get_stored_ipn();
     if ( isset( $_POST['download_qpp_csv'] ) ) {
         check_admin_referer( 'qpp_download_form', 'qpp_download_form_nonce' );
+        // The export contains every payer's name, email, address and phone. A
+        // nonce proves the request came from our form, not that the sender is
+        // allowed the data, so the capability is checked as well.
+        if ( !current_user_can( 'manage_options' ) ) {
+            wp_die( esc_html__( 'You do not have permission to export payment records.', 'quick-paypal-payments' ), '', array(
+                'response' => 403,
+            ) );
+        }
         $id = $_POST['formname'];
         $filename = urlencode( $id . '.csv' );
         if ( $id == '' ) {
@@ -2031,6 +2042,7 @@ function qpp_generate_csv() {
                 '"'
             );
         }
+        // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Closing the PHP output stream for a CSV download, not a filesystem write.
         fclose( $outstream );
         exit;
     }
@@ -2048,18 +2060,39 @@ function qpp_scripts_init(  $hook  ) {
     wp_enqueue_script( 'jquery-ui-sortable' );
     wp_enqueue_style( 'wp-color-picker' );
     wp_enqueue_script( 'jquery-ui-datepicker' );
-    wp_enqueue_style( 'jquery-style', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css' );
-    wp_enqueue_style( 'qpp_settings', plugins_url( 'settings.css', __FILE__ ) );
-    wp_enqueue_style( 'qpp_style', plugins_url( 'payments.css', __FILE__ ) );
+    // Bundled copy: assets must not be loaded from a remote host such as the Google CDN.
+    wp_enqueue_style(
+        'jquery-style',
+        plugins_url( 'jquery-ui.css', __FILE__ ),
+        array(),
+        '1.8.9'
+    );
+    wp_enqueue_style(
+        'qpp_settings',
+        plugins_url( 'settings.css', __FILE__ ),
+        array(),
+        QUICK_PAYPAL_PAYMENTS_VERSION
+    );
+    wp_enqueue_style(
+        'qpp_style',
+        plugins_url( 'payments.css', __FILE__ ),
+        array(),
+        QUICK_PAYPAL_PAYMENTS_VERSION
+    );
     wp_enqueue_media();
     wp_enqueue_script(
         'qpp-media',
         plugins_url( 'media.js', __FILE__ ),
         array('jquery', 'wp-color-picker'),
-        false,
+        QUICK_PAYPAL_PAYMENTS_VERSION,
         true
     );
-    wp_enqueue_script( 'qpp_script', plugins_url( 'payments.js', __FILE__ ) );
+    wp_enqueue_script(
+        'qpp_script',
+        plugins_url( 'payments.js', __FILE__ ),
+        array(),
+        QUICK_PAYPAL_PAYMENTS_VERSION
+    );
 }
 
 add_action( 'admin_enqueue_scripts', 'qpp_scripts_init' );
@@ -2075,7 +2108,7 @@ function qpp_page_init() {
 
 function qpp_admin_notice(  $message = ''  ) {
     if ( !empty( $message ) ) {
-        echo '<div class="updated"><p>' . $message . '</p></div>';
+        echo '<div class="updated"><p>' . esc_html( $message ) . '</p></div>';
     }
 }
 

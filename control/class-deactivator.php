@@ -24,6 +24,12 @@
 
 namespace Quick_Paypal_Payments\Control;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+
 class Deactivator {
 	public static function deactivate() {
 

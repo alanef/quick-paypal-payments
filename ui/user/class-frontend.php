@@ -23,6 +23,12 @@
 
 namespace Quick_Paypal_Payments\UI\User;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+
 use Quick_Paypal_Payments\Control\User_Template_Loader;
 
 class FrontEnd {
