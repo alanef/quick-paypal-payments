@@ -4,7 +4,7 @@ Tags: paypal payment form, paypal, payments
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 5.7.51-beta.1
+Stable tag: 5.7.51-beta.2
 License: 	GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 

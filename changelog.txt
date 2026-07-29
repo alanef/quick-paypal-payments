@@ -3,6 +3,12 @@
 * Security: the IPN listener now verifies the amount received, the currency, the receiving PayPal account and the payment status before marking an order paid. Previously a matching order token alone was enough, which allowed an order to be marked paid for less than its total. Thanks to Muni Nitish Kumar Yaddala for the report.
 * Security: IPN transactions are recorded so the same notification cannot be replayed.
 * Orders are now left pending, rather than marked paid, when a payment cannot be verified.
+* Fix: the Required Field checkbox on the custom field setting did not show as ticked once saved, because it read the wrong option.
+* Fix: PHP warnings about undefined settings on sites where those options had not been saved yet, covering the setup, form, submission, error, IPN, autoresponder, address and coupon screens.
+* Fix: saving a settings screen with checkboxes unticked raised PHP warnings, because unticked boxes are absent from the submitted form.
+* Fix: replaced FILTER_SANITIZE_STRING, which is deprecated from PHP 8.1 and raised a deprecation notice on every settings save.
+* The IPN settings page now has a self contained "Setting IPN up in PayPal" panel with the full steps and your listener URL, rather than linking out to PayPal documentation that keeps moving. Added a direct link to your PayPal IPN history, which is the first place to look if a payment has not been marked complete.
+* Fix: two links to PayPal documentation were dead. Updated to their current locations.
 
 = 5.7.50 =
 * Fix Gutenberg block.js path for block registration

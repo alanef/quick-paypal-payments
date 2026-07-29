@@ -16,7 +16,10 @@ function qpp_get_stored_setup () {
         'encryption'    => false,
         'location'      => 'head',
         'image_url'     => false,
-        'nostore'       => false
+        'nostore'       => false,
+        // The merchant PayPal address. Absent until the setup screen is saved,
+        // and read unconditionally by qpp_get_default_email() among others.
+        'email'         => ''
     );
     $qpp_setup = array_merge($default, $qpp_setup);
     return $qpp_setup;
@@ -87,6 +90,9 @@ function qpp_get_stored_options($id) {
         'cflabel' => 'Codice Fiscale',
         'use_cf' => '',
         'ruse_cf' => '',
+        // Saved by the form options screen but was missing here, so it warned
+        // on any form whose options had not been saved yet.
+        'ruse_consent' => '',
         'consentlabel' =>  esc_html__('I consent to my data being retained by the site owner after payment has been processed.','quick-paypal-payments'),
         'consentpaypal' => esc_html__('Consent Given','quick-paypal-payments'),
         'noconsentpaypal' => esc_html__('Consent NOT Given','quick-paypal-payments'),
@@ -202,7 +208,8 @@ function qpp_get_stored_send($id) {
         'use_lc'    => false,
         'donate'    => false,
         'createuser'=> false,
-        'enable'    => false
+        'enable'    => false,
+        'lc'        => ''
     );
     $send = array_merge($default, $send);
     return $send;
@@ -284,6 +291,9 @@ function qpp_get_stored_ipn () {
         'title' => 'Payment',
         'paid' => 'Complete',
         'listener' => '',
+        // Saved by the IPN screen but was never defaulted, so it warned in the
+        // IPN listener itself as well as on the settings screen.
+        'deleterecord' => '',
 		'default' => site_url('/?qpp_ipn')
     );
     $ipn = array_merge($default, $ipn);
@@ -344,7 +354,23 @@ function qpp_get_stored_address($id) {
         'state' => 'State',
         'zip' => 'ZIP Code',
         'country' => 'Country',
-        'night_phone_b' => 'Phone Number'
+        'night_phone_b' => 'Phone Number',
+        // The address screen saves all of these, but none were defaulted, so a
+        // form whose address options had not been saved warned on both the
+        // settings screen and the front end.
+        'useaddress' => '',
+        'rfirstname' => '',
+        'rlastname' => '',
+        'remail' => '',
+        'raddress1' => '',
+        'raddress2' => '',
+        'rcity' => '',
+        'rstate' => '',
+        'rzip' => '',
+        'rcountry' => '',
+        'rnight_phone_b' => '',
+        'permitted_country' => array(),
+        'default_country' => ''
     );
     $address = array_merge($default, $address);
     return $address;

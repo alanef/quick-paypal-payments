@@ -14,7 +14,7 @@ $quick_paypal_payments_fs->add_filter( 'is_submenu_visible', function ( $is_visi
 
 $qpp_setup = qpp_get_stored_setup();
 $tabs      = explode( ",", $qpp_setup['alternative'] );
-$firsttab  = reset( $tabs );
+$qpp_firsttab  = reset( $tabs );
 echo '<div class="wrap">';
 echo '<h1>Quick Paypal Payments</h1>';
 // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
@@ -24,8 +24,8 @@ if ( isset ( $_GET['tab'] ) ) {
 	qpp_messages_admin_tabs( $tab );
 
 } else {
-	qpp_messages_admin_tabs( $firsttab );
-	$tab = $firsttab;
+	qpp_messages_admin_tabs( $qpp_firsttab );
+	$tab = $qpp_firsttab;
 }
 qpp_show_messages( $tab );
 echo '</div>';

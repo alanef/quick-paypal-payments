@@ -314,8 +314,8 @@ function qpp_ipn_reject( $reason, $ipn ) {
 	$txn     = ! empty( $ipn['txn_id'] ) ? $ipn['txn_id'] : 'unknown';
 	$message = 'Quick PayPal Payments: IPN rejected (txn ' . $txn . '): ' . $reason;
 
-	if ( defined( 'IPN_DEBUG_LOG_FILE' ) && false !== IPN_DEBUG_LOG_FILE ) {
-		error_log( gmdate( '[Y-m-d H:i e] ' ) . $message . PHP_EOL, 3, IPN_DEBUG_LOG_FILE );
+	if ( defined( 'QPP_IPN_DEBUG_LOG_FILE' ) && false !== QPP_IPN_DEBUG_LOG_FILE ) {
+		error_log( gmdate( '[Y-m-d H:i e] ' ) . $message . PHP_EOL, 3, QPP_IPN_DEBUG_LOG_FILE );
 	} elseif ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 		error_log( $message );
 	}

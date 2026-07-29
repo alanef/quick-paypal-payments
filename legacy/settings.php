@@ -96,15 +96,15 @@ function qpp_setup(  $id  ) {
     $qpp_setup = qpp_get_stored_setup();
     $new_curr = $php = $head = '';
     if ( isset( $_POST['Submit'] ) && check_admin_referer( "save_qpp" ) ) {
-        $qpp_setup['alternative'] = filter_var( $_POST['alternative'], FILTER_SANITIZE_STRING );
-        $qpp_setup['email'] = filter_var( $_POST['email'], FILTER_SANITIZE_STRING );
+        $qpp_setup['alternative'] = sanitize_text_field( $_POST['alternative'] );
+        $qpp_setup['email'] = sanitize_text_field( $_POST['email'] );
         if ( !empty( $_POST['new_form'] ) ) {
             $qpp_setup['current'] = stripslashes( $_POST['new_form'] );
-            $qpp_setup['current'] = filter_var( $qpp_setup['current'], FILTER_SANITIZE_STRING );
+            $qpp_setup['current'] = sanitize_text_field( $qpp_setup['current'] );
             $qpp_setup['current'] = preg_replace( "/[^A-Za-z]/", '', $qpp_setup['current'] );
             $qpp_setup['alternative'] = $qpp_setup['current'] . ',' . $qpp_setup['alternative'];
         } else {
-            $qpp_setup['current'] = filter_var( $_POST['current'], FILTER_SANITIZE_STRING );
+            $qpp_setup['current'] = sanitize_text_field( $_POST['current'] );
         }
         if ( empty( $qpp_setup['current'] ) ) {
             $qpp_setup['current'] = '';
@@ -112,14 +112,14 @@ function qpp_setup(  $id  ) {
         $arr = explode( ",", $qpp_setup['alternative'] );
         foreach ( $arr as $item ) {
             $qpp_curr[$item] = ( isset( $_POST['qpp_curr' . $item] ) ? stripslashes( $_POST['qpp_curr' . $item] ) : '' );
-            $qpp_curr[$item] = filter_var( $qpp_curr[$item], FILTER_SANITIZE_STRING );
+            $qpp_curr[$item] = sanitize_text_field( $qpp_curr[$item] );
             $qpp_email[$item] = ( isset( $_POST['qpp_email' . $item] ) ? stripslashes( $_POST['qpp_email' . $item] ) : '' );
-            $qpp_email[$item] = filter_var( $qpp_email[$item], FILTER_SANITIZE_STRING );
+            $qpp_email[$item] = sanitize_text_field( $qpp_email[$item] );
         }
         if ( !empty( $_POST['new_form'] ) ) {
             $email = $qpp_setup['current'];
             $qpp_curr[$email] = stripslashes( $_POST['new_curr'] );
-            $qpp_curr[$email] = filter_var( $qpp_curr[$email], FILTER_SANITIZE_STRING );
+            $qpp_curr[$email] = sanitize_text_field( $qpp_curr[$email] );
         }
         $qpp_setup['image_url'] = ( isset( $_POST['image_url'] ) ? esc_url_raw( $_POST['image_url'] ) : '' );
         $qpp_setup['location'] = ( isset( $_POST['location'] ) ? sanitize_text_field( $_POST['location'] ) : '' );
@@ -131,7 +131,7 @@ function qpp_setup(  $id  ) {
         update_option( 'qpp_setup', $qpp_setup );
         $qpp_setup = qpp_get_stored_setup();
         qpp_admin_notice( "The forms have been updated." );
-        if ( $_POST['qpp_clone'] && !empty( $_POST['new_form'] ) ) {
+        if ( !empty( $_POST['qpp_clone'] ) && !empty( $_POST['new_form'] ) ) {
             qpp_clone( $qpp_setup['current'], sanitize_text_field( $_POST['qpp_clone'] ) );
         }
     }
@@ -207,7 +207,7 @@ function qpp_setup(  $id  ) {
     <p>Enter form name (letters only - no numbers, spaces or punctuation marks)</p>
     <p><input type="text" label="new_Form" name="new_form" value="" /></p>
     <p>Enter currency code: <input type="text" style="width:3em" label="new_curr" name="new_curr" value="' . esc_attr( $new_curr ) . '" />&nbsp;(For example: GBP, USD, EUR)</p>
-    <p>Allowed Paypal Currency codes are given <a href="https://developer.paypal.com/webapps/developer/docs/classic/api/currency_codes/" target="blank">here</a>.</p>
+    <p>Allowed Paypal Currency codes are given <a href="https://developer.paypal.com/api/rest/reference/currency-codes/" target="blank">here</a>.</p>
     <p><span style="color:red; font-weight: bold; margin-right: 3px">Important!</span> If your currency is not listed the plugin will work but paypal will not accept the payment.</p>
     <input type="hidden" name="alternative" value="' . esc_attr( $qpp_setup['alternative'] ) . '" />
     <p>Copy settings from an exisiting form.</p>
@@ -413,6 +413,7 @@ function qpp_form_options(  $id  ) {
                 'title'  => array(),
             ),
         );
+        $qpp = array();
         foreach ( $options as $item ) {
             if ( isset( $_POST[$item] ) ) {
                 $qpp[$item] = wp_kses_post( stripslashes( $_POST[$item] ) );
@@ -651,7 +652,9 @@ function qpp_form_options(  $id  ) {
                 $type = 'Codice Fiscale (Solo Italia)';
                 $input = 'cflabel';
                 $checked = $qpp['use_cf'];
-                $options = '<input  type="checkbox" name="ruse_cf"' . checked( $qpp['field22'], 'checked', false ) . ' value="checked" /> Required Field';
+                // Reads its own option, as every sibling Required Field checkbox does.
+                // This read $qpp['field22'], so the box never showed as ticked once saved.
+                $options = '<input  type="checkbox" name="ruse_cf"' . checked( $qpp['ruse_cf'], 'checked', false ) . ' value="checked" /> Required Field';
                 break;
             case 'field22':
                 $check = '<input  type="checkbox" name="use_consent"' . checked( $qpp['use_consent'], 'checked', false ) . ' value="checked" />';
@@ -771,10 +774,11 @@ function qpp_styles(  $id  ) {
             'line_margin',
             'labeltype'
         );
+        $styles = array();
         foreach ( $options as $item ) {
             if ( isset( $_POST[$item] ) ) {
                 $styles[$item] = stripslashes( $_POST[$item] );
-                $styles[$item] = filter_var( $styles[$item], FILTER_SANITIZE_STRING );
+                $styles[$item] = sanitize_text_field( $styles[$item] );
             }
         }
         update_option( 'qpp_style' . $id, $styles );
@@ -1086,9 +1090,11 @@ function qpp_send_page(  $id  ) {
             'confirmemail',
             'createuser'
         );
+        $send = array();
         foreach ( $options as $item ) {
-            $send[$item] = stripslashes( $_POST[$item] );
-            $send[$item] = filter_var( $send[$item], FILTER_SANITIZE_STRING );
+            // An unticked checkbox is absent from the post, which means off.
+            $send[$item] = ( isset( $_POST[$item] ) ? stripslashes( $_POST[$item] ) : '' );
+            $send[$item] = sanitize_text_field( $send[$item] );
         }
         update_option( 'qpp_send' . $id, $send );
         qpp_admin_notice( "The submission settings have been updated." );
@@ -1100,8 +1106,10 @@ function qpp_send_page(  $id  ) {
             'mailchimpkey',
             'mailchimplistid'
         );
+        $list = array();
         foreach ( $options as $item ) {
-            $list[$item] = stripslashes( $_POST[$item] );
+            // An unticked checkbox is absent from the post, which means off.
+            $list[$item] = ( isset( $_POST[$item] ) ? stripslashes( $_POST[$item] ) : '' );
         }
         update_option( 'qpp_mailinglist', $list );
         qpp_admin_notice( "The mailinglist settings have been updated." );
@@ -1115,6 +1123,7 @@ function qpp_send_page(  $id  ) {
     $send = qpp_get_stored_send( $id );
     $newpage = $customurl = '';
     $list = qpp_get_stored_mailinglist();
+    $current = $newpage = '';
     if ( isset( $send['target'] ) ) {
         ${$send['target']} = 'checked';
     }
@@ -1236,9 +1245,11 @@ function qpp_error_page(  $id  ) {
     qpp_change_form_update();
     if ( isset( $_POST['Submit'] ) && check_admin_referer( "save_qpp" ) ) {
         $options = array('errortitle', 'errorblurb');
+        $error = array();
         foreach ( $options as $item ) {
-            $error[$item] = stripslashes( $_POST[$item] );
-            $error[$item] = filter_var( $error[$item], FILTER_SANITIZE_STRING );
+            // An unticked checkbox is absent from the post, which means off.
+            $error[$item] = ( isset( $_POST[$item] ) ? stripslashes( $_POST[$item] ) : '' );
+            $error[$item] = sanitize_text_field( $error[$item] );
         }
         update_option( 'qpp_error' . $id, $error );
         qpp_admin_notice( "The error settings have been updated." );
@@ -1301,9 +1312,11 @@ function qpp_ipn_page() {
             'listener',
             'deleterecord'
         );
+        $ipn = array();
         foreach ( $options as $item ) {
-            $ipn[$item] = stripslashes( $_POST[$item] );
-            $ipn[$item] = filter_var( $ipn[$item], FILTER_SANITIZE_STRING );
+            // An unticked checkbox is absent from the post, which means off.
+            $ipn[$item] = ( isset( $_POST[$item] ) ? stripslashes( $_POST[$item] ) : '' );
+            $ipn[$item] = sanitize_text_field( $ipn[$item] );
         }
         update_option( 'qpp_ipn', $ipn );
         qpp_admin_notice( "The IPN settings have been updated." );
@@ -1315,8 +1328,7 @@ function qpp_ipn_page() {
     $ipn = qpp_get_stored_ipn();
     $content = '<div class="qpp-settings"><div class="qpp-options">
 	<h2>Instant Payment Notifications</h2>
-    <p><b>Note:</b> IPN only works if you have a PayPal Business or Premier account and IPN has been set up on that account.</p>
-    <p>See the <a href="https://developer.paypal.com/webapps/developer/docs/classic/ipn/integration-guide/IPNSetup/">PayPal IPN Integration Guide</a> for more information on how to set up IPN.</p>
+    <p><b>Note:</b> IPN needs a PayPal Business or Premier account, and IPN must be switched on in that account. See <b>Setting IPN up in PayPal</b> alongside.</p>
 	<form method="post" action="">
     <table>
     <tr>
@@ -1350,6 +1362,21 @@ function qpp_ipn_page() {
     <p>To check completed payments click on the <b>Payments</b> link in your dashboard menu or <a href="?page=quick-paypal-payments-messages">click here</a>.</p>
     </div>
     <div class="qpp-options" style="float:right;">
+    <h2>Setting IPN up in PayPal</h2>
+    <p>PayPal have moved their IPN documentation more than once, so the steps are repeated here in full.</p>
+    <ol>
+    <li>Log in to your PayPal account</li>
+    <li>You need a <b>Business</b> account. If yours is Personal, follow PayPal\'s instructions to upgrade it first</li>
+    <li>Go to <a href="https://www.paypal.com/businessmanage/account/notifications" target="_blank">Business profile &rarr; Notifications &rarr; Instant payment notifications</a></li>
+    <li>Click <b>Manage</b> (or <b>Update</b>, then <b>Choose IPN Settings</b>)</li>
+    <li>Enter this Notification URL:<pre>' . esc_url( site_url( '/?qpp_ipn' ) ) . '</pre></li>
+    <li>Select <b>Receive IPN messages (Enabled)</b></li>
+    <li>Click <b>Save</b></li>
+    </ol>
+    <p>To see what PayPal actually sent, and to resend it, open your <a href="https://www.paypal.com/merchantnotification/ipn/history" target="_blank">IPN history</a>. That is the first place to look if a payment has not been marked complete.</p>
+    <p>PayPal\'s own reference is the <a href="https://developer.paypal.com/api/nvp-soap/ipn/IPNSetup/" target="_blank">IPN setup guide</a>.</p>
+    </div>
+    <div class="qpp-options" style="float:right;clear:right;">
     <h2>IPN Simulation</h2>
     <p>IPN can be blocked or resticted by your server settings, theme or other plugins. The good news is you can simulate the notifications to check if all is working.</p>
     <p>To carry out a simulation:</p>
@@ -1382,8 +1409,10 @@ function qpp_autoresponce_page(  $id  ) {
             'message',
             'paymentdetails'
         );
+        $auto = array();
         foreach ( $options as $item ) {
-            $auto[$item] = stripslashes( $_POST[$item] );
+            // An unticked checkbox is absent from the post, which means off.
+            $auto[$item] = ( isset( $_POST[$item] ) ? stripslashes( $_POST[$item] ) : '' );
         }
         update_option( 'qpp_autoresponder' . $id, $auto );
         if ( $id ) {
@@ -1512,7 +1541,12 @@ function qpp_address(  $id  ) {
             'permitted_country',
             'default_country'
         );
+        $address = array();
         foreach ( $options as $item ) {
+            if ( !isset( $_POST[$item] ) ) {
+                $address[$item] = '';
+                continue;
+            }
             $address[$item] = ( is_array( $_POST[$item] ) ? array_map( 'esc_attr', $_POST[$item] ) : esc_attr( $_POST[$item] ) );
         }
         update_option( 'qpp_address' . $id, $address );
@@ -1663,10 +1697,11 @@ function qpp_coupon_codes(  $id  ) {
             'couponerror',
             'couponexpired'
         );
+        $coupon = array();
         foreach ( $arr as $item ) {
             if ( isset( $_POST[$item] ) ) {
                 $coupon[$item] = stripslashes( $_POST[$item] );
-                $coupon[$item] = filter_var( $coupon[$item], FILTER_SANITIZE_STRING );
+                $coupon[$item] = sanitize_text_field( $coupon[$item] );
             }
         }
         $options = array(
@@ -1677,6 +1712,7 @@ function qpp_coupon_codes(  $id  ) {
             'qty',
             'expired'
         );
+        $coupon['couponnumber'] = (int) qpp_get_element( $coupon, 'couponnumber', 0 );
         if ( $coupon['couponnumber'] < 1 ) {
             $coupon['couponnumber'] = 1;
         }

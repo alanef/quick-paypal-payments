@@ -165,7 +165,7 @@ function qpp_validate_form_callback(  $degrade = false  ) {
             // No errors
             $v = array();
             $form = $amount = $id = '';
-            $v = formulate_v(
+            $v = qpp_formulate_v(
                 $sc,
                 $form,
                 $amount,
@@ -257,7 +257,7 @@ function qpp_reference_type(  $qpp  ) {
     }
 }
 
-function collect_data(  $form  ) {
+function qpp_collect_data(  $form  ) {
     $qpp = qpp_get_stored_options( $form );
     $coupon = qpp_get_stored_coupon( $form );
     $currency = qpp_get_stored_curr();
@@ -425,7 +425,7 @@ function collect_data(  $form  ) {
     return $returning;
 }
 
-function formulate_v(
+function qpp_formulate_v(
     $atts,
     &$form = '',
     &$amount = '',
@@ -481,7 +481,7 @@ function formulate_v(
     foreach ( $arr as $item ) {
         $v[$item] = $address[$item];
     }
-    $v['form_data'] = collect_data( $form );
+    $v['form_data'] = qpp_collect_data( $form );
     $v['quantity'] = 1;
     $v['itemvalue'] = $v['mailchimp'] = $v['couponerror'] = $v['option1'] = $v['noproduct'] = false;
     $v['stock'] = $qpp['stocklabel'];
@@ -684,7 +684,7 @@ function qpp_loop(  $atts, $from_admin_settings = false  ) {
     }
     $qpp_shortcode_exists = true;
     $form = $amount = $id = '';
-    $v = formulate_v(
+    $v = qpp_formulate_v(
         $atts,
         $form,
         $amount,
@@ -694,7 +694,7 @@ function qpp_loop(  $atts, $from_admin_settings = false  ) {
     ob_start();
     $v = array();
     $form = $amount = $id = '';
-    $v = formulate_v(
+    $v = qpp_formulate_v(
         $atts,
         $form,
         $amount,
@@ -1613,7 +1613,7 @@ function qpp_checkbox(
     return $content;
 }
 
-function explode_by_semicolon(  $_  ) {
+function qpp_explode_by_semicolon(  $_  ) {
     return explode( ';', $_ );
 }
 
@@ -1676,7 +1676,7 @@ function qpp_verify_form(
 ) {
     global $qpp_attributes;
     $qpp_attributes[$form] = $sc;
-    $data = collect_data( $form );
+    $data = qpp_collect_data( $form );
     $qpp = qpp_get_stored_options( $form );
     $address = qpp_get_stored_address( $form );
     $check = preg_replace( '/[^.,0-9]/', '', $v['amount'] );
@@ -1844,7 +1844,7 @@ function qpp_verify_form(
             'night_phone_b'
         );
         foreach ( $arr as $item ) {
-            $v[$item] = filter_var( $v[$item], FILTER_SANITIZE_STRING );
+            $v[$item] = sanitize_text_field( $v[$item] );
             if ( $address['r' . $item] && ($v[$item] == $address[$item] || empty( $v[$item] )) ) {
                 $errors[$item] = 'error';
             }
@@ -2341,11 +2341,11 @@ function qpp_sanitize(  $array_or_string  ) {
     return $array_or_string;
 }
 
-function register_qpp_widget() {
+function qpp_register_widget() {
     register_widget( 'qpp_Widget' );
 }
 
-add_action( 'widgets_init', 'register_qpp_widget' );
+add_action( 'widgets_init', 'qpp_register_widget' );
 class qpp_widget extends WP_Widget {
     public function __construct() {
         parent::__construct( 
@@ -2851,10 +2851,12 @@ function qpp_messagecontent(
                 break;
             case 'field8':
                 if ( $options['useemail'] || !$options['useemail'] && $address['email'] ) {
-                    if ( $options['emailblurb'] == $value['field8'] ) {
-                        $value['field8'] = '';
+                    // Older stored orders predate some fields, so read defensively.
+                    $email = qpp_get_element( $value, 'field8' );
+                    if ( $options['emailblurb'] == $email ) {
+                        $email = '';
                     }
-                    $content .= '<td>' . $value['field8'] . '</td>';
+                    $content .= '<td>' . $email . '</td>';
                 }
                 break;
             case 'field17':
@@ -2923,17 +2925,26 @@ function qpp_ipn() {
     if ( !isset( $_REQUEST['qpp_ipn'] ) ) {
         return;
     }
-    if ( !defined( 'IPN_DEBUG_LOG_FILE' ) ) {
-        define( 'IPN_DEBUG_LOG_FILE', false );
+    /*
+     * QPP_IPN_DEBUG_LOG_FILE is the prefixed name. IPN_DEBUG_LOG_FILE is far too
+     * generic for a global constant, but site owners have it in wp-config.php to
+     * turn on IPN logging, so it is still honoured rather than silently ignored.
+     */
+    if ( !defined( 'QPP_IPN_DEBUG_LOG_FILE' ) ) {
+        if ( defined( 'IPN_DEBUG_LOG_FILE' ) ) {
+            define( 'QPP_IPN_DEBUG_LOG_FILE', IPN_DEBUG_LOG_FILE );
+        } else {
+            define( 'QPP_IPN_DEBUG_LOG_FILE', false );
+        }
     }
     $qpp_setup = qpp_get_stored_setup();
     $qpp_ipn = qpp_get_stored_ipn();
     $qpp_setup['disable_error'] = false;
     $raw_post_data = qpp_get_raw_ipn_payload();
     $raw_post_array = explode( '&', $raw_post_data );
-    if ( false !== IPN_DEBUG_LOG_FILE ) {
-        error_log( gmdate( '[Y-m-d H:i e] ' ) . "INCOMING IPN" . PHP_EOL, 3, IPN_DEBUG_LOG_FILE );
-        error_log( gmdate( '[Y-m-d H:i e] ' ) . $raw_post_data . PHP_EOL, 3, IPN_DEBUG_LOG_FILE );
+    if ( false !== QPP_IPN_DEBUG_LOG_FILE ) {
+        error_log( gmdate( '[Y-m-d H:i e] ' ) . "INCOMING IPN" . PHP_EOL, 3, QPP_IPN_DEBUG_LOG_FILE );
+        error_log( gmdate( '[Y-m-d H:i e] ' ) . $raw_post_data . PHP_EOL, 3, QPP_IPN_DEBUG_LOG_FILE );
     }
     $myPost = array();
     foreach ( $raw_post_array as $keyval ) {
@@ -2958,15 +2969,15 @@ function qpp_ipn() {
         'body'    => $req,
     ) );
     if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) ) {
-        if ( false !== IPN_DEBUG_LOG_FILE ) {
-            error_log( gmdate( '[Y-m-d H:i e] ' ) . "Can't connect to PayPal to validate IPN message: Indetermined" . PHP_EOL, 3, IPN_DEBUG_LOG_FILE );
+        if ( false !== QPP_IPN_DEBUG_LOG_FILE ) {
+            error_log( gmdate( '[Y-m-d H:i e] ' ) . "Can't connect to PayPal to validate IPN message: Indetermined" . PHP_EOL, 3, QPP_IPN_DEBUG_LOG_FILE );
         }
         return;
     }
     $status = wp_remote_retrieve_body( $response );
-    if ( false !== IPN_DEBUG_LOG_FILE ) {
-        error_log( gmdate( '[Y-m-d H:i e] ' ) . "HTTP request of validation request:  for IPN payload: {$req}" . print_r( wp_remote_retrieve_headers( $response ), true ) . PHP_EOL, 3, IPN_DEBUG_LOG_FILE );
-        error_log( gmdate( '[Y-m-d H:i e] ' ) . "HTTP response of validation request: {$status}" . PHP_EOL, 3, IPN_DEBUG_LOG_FILE );
+    if ( false !== QPP_IPN_DEBUG_LOG_FILE ) {
+        error_log( gmdate( '[Y-m-d H:i e] ' ) . "HTTP request of validation request:  for IPN payload: {$req}" . print_r( wp_remote_retrieve_headers( $response ), true ) . PHP_EOL, 3, QPP_IPN_DEBUG_LOG_FILE );
+        error_log( gmdate( '[Y-m-d H:i e] ' ) . "HTTP response of validation request: {$status}" . PHP_EOL, 3, QPP_IPN_DEBUG_LOG_FILE );
     }
     /*
      * A VERIFIED response only tells us the message genuinely came from PayPal.
@@ -3012,8 +3023,8 @@ function qpp_ipn() {
                     qpp_clear_ipn_expectation( $custom );
                     $message[$i]['field18'] = 'Paid';
                     $auto = qpp_get_stored_autoresponder( $item );
-                    if ( false !== IPN_DEBUG_LOG_FILE ) {
-                        error_log( gmdate( '[Y-m-d H:i e] ' ) . "Found Custom" . print_r( $auto, true ) . PHP_EOL, 3, IPN_DEBUG_LOG_FILE );
+                    if ( false !== QPP_IPN_DEBUG_LOG_FILE ) {
+                        error_log( gmdate( '[Y-m-d H:i e] ' ) . "Found Custom" . print_r( $auto, true ) . PHP_EOL, 3, QPP_IPN_DEBUG_LOG_FILE );
                     }
                     $send = qpp_get_stored_send( $item );
                     qpp_check_coupon( $message[$i]['field6'], $item );
@@ -3039,8 +3050,8 @@ function qpp_ipn() {
                             'cf'            => $message[$i]['field21'],
                             'consent'       => $message[$i]['field22'],
                         );
-                        if ( false !== IPN_DEBUG_LOG_FILE ) {
-                            error_log( gmdate( '[Y-m-d H:i e] ' ) . "About to send confirm: " . $message[$i]['field8'] . PHP_EOL, 3, IPN_DEBUG_LOG_FILE );
+                        if ( false !== QPP_IPN_DEBUG_LOG_FILE ) {
+                            error_log( gmdate( '[Y-m-d H:i e] ' ) . "About to send confirm: " . $message[$i]['field8'] . PHP_EOL, 3, QPP_IPN_DEBUG_LOG_FILE );
                         }
                         qpp_send_confirmation( $values, $item );
                     }
@@ -3052,13 +3063,13 @@ function qpp_ipn() {
                 }
             }
         }
-        if ( false !== IPN_DEBUG_LOG_FILE ) {
-            error_log( gmdate( '[Y-m-d H:i e] ' ) . "Verified IPN: {$req} " . PHP_EOL, 3, IPN_DEBUG_LOG_FILE );
+        if ( false !== QPP_IPN_DEBUG_LOG_FILE ) {
+            error_log( gmdate( '[Y-m-d H:i e] ' ) . "Verified IPN: {$req} " . PHP_EOL, 3, QPP_IPN_DEBUG_LOG_FILE );
         }
     } else {
-        if ( false !== IPN_DEBUG_LOG_FILE ) {
-            error_log( gmdate( '[Y-m-d H:i e] ' ) . "IPN response: {$status} {$req}" . PHP_EOL, 3, IPN_DEBUG_LOG_FILE );
-            error_log( gmdate( '[Y-m-d H:i e] ' ) . "RAW DATA: " . print_r( $response, true ) . PHP_EOL, 3, IPN_DEBUG_LOG_FILE );
+        if ( false !== QPP_IPN_DEBUG_LOG_FILE ) {
+            error_log( gmdate( '[Y-m-d H:i e] ' ) . "IPN response: {$status} {$req}" . PHP_EOL, 3, QPP_IPN_DEBUG_LOG_FILE );
+            error_log( gmdate( '[Y-m-d H:i e] ' ) . "RAW DATA: " . print_r( $response, true ) . PHP_EOL, 3, QPP_IPN_DEBUG_LOG_FILE );
         }
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "quick-paypal-payments",
-  "version": "5.7.51-beta.1",
+  "version": "5.7.51-beta.2",
   "description": "Quick PayPal Payments WordPress Plugin",
   "scripts": {
     "build:admin-css": "sass ui/admin/css/admin.scss ui/admin/css/admin.css --style=compressed --no-source-map",
