@@ -429,7 +429,7 @@ function qpp_get_stored_messages () {
         'failureblurb' => 'The payment has not been completed.',
         'failureanchor' => 'Try Again',
         'pendingtitle' => 'Payment Pending',
-        'pendingblurb' => 'The payment has been processed, but confimration is currently pending. Refresh this page for real-time changes to this order.',
+        'pendingblurb' => 'The payment has been processed, but confirmation is currently pending. Refresh this page for real-time changes to this order.',
         'pendinganchor' => 'Refresh This Page',
         'confirmationtitle' => 'Order Confirmation',
         'confirmationblurb' => 'The transaction has been completed successfully. Keep this information for your records.',

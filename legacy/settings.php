@@ -480,7 +480,7 @@ function qpp_form_options(  $id  ) {
                 $type = 'Reference';
                 $input = 'inputreference';
                 $checked = 'checked';
-                $options = '<input type="checkbox" name="fixedreference" ' . checked( $qpp['fixedreference'], 'checked', false ) . ' value="checked" /> Display as a pre-set reference<br><span class="description">Use commas to seperate options: Red,Green, Blue<br>Use semi-colons to combine with amount: Red;$5,Green;$10,Blue;£20</span><br>
+                $options = '<input type="checkbox" name="fixedreference" ' . checked( $qpp['fixedreference'], 'checked', false ) . ' value="checked" /> Display as a pre-set reference<br><span class="description">Use commas to separate options: Red,Green, Blue<br>Use semi-colons to combine with amount: Red;$5,Green;$10,Blue;£20</span><br>
             Options Selector: <input type="radio" name="refselector" value="refradio" ' . esc_attr( $refradio ) . ' /> Radio&nbsp;
             <input type="radio" name="refselector" value="refdropdown" ' . checked( $qpp['refselector'], 'refdropdown', false ) . ' /> Dropdown&nbsp;
             <input type="radio" name="refselector" value="refnone" ' . checked( $qpp['refselector'], 'refnone', false ) . ' /> Inline&nbsp;
@@ -1203,7 +1203,7 @@ function qpp_send_page(  $id  ) {
     <p>Alternate PayPal email address:</p>
     <p><input type="text" style="width:100%" name="email" value="' . esc_attr( qpp_get_element( $send, 'email' ) ) . '" /></p>
     <p><input type="radio" name="target" value="current"' . esc_attr( $current ) . ' /> Open in existing page<br>
-    <input type="radio" name="target" value="newpage"' . esc_attr( $newpage ) . ' /> Open link in new page/tab <span class="description">This is very browser dependant. Use with caution!</span></p>
+    <input type="radio" name="target" value="newpage"' . esc_attr( $newpage ) . ' /> Open link in new page/tab <span class="description">This is very browser dependent. Use with caution!</span></p>
     
     <h2>Google onClick Event</h2>
     <p><input type="text" style="width:100%" name="google_onclick" value="' . esc_attr( qpp_get_element( $send, 'google_onclick' ) ) . '" /></p>
@@ -1358,7 +1358,7 @@ function qpp_ipn_page() {
     <p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="Save Changes" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="Reset" onclick="return window.confirm( \'Are you sure you want to reset the IPN settings?\' );"/></p>';
     $content .= wp_nonce_field( "save_qpp" );
     $content .= '</form>
-    <p>If you set a Listener URL above this plugin will not automatically handle IPN\'s, this is for advanced usage e.g. split IPN handling. If you haven\'t set an IPN listener URL above this is the one you need to get payment confimration:<pre>' . site_url( '/?qpp_ipn' ) . '</pre></p>
+    <p>If you set a Listener URL above this plugin will not automatically handle IPN\'s, this is for advanced usage e.g. split IPN handling. If you haven\'t set an IPN listener URL above this is the one you need to get payment confirmation:<pre>' . site_url( '/?qpp_ipn' ) . '</pre></p>
     <p>To check completed payments click on the <b>Payments</b> link in your dashboard menu or <a href="?page=quick-paypal-payments-messages">click here</a>.</p>
     </div>
     <div class="qpp-options" style="float:right;">
@@ -1378,7 +1378,7 @@ function qpp_ipn_page() {
     </div>
     <div class="qpp-options" style="float:right;clear:right;">
     <h2>IPN Simulation</h2>
-    <p>IPN can be blocked or resticted by your server settings, theme or other plugins. The good news is you can simulate the notifications to check if all is working.</p>
+    <p>IPN can be blocked or restricted by your server settings, theme or other plugins. The good news is you can simulate the notifications to check if all is working.</p>
     <p>To carry out a simulation:</p>
     <ol>
     <li>Enable the PayPal Sandbox on the <a href="?page=quick-paypal-payments&tab=setup">plugin setup page</a></li>
@@ -1584,7 +1584,7 @@ function qpp_address(  $id  ) {
         $permitted_countries .= '<option value="' . esc_attr( $code ) . '" ' . $sel . '>' . $data['region'] . '</option>';
     }
     $content .= '<form method="post" action="">
-    <p class="description">Note: The information will be collected and saved and passed to PayPal but usage is dependant on browser and user settings. Which means they may have to fill in the information again when they get to PayPal</p>
+    <p class="description">Note: The information will be collected and saved and passed to PayPal but usage is dependent on browser and user settings. Which means they may have to fill in the information again when they get to PayPal</p>
     <p>1. Delete labels for fields you do not want to use.</p>
     <p>2. Check the <b>R</b> box for madatory/required fields.</p>
     <table>
