@@ -4,7 +4,7 @@ Tags: paypal payment form, paypal, payments
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 6.0
+Stable tag: 6.0.1
 License: 	GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -167,5 +167,8 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Upgrade Notice ==
 
-= 6.0 =
+= 6.0.1 =
+Version numbering only, no code change since 6.0. Upgrading from an earlier version, read the 6.0.0 notice below.
+
+= 6.0.0 =
 Some free features now need a paid plan, and payments are no longer confirmed automatically in free, though you can mark them paid by hand. If you had this plugin before 6.0 you can still claim a free lifetime Gold licence that restores everything, from the notice on the settings screen.

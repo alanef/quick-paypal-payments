@@ -1,5 +1,8 @@
 == Changelog ==
-= 6.0 =
+= 6.0.1 =
+* Version numbering only. 6.0 was released with the plugin numbered 6.0 while wordpress.org was tagged 6.0.0, so the directory could not find the release its stable tag pointed at. Everything is numbered the same way now. No code has changed since 6.0.
+
+= 6.0.0 =
 * The plugin now has three paid plans, Silver, Gold and Platinum, and several settings that used to be in the free version now need one of them. This has been announced in the plugin admin since 2022, along with a free upgrade to the Gold plan that covers every option the free version had. If you have not claimed it, use the notice on the settings screen before updating.
 * Silver and above: the Auto Responder that emails the payer, the IPN settings and the IPN listener, postage and handling, including postage in the amount to pay, PayPal sandbox mode, creating a WordPress user when someone pays, and email and knowledge base support. Every paid plan gets it; the free version uses the wordpress.org forum.
 * Gold and above: coupon codes, recurring payments, the range slider, donations only mode, pre-set reference options, offering a choice of prices, and amount validation.
