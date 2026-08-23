@@ -1,0 +1,36 @@
+{
+    "landingPage": "\/wp-admin\/options-general.php?page=quick-paypal-payments",
+    "preferredVersions": {
+        "php": "7.4",
+        "wp": "latest"
+    },
+    "phpExtensionBundles": [
+        "kitchen-sink"
+    ],
+    "features": {
+        "networking": true
+    },
+    "steps": [
+        {
+            "step": "login",
+            "username": "admin",
+            "password": "password"
+        },
+        {
+			"step": "defineWpConfigConsts",
+			"consts": {
+				"QPP_DEMO": true
+			}
+		},
+        {
+            "step": "installPlugin",
+            "pluginZipFile": {
+                "resource": "url",
+                "url": "https:\/\/downloads.wordpress.org\/plugin\/quick-paypal-payments.latest-stable.zip"
+            },
+            "options": {
+                "activate": true
+            }
+        }
+    ]
+}

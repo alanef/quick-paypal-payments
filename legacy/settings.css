@@ -1,31 +1,479 @@
-.wrapper {padding: 0 15px;}
-.qpp-settings {width: 100%;}
-.qpp-options {border:1px solid #B52C00;background:#FFF;padding:0 10px 10px 10px;margin:10px 0 0 0;float:left;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;width:46%;}
+/*
+ * Brand palette. See marketing/qpp-brand.md.
+ *
+ * Used as accent rather than a repaint. Inside wp-admin the surrounding
+ * furniture sets the expectation, so form controls, buttons and focus rings stay
+ * close to WordPress. Brand colour goes on the surfaces that are ours: the page
+ * header, section headings, the active states, the upgrade box.
+ *
+ * Orange is the flash of personality, not a UI colour. It appears on one thing
+ * per screen: the line you are most meant to click.
+ */
+:root {
+    --qpp-blue: #0E97EB;
+    --qpp-blue-dark: #045ABA;
+    --qpp-blue-mid: #0370D5;
+    --qpp-blue-light: #3BB8F3;
 
-@media only screen and (max-width: 600px) {.qpp-options {width: 100%;}}
+    --qpp-navy: #011C4C;
+    --qpp-orange: #FDB824;
+    --qpp-orange-dark: #F59E0B;
 
-.qpp-options p {margin: 4px 0;padding: 0;}
-.qpp-options h2 {color: #005F6B;}
-.qpp-options h3 {color: #717DD7;margin: 4px 0 0 0;padding: 0;}
-.qpp-options input[type=text], .qpp-options textarea, .qpp-options select {margin: 2px 0 2px 0;padding: 2px;color: #465069;font-size: 100%;border:1px solid #415063;width:100%;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;height:auto}
-.qpp-options input#submit {background: #343838;color: #FFF;}
-.qpp-options ul {margin: 0;padding: 0;}
-.qpp-options table {width:100%;}
-.qpp-options th {text-align:left;}
-.qpp-options td {vertical-align:top;}
+    --qpp-white: #FFFFFF;
+    --qpp-off-white: #F8F7F5;
+}
 
-#qpp_sort { list-style-type: none; margin: 0; padding: 0; width:100%; }
-#qpp_sort li { margin: 3px 0; padding: 0.3em 0.8em 0.3em 0.5em; min-height:1.6em; cursor:pointer; border:1px solid #888; clear:left}
-#qpp_sort li.button_active { background-color: white;}
-#qpp_sort li.button_inactive { background-color: #E0E0E0;}
-#qpp_sort li div {overflow:hidden;}
+/* Page header, shared by the settings and payments screens. */
+.qpp-admin-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    /* Square, and pulled out to the edges of the content area. Rounded corners
+       want space around them to read as a card; this sits hard against the top
+       and sides of the page, so the radius only showed grey in the corners. */
+    margin: 0 0 4px -20px;
+    padding: 14px 20px 14px 38px;
+    background: linear-gradient(135deg, var(--qpp-blue-dark), var(--qpp-blue));
+    box-shadow: 0 1px 3px rgba(1, 28, 76, .2);
+}
 
-.wp-color-result {margin-bottom: 0 !important;}
+.qpp-admin-header-logo {
+    border-radius: 8px;
+    display: block;
+    flex: 0 0 auto;
+}
 
-.qppupgrade {width:100%; margin: 12px 0;}
-.qppupgrade h3,.qppupgrade p{margin:0;padding:0; color:#FFF;}
-.qppupgrade p{margin:12px 0 0 0}
-.qppupgrade a {display:block;text-align: center;width: 100%;background: #8951A5;padding: 12px 6px;color: #FFF;margin: 0;border:4px solid #999;border-radius: 12px;text-decoration:none;font-size:240%;line-height:1em;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}
-.qppupgrade a:hover {color: #FFF;background: #343838;}
-.qppupgrade a span {font-size:50%;}
+.qpp-admin-header h1 {
+    margin: 0;
+    padding: 0;
+    color: var(--qpp-white);
+    font-size: 1.4em;
+    line-height: 1.2;
+    font-weight: 600;
+}
 
+.qpp-admin-header p {
+    margin: 2px 0 0;
+    padding: 0;
+    color: var(--qpp-white);
+    opacity: .85;
+    font-size: 13px;
+}
+
+/*
+ * Admin styling for the settings screens.
+ *
+ * Follows the WordPress admin design language rather than inventing a look:
+ * #2271b1 for interactive colour, #dcdcde borders, #f6f7f7 surfaces, 4px radii.
+ * The panels used to carry a 1px #B52C00 border, so every box on every screen
+ * was outlined in warning red, and the upgrade box was 240% type in purple
+ * inside a 4px grey border. Both read as an error state on a settings page.
+ *
+ * Class names are unchanged so the markup did not have to move.
+ */
+
+.wrapper { padding: 0 15px; }
+
+.qpp-settings {
+    width: 100%;
+    display: flow-root;
+}
+
+.qpp-options {
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+    padding: 4px 20px 20px;
+    margin: 16px 0 0;
+    float: left;
+    box-sizing: border-box;
+    width: 48%;
+}
+
+.qpp-options + .qpp-options { margin-left: 4%; }
+
+@media only screen and (max-width: 960px) {
+    .qpp-options,
+    .qpp-options + .qpp-options {
+        width: 100%;
+        float: none;
+        margin-left: 0;
+    }
+}
+
+.qpp-options p { margin: 8px 0; padding: 0; }
+
+.qpp-options h2 {
+    color: var(--qpp-navy);
+    font-size: 1.15em;
+    padding: 12px 0 4px;
+    margin: 0;
+    border-bottom: 1px solid #f0f0f1;
+}
+
+.qpp-options h3 {
+    color: var(--qpp-navy);
+    font-size: 1em;
+    margin: 12px 0 4px;
+    padding: 0;
+}
+
+.qpp-options .description { color: #50575e; }
+
+.qpp-options input[type=text],
+.qpp-options input[type=password],
+.qpp-options input[type=number],
+.qpp-options textarea,
+.qpp-options select {
+    margin: 2px 0;
+    padding: 4px 8px;
+    color: #2c3338;
+    font-size: 100%;
+    line-height: 1.6;
+    border: 1px solid #8c8f94;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    height: auto;
+    background: #fff;
+}
+
+.qpp-options input[type=text]:focus,
+.qpp-options input[type=password]:focus,
+.qpp-options input[type=number]:focus,
+.qpp-options textarea:focus,
+.qpp-options select:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+    outline: 2px solid transparent;
+}
+
+.qpp-options input#submit { background: #2271b1; color: #fff; }
+.qpp-options ul { margin: 0; padding: 0; }
+.qpp-options table { width: 100%; border-collapse: collapse; }
+.qpp-options th { text-align: left; }
+.qpp-options td { vertical-align: top; }
+
+/*
+ * Destructive controls. Reset was styled button-primary, the same blue as Save,
+ * and Delete All was a plain secondary sitting beside Export to CSV. A control
+ * that destroys payment records should not look like the one that confirms.
+ */
+.qpp-danger,
+.qpp-options input[name="Reset"],
+.qpp-options input#qpp_reset_settings {
+    background: #fff !important;
+    border-color: #b32d2e !important;
+    color: #b32d2e !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+
+.qpp-danger:hover,
+.qpp-danger:focus,
+.qpp-options input[name="Reset"]:hover,
+.qpp-options input#qpp_reset_settings:hover {
+    background: #b32d2e !important;
+    color: #fff !important;
+}
+
+/* The draggable form field list. */
+#qpp_sort { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+
+#qpp_sort li {
+    margin: 6px 0;
+    padding: 12px 14px;
+    min-height: 1.6em;
+    cursor: grab;
+    border: 1px solid #dcdcde;
+    border-left: 3px solid #dcdcde;
+    border-radius: 4px;
+    background: #fff;
+    clear: left;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+#qpp_sort li:hover {
+    border-color: #c3c4c7;
+    border-left-color: var(--qpp-blue);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+}
+
+#qpp_sort li:active { cursor: grabbing; }
+
+/* An enabled field reads as active, a disabled one recedes rather than turning grey. */
+#qpp_sort li.button_active { background-color: #fff; border-left-color: var(--qpp-blue); }
+#qpp_sort li.button_inactive { background-color: #f6f7f7; color: #50575e; }
+
+#qpp_sort li div { overflow: hidden; }
+#qpp_sort .ui-sortable-helper { box-shadow: 0 3px 8px rgba(0, 0, 0, .15); }
+#qpp_sort .ui-sortable-placeholder { visibility: visible !important; background: #f0f6fc; border: 1px dashed var(--qpp-blue); border-radius: 4px; }
+
+.wp-color-result { margin-bottom: 0 !important; }
+
+/* Upgrade box. Still the most prominent thing in the column, without shouting. */
+.qppupgrade { width: 100%; margin: 16px 0; }
+
+.qppupgrade a {
+    display: block;
+    width: 100%;
+    background: linear-gradient(135deg, var(--qpp-blue-dark), var(--qpp-blue));
+    padding: 20px 18px;
+    color: #fff;
+    margin: 0;
+    border: 0;
+    border-radius: 6px;
+    text-decoration: none;
+    box-sizing: border-box;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .12);
+    transition: background .15s ease, box-shadow .15s ease;
+}
+
+.qppupgrade a:hover,
+.qppupgrade a:focus {
+    background: linear-gradient(135deg, var(--qpp-navy), var(--qpp-blue-dark));
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .18);
+}
+
+.qppupgrade h3 {
+    margin: 0 0 6px;
+    padding: 0;
+    color: #fff;
+    font-size: 1.35em;
+    line-height: 1.25;
+}
+
+.qppupgrade p { margin: 6px 0 0; padding: 0; color: #fff; opacity: .95; }
+/* The one orange thing on the screen: the line you are most meant to click. */
+.qppupgrade p:last-child { margin-top: 12px; font-weight: 700; opacity: 1; color: var(--qpp-orange); }
+.qppupgrade a span { font-size: 80%; opacity: .9; }
+
+/* Separates Delete from Export and Email on the payments screen, so the
+   destructive controls are not the next thing under the pointer. */
+#download_form .qpp-danger { margin-left: 18px; }
+
+/* Second level navigation, the pages within the active section. */
+.qpp-subnav {
+    margin: 0 0 4px;
+    padding: 12px 0 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    font-size: 13px;
+}
+
+.qpp-subnav li { margin: 0; padding: 0; }
+
+.qpp-subnav li + li::before {
+    content: "|";
+    color: #c3c4c7;
+    margin: 0 10px;
+}
+
+.qpp-subnav a {
+    text-decoration: none;
+    color: var(--qpp-blue-mid);
+}
+
+.qpp-subnav a:hover { color: var(--qpp-blue-dark); }
+
+.qpp-subnav a.qpp-subnav-current {
+    color: var(--qpp-navy);
+    font-weight: 600;
+    cursor: default;
+}
+
+/* WordPress's notice marker. Structural only, never seen. */
+.wp-header-end { display: none; }
+
+/* Preview of an image chosen through the media library. Bounded so a full size
+   upload does not push the rest of the settings down the page. */
+.qpp-media-preview {
+    display: block;
+    max-width: 220px;
+    max-height: 80px;
+    margin: 8px 0 0;
+    padding: 6px;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    background: var(--qpp-off-white);
+}
+
+/* Whether the field a settings screen configures is actually switched on. These
+   screens configure something that only reaches the form when its field is
+   ticked elsewhere, so the answer belongs at the top of the screen. */
+.qpp-status {
+    margin: 12px 0 16px;
+    padding: 10px 14px;
+    border-left: 4px solid #dcdcde;
+    border-radius: 0 4px 4px 0;
+    background: var(--qpp-off-white);
+}
+
+.qpp-status-on {
+    border-left-color: #00a32a;
+}
+
+.qpp-status-off {
+    border-left-color: var(--qpp-orange);
+}
+
+.qpp-status-blocked {
+    border-left-color: #8c8f94;
+}
+
+/* The button images that ship with the plugin, offered as choices. */
+.qpp-button-choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: stretch;
+    margin: 0 0 10px;
+}
+
+.qpp-button-choice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Narrow enough that three fit across the settings column, which is about
+       450px. At 150 they wrapped one per row and looked like a list. */
+    min-width: 74px;
+    min-height: 40px;
+    padding: 3px;
+    border: 2px solid #dcdcde;
+    border-radius: 6px;
+    background: var(--qpp-white);
+    cursor: pointer;
+}
+
+.qpp-button-choice img {
+    display: block;
+    max-width: 118px;
+    height: auto;
+}
+
+.qpp-button-choice:hover {
+    border-color: var(--qpp-blue-light);
+}
+
+.qpp-button-choice.is-selected {
+    border-color: var(--qpp-blue);
+    box-shadow: 0 0 0 1px var(--qpp-blue);
+}
+
+/* Shown on every plan so card payments are discoverable, but not selectable
+   until Stripe is actually switched on. */
+.qpp-button-choice.is-disabled {
+    cursor: not-allowed;
+    opacity: .4;
+    filter: grayscale(1);
+}
+
+.qpp-button-choice.is-disabled:hover {
+    border-color: #dcdcde;
+}
+
+.qpp-button-locked {
+    margin: -4px 0 10px;
+}
+
+/* Result of checking the PayPal account, shown beside the field. */
+.qpp-account-status {
+    margin: 6px 0 10px;
+    min-height: 1.2em;
+}
+
+.qpp-account-status.is-working {
+    color: #646970;
+}
+
+.qpp-account-status.is-good {
+    color: #00733f;
+}
+
+.qpp-account-status.is-good::before {
+    content: "\2713\00a0";
+}
+
+.qpp-account-status.is-bad {
+    color: #b3261e;
+    font-weight: 600;
+}
+
+.qpp-account-status.is-bad::before {
+    content: "\26a0\00a0";
+}
+
+/* Payment records. Was a bare table with an inline text-align on every header,
+   which read as a dump rather than a list of what people have paid. */
+.qpp-payments {
+    margin: 14px 0 18px;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.qpp-payments thead th {
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--qpp-navy);
+    white-space: nowrap;
+    border-bottom: 2px solid #dcdcde;
+}
+
+.qpp-payments td {
+    padding: 9px 12px;
+    vertical-align: top;
+    border-bottom: 1px solid #f0f0f1;
+}
+
+.qpp-payments tbody tr:hover td {
+    background: #f6fbfe;
+}
+
+/* The amount is the column people scan, so it lines up on the decimal point. */
+.qpp-payments td.qpp-amount,
+.qpp-payments th.qpp-amount {
+    text-align: right;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.qpp-payments .qpp-paid {
+    color: #00733f;
+    font-weight: 600;
+}
+
+.qpp-payments .qpp-paid::before {
+    content: "\2713\00a0";
+}
+
+.qpp-payments .qpp-pending {
+    color: #8c6d1f;
+}
+
+/* The order token, shown on purpose in sandbox so an IPN can be posted by hand.
+   Monospace and quiet, so it reads as a reference to copy. */
+.qpp-payments .qpp-token {
+    display: inline-block;
+    margin-top: 3px;
+    padding: 1px 5px;
+    font-size: 11px;
+    color: #646970;
+    background: var(--qpp-off-white);
+    border-radius: 3px;
+    user-select: all;
+}
+
+/* A sub navigation link that leaves the settings pages. Separated so it does not
+   read as another tab of the same screen. */
+.qpp-subnav-away {
+    margin-left: auto;
+}
+
+.qpp-subnav-away a::after {
+    content: " \2192";
+}

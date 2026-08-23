@@ -2,42 +2,73 @@
 Contributors: Fullworks
 Tags: paypal payment form, paypal, payments
 Requires at least: 6.0
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 5.7.51
+Stable tag: 6.0
 License: 	GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Zero to PayPal with just one shortcode. Jam packed with features and options with easy to use custom settings.
+Take PayPal payments from a shortcode. Unlimited forms, any currency, no business account needed.
 
 == Description ==
 
-Taking PayPal payments just got easier, one shortcode to collect any amount from anywhere on your site. With Instant Payment Notifications and GDPR compliancy options.
+Take a PayPal payment today.
 
-= Features =
+One shortcode puts a payment form anywhere on your WordPress site. All it needs is your PayPal email address, so you can be taking money in a few minutes, with no business account, no API keys and no developer. Unlimited forms, any currency PayPal accepts, and every label and colour is yours to change.
 
-*   Accepts all PayPal approved currencies
-*   Fixed or variable payment amounts
-*   Easy to use range of shortcode options
-*   Fully editable
-*   Loads of styling options
-*   Multi-language
-*   Add custom forms anywhere on your site
-*   Downloadable payment records
-*   Fully editable autoresponder
-*   Instant Payment Notifications
-*   GDPR compliant
+= What the free version does =
 
-= Go Pro =
+*   Unlimited payment forms, placed with a shortcode, a block or a widget
+*   Any currency PayPal accepts
+*   Charge one set price, or let the buyer type the amount
+*   Quantity, item number, and a list of options to pick from
+*   Name, email, postal address and phone number, if you want to collect them
+*   Your own message field, terms and conditions, a consent tick box and a maths captcha
+*   Change every label, caption and colour, or leave the defaults alone
+*   A record of every payment, with a CSV download
+*   Mark a payment as paid by hand once you have checked it in PayPal
+*   Multi-language and GDPR ready
 
-*   Multiple products - sell up to 9 items at once.
-*   Custom Logo for Paypal page
-*   Mailchimp Integration
-*   Personalised Support
+A personal PayPal account is enough. There is nothing to configure beyond your
+email address.
 
-= PHP 8.0 =
+= What the paid version adds =
 
-Tested with PHP 8.0
+The paid version is about getting your time back and selling more than one thing.
+
+**Payments confirm themselves.** PayPal tells your site the moment a payment
+clears, so orders mark themselves paid and you stop opening PayPal to check
+whether one went through. Your buyer gets an automatic thank you email, and you
+can create their WordPress account at the same time, in whichever role you
+choose.
+
+**Take card payments as well as PayPal.** Send buyers to Stripe instead and take
+cards directly, on a page hosted by Stripe so no card details touch your site.
+Some people will not pay through PayPal, and that is the reason they abandon a
+payment.
+
+**Sell properly rather than just collect money.** Offer a choice of prices on one
+form, a slider, or a set of pre-set references. Run coupon codes with
+percentage or fixed discounts, expiry dates and limited quantities. Add postage
+and handling as a fixed amount or a percentage. Set a minimum amount, or switch
+the form to donations.
+
+**Charge again next month.** Recurring payments through PayPal on a schedule you
+choose, stopping automatically after the number of payments you set. Recurring
+forms use PayPal even on a site that otherwise takes cards.
+
+**Sell up to nine things at once,** each with its own price and quantity, on one
+form.
+
+**And the rest:** a datepicker field, Mailchimp signup, your own logo on the
+PayPal checkout page, sandbox mode for testing, and support by email and
+knowledge base.
+
+[See what is in each plan](https://fullworks.net/products/quick-paypal-payments/).
+
+= PHP =
+
+Tested up to PHP 8.5
 
 = Developers plugin page =
 
@@ -66,6 +97,18 @@ genuine. Only the notification PayPal sent is posted back.
 PayPal terms of service: https://www.paypal.com/uk/legalhub/useragreement-full
 PayPal privacy policy: https://www.paypal.com/uk/legalhub/privacy-full
 
+**Stripe (paid version only)**
+The free version does not contain the Stripe integration and never contacts
+Stripe. In the paid version, if you enter your Stripe keys and switch Stripe on,
+submitting a payment form creates a checkout session at https://api.stripe.com
+and sends the visitor to a payment page hosted by Stripe. The data sent is the
+payment amount, currency, item name and, if your form collects it, the visitor's
+email address. No card details are entered on or handled by your site. Stripe
+then notifies your site when the payment completes.
+
+Stripe terms of service: https://stripe.com/legal/ssa
+Stripe privacy policy: https://stripe.com/privacy
+
 **Freemius**
 Licensing, updates and optional usage tracking are handled by Freemius. Usage
 tracking is opt in and you are asked when the plugin is activated. If you opt in,
@@ -76,9 +119,10 @@ Freemius terms of service: https://freemius.com/terms/
 Freemius privacy policy: https://freemius.com/privacy/
 
 == Screenshots ==
-1.  This is the main admin screen.
-2.  An example form.
-3.  The payment record
+1.  A payment form on the front of a site.
+2.  The form settings, where you choose which fields appear.
+3.  Styling, with a live preview and the button images that ship with the plugin.
+4.  Every payment, with a CSV download and a button to mark one paid by hand.
 
 More [example forms](https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/).
 
@@ -120,3 +164,8 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 [Change Log](https://fullworksplugins.com/docs/quick-paypal-payments/installation-quick-paypal-payments/change-log-qpp/)
+
+== Upgrade Notice ==
+
+= 6.0 =
+Some free features now need a paid plan, and payments are no longer confirmed automatically in free, though you can mark them paid by hand. If you had this plugin before 6.0 you can still claim a free lifetime Gold licence that restores everything, from the notice on the settings screen.

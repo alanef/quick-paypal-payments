@@ -49,7 +49,14 @@ class Admin {
         add_action( 'admin_enqueue_scripts', array($this, 'enqueue_scripts') );
         add_action( 'admin_notices', array($this, 'admin_notice_freemius') );
         add_action( 'init', array($this, 'generate_freemius_licence') );
-        update_option( 'qpp_legacy_free', true );
+        /*
+         * qpp_legacy_free used to be written here on every admin page load. It has
+         * shipped since 5.6.12 in April 2020, so every install that predates 6.0
+         * already has it. 6.0 stops writing it, which turns it into the marker it
+         * was always meant to be: present means the site ran an earlier version and
+         * is losing features it used to have, absent means a new install that never
+         * had them. See is_pre_6_install().
+         */
         // Add AJAX endpoint for refreshing nonces
         add_action( 'wp_ajax_qpp_refresh_nonce', array($this, 'refresh_nonce_callback') );
         add_action( 'wp_ajax_nopriv_qpp_refresh_nonce', array($this, 'refresh_nonce_callback') );
@@ -119,6 +126,20 @@ class Admin {
         wp_die();
     }
 
+    /**
+     * Whether this site was running the plugin before 6.0.
+     *
+     * Decides who is offered the free lifetime Gold licence. The offer exists to
+     * make good on features being taken away, so it only makes sense for a site
+     * that had them. A new install never had them, and offering it free Gold would
+     * give away the plans 6.0 exists to sell.
+     *
+     * @return bool
+     */
+    private function is_pre_6_install() {
+        return (bool) get_option( 'qpp_legacy_free', false );
+    }
+
     public function admin_notice_freemius() {
         // Don't display notices to users that can't do anything about it.
         if ( !current_user_can( 'install_plugins' ) ) {
@@ -166,10 +187,10 @@ if after several attempts you still get this message contact me at
                 }
                 /* translators: %1$s is the plugin logo markup, %2$s is an optional failure message, %3$s is the download request URL, %4$s is the account email address. */
                 $notice .= sprintf(
-                    __( '%1$s<strong>Important action required</strong>. %2$s<p>Big changes are coming to Quick PayPal Payments and you MUST take action now to keep your premium features!!<br>
+                    __( '%1$s<strong>Important action required</strong>. %2$s<p>Version 6 has changed which features need a paid plan, and you MUST take action now to keep your premium features!!<br>
  You will need to <strong>download and install the PREMIUM</strong> plugin to keep your premium features. Don\'t worry it is easy.</p>
 <p></p><a target="_blank" href="%3$s" class="button" >CLICK HERE TO GET YOUR DOWNLOAD AND LICENCE BY EMAIL</a></p><p>If you do not download and install the premium plugin 
-- when version 6 is released you may lose features you depend on, so register now and be prepared.</p>
+- version 6 is now released and features you depend on are switched off until you do. Your settings are kept, so they come back as soon as your licence is active.</p>
 <p>The email will be sent to <strong>%4$s</strong> If you don\'t get the email soon, check your spam </p><p>To be clear if you already have paid for the Pro version - you do not have to pay again</p>', 'quick-paypal-payments' ),
                     $logo,
                     $failed,
@@ -178,14 +199,19 @@ if after several attempts you still get this message contact me at
                 );
             } else {
                 /* translators: %1$s is the plugin logo markup, %2$s is the account email address. */
-                $notice .= sprintf( __( '%1$s<strong>Important action required - Your licence request was successful</strong>. <p>Big changes are coming to Quick PayPal Payments  and you MUST take action now to keep your premium features!!<br>
+                $notice .= sprintf( __( '%1$s<strong>Important action required - Your licence request was successful</strong>. <p>Version 6 has changed which features need a paid plan, and you MUST take action now to keep your premium features!!<br>
  You have requested the PREMIUM plugin, please install it to keep your premium features. Don\'t worry it is easy.
-</p><p>If you do not download and install the premium plugin - when version 6 is released you may lose features you depend on, so register now and be prepared.
+</p><p>If you do not download and install the premium plugin - version 6 is now released and features you depend on are switched off until you do. Your settings are kept, so they come back as soon as your licence is active.
 The email was sent to <strong>%2$s</strong>. </p><p>If you do not have access to <strong>%2$s</strong>( check your spam ) contact me at 
 <a target="_blank" href="mailto:support@fullworks.net">support</a> with your details.</p><p>You can also use your email <strong>%2$s</strong>  to login at <a href="https://fullworks.net/account/" target="_blank">
 https://fullworks.net/account/</a> to get your download and licence key
 </p>', 'quick-paypal-payments' ), $logo, $user->data->user_email );
             }
+        } elseif ( !$this->is_pre_6_install() ) {
+            // A new install never had these features, so there is nothing to
+            // make good and no offer to show. It sees the normal upgrade
+            // prompts on the settings screen instead.
+            $notice .= '';
         } else {
             // start of free offer
             if ( 'generated' !== $qpp_freemius_licence ) {
@@ -197,9 +223,9 @@ if after several attempts you still get this message contact me at
                 }
                 /* translators: %1$s is the plugin logo markup, %2$s is an optional failure message, %3$s is the account email address, %4$s is the download request URL. */
                 $notice .= sprintf(
-                    __( '%1$s<strong>Important NOTICE for FREE users of this plugin</strong>. %2$s<p>Version 6 of the plugin will have some features that are free today as paid only, this is necessary to be able to continue to support the free version.
-</p><p> 
-As the new free version will have fewer features than the current free version, <strong>no one likes free things being taken away</strong> so for a limited time we are offering a free lifetime upgrade to the Pro GOLD plan, which is the equivalent of the free version today. </p>
+                    __( '%1$s<strong>Important NOTICE for FREE users of this plugin</strong>. %2$s<p>Version 6 has moved some features that used to be free to the paid plans, this is necessary to be able to continue to support the free version.
+</p><p>
+As the free version now has fewer features than it used to, <strong>no one likes free things being taken away</strong> so we are still offering a free lifetime upgrade to the Pro GOLD plan, which is the equivalent of the old free version. Your settings have not been deleted, they come back as soon as your licence is active. </p>
 <p>The licence will be given to your email, if you do not have access to <strong>%3$s</strong> please change it before requesting!</p><p><a href="https://wordpress.org/support/topic/the-futures-of-this-plugin-understanding-why-there-is-an-offer-of-gold-plan/" target="_blank">Read more details as why this is happening here on the official WordPress support forum</a></p>
 <a target="_blank" href="%4$s" class="button" >CLICK HERE TO GET YOUR DOWNLOAD AND LICENCE BY EMAIL</a>', 'quick-paypal-payments' ),
                     $logo,
@@ -212,7 +238,7 @@ As the new free version will have fewer features than the current free version, 
                 /* translators: %1$s is the plugin logo markup, %2$s is the account email address. */
                 $notice .= sprintf( __( '%1$s<strong>Important action required - Your licence request was successful</strong>. <p>you MUST take action now!!<br>
  You have requested the Pro GOLD plugin free offer, please install it. Don\'t worry it is easy.
-</p><p>If you do not download and install the premium plugin - when version 6 is released you may lose features you depend on, so register now and be prepared.
+</p><p>If you do not download and install the premium plugin - version 6 is now released and features you depend on are switched off until you do. Your settings are kept, so they come back as soon as your licence is active.
 The email was sent to <strong>%2$s</strong>. </p><p>If you do not have access to <strong>%2$s</strong>( check your spam ) contact me at 
 <a target="_blank" href="mailto:support@fullworks.net">support</a> with your details.</p><p>You can also use your email <strong>%2$s</strong>  to login at <a href="https://fullworks.net/account/" target="_blank">
 https://fullworks.net/account/</a> to get your download and licence key
@@ -241,6 +267,12 @@ https://fullworks.net/account/</a> to get your download and licence key
         $qpp_key = get_option( 'qpp_key' );
         $suffix = '';
         if ( isset( $_REQUEST['free'] ) ) {
+            // Gated as well as hidden. The notice is not shown to a new install, but
+            // the URL is guessable and the nonce is not install specific, so the
+            // endpoint has to refuse rather than rely on the button being absent.
+            if ( !$this->is_pre_6_install() ) {
+                return;
+            }
             $qpp_key['key'] = 'free';
             $suffix = '-free';
         }

@@ -69,7 +69,22 @@ class Freemius_Config {
             10,
             2
         );
+        /*
+         * Without this Freemius hunts for an icon in its own assets folder, finds
+         * nothing, and shows a placeholder on the account, pricing and checkout
+         * screens. The filter takes a path on disk, not a URL.
+         */
+        $quick_paypal_payments_fs->add_filter( 'plugin_icon', array($this, '_fs_plugin_icon') );
         return $quick_paypal_payments_fs;
+    }
+
+    /**
+     * Where the plugin's own icon lives, for the Freemius screens.
+     *
+     * @return string Absolute path to the icon file.
+     */
+    public function _fs_plugin_icon() {
+        return QUICK_PAYPAL_PAYMENTS_PLUGIN_DIR . 'ui/admin/images/qpp-logo-128.jpg';
     }
 
     public function _fs_show_support_menu( $is_visible, $menu_id ) {

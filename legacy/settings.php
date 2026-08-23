@@ -16,32 +16,174 @@ add_action(
     2
 );
 add_action( 'wp_head', 'qpp_head_css' );
-function qpp_admin_tabs(  $current = 'settings'  ) {
-    /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
-    global $quick_paypal_payments_fs;
-    $tabs = array(
-        'setup'        => esc_html__( 'Setup', 'quick-paypal-payments' ),
-        'settings'     => esc_html__( 'Form Settings', 'quick-paypal-payments' ),
-        'styles'       => esc_html__( 'Styling', 'quick-paypal-payments' ),
-        'send'         => esc_html__( 'Send Options', 'quick-paypal-payments' ),
-        'error'        => esc_html__( 'Validation Messages', 'quick-paypal-payments' ),
-        'autoresponce' => esc_html__( 'Auto Responder', 'quick-paypal-payments' ),
-        'coupon'       => esc_html__( 'Coupons', 'quick-paypal-payments' ),
-        'ipn'          => 'IPN',
+/**
+ * The two level settings navigation.
+ *
+ * Eleven top level tabs wrapped onto two rows and put unrelated screens side by
+ * side. Grouped the way WooCommerce does it: a short row of sections, then the
+ * pages within the active one. Validation Messages and the Auto Responder are
+ * together because both are simply text shown or sent to the buyer, which was
+ * never apparent when they sat five tabs apart.
+ *
+ * Tab keys are unchanged. Only the presentation moved, so every existing link
+ * and every render function still works.
+ *
+ * @return array Group key => label and pages.
+ */
+/**
+ * The branded page header, shared by the settings and payments screens.
+ *
+ * Both printed a bare h1. The logo is shipped inside the plugin rather than
+ * pulled from ps.w.org: offloaded assets are not allowed, and the previous
+ * remote logo never rendered anyway because a global find and replace had
+ * mangled its src attribute.
+ *
+ * @return void
+ */
+function qpp_admin_header() {
+    /*
+     * The trailing hr.wp-header-end is WordPress's marker for where admin
+     * notices belong. Without it WordPress relocates them to just after the
+     * first h1 it finds, and this h1 is nested in the header, so every notice
+     * landed inside the blue banner.
+     */
+    printf(
+        '<div class="qpp-admin-header"><img class="qpp-admin-header-logo" src="%1$s" width="44" height="44" alt="" /><div><h1>%2$s</h1><p>%3$s</p></div></div><hr class="wp-header-end" />',
+        esc_url( plugins_url( 'ui/admin/images/qpp-logo-128.jpg', QUICK_PAYPAL_PAYMENTS_PLUGIN_DIR . 'quick-paypal-payments.php' ) ),
+        esc_html__( 'Quick PayPal Payments', 'quick-paypal-payments' ),
+        esc_html__( 'Take PayPal and card payments from a shortcode.', 'quick-paypal-payments' )
     );
+}
+
+function qpp_admin_tab_groups() {
+    return array(
+        'setup'        => array(
+            'label' => esc_html__( 'Global', 'quick-paypal-payments' ),
+            'pages' => array(
+                'setup' => esc_html__( 'Global', 'quick-paypal-payments' ),
+            ),
+        ),
+        'form'         => array(
+            'label' => esc_html__( 'Forms', 'quick-paypal-payments' ),
+            'pages' => array(
+                'manage'   => esc_html__( 'Create / Manage', 'quick-paypal-payments' ),
+                'settings' => esc_html__( 'Fields', 'quick-paypal-payments' ),
+                'styles'   => esc_html__( 'Styling', 'quick-paypal-payments' ),
+                'address'  => esc_html__( 'Personal Details', 'quick-paypal-payments' ),
+            ),
+        ),
+        'messages'     => array(
+            'label' => esc_html__( 'Messages', 'quick-paypal-payments' ),
+            'pages' => array(
+                'error'        => esc_html__( 'Validation', 'quick-paypal-payments' ),
+                'autoresponce' => esc_html__( 'Auto Responder', 'quick-paypal-payments' ),
+            ),
+        ),
+        'selling'      => array(
+            'label' => esc_html__( 'Selling', 'quick-paypal-payments' ),
+            'pages' => array(
+                'multipleproducts' => esc_html__( 'Products', 'quick-paypal-payments' ),
+                'coupon'           => esc_html__( 'Coupons', 'quick-paypal-payments' ),
+            ),
+        ),
+        'payments'     => array(
+            'label' => esc_html__( 'Payments', 'quick-paypal-payments' ),
+            'pages' => array(
+                'send'   => esc_html__( 'Send Options', 'quick-paypal-payments' ),
+                'stripe' => 'Stripe',
+                'ipn'    => 'IPN',
+            ),
+            'links' => array(array(
+                'label' => esc_html__( 'Payment Records', 'quick-paypal-payments' ),
+                'url'   => 'admin.php?page=quick-paypal-payments-messages',
+            )),
+        ),
+        'integrations' => array(
+            'label' => esc_html__( 'Integrations', 'quick-paypal-payments' ),
+            'pages' => array(
+                'integrations' => esc_html__( 'Integrations', 'quick-paypal-payments' ),
+            ),
+        ),
+    );
+}
+
+/**
+ * Which group a page belongs to.
+ *
+ * Pages reachable only by link, such as the shortcode reference and the reset
+ * screen, are not in any group and leave no section marked, which is honest:
+ * they are not part of the navigation.
+ *
+ * @param string $page Current tab key.
+ *
+ * @return string Group key, or '' when the page is not in the navigation.
+ */
+function qpp_admin_tab_group_for(  $page  ) {
+    foreach ( qpp_admin_tab_groups() as $group => $data ) {
+        if ( isset( $data['pages'][$page] ) ) {
+            return $group;
+        }
+    }
+    return '';
+}
+
+function qpp_admin_tabs(  $current = 'settings'  ) {
+    $groups = qpp_admin_tab_groups();
+    $active = qpp_admin_tab_group_for( $current );
     echo '<h2 class="nav-tab-wrapper">';
-    foreach ( $tabs as $tab => $name ) {
-        $class = ( $tab == $current ? ' nav-tab-active' : '' );
-        echo '<a class="nav-tab' . esc_attr( $class ) . '" href="?page=quick-paypal-payments&tab=' . esc_attr( $tab ) . '">' . esc_attr( $name ) . '</a>';
+    foreach ( $groups as $group => $data ) {
+        $class = ( $group === $active ? ' nav-tab-active' : '' );
+        // Links to the first page in the group, so a section is always one click.
+        $first = key( $data['pages'] );
+        echo '<a class="nav-tab' . esc_attr( $class ) . '" href="?page=quick-paypal-payments&tab=' . esc_attr( $first ) . '">' . esc_html( $data['label'] ) . '</a>';
     }
     echo '</h2>';
+    $links = ( isset( $groups[$active]['links'] ) ? $groups[$active]['links'] : array() );
+    // A single page group with nothing else to point at has nothing to choose
+    // between, so no second row.
+    if ( '' === $active || count( $groups[$active]['pages'] ) < 2 && empty( $links ) ) {
+        return;
+    }
+    echo '<ul class="qpp-subnav">';
+    foreach ( $groups[$active]['pages'] as $page => $label ) {
+        $class = ( $page === $current ? 'qpp-subnav-current' : '' );
+        echo '<li><a class="' . esc_attr( $class ) . '" href="?page=quick-paypal-payments&tab=' . esc_attr( $page ) . '">' . esc_html( $label ) . '</a></li>';
+    }
+    foreach ( $links as $link ) {
+        echo '<li class="qpp-subnav-away"><a href="' . esc_url( admin_url( $link['url'] ) ) . '">' . esc_html( $link['label'] ) . '</a></li>';
+    }
+    echo '</ul>';
 }
 
 function qpp_tabbed_page() {
     global $quick_paypal_payments_fs;
     $qpp_setup = qpp_get_stored_setup();
     $id = $qpp_setup['current'];
-    echo '<h1>Quick Paypal Payments</h1>';
+    qpp_admin_header();
+    /*
+     * Form Settings is a long page with a single Save at the very bottom, so it
+     * is easy to configure several fields, click a tab and lose all of it with no
+     * warning. Marks the page dirty on the first edit and lets the browser ask.
+     *
+     * Printed separately rather than appended to $content, which goes through
+     * wp_kses() and would strip a script tag.
+     */
+    wp_print_inline_script_tag( '(function () {
+            var dirty = false;
+            var forms = document.querySelectorAll( ".qpp-settings form" );
+            Array.prototype.forEach.call( forms, function ( form ) {
+                form.addEventListener( "input", function () { dirty = true; } );
+                form.addEventListener( "change", function () { dirty = true; } );
+                form.addEventListener( "submit", function () { dirty = false; } );
+            } );
+            window.addEventListener( "beforeunload", function ( event ) {
+                if ( ! dirty ) {
+                    return;
+                }
+                event.preventDefault();
+                event.returnValue = "";
+            } );
+        })();' );
     // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required.
     if ( isset( $_GET['tab'] ) ) {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required.
@@ -54,6 +196,9 @@ function qpp_tabbed_page() {
     switch ( $tab ) {
         case 'setup':
             qpp_setup( $id );
+            break;
+        case 'manage':
+            qpp_forms_page( $id );
             break;
         case 'settings':
             qpp_form_options( $id );
@@ -70,12 +215,13 @@ function qpp_tabbed_page() {
         case 'address':
             qpp_address( $id );
             break;
-        case 'shortcodes':
-            qpp_shortcodes();
-            break;
-        case 'reset':
-            qpp_reset_page( $id );
-            break;
+        /*
+         * There is no case for 'shortcodes' or 'reset'. Both used to route to
+         * functions that no longer exist anywhere in the plugin, so reaching
+         * either tab was a white screen rather than a page. Nothing links to
+         * them now; an old bookmark falls through to the default below, which is
+         * the same thing any unrecognised tab does.
+         */
         case 'coupon':
             qpp_coupon_codes( $id );
             break;
@@ -85,173 +231,471 @@ function qpp_tabbed_page() {
         case 'autoresponce':
             qpp_autoresponce_page( $id );
             break;
+        case 'stripe':
+            qpp_stripe_page();
+            break;
+        case 'integrations':
+            qpp_integrations_page( $id );
+            break;
         case 'multipleproducts':
+            qpp_upgrade_page( 'platinum', 'Multiple Products' );
             break;
     }
+}
+
+/**
+ * Upsell markup shown in place of a setting the current plan does not include.
+ *
+ * Named the plan rather than saying "Pro", which stopped identifying a single
+ * tier in 6.0. Callers are free installs and paid installs below the required
+ * plan, so the wording has to work for both.
+ *
+ * @param string $plan    Lowest plan that unlocks the feature, lower case.
+ * @param string $feature Human readable feature name.
+ *
+ * @return string
+ */
+function qpp_upgrade_prompt(  $plan, $feature  ) {
+    // Shared with the sidebar box so the wording and the destination always
+    // agree. This used to link to the trial while saying "See plans and prices".
+    $cta = qpp_upgrade_cta();
+    return '<span class="description">' . esc_html( $feature ) . ' is available in the ' . esc_html( ucfirst( $plan ) ) . ' plan and above. <a href="' . esc_url( $cta['url'] ) . '">' . esc_html( $cta['label'] ) . '</a></span>';
+}
+
+/**
+ * Says whether the field a settings screen configures is actually switched on.
+ *
+ * The Products and Coupons screens configure something that only reaches the
+ * form when its field is ticked on Forms -> Fields. Neither screen said so, so a
+ * merchant could fill one in completely, save it, and see no change to the form
+ * with nothing anywhere explaining why.
+ *
+ * @param bool   $enabled     Whether the field is ticked for the current form.
+ * @param string $feature     What this screen configures, sentence case plural.
+ * @param string $field_label The row label on the Fields screen, so the
+ *                            instruction names what to look for.
+ * @param string $blocked     Optional reason the field cannot be ticked at all,
+ *                            which outranks being merely switched off.
+ *
+ * @return string
+ */
+function qpp_field_status_notice(
+    $enabled,
+    $feature,
+    $field_label,
+    $blocked = ''
+) {
+    $fields = '<a href="' . esc_url( admin_url( 'options-general.php?page=quick-paypal-payments&tab=settings' ) ) . '">Forms &rarr; Fields</a>';
+    if ( '' !== $blocked ) {
+        return '<p class="qpp-status qpp-status-blocked"><strong>' . esc_html( $feature ) . ' cannot be used on this form.</strong> ' . esc_html( $blocked ) . ' Anything set here is kept, and applies again if that changes.</p>';
+    }
+    if ( $enabled ) {
+        return '<p class="qpp-status qpp-status-on"><strong>' . esc_html( $feature ) . ' are switched on for this form</strong>, so what you set here appears on it. Untick &quot;' . esc_html( $field_label ) . '&quot; on ' . $fields . ' to switch them off.</p>';
+    }
+    return '<p class="qpp-status qpp-status-off"><strong>' . esc_html( $feature ) . ' are switched off for this form</strong>, so nothing set here will appear on it. Tick &quot;' . esc_html( $field_label ) . '&quot; on ' . $fields . ' to switch them on. Your settings are kept either way.</p>';
+}
+
+/**
+ * Renders a whole settings tab as an upsell.
+ *
+ * The tab stays visible on every plan so the feature is discoverable, but the
+ * page body is replaced. Callers return immediately after this, which also stops
+ * the tab's save handler running, so the settings cannot be posted directly by a
+ * plan that does not include them.
+ *
+ * @param string $plan    Lowest plan that unlocks the feature, lower case.
+ * @param string $feature Human readable feature name.
+ *
+ * @return void
+ */
+function qpp_upgrade_page(  $plan, $feature  ) {
+    $content = '<div class="qpp-settings"><div class="qpp-options" style="width:auto;float:none;">' . '<h2>' . esc_html( $feature ) . '</h2>' . '<p>' . qpp_upgrade_prompt( $plan, $feature ) . '</p>' . qpp_upgrade_pitch( $plan ) . '</div></div>';
+    echo wp_kses( $content, qpp_allowed_html() );
+}
+
+/**
+ * Sells what the paid plans can do, on a tab a plan cannot open.
+ *
+ * Deliberately not a feature comparison. The upgrade link goes to the Freemius
+ * pricing page, which already lays the plans out side by side, so repeating that
+ * here is duplicated work that would drift out of step with the dashboard.
+ *
+ * The job on this page is that a free install has no idea the plugin can do any
+ * of this. They clicked a tab expecting a setting and found a wall, so the useful
+ * thing is to say what becomes possible, in terms of what it does for them rather
+ * than what it is called.
+ *
+ * @param string $highlight Plan the clicked feature needs.
+ *
+ * @return string
+ */
+function qpp_upgrade_pitch(  $highlight = ''  ) {
+    $pitches = array(
+        'silver'   => array(
+            'title' => 'Stop checking PayPal by hand',
+            'lines' => array(
+                'Payments confirm themselves. An order marks itself paid the moment PayPal takes the money, instead of sitting there until you go and look.',
+                'Your buyer gets a thank you email automatically, with their order details in it.',
+                'Charge postage and handling, as a fixed amount or a percentage of the order.',
+                'Test everything safely in PayPal sandbox before you take a real payment.',
+                'Create a WordPress account for the buyer as they pay, so paying and having a login are one step.',
+                'Email and knowledge base support, instead of the public forum.'
+            ),
+        ),
+        'gold'     => array(
+            'title' => 'Sell, rather than just collect money',
+            'lines' => array(
+                'Coupon codes, fixed amount or percentage, with your own expiry and usage limits.',
+                'Recurring payments, so a subscription or a payment plan bills itself.',
+                'Take donations, with a slider or a set of suggested amounts instead of an empty box.',
+                'Offer a choice of prices as buttons or a dropdown, instead of one price or an empty box.'
+            ),
+        ),
+        'platinum' => array(
+            'title' => 'Take cards, not just PayPal',
+            'lines' => array(
+                'Stripe Checkout, so customers who will not use PayPal can pay by card. Hosted by Stripe, so no card details touch your site.',
+                'Sell up to nine products from one form, with their own prices and quantities.',
+                'Collect a date on the form, for bookings, deliveries or appointments.',
+                'Add every buyer to your Mailchimp list as they pay.'
+            ),
+        ),
+    );
+    $order = array('silver', 'gold', 'platinum');
+    /*
+     * The plan that was clicked goes first. Someone who opened the Stripe tab was
+     * reading about Stripe, and leading with two blocks of PayPal copy answers a
+     * question they did not ask.
+     */
+    if ( '' !== $highlight && isset( $pitches[$highlight] ) ) {
+        $rest = array_values( array_diff( $order, array($highlight) ) );
+        $below = array_slice( $order, 0, array_search( $highlight, $order, true ) );
+        $above = array_slice( $order, array_search( $highlight, $order, true ) + 1 );
+    } else {
+        $rest = $order;
+        $below = array();
+        $above = array();
+    }
+    $render = function ( $plan, $lead ) use($pitches) {
+        $style = ( $lead ? ' style="border-left:4px solid #2271b1;padding-left:12px;"' : '' );
+        $out = '<div' . $style . '><h3>' . esc_html( $pitches[$plan]['title'] ) . ' <span class="description">' . esc_html( ucfirst( $plan ) ) . '</span></h3>' . '<ul style="list-style:disc;margin-left:1.4em;">';
+        foreach ( $pitches[$plan]['lines'] as $line ) {
+            $out .= '<li>' . esc_html( $line ) . '</li>';
+        }
+        return $out . '</ul></div>';
+    };
+    $out = '';
+    if ( '' !== $highlight && isset( $pitches[$highlight] ) ) {
+        $out .= $render( $highlight, true );
+        if ( !empty( $below ) ) {
+            $names = array_map( 'ucfirst', $below );
+            $out .= '<p>' . esc_html( ucfirst( $highlight ) ) . ' includes everything in ' . esc_html( implode( ' and ', array_reverse( $names ) ) ) . ' as well:</p>';
+            foreach ( array_reverse( $below ) as $plan ) {
+                $out .= $render( $plan, false );
+            }
+        }
+        if ( !empty( $above ) ) {
+            $out .= '<p>And above that:</p>';
+            foreach ( $above as $plan ) {
+                $out .= $render( $plan, false );
+            }
+        }
+    } else {
+        foreach ( $order as $plan ) {
+            $out .= $render( $plan, false );
+        }
+    }
+    $cta = qpp_upgrade_cta();
+    $out .= '<p><a class="button button-primary" href="' . esc_url( $cta['url'] ) . '">' . esc_html( $cta['label'] ) . '</a></p>';
+    return $out;
+}
+
+/**
+ * Where an upgrade link should point.
+ *
+ * @return string
+ */
+function qpp_upgrade_cta() {
+    /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
+    global $quick_paypal_payments_fs;
+    /*
+     * A free install with a trial still available is asked to try, not to buy.
+     * Trying is the smaller decision, and the Freemius trial runs on the top
+     * plan so they see everything. Anyone else is sent to the plans page.
+     */
+    $on_free = !$quick_paypal_payments_fs->is_plan_or_trial__premium_only( 'silver' );
+    $trial_available = !$quick_paypal_payments_fs->is_trial() && !$quick_paypal_payments_fs->is_trial_utilized();
+    if ( $on_free && $trial_available ) {
+        return array(
+            'url'   => $quick_paypal_payments_fs->get_trial_url(),
+            'label' => 'Start your free trial',
+        );
+    }
+    return array(
+        'url'   => $quick_paypal_payments_fs->get_upgrade_url(),
+        'label' => 'See plans and prices',
+    );
+}
+
+function qpp_upgrade_url() {
+    $cta = qpp_upgrade_cta();
+    return $cta['url'];
+}
+
+/**
+ * The upgrade box for the admin sidebar.
+ *
+ * Free installs are pitched the trial rather than a plan. Naming a plan here is
+ * how "Upgrade to Silver" ended up linking to a page headed "Test all our
+ * awesome Platinum premium features". Once the trial is spent, or on a paid plan
+ * below the top one, the ask becomes the next plan up.
+ *
+ * Shared by the settings and payments screens so the two cannot drift.
+ *
+ * @return string Markup, or nothing when there is nothing left to sell.
+ */
+function qpp_upgrade_box() {
+    /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
+    global $quick_paypal_payments_fs;
+    $cta = qpp_upgrade_cta();
+    if ( 'Start your free trial' === $cta['label'] ) {
+        /*
+         * No trial length here. It is set in the Freemius dashboard and already
+         * stated in their own admin banner and on the plans page, so repeating it
+         * only creates something that can go stale or disagree.
+         */
+        return '<div class="qppupgrade"><a href="' . esc_url( $cta['url'] ) . '">
+        <h3>Try every feature free</h3>
+        <p>Automatic payment confirmation, coupons, recurring payments and card payments with Stripe. The lot, for the whole trial.</p>
+        <p>' . esc_html( $cta['label'] ) . '</p>
+        </a></div>';
+    }
+    $upnext = 'Silver';
+    $upgives = 'payments confirmed automatically, the Auto Responder, postage and handling, creating a WordPress user when someone pays, and email and knowledge base support';
+    return '<div class="qppupgrade"><a href="' . esc_url( $cta['url'] ) . '">
+        <h3>Upgrade to ' . esc_html( $upnext ) . '</h3>
+        <p>Upgrading gives ' . esc_html( $upgives ) . '.</p>
+        <p>' . esc_html( $cta['label'] ) . '</p>
+        </a></div>';
+}
+
+/**
+ * Create and manage the payment forms.
+ *
+ * Lived on the Setup screen, mixed in with the PayPal account email and the
+ * global switches, so creating a form meant scrolling past settings that have
+ * nothing to do with forms and submitting all of them together.
+ *
+ * Saves only what it owns. That screen and this one both write qpp_setup, so
+ * each reads the stored option and changes its own keys. Rebuilding the option
+ * from one screen's post would delete whatever the other screen manages.
+ *
+ * @param string $id Current form id.
+ *
+ * @return void
+ */
+function qpp_forms_page(  $id  ) {
+    $qpp_setup = qpp_get_stored_setup();
+    $new_curr = '';
+    if ( isset( $_POST['qpp_forms_save'] ) && check_admin_referer( "save_qpp" ) ) {
+        $stored = get_option( 'qpp_setup' );
+        if ( !is_array( $stored ) ) {
+            $stored = array();
+        }
+        $stored['alternative'] = sanitize_text_field( wp_unslash( $_POST['alternative'] ) );
+        if ( !empty( $_POST['new_form'] ) ) {
+            $new = sanitize_text_field( wp_unslash( $_POST['new_form'] ) );
+            // Form names become part of an option name, so anything but letters
+            // is dropped rather than escaped.
+            $new = preg_replace( "/[^A-Za-z]/", '', $new );
+            $stored['current'] = $new;
+            $stored['alternative'] = $new . ',' . $stored['alternative'];
+        } else {
+            $stored['current'] = ( isset( $_POST['current'] ) ? sanitize_text_field( wp_unslash( $_POST['current'] ) ) : '' );
+        }
+        $qpp_curr = array();
+        $qpp_email = array();
+        foreach ( explode( ',', $stored['alternative'] ) as $item ) {
+            $qpp_curr[$item] = ( isset( $_POST['qpp_curr' . $item] ) ? sanitize_text_field( wp_unslash( $_POST['qpp_curr' . $item] ) ) : '' );
+            $qpp_email[$item] = ( isset( $_POST['qpp_email' . $item] ) ? sanitize_text_field( wp_unslash( $_POST['qpp_email' . $item] ) ) : '' );
+        }
+        if ( !empty( $_POST['new_form'] ) ) {
+            $qpp_curr[$stored['current']] = ( isset( $_POST['new_curr'] ) ? sanitize_text_field( wp_unslash( $_POST['new_curr'] ) ) : '' );
+        }
+        update_option( 'qpp_curr', $qpp_curr );
+        update_option( 'qpp_email', $qpp_email );
+        update_option( 'qpp_setup', $stored );
+        $qpp_setup = qpp_get_stored_setup();
+        qpp_admin_notice( 'The forms have been updated.' );
+        if ( !empty( $_POST['qpp_clone'] ) && !empty( $_POST['new_form'] ) ) {
+            qpp_clone( $qpp_setup['current'], sanitize_text_field( wp_unslash( $_POST['qpp_clone'] ) ) );
+        }
+    }
+    foreach ( explode( ',', $qpp_setup['alternative'] ) as $item ) {
+        if ( '' === $item ) {
+            continue;
+        }
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Verified below before anything is deleted.
+        if ( !isset( $_POST['deleteform' . $item], $_POST['delete' . $item] ) ) {
+            continue;
+        }
+        check_admin_referer( "save_qpp" );
+        if ( sanitize_text_field( wp_unslash( $_POST['deleteform' . $item] ) ) !== $item ) {
+            continue;
+        }
+        $forms = $qpp_setup['alternative'];
+        qpp_delete_things( $item );
+        $stored = get_option( 'qpp_setup' );
+        $stored['alternative'] = str_replace( $item . ',', '', $forms );
+        $stored['current'] = '';
+        update_option( 'qpp_setup', $stored );
+        $qpp_setup = qpp_get_stored_setup();
+        /* translators: %s is the name of the deleted form. */
+        qpp_admin_notice( sprintf( esc_html__( 'The form named %s has been deleted.', 'quick-paypal-payments' ), $item ) );
+        $id = '';
+    }
+    $qpp_curr = qpp_get_stored_curr();
+    $qpp_email = qpp_get_stored_email();
+    if ( !$new_curr ) {
+        $new_curr = $qpp_curr[''];
+    }
+    $arr = explode( ',', $qpp_setup['alternative'] );
+    sort( $arr );
+    $content = '<div class="qpp-settings"><div class="qpp-options">
+    <form method="post" action="">
+    <h2>' . esc_html__( 'Your Forms', 'quick-paypal-payments' ) . '</h2>
+    <p class="description">' . esc_html__( 'The selected form is the one the other tabs edit.', 'quick-paypal-payments' ) . '</p>
+    <table>
+    <tr>
+    <td><b>Form name&nbsp;&nbsp;</b></td>
+    <td><b>Currency</b></td>
+    <td><b>Shortcode</b></td>
+    <td></td>
+    </tr>';
+    foreach ( $arr as $item ) {
+        $checked = ( $qpp_setup['current'] == $item ? 'checked' : '' );
+        $formname = ( '' === $item ? 'default' : $item );
+        if ( !isset( $qpp_email[$item] ) || !$qpp_email[$item] ) {
+            $qpp_email[$item] = $qpp_setup['email'];
+        }
+        $content .= '<tr>
+        <td><input type="radio" name="current" value="' . esc_attr( $item ) . '" ' . checked( $checked, 'checked', false ) . ' /> ' . esc_html( $formname ) . '</td>
+        <td>' . qpp_currency_select( 'qpp_curr' . $item, $qpp_curr[$item] ) . '</td>
+        <td><code>[qpp' . (( $item ? ' form="' . esc_attr( $item ) . '"' : '' )) . ']</code></td>
+        <td>';
+        if ( $item ) {
+            $content .= '<input type="hidden" name="deleteform' . esc_attr( $item ) . '" value="' . esc_attr( $item ) . '">
+            <input type="submit" name="delete' . esc_attr( $item ) . '" class="button-secondary qpp-danger" value="' . esc_attr__( 'Delete', 'quick-paypal-payments' ) . '" onclick="return window.confirm( \'Delete the form ' . esc_js( $item ) . ' and all of its settings? This cannot be undone.\' );" />';
+        }
+        $content .= '</td></tr>';
+    }
+    $content .= '</table>
+    <p><input type="submit" name="qpp_forms_save" class="button-primary" value="' . esc_attr__( 'Save Changes', 'quick-paypal-payments' ) . '" /></p>
+    <h2>' . esc_html__( 'Create New Form', 'quick-paypal-payments' ) . '</h2>
+    <p>' . esc_html__( 'Enter form name (letters only - no numbers, spaces or punctuation marks)', 'quick-paypal-payments' ) . '</p>
+    <p><input type="text" name="new_form" value="" /></p>
+    <p>' . esc_html__( 'Currency:', 'quick-paypal-payments' ) . ' ' . qpp_currency_select( 'new_curr', ( '' !== $new_curr ? $new_curr : 'GBP' ) ) . '</p>
+    <p class="description">' . esc_html__( 'Only the currencies PayPal accepts are listed. A currency PayPal does not take is refused at the checkout, which the customer sees as the payment simply not working.', 'quick-paypal-payments' ) . '</p>
+    <p class="description">' . esc_html__( 'If you take payment in a currency your PayPal account does not hold, set your Payment Receiving Preferences in PayPal to accept it. Otherwise every payment sits pending until you approve it by hand, and the order stays unpaid here until you do.', 'quick-paypal-payments' ) . '</p>
+    <input type="hidden" name="alternative" value="' . esc_attr( $qpp_setup['alternative'] ) . '" />
+    <p>' . esc_html__( 'Copy settings from an existing form.', 'quick-paypal-payments' ) . '</p>
+    <select name="qpp_clone"><option>' . esc_html__( 'Do not copy settings', 'quick-paypal-payments' ) . '</option>';
+    foreach ( $arr as $item ) {
+        $label = ( '' === $item ? 'default' : $item );
+        $content .= '<option value="' . esc_attr( $label ) . '">' . esc_html( $label ) . '</option>';
+    }
+    $content .= '</select>
+    <p><input type="submit" name="qpp_forms_save" class="button-primary" value="' . esc_attr__( 'Create Form', 'quick-paypal-payments' ) . '" /></p>';
+    $content .= wp_nonce_field( "save_qpp" );
+    $content .= '</form></div>
+    <div class="qpp-options" style="float:right">
+    <h2>' . esc_html__( 'Using your forms', 'quick-paypal-payments' ) . '</h2>
+    <p>' . esc_html__( 'Each form has its own fields, styling, messages and send options. Select a form above, then use the other tabs to edit it.', 'quick-paypal-payments' ) . '</p>
+    <p>' . esc_html__( 'Put a form on a page with its shortcode. The default form is [qpp], and a named form adds the name.', 'quick-paypal-payments' ) . '</p>
+    <p>' . esc_html__( 'Creating a form can copy the settings of one you already have, which is usually quicker than starting again.', 'quick-paypal-payments' ) . '</p>
+    </div></div>';
+    echo wp_kses( $content, qpp_allowed_html() );
 }
 
 function qpp_setup(  $id  ) {
     /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
     global $quick_paypal_payments_fs;
     $qpp_setup = qpp_get_stored_setup();
-    $new_curr = $php = $head = '';
+    $new_curr = '';
     if ( isset( $_POST['Submit'] ) && check_admin_referer( "save_qpp" ) ) {
-        $qpp_setup['alternative'] = sanitize_text_field( $_POST['alternative'] );
-        $qpp_setup['email'] = sanitize_text_field( $_POST['email'] );
-        if ( !empty( $_POST['new_form'] ) ) {
-            $qpp_setup['current'] = stripslashes( $_POST['new_form'] );
-            $qpp_setup['current'] = sanitize_text_field( $qpp_setup['current'] );
-            $qpp_setup['current'] = preg_replace( "/[^A-Za-z]/", '', $qpp_setup['current'] );
-            $qpp_setup['alternative'] = $qpp_setup['current'] . ',' . $qpp_setup['alternative'];
-        } else {
-            $qpp_setup['current'] = sanitize_text_field( $_POST['current'] );
+        /*
+         * Only the site wide keys. Creating and selecting forms is on the Forms
+         * tab and writes the same option, so this reads what is stored and
+         * changes its own keys rather than rebuilding the option from this post.
+         */
+        $stored = get_option( 'qpp_setup' );
+        if ( !is_array( $stored ) ) {
+            $stored = array();
         }
-        if ( empty( $qpp_setup['current'] ) ) {
-            $qpp_setup['current'] = '';
-        }
-        $arr = explode( ",", $qpp_setup['alternative'] );
-        foreach ( $arr as $item ) {
-            $qpp_curr[$item] = ( isset( $_POST['qpp_curr' . $item] ) ? stripslashes( $_POST['qpp_curr' . $item] ) : '' );
-            $qpp_curr[$item] = sanitize_text_field( $qpp_curr[$item] );
-            $qpp_email[$item] = ( isset( $_POST['qpp_email' . $item] ) ? stripslashes( $_POST['qpp_email' . $item] ) : '' );
-            $qpp_email[$item] = sanitize_text_field( $qpp_email[$item] );
-        }
-        if ( !empty( $_POST['new_form'] ) ) {
-            $email = $qpp_setup['current'];
-            $qpp_curr[$email] = stripslashes( $_POST['new_curr'] );
-            $qpp_curr[$email] = sanitize_text_field( $qpp_curr[$email] );
-        }
-        $qpp_setup['image_url'] = ( isset( $_POST['image_url'] ) ? esc_url_raw( $_POST['image_url'] ) : '' );
-        $qpp_setup['location'] = ( isset( $_POST['location'] ) ? sanitize_text_field( $_POST['location'] ) : '' );
-        $qpp_setup['sandbox'] = ( isset( $_POST['sandbox'] ) ? sanitize_text_field( $_POST['sandbox'] ) : '' );
-        $qpp_setup['disable_error'] = ( isset( $_POST['disable_error'] ) ? sanitize_text_field( $_POST['disable_error'] ) : '' );
-        $qpp_setup['nostore'] = ( isset( $_POST['nostore'] ) ? sanitize_text_field( $_POST['nostore'] ) : '' );
-        update_option( 'qpp_curr', $qpp_curr );
-        update_option( 'qpp_email', $qpp_email );
-        update_option( 'qpp_setup', $qpp_setup );
+        $stored['email'] = ( isset( $_POST['email'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['email'] ) ) ) : '' );
+        $stored['image_url'] = ( isset( $_POST['image_url'] ) ? esc_url_raw( wp_unslash( $_POST['image_url'] ) ) : '' );
+        $stored['sandbox'] = ( isset( $_POST['sandbox'] ) ? sanitize_text_field( wp_unslash( $_POST['sandbox'] ) ) : '' );
+        $stored['disable_error'] = ( isset( $_POST['disable_error'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_error'] ) ) : '' );
+        $stored['nostore'] = ( isset( $_POST['nostore'] ) ? sanitize_text_field( wp_unslash( $_POST['nostore'] ) ) : '' );
+        update_option( 'qpp_setup', $stored );
         $qpp_setup = qpp_get_stored_setup();
-        qpp_admin_notice( "The forms have been updated." );
-        if ( !empty( $_POST['qpp_clone'] ) && !empty( $_POST['new_form'] ) ) {
-            qpp_clone( $qpp_setup['current'], sanitize_text_field( $_POST['qpp_clone'] ) );
+        qpp_admin_notice( "The settings have been updated." );
+        /*
+         * Said at the moment it is typed, rather than found out later by a
+         * customer. The value is still saved, because losing what someone typed
+         * to correct them is worse than keeping it and telling them.
+         */
+        $problem = qpp_paypal_account_problem( $stored['email'] );
+        if ( '' !== $problem ) {
+            qpp_admin_notice( $problem, 'error' );
         }
+    }
+    /*
+     * Asks PayPal directly. Checking the shape of the address is not enough: the
+     * typo that prompted this was a perfectly valid email address that simply is
+     * not a PayPal account, and the only thing that knows the difference is
+     * PayPal. Nothing is charged, and the merchant has to press the button.
+     */
+    if ( isset( $_POST['qpp_check_account'] ) && check_admin_referer( "save_qpp" ) ) {
+        // Whatever is in the box, not whatever was last saved. Someone correcting
+        // a typo will type the new address and press Check, and checking the old
+        // one would tell them their fix had not worked.
+        $to_check = ( isset( $_POST['email'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['email'] ) ) ) : $qpp_setup['email'] );
+        $checked = qpp_check_paypal_account( $to_check, !empty( $qpp_setup['sandbox'] ) );
+        qpp_admin_notice( $checked['message'], ( $checked['ok'] ? 'updated' : 'error' ) );
     }
     if ( isset( $_POST['Reset'] ) && check_admin_referer( "save_qpp" ) ) {
         qpp_delete_everything();
         qpp_admin_notice( "Everything has been reset." );
         $qpp_setup = qpp_get_stored_setup();
     }
-    $arr = explode( ",", $qpp_setup['alternative'] );
-    foreach ( $arr as $item ) {
-        if ( isset( $_POST['deleteform' . $item] ) && $_POST['deleteform' . $item] == $item && isset( $_POST['delete' . $item] ) && $item != '' ) {
-            $forms = $qpp_setup['alternative'];
-            qpp_delete_things( $_POST['deleteform' . $item] );
-            $qpp_setup['alternative'] = str_replace( $_POST['deleteform' . $item] . ',', '', $forms );
-            $qpp_setup['current'] = '';
-            $qpp_setup['email'] = $_POST['email'];
-            update_option( 'qpp_setup', $qpp_setup );
-            qpp_admin_notice( "<b>The form named " . $item . " has been deleted.</b>" );
-            $id = '';
-        }
-    }
-    $qpp_curr = qpp_get_stored_curr();
-    $qpp_email = qpp_get_stored_email();
-    ${$qpp_setup['location']} = 'checked';
-    if ( !$new_curr ) {
-        $new_curr = $qpp_curr[''];
-    }
     $content = '<div class="qpp-settings"><div class="qpp-options">
     <form method="post" action="">
     <h2>Account Email</h2>
     <p><span style="color:red; font-weight: bold; margin-right: 3px">Important!</span> Enter your PAYPAL email address</p>
-    <input type="text" label="Email" name="email" value="' . esc_attr( $qpp_setup['email'] ) . '" /></p>
-    <h2>Existing Forms</h2>
-    <table>
-    <tr>
-    <td><b>Form name&nbsp;&nbsp;</b></td>
-    <td><b>Currency</b></td>
-    <td><b>Shortcode</b></td>
-    </tr>';
-    $arr = explode( ",", $qpp_setup['alternative'] );
-    sort( $arr );
-    foreach ( $arr as $item ) {
-        if ( $qpp_setup['current'] == $item ) {
-            $checked = 'checked';
-        } else {
-            $checked = '';
-        }
-        if ( !$qpp_email[$item] ) {
-            $qpp_email[$item] = $qpp_setup['email'];
-        }
-        if ( $item == '' ) {
-            $formname = 'default';
-        } else {
-            $formname = $item;
-        }
-        $content .= '<tr>
-        <td><input  type="radio" name="current" value="' . esc_attr( $item ) . '" ' . checked( $checked, 'checked', false ) . ' /> ' . $formname . '</td>
-        <td><input type="text" style="width:3em;padding:1px;" name="qpp_curr' . esc_attr( $item ) . '" value="' . esc_attr( $qpp_curr[$item] ) . '" /></td>';
-        if ( $item ) {
-            $shortcode = ' form="' . $item . '"';
-        } else {
-            $shortcode = '';
-        }
-        $content .= '<td><code>[qpp' . $shortcode . ']</code></td><td>';
-        if ( $item ) {
-            $content .= '<input type="hidden" name="deleteform' . $item . '" value="' . esc_attr( $item ) . '">
-			<input type="submit" name="delete' . esc_attr( $item ) . '" class="button-secondary" value="delete" onclick="return window.confirm( \'Are you sure you want to delete ' . $item . '?\' );" />';
-        }
-        $content .= '</td></tr>';
-    }
-    $content .= '</table>
-    <h2>Create New Form</h2>
-    <p>Enter form name (letters only - no numbers, spaces or punctuation marks)</p>
-    <p><input type="text" label="new_Form" name="new_form" value="" /></p>
-    <p>Enter currency code: <input type="text" style="width:3em" label="new_curr" name="new_curr" value="' . esc_attr( $new_curr ) . '" />&nbsp;(For example: GBP, USD, EUR)</p>
-    <p>Allowed Paypal Currency codes are given <a href="https://developer.paypal.com/api/rest/reference/currency-codes/" target="blank">here</a>.</p>
-    <p><span style="color:red; font-weight: bold; margin-right: 3px">Important!</span> If your currency is not listed the plugin will work but paypal will not accept the payment.</p>
-    <input type="hidden" name="alternative" value="' . esc_attr( $qpp_setup['alternative'] ) . '" />
-    <p>Copy settings from an exisiting form.</p>
-    <select name="qpp_clone"><option>Do not copy settings</option>';
-    foreach ( $arr as $item ) {
-        if ( $item == '' ) {
-            $item = 'default';
-        }
-        $content .= '<option value="' . esc_attr( $item ) . '">' . $item . '</option>';
-    }
-    $content .= '</select>
-    <h2>Styles Location</h2>
-    <p><input type="radio" name="location" value="php"' . esc_attr( $php ) . ' /> Extenal Stylesheet<br />
-    <input type="radio" name="location" value="head"' . esc_attr( $head ) . ' /> Document Head</p>
-    
-    <h2>Checkout Logo</h2>
-    <p>The URL of the 150x50-pixel image displayed as your logo in the upper left corner of the PayPal checkout pages.</p>';
-    if ( $quick_paypal_payments_fs->is_trial() || $quick_paypal_payments_fs->is_trial_utilized() ) {
-        $upurl = $quick_paypal_payments_fs->get_upgrade_url();
-    } else {
-        $upurl = $quick_paypal_payments_fs->get_trial_url();
-    }
-    $content .= '<p><a href="' . $upurl . '">Pro-version only</a></p>';
-    $content .= '<h2>Global Settings</h2>
-    <p><input type="checkbox" name="sandbox" ' . checked( $qpp_setup['sandbox'], 'checked', false ) . ' value="checked" /> Use Paypal sandbox (developer use only)</p>
-    <p><input type="checkbox" name="disable_error" ' . checked( $qpp_setup['disable_error'], 'checked', false ) . ' value="checked" /> Disable IPN Error logging</p>
-    <p><input type="checkbox" name="nostore"' . checked( $qpp_setup['nostore'], 'checked', false ) . ' value="checked"> Do not store messages in the database (this will disable all notifications).</p>
-    <p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="Update Settings" /> <input type="submit" name="Reset" class="button-secondary" value="Reset Everything" onclick="return window.confirm( \'This will delete all your forms and settings.\\nAre you sure you want to reset everything?\' );"/></p>';
+    <input type="text" id="qpp_account_email" class="qpp-account-email" label="Email" name="email" value="' . esc_attr( $qpp_setup['email'] ) . '" /></p>
+    <p id="qpp_account_status" class="qpp-account-status"></p>
+    <p><input type="submit" name="qpp_check_account" class="button-secondary" value="' . esc_attr__( 'Check this account with PayPal', 'quick-paypal-payments' ) . '" />
+    <br /><span class="description">' . esc_html__( 'Checked with PayPal when you change it, and whenever you press the button. Nothing is charged. A typed address can look perfectly valid and still not be a PayPal account, which is the usual reason a customer sees "something went wrong".', 'quick-paypal-payments' ) . '</span></p>
+    ';
+    $content .= '<h2>Global Settings</h2>';
+    $content .= '<p>' . qpp_upgrade_prompt( 'silver', 'Sandbox mode and IPN error logging control' ) . '</p>';
+    $content .= '<p><input type="checkbox" name="nostore"' . checked( $qpp_setup['nostore'], 'checked', false ) . ' value="checked"> Do not store messages in the database (this will disable all notifications).</p>';
+    /*
+     * The checkout logo is a cosmetic touch on pages PayPal hosts, and almost
+     * nobody sets it. It used to have its own heading directly under the account
+     * email, which gave the most obscure field on the screen the same weight as
+     * the one the plugin cannot work without.
+     */
+    $content .= '<p><label for="qpp_image_url">Checkout logo</label><br />';
+    $content .= qpp_upgrade_prompt( 'platinum', 'A logo on the PayPal checkout pages' );
+    $content .= '</p>';
+    $content .= '<p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="Update Settings" /> <input type="submit" name="Reset" class="button-secondary" value="Reset Everything" onclick="return window.confirm( \'This will delete all your forms and settings.\\nAre you sure you want to reset everything?\' );"/></p>';
     $content .= wp_nonce_field( "save_qpp" );
     $content .= '</form>';
     $content .= '</div>
     <div class="qpp-options" style="float:right">';
-    if ( $quick_paypal_payments_fs->is_trial() || $quick_paypal_payments_fs->is_trial_utilized() ) {
-        $upurl = $quick_paypal_payments_fs->get_upgrade_url();
-        $upmsg = '<p>See plans and prices here</p>';
-    } else {
-        $upurl = $quick_paypal_payments_fs->get_trial_url();
-        $upmsg = '<p>Free 14 Day Trial</p>';
-    }
-    $content .= '<div class="qppupgrade"><a href="' . $upurl . '">
-        <h3>Upgrade to Pro Platinum</h3>
-        <p>Upgrading gives Mailchimp data collection, Multiple products and Personalised Support.</p>
-        <p>Click to find out more</p>' . $upmsg . '
-        </a></div>';
+    $content .= qpp_upgrade_box();
     $content .= '<h2>Adding the payment form to your site</h2>
     <p>To add the basic payment form to your posts or pages use the shortcode: <code>[qpp]</code>. Shortcodes for named forms are given on the left.</p>
     <p>There is also a widget called "Quick Paypal Payments" you can drag and drop into a sidebar.</p>
@@ -262,16 +706,16 @@ function qpp_setup(  $id  ) {
     <h2>Options and Settings</h2>
     <p><span style="font-weight:bold"><a href="?page=quick-paypal-payments&tab=settings">Form Settings.</a></span> Change the layout of the form, add or remove fields and the order they appear and edit the labels and captions.</p>
     <p><span style="font-weight:bold"><a href="?page=quick-paypal-payments&tab=styles">Styling.</a></span> Change fonts, colours, borders, images and submit button.</p>
-    <p><span style="font-weight:bold"><a href="?page=quick-paypal-payments&tab=reply">Send Options.</a></span> Change how the form is sent.</p>
+    <p><span style="font-weight:bold"><a href="?page=quick-paypal-payments&tab=send">Send Options.</a></span> Change how the form is sent.</p>
     <p><span style="font-weight:bold"><a href="?page=quick-paypal-payments&tab=error">Validation Messages.</a></span> Change the error message.</p>
     <p><span style="font-weight:bold"><a href="?page=quick-paypal-payments&tab=autoresponce">Auto Responder.</a></span> Set up a thank you message.</p>
     <p><span style="font-weight:bold"><a href="?page=quick-paypal-payments&tab=ipn">Instant Payment Notification.</a></span> Keep track of completed payments.</p>
     <p><span style="font-weight:bold"><a href="' . esc_url( admin_url( '?page=quick-paypal-payments-messages' ) ) . '">Payment Records.</a></span> See all the payment records. Or click on the <b>Payments</b> link in the dashboard menu.</p>
     <h2>Support</h2>
-    <p>First please check the knowldege base to see if a resolution to your issue is already documented</p>
-    <a href="https://fullworks.net/docs/quick-paypal-payments/" class="button" target=""_blank">Knowldege Base</a>';
+    <p>First please check the knowledge base to see if a resolution to your issue is already documented</p>
+    <a href="https://fullworks.net/docs/quick-paypal-payments/" class="button" target="_blank" rel="noopener">Knowledge Base</a>';
     $content .= '<p>If you can not find an answer, for the free version please raise your support questions on the WordPress community forum </p>
-<a href="https://wordpress.org/support/plugin/quick-paypal-payments/" class="button" target=""_blank">WordPress Support Forum</a>
+<a href="https://wordpress.org/support/plugin/quick-paypal-payments/" class="button" target="_blank" rel="noopener">WordPress Support Forum</a>
 <p>If you require urgent or personal support please <a href="' . esc_url( $quick_paypal_payments_fs->get_upgrade_url() ) . '" >upgrade to a paid plan</a></p>';
     $content .= '</div>
     </div>';
@@ -413,16 +857,42 @@ function qpp_form_options(  $id  ) {
                 'title'  => array(),
             ),
         );
-        $qpp = array();
+        /*
+         * Seeded from what is stored, for two reasons. Settings this plan cannot
+         * edit render no input, so they are absent from the post and would be
+         * erased rather than coming back on upgrade. And this save rebuilds the
+         * option from the list above, so anything the list does not name would be
+         * dropped whether the plan could edit it or not.
+         */
+        $qpp = get_option( 'qpp_options' . $id );
+        if ( !is_array( $qpp ) ) {
+            $qpp = array();
+        }
+        $stored = $qpp;
+        $preserved = qpp_plan_preserved_values( 'qpp_options', $id, qpp_plan_gated_options() );
+        /*
+         * A recurring form does not render the coupon checkbox at all, so it is
+         * absent from the post for the same reason a gated setting is. Carry the
+         * stored value forward rather than reading it as off.
+         */
+        if ( qpp_get_element( $stored, 'userecurring', false ) ) {
+            $preserved['usecoupon'] = qpp_get_element( $stored, 'usecoupon', '' );
+        }
         foreach ( $options as $item ) {
-            if ( isset( $_POST[$item] ) ) {
-                $qpp[$item] = wp_kses_post( stripslashes( $_POST[$item] ) );
+            if ( array_key_exists( $item, $preserved ) ) {
+                $qpp[$item] = $preserved[$item];
+                continue;
             }
+            /*
+             * Absent means off. Reading only the keys that were posted meant an
+             * unticked checkbox kept its old value, so nothing on this screen
+             * could be switched off once it had been switched on.
+             */
+            $qpp[$item] = ( isset( $_POST[$item] ) ? wp_kses_post( stripslashes( $_POST[$item] ) ) : '' );
         }
         if ( qpp_get_element( $qpp, 'userecurring', false ) ) {
             $qpp['use_quantity'] = '';
             $qpp['usepostage'] = '';
-            $qpp[''] = '';
             $qpp['useprocess'] = '';
             $qpp['use_stock'] = '';
         }
@@ -436,6 +906,7 @@ function qpp_form_options(  $id  ) {
     $qpp_setup = qpp_get_stored_setup();
     $id = $qpp_setup['current'];
     $currency = qpp_get_stored_curr();
+    $currency = qpp_ensure_currency( $currency, $id );
     $refnone = $refradio = $refdropdown = $ignore = $radio = $dropdown = $optionsradio = $optionsdropdown = false;
     $optionscheckbox = $processfixed = $postagefixed = $postagepercent = $comma = $M = $D = $W = $Y = $imagebelow = $imageabove = false;
     $qpp = qpp_get_stored_options( $id );
@@ -480,11 +951,7 @@ function qpp_form_options(  $id  ) {
                 $type = 'Reference';
                 $input = 'inputreference';
                 $checked = 'checked';
-                $options = '<input type="checkbox" name="fixedreference" ' . checked( $qpp['fixedreference'], 'checked', false ) . ' value="checked" /> Display as a pre-set reference<br><span class="description">Use commas to separate options: Red,Green, Blue<br>Use semi-colons to combine with amount: Red;$5,Green;$10,Blue;£20</span><br>
-            Options Selector: <input type="radio" name="refselector" value="refradio" ' . esc_attr( $refradio ) . ' /> Radio&nbsp;
-            <input type="radio" name="refselector" value="refdropdown" ' . checked( $qpp['refselector'], 'refdropdown', false ) . ' /> Dropdown&nbsp;
-            <input type="radio" name="refselector" value="refnone" ' . checked( $qpp['refselector'], 'refnone', false ) . ' /> Inline&nbsp;
-            <input type="radio" name="refselector" value="ignore" ' . checked( $qpp['refselector'], 'ignore', false ) . ' /> None</br>';
+                $options = qpp_upgrade_prompt( 'gold', 'Pre-set reference options' );
                 break;
             case 'field2':
                 $check = '<input type="checkbox" name="use_stock" ' . checked( $qpp['use_stock'], 'checked', false ) . ' value="checked" />';
@@ -499,7 +966,7 @@ function qpp_form_options(  $id  ) {
                 $type = 'Quantity';
                 $input = 'quantitylabel';
                 $checked = $qpp['use_quantity'];
-                $options = '<input type="checkbox" name="quantitymax" ' . checked( $qpp['quantitymax'], 'checked', false ) . ' value="checked" /> Display and validate a maximum quantity<br><span class="description">Message that will display on the form:</span><br>
+                $options = '<input type="checkbox" name="quantitymax" ' . checked( $qpp['quantitymax'], 'checked', false ) . ' value="checked" /> Display and validate a maximum quantity<br><span class="description">Message that will display on the form. The limit is the number in it, so the message must contain one:</span><br>
             <input type="text" name="quantitymaxblurb" value="' . esc_attr( $qpp['quantitymaxblurb'] ) . '" />';
                 break;
             case 'field4':
@@ -507,23 +974,16 @@ function qpp_form_options(  $id  ) {
                 $type = 'Amount';
                 $input = 'inputamount';
                 $checked = 'checked';
-                $options = '
-                <input type="number" style="border:1px solid #415063; width:10em;" step="any" name="minamount" . value ="' . esc_attr( $qpp['minamount'] ) . '" />&nbsp;Minimum value<br>
-                <input type="checkbox" name="allow_amount" ' . checked( $qpp['allow_amount'], 'checked', false ) . ' value="checked" /> Do not validate (use default amount value)<br>
-            <input type="checkbox" class="qpp_fixed_amount" name="fixedamount" ' . checked( $qpp['fixedamount'], 'checked', false ) . ' value="checked" /> Display as a pre-set amount e.g. £10 or
-            use commas to create an options list: £10,£20,£30<br><br>
-             
-            <fieldset class="qpp_option_list_settings" style="border:1px solid black; padding: 3px;">
-            <legend>Option List Settings</legend>
-            Options Selector: <input type="radio" name="selector" value="radio" ' . checked( $qpp['selector'], 'radio', false ) . ' /> Radio&nbsp;
-            <input type="radio" name="selector" value="dropdown" ' . checked( $qpp['selector'], 'dropdown', false ) . ' /> Dropdown<br>
-            <input type="checkbox" name="inline_amount" ' . checked( $qpp['inline_amount'], 'checked', false ) . ' value="checked" />&nbsp;Display inline radio fields<br>
-            <input type="checkbox" name="combobox" ' . checked( $qpp['combobox'], 'checked', false ) . ' value="checked" /> Add input field to dropdown<br>
-            Caption:&nbsp;<input type="text" style="width:7em;" name="comboboxword" value="' . esc_attr( $qpp['comboboxword'] ) . '" />
-            <br>
-            Instruction:&nbsp;<input type="text" style="width:10em;" name="comboboxlabel" value="' . esc_attr( $qpp['comboboxlabel'] ) . '" />
-            </fieldset>
-            ';
+                /*
+                 * Setting one price is free. A form that cannot set a price is a
+                 * donation box rather than a payment form, and nobody evaluating
+                 * the free version concludes they should upgrade, they conclude
+                 * it does not work. What stays paid is the powerful part: a list
+                 * of prices, how it is rendered, and amount validation.
+                 */
+                $options = '<input type="checkbox" class="qpp_fixed_amount" name="fixedamount" ' . checked( $qpp['fixedamount'], 'checked', false ) . ' value="checked" /> Charge one set price<br>
+            <span class="description">Set the price in <strong>Fixed payment and shortcode labels</strong> further down this screen.</span><br><br>';
+                $options .= qpp_upgrade_prompt( 'gold', 'Offering a choice of prices, and amount validation' );
                 break;
             case 'field5':
                 $check = ( $qpp['userecurring'] ? '&nbsp;' : '<input type="checkbox"   name="use_options" ' . checked( $qpp['use_options'], 'checked', false ) . ' value="checked" />' );
@@ -537,13 +997,10 @@ function qpp_form_options(  $id  ) {
             <input type="checkbox" name="inline_options" ' . checked( $qpp['inline_options'], 'checked', false ) . ' value="checked" />&nbsp;Display inline radio and checkbox fields';
                 break;
             case 'field6':
-                $check = ( $qpp['userecurring'] ? '&nbsp;' : '<input type="checkbox" name="usepostage" ' . checked( $qpp['usepostage'], 'checked', false ) . ' value="checked" />' );
                 $type = 'Handling';
-                $input = 'postageblurb';
-                $checked = $qpp['usepostage'];
-                $options = '<span class="description">Post and Packing charge type:</span><br>
-            ' . esc_html__( 'Percentage of the total', 'quick-paypal-payments' ) . ': <input type="text" style="width:4em;padding:2px" label="postagepercent" name="postagepercent" value="' . esc_attr( $qpp['postagepercent'] ) . '" /> %<br>
-            ' . esc_html__( 'Fixed amount', 'quick-paypal-payments' ) . ': <input type="text" style="width:4em;padding:2px" label="postagefixed" name="postagefixed" value="' . esc_attr( $qpp['postagefixed'] ) . '" /> ' . esc_html( $currency[$id] );
+                $check = '&nbsp;';
+                $input = '';
+                $options = qpp_upgrade_prompt( 'silver', 'Postage and handling' );
                 break;
             case 'field8':
                 $check = '<input  type="checkbox"   name="captcha"' . checked( $qpp['captcha'], 'checked', false ) . ' value="checked" />';
@@ -553,15 +1010,10 @@ function qpp_form_options(  $id  ) {
                 $options = '<span class="description">Add a maths checker to the form to (hopefully) block most of the spambots.</span>';
                 break;
             case 'field9':
-                $check = ( $qpp['userecurring'] ? '&nbsp;' : '<input  type="checkbox" name="usecoupon"' . checked( $qpp['usecoupon'], 'checked', false ) . ' value="checked" />' );
                 $type = 'Coupon Code';
-                $input = 'couponblurb';
-                $checked = $qpp['usecoupon'];
-                $options = '<span class="description">Button label:</span><br>
-            <input type="text" name="couponbutton" value="' . esc_attr( $qpp['couponbutton'] ) . '" /><br>
-            <span class="description">Coupon applied message:</span><br>
-            <input type="text" name="couponref" value="' . esc_attr( $qpp['couponref'] ) . '" /><br>
-            <a href="?page=quick-paypal-payments&tab=coupon">Set coupon codes</a>';
+                $check = '&nbsp;';
+                $input = '';
+                $options = qpp_upgrade_prompt( 'gold', 'Coupon codes' );
                 break;
             case 'field10':
                 $check = '<input  type="checkbox" name="useterms"' . checked( $qpp['useterms'], 'checked', false ) . ' value="checked" />';
@@ -580,8 +1032,12 @@ function qpp_form_options(  $id  ) {
                 $options = '<span class="description">Add additional information to your form</span>';
                 break;
             case 'field12':
-                $check = '<input  type="checkbox" name="userecurring"' . checked( $qpp['userecurring'], 'checked', false ) . ' value="checked" />';
                 $type = 'Recurring Payments';
+                $check = '&nbsp;';
+                $input = '';
+                $options = qpp_upgrade_prompt( 'gold', 'Recurring payments' );
+                break;
+                $check = '<input  type="checkbox" name="userecurring"' . checked( $qpp['userecurring'], 'checked', false ) . ' value="checked" />';
                 $input = 'recurringblurb';
                 $checked = $qpp['userecurring'];
                 $options = '<p>Number of payments: <input type="text" style="width:2em;padding:2px" name="recurringhowmany" value="' . esc_attr( $qpp['recurringhowmany'] ) . '" /> (max 52 , min 2)<br>
@@ -612,15 +1068,10 @@ function qpp_form_options(  $id  ) {
                 $options = '<span class="description">Show live totals on your form. Warning: Only works if you have one form of a type on the page</span>';
                 break;
             case 'field15':
-                $check = '<input  type="checkbox" name="use_slider"' . checked( $qpp['use_slider'], 'checked', false ) . ' value="checked" />';
                 $type = 'Range slider';
-                $input = 'sliderlabel';
-                $checked = $qpp['use_slider'];
-                $options = 'The range slider replaces the amount field.<br>
-            <input type="text" style="border:1px solid #415063; width:3em;" name="min" . value ="' . esc_attr( $qpp['min'] ) . '" />&nbsp;Minimum value<br>
-            <input type="text" style="border:1px solid #415063; width:3em;" name="max" . value ="' . esc_attr( $qpp['max'] ) . '" />&nbsp;Maximum value<br>
-            <input type="text" style="border:1px solid #415063; width:3em;" name="initial" . value ="' . esc_attr( $qpp['initial'] ) . '" />&nbsp;Initial value<br>
-            <input type="text" style="border:1px solid #415063; width:3em;" name="step" . value ="' . esc_attr( $qpp['step'] ) . '" />&nbspStep';
+                $check = '&nbsp;';
+                $input = '';
+                $options = qpp_upgrade_prompt( 'gold', 'The range slider' );
                 break;
             case 'field16':
                 $check = '<input  type="checkbox" name="useemail"' . checked( $qpp['useemail'], 'checked', false ) . ' value="checked" />';
@@ -638,14 +1089,16 @@ function qpp_form_options(  $id  ) {
                 $options = '<input  type="checkbox" name="ruse_message"' . checked( $qpp['ruse_message'], 'checked', false ) . ' value="checked" /> Required Field';
                 break;
             case 'field18':
+                $check = '&nbsp;';
                 $type = 'Add datepicker';
                 $input = '';
-                $options = 'The datepicker option is only available in the Pro Version';
+                $options = qpp_upgrade_prompt( 'platinum', 'The datepicker' );
                 break;
             case 'field19':
+                $check = '&nbsp;';
                 $type = 'Multiple Products';
                 $input = '';
-                $options = 'The multiple products option is only available in the Pro Version';
+                $options = qpp_upgrade_prompt( 'platinum', 'Multiple products' );
                 break;
             case 'field21':
                 $check = '<input  type="checkbox" name="use_cf"' . checked( $qpp['use_cf'], 'checked', false ) . ' value="checked" />';
@@ -699,7 +1152,7 @@ function qpp_form_options(  $id  ) {
     <input type="radio" label="paypal-location" name="paypal-location" value="imagebelow"' . esc_attr( $imagebelow ) . ' /></p>
     <p>
     <input id="qpp_upload_image" type="text" name="paypal-url" value="' . esc_attr( $qpp['paypal-url'] ) . '" />
-    <input id="qpp_upload_media_button" class="button" type="button" value="Upload Image" />
+    <input class="button qpp-media-pick" type="button" data-target="#qpp_upload_image" data-title="Image above or below the form" value="Choose image" />
     </p>
     <p><input type="submit" name="qpp_submit" class="button-primary" style="color: #FFF;" value="Save Changes" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="Reset" onclick="return window.confirm( \'Are you sure you want to reset the form settings?\' );"/></p>
     <input type="hidden" id="qpp_settings_sort" name="sort" value="' . esc_attr( $qpp['sort'] ) . '" />';
@@ -725,6 +1178,8 @@ function qpp_form_options(  $id  ) {
 }
 
 function qpp_styles(  $id  ) {
+    /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
+    global $quick_paypal_payments_fs;
     qpp_change_form_update();
     if ( isset( $_POST['Submit'] ) && check_admin_referer( "save_qpp" ) ) {
         $options = array(
@@ -829,7 +1284,7 @@ function qpp_styles(  $id  ) {
     $qpp = qpp_get_stored_options( $id );
     $content .= '
     <form method="post" action=""> 
-    <p<span<b>Note:</b> Leave fields blank if you don\'t want to use them</span></p>
+    <p class="description"><strong>Note:</strong> Leave fields blank if you don\'t want to use them</p>
     <table>
     <tr>
     <td colspan="2"><h2>Form Width</h2></td>
@@ -841,16 +1296,15 @@ function qpp_styles(  $id  ) {
     <input type="text" style="width:4em" label="width" name="width" value="' . esc_attr( $style['width'] ) . '" /> use px, em or %. Default is px.</td>
     </tr>
     <tr>
-    <td colspan="2"><h2>Form Border</h2>
-    <p>Note: The rounded corners and shadows only work on CSS3 supported browsers and even then not in IE8. Don\'t blame me, blame Microsoft.</p></td
+    <td colspan="2"><h2>Form Border</h2></td>
     </tr>
     <tr>
     <td>Type:</td>
     <td><input type="radio" name="border" value="none"' . esc_attr( $none ) . ' /> No border<br />
     <input type="radio" name="border" value="plain"' . esc_attr( $plain ) . ' /> Plain Border<br />
-    <input type="radio" name="border" value="rounded"' . esc_attr( $rounded ) . ' /> Round Corners (Not IE8)<br />
-    <input type="radio" name="border" value="shadow"' . esc_attr( $shadow ) . ' /> Shadowed Border(Not IE8)<br />
-    <input type="radio" name="border" value="roundshadow"' . esc_attr( $roundshadow ) . ' /> Rounded Shadowed Border (Not IE8)</td>
+    <input type="radio" name="border" value="rounded"' . esc_attr( $rounded ) . ' /> Round Corners<br />
+    <input type="radio" name="border" value="shadow"' . esc_attr( $shadow ) . ' /> Shadowed Border<br />
+    <input type="radio" name="border" value="roundshadow"' . esc_attr( $roundshadow ) . ' /> Rounded Shadowed Border</td>
     </tr>
     <tr>
     <td>Style:</td>
@@ -869,7 +1323,7 @@ function qpp_styles(  $id  ) {
     <tr><td>Background<br>Image:</td>
     <td>
     <input id="qpp_background_image" type="text" name="backgroundimage" value="' . esc_attr( $style['backgroundimage'] ) . '" />
-    <input id="qpp_upload_background_image" class="button" type="button" value="Upload Image" /></td>
+    <input class="button qpp-media-pick" type="button" data-target="#qpp_background_image" data-title="Background image" value="Choose image" /></td>
     </tr>
     <tr><td colspan="2"><h2>Font Styles</h2></td>
     </tr>
@@ -916,7 +1370,7 @@ function qpp_styles(  $id  ) {
     </tr>
     <tr>
     <td>Font Colour: </td>
-    <td><input type="text" class="qpp-color" label="font-colour" name="font-colour" value="' . esc_attr( $style['font-colour'] ) . '" /></td
+    <td><input type="text" class="qpp-color" label="font-colour" name="font-colour" value="' . esc_attr( $style['font-colour'] ) . '" /></td>
     </tr>
     <tr>
     <td>Normal Border: </td>
@@ -998,9 +1452,47 @@ function qpp_styles(  $id  ) {
     <input type="radio" name="submitposition" value="submitright"' . esc_attr( $submitright ) . ' /> Right</td>
     </tr>
     <tr>
-    <td>Button Image: </td><td>
-    <input id="qpp_submit_button" type="text" name="submit-button" value="' . esc_attr( $style['submit-button'] ) . '" />
-    <input id="qpp_upload_submit_button" class="button-secondary" type="button" value="Upload Image" /></td></tr>';
+    <td style="vertical-align:top;">Button Image: </td><td>';
+    /*
+     * The buttons that ship with the plugin. They were sitting in the images
+     * folder with no way to reach them, so the only route to a button image was
+     * to find one elsewhere and upload it.
+     *
+     * The Stripe ones are always shown, because a merchant cannot decide they
+     * want card payments if nothing tells them card payments exist. They are
+     * only selectable once Stripe is actually switched on: a button reading
+     * "Pay by Card" on a form that sends the customer to PayPal is a lie about
+     * where their money is going.
+     */
+    $current = qpp_resolve_button_url( $style['submit-button'] );
+    $stripe = qpp_get_stored_stripe();
+    // enable is blanked at the read path below Platinum, so this is false on
+    // every plan without Stripe as well as when it is simply switched off.
+    $stripe_live = 'checked' === $stripe['enable'] && '' !== $stripe['secret_key'];
+    $choice = function ( $url, $label, $enabled ) use($current) {
+        $classes = 'qpp-button-choice' . (( $current === $url ? ' is-selected' : '' )) . (( $enabled ? '' : ' is-disabled' ));
+        return '<button type="button" class="' . esc_attr( $classes ) . '"' . (( $enabled ? ' data-target="#qpp_submit_button" data-value="' . esc_url( $url ) . '"' : ' disabled="disabled"' )) . '><img src="' . esc_url( $url ) . '" alt="' . esc_attr( $label ) . '" /></button>';
+    };
+    $content .= '<p class="qpp-button-choices">';
+    $content .= '<button type="button" class="qpp-button-choice' . (( '' === $style['submit-button'] ? ' is-selected' : '' )) . '" data-target="#qpp_submit_button" data-value="">' . esc_html__( 'No image', 'quick-paypal-payments' ) . '</button>';
+    foreach ( qpp_bundled_buttons_for( 'paypal' ) as $file => $button ) {
+        $content .= $choice( qpp_bundled_button_url( $file ), $button['label'], true );
+    }
+    $content .= '</p>';
+    $content .= '<p class="qpp-button-choices">';
+    foreach ( qpp_bundled_buttons_for( 'stripe' ) as $file => $button ) {
+        $content .= $choice( qpp_bundled_button_url( $file ), $button['label'], $stripe_live );
+    }
+    $content .= '</p>';
+    if ( !$stripe_live ) {
+        $content .= '<p class="description qpp-button-locked">';
+        $content .= qpp_upgrade_prompt( 'platinum', 'Taking card payments through Stripe' );
+        $content .= '</p>';
+    }
+    $content .= '<p><input id="qpp_submit_button" class="qpp-media-url" type="text" name="submit-button" value="' . esc_attr( $style['submit-button'] ) . '" />
+    <input class="button-secondary qpp-media-pick" type="button" data-target="#qpp_submit_button" data-title="Submit button image" value="Choose image" /></p>
+    <p class="description">' . esc_html__( 'Leave blank for a text button styled with the settings above.', 'quick-paypal-payments' ) . '</p>
+    </td></tr>';
     if ( $qpp['use_slider'] ) {
         $content .= '<tr>
     <td colspan="2"><h2>Slider</h2></td>
@@ -1087,32 +1579,33 @@ function qpp_send_page(  $id  ) {
             'combine',
             'confirmmessage',
             'google_onclick',
-            'confirmemail',
-            'createuser'
+            'confirmemail'
         );
-        $send = array();
+        /*
+         * Seeded from what is stored, not empty. This save rebuilds the option
+         * from the list above, so any key the list does not name is dropped. That
+         * silently deleted createuser when it moved to the Integrations tab, and
+         * would do the same to the next setting that moves.
+         */
+        $send = get_option( 'qpp_send' . $id );
+        if ( !is_array( $send ) ) {
+            $send = array();
+        }
+        $preserved = qpp_plan_preserved_values( 'qpp_send', $id, qpp_plan_gated_send() );
         foreach ( $options as $item ) {
+            // A gated setting renders no input, so it is absent from the post for the
+            // same reason an unticked box is. Carry the stored value forward instead
+            // of reading it as off, which would erase it.
+            if ( array_key_exists( $item, $preserved ) ) {
+                $send[$item] = $preserved[$item];
+                continue;
+            }
             // An unticked checkbox is absent from the post, which means off.
             $send[$item] = ( isset( $_POST[$item] ) ? stripslashes( $_POST[$item] ) : '' );
             $send[$item] = sanitize_text_field( $send[$item] );
         }
         update_option( 'qpp_send' . $id, $send );
         qpp_admin_notice( "The submission settings have been updated." );
-    }
-    if ( isset( $_POST['Mailchimp'] ) && check_admin_referer( "save_qpp" ) ) {
-        $options = array(
-            'enable',
-            'mailchimpoptin',
-            'mailchimpkey',
-            'mailchimplistid'
-        );
-        $list = array();
-        foreach ( $options as $item ) {
-            // An unticked checkbox is absent from the post, which means off.
-            $list[$item] = ( isset( $_POST[$item] ) ? stripslashes( $_POST[$item] ) : '' );
-        }
-        update_option( 'qpp_mailinglist', $list );
-        qpp_admin_notice( "The mailinglist settings have been updated." );
     }
     if ( isset( $_POST['Reset'] ) && check_admin_referer( "save_qpp" ) ) {
         delete_option( 'qpp_send' . $id );
@@ -1185,7 +1678,7 @@ function qpp_send_page(  $id  ) {
     </select>
     
     <h2>Cancel and Thank you pages</h2>
-    <p>If you leave these blank paypal will return the user to the current page.</p>
+    <p>Where the buyer is sent after paying, or after changing their mind. Leave them blank and they come back to the page the form is on. This applies whichever gateway takes the payment.</p>
     <p>URL of cancellation page</p>
     <input type="text" style="width:100%" name="cancelurl" value="' . esc_attr( qpp_get_element( $send, 'cancelurl' ) ) . '" />
     <p>URL of thank you page</p>
@@ -1193,12 +1686,12 @@ function qpp_send_page(  $id  ) {
     <h2>Confirmation Message</h2>
     <p><input  type="checkbox" name="confirmmessage"' . checked( qpp_get_element( $send, 'confirmmessage' ), 'checked', false ) . ' value="checked" /> Send yourself a copy of the payment details.</p>
     <p><input type="text" style="width:100%" name="confirmemail" value="' . esc_attr( qpp_get_element( $send, 'confirmemail' ) ) . '" /></p>
-    <p>You can send the payer a confirmation message using the <a href="?page=quick-paypal-payments&tab=autoresponce">Auto Responder</a> options.</p>
-    
-    <h2>Custom Paypal Settings</h2>
-    <p><input  type="checkbox" name="donate"' . checked( qpp_get_element( $send, 'donate' ), 'checked', false ) . ' value="checked" /> Form is for donations only</p>
-    <p><input  type="checkbox" name="combine"' . checked( qpp_get_element( $send, 'combine' ), 'checked', false ) . ' value="checked" /> Include Postage and Processing in the amount to pay.</p>
-    <p>If you have a custom PayPal page enter the URL here. Leave blank to use the standard PayPal payment page</p>
+    ';
+    $content .= '<p>' . qpp_upgrade_prompt( 'silver', 'Sending the payer a confirmation email' ) . '</p>';
+    $content .= '<h2>Custom Paypal Settings</h2>';
+    $content .= '<p>' . qpp_upgrade_prompt( 'gold', 'Donations only mode' ) . '</p>';
+    $content .= '<p>' . qpp_upgrade_prompt( 'silver', 'Including postage in the amount to pay' ) . '</p>';
+    $content .= '<p>If you have a custom PayPal page enter the URL here. Leave blank to use the standard PayPal payment page</p>
     <p><input type="text" style="width:100%" name="customurl" value="' . esc_attr( qpp_get_element( $send, 'customurl' ) ) . '" /></p>
     <p>Alternate PayPal email address:</p>
     <p><input type="text" style="width:100%" name="email" value="' . esc_attr( qpp_get_element( $send, 'email' ) ) . '" /></p>
@@ -1208,19 +1701,10 @@ function qpp_send_page(  $id  ) {
     <h2>Google onClick Event</h2>
     <p><input type="text" style="width:100%" name="google_onclick" value="' . esc_attr( qpp_get_element( $send, 'google_onclick' ) ) . '" /></p>
     
-    <h2>Create New User</h2>
-    <p><input  type="checkbox" name="createuser"' . checked( qpp_get_element( $send, 'createuser' ), 'checked', false ) . ' value="checked" /> Creates a new WordPress user when the form is submitted.</p>
-    <p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="Save Changes" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="Reset" onclick="return window.confirm( \'Are you sure you want to reset the form settings?\' );"/></p>';
+    ';
+    $content .= '<p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="Save Changes" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="Reset" onclick="return window.confirm( \'Are you sure you want to reset the form settings?\' );"/></p>';
     $content .= wp_nonce_field( "save_qpp" );
     $content .= '</form>';
-    $content .= '<h2>Mailchimp</h2>';
-    global $quick_paypal_payments_fs;
-    if ( $quick_paypal_payments_fs->is_trial() || $quick_paypal_payments_fs->is_trial_utilized() ) {
-        $upurl = $quick_paypal_payments_fs->get_upgrade_url();
-    } else {
-        $upurl = $quick_paypal_payments_fs->get_trial_url();
-    }
-    $content .= '<p>Upgrade to Pro Platinum to use the Mailchimp data collection option. <a href="' . $upurl . '">Upgrade</a></p>';
     $content .= '</div>
     <div class="qpp-options" style="float:right;">
     
@@ -1264,13 +1748,13 @@ function qpp_error_page(  $id  ) {
     $content = qpp_head_css();
     $content .= '<div class="qpp-settings"><div class="qpp-options">';
     if ( $id ) {
-        $content .= '<h2>Eror message settings for ' . $id . '</h2>';
+        $content .= '<h2>Error message settings for ' . $id . '</h2>';
     } else {
         $content .= '<h2>Default form error message</h2>';
     }
     $content .= qpp_change_form( $qpp_setup );
     $content .= '<form method="post" action="">
-    <p<span<b>Note:</b> Leave fields blank if you don\'t want to use them</span></p>
+    <p class="description">Shown above the form when a payment cannot be submitted. Leave a field blank to use the wording the plugin ships with.</p>
     <table>
     <tr>
     <td>Error header</td>
@@ -1303,7 +1787,173 @@ function qpp_error_page(  $id  ) {
     echo wp_kses( $content, qpp_allowed_html() );
 }
 
+/**
+ * The Integrations tab.
+ *
+ * Mailchimp used to sit at the bottom of Send Options, below an unrelated Save
+ * button, which is a poor home for something sold as part of Platinum. It also
+ * shared that page's Reset handler: the Mailchimp form's reset was name="Reset",
+ * and the send page deletes qpp_send on that name, so resetting Mailchimp wiped
+ * the submission settings while the confirmation said otherwise.
+ *
+ * Each integration is a card, shown on every plan so the feature is discoverable,
+ * with the settings or an upsell inside depending on the plan.
+ */
+function qpp_integrations_page(  $id  ) {
+    /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
+    global $quick_paypal_payments_fs;
+    $entitled = $quick_paypal_payments_fs->is_plan_or_trial__premium_only( 'platinum' );
+    if ( $entitled && isset( $_POST['qpp_mailchimp_save'] ) && check_admin_referer( "save_qpp" ) ) {
+        $list = array();
+        foreach ( array(
+            'enable',
+            'mailchimpoptin',
+            'mailchimpkey',
+            'mailchimplistid'
+        ) as $item ) {
+            // An unticked checkbox is absent from the post, which means off.
+            $list[$item] = ( isset( $_POST[$item] ) ? sanitize_text_field( wp_unslash( $_POST[$item] ) ) : '' );
+        }
+        update_option( 'qpp_mailinglist', $list );
+        qpp_admin_notice( 'The Mailchimp settings have been updated.' );
+    }
+    if ( $entitled && isset( $_POST['qpp_mailchimp_reset'] ) && check_admin_referer( "save_qpp" ) ) {
+        delete_option( 'qpp_mailinglist' );
+        qpp_admin_notice( 'The Mailchimp settings have been reset.' );
+    }
+    if ( $quick_paypal_payments_fs->is_plan_or_trial__premium_only( 'silver' ) && isset( $_POST['qpp_createuser_save'] ) && check_admin_referer( "save_qpp" ) ) {
+        // Read, change one key, write. This option holds the whole Send Options
+        // screen, so rebuilding it from this form's post would erase the rest.
+        $send = get_option( 'qpp_send' . $id );
+        if ( !is_array( $send ) ) {
+            $send = array();
+        }
+        $send['createuser'] = ( isset( $_POST['createuser'] ) ? 'checked' : '' );
+        // Run through the same guard the account creation uses, so a role that
+        // is not on the list cannot be posted straight into the option.
+        $send['createuserwhen'] = ( 'aftersubmission' === qpp_get_element( $_POST, 'createuserwhen' ) ? 'aftersubmission' : 'afterpayment' );
+        $send['createuserrole'] = qpp_creatable_role( ( isset( $_POST['createuserrole'] ) ? sanitize_key( wp_unslash( $_POST['createuserrole'] ) ) : '' ) );
+        update_option( 'qpp_send' . $id, $send );
+        qpp_admin_notice( 'The account creation setting has been updated.' );
+    }
+    $send = qpp_get_stored_send( $id );
+    $list = qpp_get_stored_mailinglist();
+    $connected = 'checked' === $list['enable'] && !empty( $list['mailchimpkey'] );
+    $content = '<div class="qpp-settings"><div class="qpp-options" style="width:auto;float:none;max-width:820px;">
+    <h2>' . esc_html__( 'Integrations', 'quick-paypal-payments' ) . '</h2>
+    <p>' . esc_html__( 'Send what your forms collect on to the other services you use.', 'quick-paypal-payments' ) . '</p>
+
+    <div style="border:1px solid #dcdcde;border-radius:8px;overflow:hidden;margin-bottom:1.5em;background:#fff;">
+      <div style="background:#ffe01b;padding:22px 24px;display:flex;align-items:center;gap:16px;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:#241c15;color:#ffe01b;font-size:26px;font-weight:700;">M</span>
+        <span>
+          <span style="display:block;font-size:1.5em;font-weight:700;color:#241c15;line-height:1.2;">Mailchimp</span>
+          <span style="display:block;color:#241c15;">' . esc_html__( 'Add every buyer to your mailing list as they pay.', 'quick-paypal-payments' ) . '</span>
+        </span>
+      </div>
+      <div style="padding:20px 24px;">';
+    if ( !$entitled ) {
+        $content .= '<p>' . qpp_upgrade_prompt( 'platinum', 'Mailchimp' ) . '</p>
+        <p class="description">' . esc_html__( 'Buyers who tick the opt-in box on your form are added to your audience automatically, with their first name, last name and email address.', 'quick-paypal-payments' ) . '</p>';
+    } else {
+        $status = ( $connected ? '<span style="color:#008a20;font-weight:600;">' . esc_html__( 'Connected', 'quick-paypal-payments' ) . '</span>' : '<span style="color:#8c8f94;">' . esc_html__( 'Not connected', 'quick-paypal-payments' ) . '</span>' );
+        $content .= '<p>' . esc_html__( 'Status', 'quick-paypal-payments' ) . ': ' . $status . '</p>
+        <p>' . esc_html__( 'Your form must collect an email address, and show the opt-in checkbox, for anyone to be added. The fields sent are EMAIL, FNAME and LNAME.', 'quick-paypal-payments' ) . '</p>
+        <p><a href="https://fullworksplugins.com/docs/quick-paypal-payments/pro-features-quick-paypal-payments/mailchhimp-setup/" target="_blank" rel="noopener">' . esc_html__( 'Help setting up Mailchimp', 'quick-paypal-payments' ) . '</a></p>
+        <form method="post" action="">
+        <p><input type="checkbox" name="enable"' . checked( $list['enable'], 'checked', false ) . ' value="checked" /> ' . esc_html__( 'Enable Mailchimp data collection.', 'quick-paypal-payments' ) . '</p>
+        <p>' . esc_html__( 'Opt-in message shown on the form', 'quick-paypal-payments' ) . '<br><input type="text" style="width:100%" name="mailchimpoptin" value="' . esc_attr( $list['mailchimpoptin'] ) . '" /></p>
+        <p>' . esc_html__( 'API key', 'quick-paypal-payments' ) . '<br><input type="password" autocomplete="new-password" style="width:100%" name="mailchimpkey" value="' . esc_attr( $list['mailchimpkey'] ) . '" /></p>
+        <p>' . esc_html__( 'Audience (list) ID', 'quick-paypal-payments' ) . '<br><input type="text" style="width:100%" name="mailchimplistid" value="' . esc_attr( $list['mailchimplistid'] ) . '" /></p>
+        <p><input type="submit" name="qpp_mailchimp_save" class="button-primary" value="' . esc_attr__( 'Save Changes', 'quick-paypal-payments' ) . '" />
+        <input type="submit" name="qpp_mailchimp_reset" class="button-secondary" value="' . esc_attr__( 'Reset', 'quick-paypal-payments' ) . '" onclick="return window.confirm( \'Are you sure you want to reset the Mailchimp settings?\' );" /></p>';
+        $content .= wp_nonce_field( "save_qpp" );
+        $content .= '</form>';
+    }
+    $content .= '</div>
+    </div>';
+    $form_label = ( '' === $id ? esc_html__( 'the default form', 'quick-paypal-payments' ) : $id );
+    $content .= '<div style="border:1px solid #dcdcde;border-radius:8px;overflow:hidden;margin-bottom:1.5em;background:#fff;">
+      <div style="background:#21759b;padding:22px 24px;display:flex;align-items:center;gap:16px;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:#fff;color:#21759b;font-size:26px;" class="dashicons dashicons-wordpress"></span>
+        <span>
+          <span style="display:block;font-size:1.5em;font-weight:700;color:#fff;line-height:1.2;">' . esc_html__( 'WordPress accounts', 'quick-paypal-payments' ) . '</span>
+          <span style="display:block;color:#fff;">' . esc_html__( 'Give the buyer a login on your site when they pay.', 'quick-paypal-payments' ) . '</span>
+        </span>
+      </div>
+      <div style="padding:20px 24px;">';
+    $content .= '<p>' . qpp_upgrade_prompt( 'silver', 'Creating a WordPress account when someone pays' ) . '</p>
+        <p class="description">' . esc_html__( 'You choose the role, and the buyer is emailed a link to set their own password.', 'quick-paypal-payments' ) . '</p>';
+    $content .= '</div>
+    </div>
+    </div></div>';
+    echo wp_kses( $content, qpp_allowed_html() );
+}
+
+/**
+ * The Stripe settings tab.
+ *
+ * Platinum. Guards the save as well as the render, so the keys cannot be posted
+ * in by a plan that does not include the gateway.
+ */
+function qpp_stripe_page() {
+    /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
+    global $quick_paypal_payments_fs;
+    qpp_upgrade_page( 'platinum', 'Stripe Checkout' );
+    return;
+    /*
+     * The Stripe code is required at plugin load behind can_use_premium_code(),
+     * while this page is gated on the platinum plan. Two conditions guarding the
+     * same code, so if they ever disagree this page would fatal on a call to an
+     * undefined function. Say so instead.
+     */
+    if ( !function_exists( 'qpp_stripe_webhook_url' ) ) {
+        echo wp_kses( '<div class="qpp-settings"><div class="qpp-options"><h2>Stripe Checkout</h2>' . '<p>The Stripe code is not loaded on this install. Reactivate your licence, then reload this page.</p>' . '</div></div>', qpp_allowed_html() );
+        return;
+    }
+    if ( isset( $_POST['Submit'] ) && check_admin_referer( "save_qpp" ) ) {
+        $stripe = qpp_get_stored_stripe();
+        foreach ( array('enable', 'secret_key', 'webhook_secret') as $item ) {
+            // An unticked checkbox is absent from the post, which means off.
+            $stripe[$item] = ( isset( $_POST[$item] ) ? sanitize_text_field( wp_unslash( $_POST[$item] ) ) : '' );
+        }
+        update_option( 'qpp_stripe', $stripe );
+        qpp_admin_notice( 'The Stripe settings have been updated.' );
+    }
+    $stripe = qpp_get_stored_stripe();
+    $content = '<div class="qpp-settings"><div class="qpp-options">
+    <h2>Stripe Checkout</h2>
+    <p>Take card payments through Stripe instead of PayPal. The customer pays on a page hosted by Stripe, so no card details ever reach your site.</p>
+    <form method="post" action="">
+    <p><input type="checkbox" name="enable"' . checked( $stripe['enable'], 'checked', false ) . ' value="checked" /> Use Stripe for this site\'s payment forms.</p>
+    <p>Secret key<br><input type="password" autocomplete="new-password" style="width:100%" name="secret_key" value="' . esc_attr( $stripe['secret_key'] ) . '" /></p>
+    <p class="description">From Stripe, Developers, API keys. Starts sk_live_ or sk_test_.</p>
+    <p>Webhook signing secret<br><input type="password" autocomplete="new-password" style="width:100%" name="webhook_secret" value="' . esc_attr( $stripe['webhook_secret'] ) . '" /></p>
+    <p class="description">Starts whsec_. Without it payments cannot be confirmed, because there is no way to tell a real notification from a forged one.</p>
+    <p><input type="submit" name="Submit" class="button-primary" value="Save Changes" /></p>';
+    $content .= wp_nonce_field( "save_qpp" );
+    $content .= '</form>
+    </div>
+    <div class="qpp-options" style="float:right">
+    <h2>Setting Stripe up</h2>
+    <ol>
+    <li>In Stripe go to Developers, then Webhooks, and add an endpoint.</li>
+    <li>Paste this URL as the endpoint:<br><code>' . esc_url( qpp_stripe_webhook_url() ) . '</code></li>
+    <li>Choose the event <code>checkout.session.completed</code>. Nothing else is needed.</li>
+    <li>Copy the signing secret Stripe shows you into the box on the left.</li>
+    <li>Copy your secret key from Developers, API keys.</li>
+    </ol>
+    <p>Use your test keys first. A test payment appears in your payment list exactly as a live one would.</p>
+    <p><strong>Recurring forms still go through PayPal.</strong> Stripe Checkout will not accept a subscription that stops after a set number of payments, so a recurring form falls back to PayPal rather than billing a customer open ended. One off payments on the same site still go through Stripe.</p>
+    </div></div>';
+    echo wp_kses( $content, qpp_allowed_html() );
+}
+
 function qpp_ipn_page() {
+    /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
+    global $quick_paypal_payments_fs;
+    qpp_upgrade_page( 'silver', 'Instant Payment Notification' );
+    return;
     if ( isset( $_POST['Submit'] ) && check_admin_referer( "save_qpp" ) ) {
         $options = array(
             'ipn',
@@ -1397,6 +2047,10 @@ function qpp_ipn_page() {
 }
 
 function qpp_autoresponce_page(  $id  ) {
+    /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
+    global $quick_paypal_payments_fs;
+    qpp_upgrade_page( 'silver', 'Auto Responder' );
+    return;
     qpp_change_form_update();
     $afterpayment = $aftersubmission = false;
     if ( isset( $_POST['Submit'] ) && check_admin_referer( "save_qpp" ) ) {
@@ -1688,6 +2342,10 @@ function qpp_address(  $id  ) {
 }
 
 function qpp_coupon_codes(  $id  ) {
+    /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
+    global $quick_paypal_payments_fs;
+    qpp_upgrade_page( 'gold', 'Coupon Codes' );
+    return;
     qpp_change_form_update();
     if ( isset( $_POST['Submit'] ) && check_admin_referer( "save_qpp" ) ) {
         $arr = array(
@@ -1754,6 +2412,7 @@ function qpp_coupon_codes(  $id  ) {
     $qpp_setup = qpp_get_stored_setup();
     $id = $qpp_setup['current'];
     $currency = qpp_get_stored_curr();
+    $currency = qpp_ensure_currency( $currency, $id );
     $before = array(
         'USD' => '&#x24;',
         'CDN' => '&#x24;',
@@ -1803,8 +2462,18 @@ function qpp_coupon_codes(  $id  ) {
         $content .= '<h2>Default form coupons codes</h2>';
     }
     $content .= qpp_change_form( $qpp_setup );
+    $qpp = qpp_get_stored_options( $id );
+    $content .= qpp_field_status_notice(
+        (bool) $qpp['usecoupon'],
+        'Coupon codes',
+        'Coupon Code',
+        // Recurring forms take the field away rather than leaving it unticked,
+        // so saying it is switched off would send a merchant looking for a box
+        // that is not on the screen.
+        ( $qpp['userecurring'] ? 'A form set to take recurring payments cannot also take a coupon.' : '' )
+    );
     $content .= '<form method="post" action="">
-    <p<span<b>Note:</b> Leave fields blank if you don\'t want to use them</span></p>
+    <p class="description"><strong>Note:</strong> Leave fields blank if you don\'t want to use them</p>
     <p>Number of Coupons: <input type="text" name="couponnumber" value="' . esc_attr( $coupon['couponnumber'] ) . '" style="width:4em"></p>
     <table>
     <tr><td>Code</td><td>Percentage</td><td>Fixed Amount</td><td>Qty<br>(remaining <br>/ blank unlimited)</td></tr>';
@@ -1909,9 +2578,14 @@ function qpp_change_form_update() {
     if ( isset( $_POST['Select'] ) ) {
         check_admin_referer( 'qpp_save' );
         $qpp_setup = qpp_get_stored_setup();
-        $qpp_setup['current'] = sanitize_text_field( $_POST['current'] );
-        $qpp_setup['alternative'] = sanitize_text_field( $_POST['alternative'] );
-        $qpp_setup['email'] = sanitize_text_field( $_POST['email'] );
+        /*
+         * current is a radio, and none is checked when the selected form has
+         * since been deleted, so it is not always posted. The other two are
+         * hidden fields carried through the same form.
+         */
+        $qpp_setup['current'] = sanitize_text_field( wp_unslash( $_POST['current'] ?? '' ) );
+        $qpp_setup['alternative'] = sanitize_text_field( wp_unslash( $_POST['alternative'] ?? $qpp_setup['alternative'] ) );
+        $qpp_setup['email'] = sanitize_text_field( wp_unslash( $_POST['email'] ?? $qpp_setup['email'] ) );
         update_option( 'qpp_setup', $qpp_setup );
     }
 }
@@ -2004,25 +2678,35 @@ function qpp_generate_csv() {
             '"'
         );
         foreach ( array_reverse( $message ) as $value ) {
+            /*
+             * Rows stored before a field was switched on do not carry it, so
+             * every read below was a warning on an older export. field0 is the
+             * timestamp and is not part of the value map.
+             */
+            $value = array_merge( array(
+                'field0' => '',
+            ), array_fill_keys( array_map( function ( $n ) {
+                return 'field' . $n;
+            }, range( 1, 22 ) ), '' ), ( is_array( $value ) ? $value : array() ) );
             $cells = array();
             array_push( $cells, qpp_wp_date( 'Y-m-d H:i:s', $value['field0'] ) );
             array_push( $cells, $value['field1'] );
             array_push( $cells, $value['field2'] );
             array_push( $cells, $value['field3'] );
             if ( $qpp['use_stock'] ) {
-                $value['field4'] = ( $value['field4'] != $value['stocklabel'] ? $value['field4'] : '' );
+                $value['field4'] = ( $value['field4'] != qpp_get_element( $qpp, 'stocklabel' ) ? $value['field4'] : '' );
                 array_push( $cells, $value['field4'] );
             }
             if ( $qpp['use_options'] ) {
-                $value['field5'] = ( $value['field5'] != $value['optionlabel'] ? $value['field5'] : '' );
+                $value['field5'] = ( $value['field5'] != qpp_get_element( $qpp, 'optionlabel' ) ? $value['field5'] : '' );
                 array_push( $cells, $value['field5'] );
             }
             if ( $qpp['usecoupon'] ) {
-                $value['field6'] = ( $value['field6'] != $value['couponblurb'] ? $value['field6'] : '' );
+                $value['field6'] = ( $value['field6'] != qpp_get_element( $qpp, 'couponblurb' ) ? $value['field6'] : '' );
                 array_push( $cells, $value['field6'] );
             }
             if ( $qpp['use_message'] ) {
-                $value['field19'] = ( $value['field19'] != $value['messagelabel'] ? $value['field19'] : '' );
+                $value['field19'] = ( $value['field19'] != qpp_get_element( $qpp, 'messagelabel' ) ? $value['field19'] : '' );
                 array_push( $cells, $value['field19'] );
             }
             if ( $messageoptions['showaddress'] ) {
@@ -2107,28 +2791,35 @@ function qpp_scripts_init(  $hook  ) {
         'qpp_settings',
         plugins_url( 'settings.css', __FILE__ ),
         array(),
-        QUICK_PAYPAL_PAYMENTS_VERSION
+        qpp_asset_version( __DIR__ . '/settings.css' )
     );
-    wp_enqueue_style(
-        'qpp_style',
-        plugins_url( 'payments.css', __FILE__ ),
-        array(),
-        QUICK_PAYPAL_PAYMENTS_VERSION
-    );
+    /*
+     * Go through the front end registration rather than naming the files again
+     * here. Registering payments.js a second time by URL gave the admin copy
+     * neither its dependencies nor the localised qpp_data, so the Error Checker
+     * on the validation screen logged "qpp_data.ajax_url is not available" and
+     * its nonce refresh and ajax submit did nothing. qpp_loop() then found the
+     * handle already registered and skipped the registration that would have
+     * fixed it.
+     */
+    if ( !wp_script_is( 'qpp_script', 'registered' ) ) {
+        qpp_register_scripts();
+    }
+    wp_enqueue_style( 'qpp_style' );
     wp_enqueue_media();
     wp_enqueue_script(
         'qpp-media',
         plugins_url( 'media.js', __FILE__ ),
         array('jquery', 'wp-color-picker'),
-        QUICK_PAYPAL_PAYMENTS_VERSION,
+        qpp_asset_version( __DIR__ . '/media.js' ),
         true
     );
-    wp_enqueue_script(
-        'qpp_script',
-        plugins_url( 'payments.js', __FILE__ ),
-        array(),
-        QUICK_PAYPAL_PAYMENTS_VERSION
-    );
+    wp_localize_script( 'qpp-media', 'qpp_account_check', array(
+        'url'     => admin_url( 'admin-ajax.php' ),
+        'nonce'   => wp_create_nonce( 'qpp_check_account' ),
+        'working' => __( 'Checking with PayPal...', 'quick-paypal-payments' ),
+    ) );
+    wp_enqueue_script( 'qpp_script' );
 }
 
 add_action( 'admin_enqueue_scripts', 'qpp_scripts_init' );
@@ -2142,22 +2833,118 @@ function qpp_page_init() {
     );
 }
 
-function qpp_admin_notice(  $message = ''  ) {
+function qpp_admin_notice(  $message = '', $type = 'updated'  ) {
     if ( !empty( $message ) ) {
-        echo '<div class="updated"><p>' . esc_html( $message ) . '</p></div>';
+        // 'error' is red and not dismissible, which is what a wrong PayPal
+        // account deserves. Anything else keeps the old green box.
+        $class = ( 'error' === $type ? 'notice notice-error' : 'updated' );
+        echo '<div class="' . esc_attr( $class ) . '"><p>' . esc_html( $message ) . '</p></div>';
     }
 }
 
+/**
+ * Warns on every plugin screen while the PayPal account is unusable.
+ *
+ * A mistyped account is the most common support question this plugin gets. It
+ * shows up as a customer reaching PayPal and being turned away by a page that
+ * says nothing useful, and the merchant only hears about it if that customer
+ * bothers to tell them. Every form on the site is dead until it is fixed, so
+ * this is worth saying loudly and on every visit, not once after a save.
+ *
+ * Named forms are checked too, because Send Options carries a per form address
+ * that overrides the site wide one.
+ */
+function qpp_account_admin_notice() {
+    $screen = ( function_exists( 'get_current_screen' ) ? get_current_screen() : null );
+    if ( !$screen || !preg_match( '#quick-paypal-payments#i', $screen->base ) ) {
+        return;
+    }
+    if ( !current_user_can( 'manage_options' ) ) {
+        return;
+    }
+    $setup = qpp_get_stored_setup();
+    $forms = array_unique( explode( ',', (string) $setup['alternative'] ) );
+    if ( !in_array( '', $forms, true ) ) {
+        $forms[] = '';
+    }
+    $broken = array();
+    foreach ( $forms as $form ) {
+        $problem = qpp_paypal_account_problem( qpp_paypal_account_for( $setup, qpp_get_stored_send( $form ) ) );
+        if ( '' === $problem ) {
+            continue;
+        }
+        $name = ( '' === $form ? __( 'the default form', 'quick-paypal-payments' ) : $form );
+        $broken[$problem][] = $name;
+    }
+    foreach ( $broken as $problem => $names ) {
+        printf(
+            '<div class="notice notice-error"><p><strong>%s</strong> %s<br />%s</p></div>',
+            esc_html__( 'Quick PayPal Payments cannot take a payment.', 'quick-paypal-payments' ),
+            esc_html( $problem ),
+            sprintf( 
+                /* translators: %s is a comma separated list of form names. */
+                esc_html__( 'Affects: %s.', 'quick-paypal-payments' ),
+                esc_html( implode( ', ', $names ) )
+             )
+        );
+    }
+}
+
+add_action( 'admin_notices', 'qpp_account_admin_notice' );
+/**
+ * Checks a PayPal account as it is typed.
+ *
+ * The button posts the page and is the fallback with no javascript. This is the
+ * same check, run when the field changes, so a typo is caught while the person
+ * who made it is still looking at it.
+ */
+function qpp_ajax_check_paypal_account() {
+    check_ajax_referer( 'qpp_check_account' );
+    if ( !current_user_can( 'manage_options' ) ) {
+        wp_send_json_error( array(
+            'message' => __( 'You cannot do that.', 'quick-paypal-payments' ),
+        ) );
+    }
+    $email = ( isset( $_POST['email'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['email'] ) ) ) : '' );
+    $setup = qpp_get_stored_setup();
+    wp_send_json_success( qpp_check_paypal_account( $email, !empty( $setup['sandbox'] ) ) );
+}
+
+add_action( 'wp_ajax_qpp_check_paypal_account', 'qpp_ajax_check_paypal_account' );
 function qpp_admin_pages() {
+    $records = function () {
+        require_once 'messages.php';
+    };
     add_menu_page(
         'Payments',
         'Payments',
         'manage_options',
         'quick-paypal-payments-messages',
-        function () {
-            require_once 'messages.php';
-        },
+        $records,
         'dashicons-cart'
+    );
+    // Names the automatically created first child for what it actually is,
+    // rather than repeating the menu title.
+    add_submenu_page(
+        'quick-paypal-payments-messages',
+        esc_html__( 'Payment Records', 'quick-paypal-payments' ),
+        esc_html__( 'Payment Records', 'quick-paypal-payments' ),
+        'manage_options',
+        'quick-paypal-payments-messages',
+        $records
+    );
+    /*
+     * The settings screen stays where WordPress puts a settings screen, under
+     * Settings. This is a second route to the same page from the plugin's own
+     * menu, because that is where someone looks for the settings of the thing
+     * they are already looking at.
+     */
+    add_submenu_page(
+        'quick-paypal-payments-messages',
+        esc_html__( 'Settings', 'quick-paypal-payments' ),
+        esc_html__( 'Settings', 'quick-paypal-payments' ),
+        'manage_options',
+        'options-general.php?page=quick-paypal-payments'
     );
 }
 
@@ -2168,15 +2955,10 @@ function qpp_plugin_row_meta(  $links, $file = ''  ) {
         $new_links[] = '<a href="https://fullworks.net/docs/quick-paypal-payments/"><strong>Help and Support</strong></a>';
         if ( false === $quick_paypal_payments_fs->is_plan_or_trial( 'platinum' ) ) {
             global $quick_paypal_payments_fs;
-            if ( $quick_paypal_payments_fs->is_trial() || $quick_paypal_payments_fs->is_trial_utilized() ) {
-                $upurl = $quick_paypal_payments_fs->get_upgrade_url();
-                $upmsg = 'Upgrade to Pro Platinum';
-                $new_links[] = '<a href="' . $upurl . '"><strong>' . $upmsg . '</strong></a>';
-            } else {
-                $upurl = $quick_paypal_payments_fs->get_trial_url();
-                $upmsg = 'Pro Platinum: Free 14 Day Trial';
-                $new_links[] = '<a href="' . $upurl . '"><strong>' . $upmsg . '</strong></a>';
-            }
+            // One link either way. The trial text is empty when Freemius has no
+            // trial configured, so it cannot be the only label or the row would
+            // carry a link with nothing in it.
+            $new_links[] = '<a href="' . esc_url( qpp_upgrade_url() ) . '"><strong>Upgrade</strong></a>';
         }
         $links = array_merge( $links, $new_links );
     }

@@ -38,8 +38,40 @@ add_action( 'wp_ajax_nopriv_qpp_process_express_checkout_payment', 'qpp_process_
 $qpp_end_loop = false;
 $qpp_current_custom = '';
 $qpp_attributes = array();
+require_once plugin_dir_path( __FILE__ ) . '/plan-gating.php';
+require_once plugin_dir_path( __FILE__ ) . '/buttons.php';
+require_once plugin_dir_path( __FILE__ ) . '/accounts.php';
+require_once plugin_dir_path( __FILE__ ) . '/paypal-account.php';
+require_once plugin_dir_path( __FILE__ ) . '/payments-admin.php';
 require_once plugin_dir_path( __FILE__ ) . '/options.php';
-global $quick_paypal_payments_fs;
+/*
+ * Deferred to init. This file is required while the plugin is still loading, and
+ * Freemius has not finished starting up at that point, so it answers plan
+ * questions differently than it does a moment later. Measured on a real install,
+ * can_use_premium_code() is false at plugin load, still false at plugins_loaded,
+ * and still false at init priority 0. It becomes true at init priority 1, so
+ * Freemius settles on init at priority 0. Hence the priority below, which is
+ * deliberately not lower.
+ *
+ * Asking too early meant the Stripe webhook route was never registered. Stripe
+ * posted to an address that did not exist, every event came back 404, and a paid
+ * order stayed pending for ever with nothing in the admin to say why. The
+ * checkout worked, so the failure was invisible until somebody looked at the
+ * Stripe dashboard.
+ *
+ * Nothing in here is needed before init. rest_api_init runs after it, and the
+ * first thing that can use either file is a form submission, which is later
+ * still.
+ */
+add_action( 'init', function () {
+    global $quick_paypal_payments_fs;
+    return;
+    require_once plugin_dir_path( __FILE__ ) . '/mailchimp/mailchimp.init.php';
+    // Stripped from the free build by filename, so the require has to stay behind
+    // the premium guard or the free build fatals on a missing file.
+    require_once plugin_dir_path( __FILE__ ) . '/stripe__premium_only.php';
+    add_action( 'rest_api_init', 'qpp_stripe_register_routes' );
+}, 5 );
 if ( is_admin() ) {
     require_once plugin_dir_path( __FILE__ ) . '/settings.php';
 }
@@ -67,7 +99,7 @@ function qpp_register_scripts() {
         'qpp_script',
         plugins_url( 'payments.js', __FILE__ ),
         array('jquery', 'wp-api-fetch'),
-        QUICK_PAYPAL_PAYMENTS_VERSION,
+        qpp_asset_version( __DIR__ . '/payments.js' ),
         true
     );
     wp_localize_script( 'qpp_script', 'qpp_data', array(
@@ -77,7 +109,7 @@ function qpp_register_scripts() {
         'qpp_style',
         plugins_url( 'payments.css', __FILE__ ),
         array(),
-        QUICK_PAYPAL_PAYMENTS_VERSION
+        qpp_asset_version( __DIR__ . '/payments.css' )
     );
     /*
      * The generated form styles used to be written to custom.css inside the plugin
@@ -119,6 +151,7 @@ function qpp_validate_form_callback(  $degrade = false  ) {
         $style = qpp_get_stored_style( $form );
         $error = qpp_get_stored_error( $form );
         $currency = qpp_get_stored_curr();
+        $currency = qpp_ensure_currency( $currency, $form );
         $current_currency = $currency[$form];
         $qpp = qpp_get_stored_options( $form );
         $send = qpp_get_stored_send( $form );
@@ -190,6 +223,16 @@ function qpp_validate_form_callback(  $degrade = false  ) {
                 $combine,
                 $itemamount
             );
+            /*
+             * A Stripe payment has no form to post. The response carries the
+             * address of the checkout page instead and the script follows it.
+             * Without this the browser looked for a form that was not there and
+             * the customer sat on a spinner.
+             */
+            global $qpp_stripe_redirect;
+            if ( !empty( $qpp_stripe_redirect ) ) {
+                $json->redirect = $qpp_stripe_redirect;
+            }
         }
     } else {
         // error
@@ -229,6 +272,15 @@ function qpp_default_merge_v(  $array  ) {
         'items'         => array(),
         'thesum'        => false,
         'answer'        => false,
+        'firstname'     => false,
+        'lastname'      => false,
+        'address1'      => false,
+        'address2'      => false,
+        'city'          => false,
+        'state'         => false,
+        'zip'           => false,
+        'country'       => false,
+        'night_phone_b' => false,
     );
     // Apply values to the default array
     foreach ( $array as $k => $v ) {
@@ -257,10 +309,39 @@ function qpp_reference_type(  $qpp  ) {
     }
 }
 
+/**
+ * Guarantees the currency array has an entry for this form.
+ *
+ * qpp_get_stored_curr() only defaults the blank key, the one belonging to the
+ * default form, so every named form whose currency has never been saved was read
+ * as a missing array key. That raised a PHP warning on the front end of any page
+ * carrying such a form, above the form itself, which is where a customer is
+ * about to type their card details.
+ *
+ * Falls back to the default form's currency, then to USD, which is what
+ * qpp_get_default_curr() has always used.
+ *
+ * @param array  $currency Currency keyed by form.
+ * @param string $form     Form id.
+ *
+ * @return array
+ */
+function qpp_ensure_currency(  $currency, $form  ) {
+    if ( !is_array( $currency ) ) {
+        $currency = array();
+    }
+    if ( isset( $currency[$form] ) && '' !== $currency[$form] ) {
+        return $currency;
+    }
+    $currency[$form] = ( isset( $currency[''] ) && '' !== $currency[''] ? $currency[''] : 'USD' );
+    return $currency;
+}
+
 function qpp_collect_data(  $form  ) {
     $qpp = qpp_get_stored_options( $form );
     $coupon = qpp_get_stored_coupon( $form );
     $currency = qpp_get_stored_curr();
+    $currency = qpp_ensure_currency( $currency, $form );
     /*
      * Only read the request body when this is a genuine submission of one of our
      * own forms. A normal page render carries no POST data, so the only request
@@ -367,10 +448,20 @@ function qpp_collect_data(  $form  ) {
             $list = explode( ',', $qpp['inputamount'] );
             if ( count( $list ) > 1 ) {
                 $values = [];
+                $display = [];
                 foreach ( $list as $v ) {
-                    $values[] = (float) qpp_format_amount( $currency[$form], $qpp, $v );
+                    $formatted = qpp_format_amount( $currency[$form], $qpp, $v );
+                    /*
+                     * The float is what the rest of the form compares against, and it
+                     * throws away trailing zeros, so a 9.50 option was offered to the
+                     * customer as "$9.5" and 12.00 as "$12". The formatted string is
+                     * kept alongside it, on the same keys, for display only.
+                     */
+                    $values[] = (float) $formatted;
+                    $display[] = $formatted;
                 }
                 $returning['amount']['values'] = $values;
+                $returning['amount']['display'] = $display;
                 $returning['amount']['type'] = 'choice';
                 if ( isset( $d['amount'] ) ) {
                     $val = $d['amount'];
@@ -425,6 +516,45 @@ function qpp_collect_data(  $form  ) {
     return $returning;
 }
 
+/**
+ * Every field key a payment form submission can carry.
+ *
+ * Shared between seeding the defaults and copying the posted values, so the two
+ * cannot drift apart and leave a key that is read but never defined.
+ *
+ * @return string[]
+ */
+function qpp_submitted_field_keys() {
+    return array(
+        'reference',
+        'amount',
+        'stock',
+        'quantity',
+        'option1',
+        'couponblurb',
+        'maths',
+        'thesum',
+        'answer',
+        'termschecked',
+        'yourmessage',
+        'datepicker',
+        'email',
+        'firstname',
+        'lastname',
+        'address1',
+        'address2',
+        'city',
+        'state',
+        'zip',
+        'country',
+        'night_phone_b',
+        'combine',
+        'srt',
+        'cf',
+        'consent'
+    );
+}
+
 function qpp_formulate_v(
     $atts,
     &$form = '',
@@ -444,6 +574,7 @@ function qpp_formulate_v(
     $address = qpp_get_stored_address( $form );
     $coupon = qpp_get_stored_coupon( $form );
     $currency = qpp_get_stored_curr();
+    $currency = qpp_ensure_currency( $currency, $form );
     $shortcodereference = '';
     // Will be used at the end
     $total = 0;
@@ -496,6 +627,17 @@ function qpp_formulate_v(
     }
     $v['srt'] = $qpp['recurringhowmany'];
     /*
+     * Seed every key a submission can carry, so a field that was not posted is
+     * empty rather than undefined. An unticked checkbox is not posted at all, so
+     * without this the terms and consent checks warn on exactly the submission
+     * they exist to catch. Only keys with no default already set are touched.
+     */
+    foreach ( qpp_submitted_field_keys() as $item ) {
+        if ( !isset( $v[$item] ) ) {
+            $v[$item] = '';
+        }
+    }
+    /*
      * Only read the request body when this is a genuine submission of one of our
      * own forms. A normal page render carries no POST data, so the only request
      * this changes is a forged cross-site post, which is now ignored rather than
@@ -527,35 +669,7 @@ function qpp_formulate_v(
             }
             $d['option1'] = rtrim( $checks, ', ' );
         }
-        $arr = array(
-            'reference',
-            'amount',
-            'stock',
-            'quantity',
-            'option1',
-            'couponblurb',
-            'maths',
-            'thesum',
-            'answer',
-            'termschecked',
-            'yourmessage',
-            'datepicker',
-            'email',
-            'firstname',
-            'lastname',
-            'address1',
-            'address2',
-            'city',
-            'state',
-            'zip',
-            'country',
-            'night_phone_b',
-            'combine',
-            'srt',
-            'cf',
-            'consent'
-        );
-        foreach ( $arr as $item ) {
+        foreach ( qpp_submitted_field_keys() as $item ) {
             if ( isset( $d[$item] ) ) {
                 $v[$item] = $d[$item];
             }
@@ -745,7 +859,14 @@ function qpp_loop(  $atts, $from_admin_settings = false  ) {
                 $combine,
                 $itemamount
             ), qpp_allowed_html() );
-            wp_add_inline_script( 'qpp_script', 'document.getElementById("frmCart").submit()', 'after' );
+            global $qpp_stripe_redirect;
+            if ( !empty( $qpp_stripe_redirect ) ) {
+                // Printed rather than enqueued: wp_kses() strips a script tag out of
+                // the markup above, and the footer may already have gone out.
+                wp_print_inline_script_tag( 'window.location.href = ' . wp_json_encode( $qpp_stripe_redirect ) . ';' );
+            } else {
+                wp_add_inline_script( 'qpp_script', 'document.getElementById("frmCart").submit()', 'after' );
+            }
         }
     } else {
         $digit1 = wp_rand( 1, 10 );
@@ -782,6 +903,32 @@ function qpp_display_form(
     if ( !$attr ) {
         $attr = array();
     }
+    /*
+     * Every error key this function reads, defaulted to no error.
+     *
+     * The form is rendered with an empty $errors array on a first view, and the
+     * field blocks read $errors['x'] directly, so each field that is switched on
+     * raised a PHP warning on every render. Only three showed at once because
+     * the rest sit behind features that were off. Defaulting here fixes all of
+     * them, rather than guarding twenty six read sites one at a time.
+     *
+     * use_constent is a misspelling of use_consent that has been read here for
+     * years while nothing ever writes it, so that error could never have
+     * displayed. Listed so it stays harmless; fixing the spelling is a
+     * behaviour change and belongs on its own.
+     */
+    $errors = array_merge( array(
+        'captcha'        => '',
+        'email'          => '',
+        'quantity'       => '',
+        'srt'            => '',
+        'use_cf'         => '',
+        'use_constent'   => '',
+        'use_message'    => '',
+        'use_stock'      => '',
+        'useterms'       => '',
+        'yourdatepicker' => '',
+    ), ( is_array( $errors ) ? $errors : array() ) );
     $qpp = qpp_get_stored_options( $id );
     /*
      * Prefill the payment form from the query string, so a merchant can link a
@@ -814,6 +961,7 @@ function qpp_display_form(
     $send = qpp_get_stored_send( $id );
     $style = qpp_get_stored_style( $id );
     $currency = qpp_get_stored_curr();
+    $currency = qpp_ensure_currency( $currency, $id );
     $address = qpp_get_stored_address( $id );
     $messages = qpp_get_stored_messages();
     $list = qpp_get_stored_mailinglist();
@@ -852,7 +1000,15 @@ function qpp_display_form(
     }
     $content .= '<div class="qpp-style ' . $formstyle . '"><div id="' . $style['border'] . '">';
     $content .= '<form id="frmPayment' . $t . '" name="frmPayment' . $t . '" method="post" action="">';
-    if ( count( $errors ) > 0 || $values['noproduct'] ) {
+    /*
+     * array_filter, not count. Every error key is defaulted to an empty string at
+     * the top of this function, so the array always has keys and counting them
+     * would always be true. That would take the error branch on a first view and
+     * the form would lose its heading and blurb, which is exactly what happened
+     * when the defaults were added. This asks the question that was always meant:
+     * are any of them set.
+     */
+    if ( count( array_filter( $errors ) ) > 0 || $values['noproduct'] ) {
         wp_add_inline_script( 'qpp_script', 'document.querySelector("#qpp_reload").scrollIntoView()' );
         $content .= "<" . $hd . " class='qpp-header' id='qpp_reload' style='color:" . $style['error-colour'] . ";'>" . $error['errortitle'] . "</" . $hd . ">\n        <p class='qpp-blurb' style='color:" . $style['error-colour'] . ";'>" . $error['errorblurb'] . "</p>";
         $arr = array(
@@ -900,7 +1056,7 @@ function qpp_display_form(
         $content .= $qpp['title'];
         if ( isset( $qpp['paypal-url'] ) ) {
             if ( $qpp['paypal-url'] && $qpp['paypal-location'] == 'imageabove' ) {
-                $content .= "<img quick-paypal-payments='" . $qpp['paypal-url'] . "' />";
+                $content .= '<img src="' . esc_url( $qpp['paypal-url'] ) . '" alt="" />';
             }
         }
         $content .= $qpp['blurb'];
@@ -970,7 +1126,15 @@ function qpp_display_form(
                 if ( $qpp['use_stock'] ) {
                     $requiredstock = ( !qpp_get_element( $errors, 'use_stock' ) && $qpp['ruse_stock'] ? ' class="required" ' : '' );
                     if ( $qpp['fixedstock'] || isset( $_REQUEST["item"] ) ) {
-                        $content .= '<p class="input" >' . $values['stock'] . '</p>';
+                        /*
+                         * A fixed item number is printed rather than offered as a field. With
+                         * no item set, $values['stock'] is still the placeholder from the
+                         * settings screen, so the form printed the words "Item Number" where
+                         * the item number should be. Nothing to show means show nothing.
+                         */
+                        if ( '' !== trim( (string) $values['stock'] ) && $values['stock'] !== $qpp['stocklabel'] ) {
+                            $content .= '<p class="input" >' . $values['stock'] . '</p>';
+                        }
                     } else {
                         $content .= qpp_nice_label(
                             'stock' . $id,
@@ -1148,7 +1312,7 @@ function qpp_display_form(
                     $required = ( !$errors['useterms'] ? 'border:' . $style['required-border'] . ';' : ' style="' . $errors['useterms'] . '"' );
                     $color = ( $errors['useterms'] ? ' style="color:' . $style['error-colour'] . ';" ' : '' );
                     $content .= '<p class="input">
-                <input type="checkbox" style="margin:0; padding: 0;width:auto;" name="termschecked" value="checked" ' . $values['termschecked'] . '>
+                <input type="checkbox" style="margin:0; padding: 0;width:auto;" name="termschecked" value="checked" ' . qpp_get_element( $values, 'termschecked' ) . '>
                 &nbsp;';
                     if ( $qpp['termsurl'] ) {
                         $content .= '<a class="qpp-terms" href="' . $qpp['termsurl'] . '"' . $target . '>' . $qpp['termsblurb'] . '</a></p>';
@@ -1235,7 +1399,10 @@ function qpp_display_form(
                 break;
             case 'field14':
                 if ( $qpp['usetotals'] ) {
-                    $content .= '<p style="font-weight:bold;">' . $qpp['totalsblurb'] . ' ' . $c['b'] . '<input type="text" id="qpptotal" name="total" value="0.00" readonly="readonly" />' . $c['a'] . '</p>';
+                    // Class rather than only an inline style, so the row can be kept
+                    // on one line. Themes that widen inputs were breaking the
+                    // currency symbol away from the figure.
+                    $content .= '<p class="qpp-total" style="font-weight:bold;">' . $qpp['totalsblurb'] . ' ' . $c['b'] . '<input type="text" id="qpptotal" name="total" value="0.00" readonly="readonly" />' . $c['a'] . '</p>';
                 } else {
                     $content .= '<input type="hidden" id="qpptotal" name="total"  />';
                 }
@@ -1300,8 +1467,14 @@ function qpp_display_form(
     }
     $content .= '<input type="hidden" name="multiples" value="' . $qpp_multiples . '" />';
     $caption = $qpp['submitcaption'];
-    if ( $style['submit-button'] ) {
-        $content .= '<p class="submit pay-button"><input type="image" id="submitimage" alt="' . $caption . '" value="' . $caption . '" quick-paypal-payments="' . $style['submit-button'] . '" name="qppsubmit' . $id . '" /></p>';
+    $stripe_settings = qpp_get_stored_stripe();
+    $stripe_live = 'checked' === $stripe_settings['enable'] && '' !== $stripe_settings['secret_key'];
+    $button_image = qpp_resolve_button_url( $style['submit-button'] );
+    if ( !qpp_button_is_usable( $button_image, $stripe_live ) ) {
+        $button_image = '';
+    }
+    if ( $button_image ) {
+        $content .= '<p class="submit pay-button"><input type="image" id="submitimage" alt="' . $caption . '" value="' . $caption . '" src="' . esc_url( $button_image ) . '" name="qppsubmit' . $id . '" /></p>';
     } else {
         $content .= '<p class="submit pay-button"><input type="submit" value="' . $caption . '" id="submit" name="qppsubmit' . $id . '" /></p>';
     }
@@ -1323,7 +1496,7 @@ function qpp_display_form(
     $content .= "<div class='qpp-validating-form'>" . $messages['validating'] . "</div>";
     $content .= "<div class='qpp-processing-form'>" . $messages['waiting'] . "</div>";
     if ( $qpp['paypal-url'] && $qpp['paypal-location'] == 'imagebelow' ) {
-        $content .= '<img quick-paypal-payments="' . $qpp['paypal-url'] . '" />';
+        $content .= '<img src="' . esc_url( $qpp['paypal-url'] ) . '" alt="" />';
     }
     if ( $qpp['usetotals'] || $qpp['use_slider'] || isset( $qpp['combobox'] ) && $qpp['combobox'] == 'checked' ) {
         wp_add_inline_script( 'qpp_script', 'to_totals.push("#frmPayment' . $t . '");', 'after' );
@@ -1341,6 +1514,28 @@ function qpp_display_form(
  *
  * @return array Allowed HTML, in wp_kses() format.
  */
+/**
+ * Cache busting version for one of the plugin's own assets.
+ *
+ * The plugin version is right for a released build. During development it is
+ * not: the version does not move between edits, so a browser keeps serving the
+ * stylesheet or script it already has and the change appears not to have
+ * happened. Cost this an afternoon once already.
+ *
+ * With WP_DEBUG on the file's modification time is used instead, so an edit is
+ * picked up on the next load. Production is unaffected.
+ *
+ * @param string $file Absolute path to the asset.
+ *
+ * @return string Version string for wp_enqueue_*.
+ */
+function qpp_asset_version(  $file  ) {
+    if ( defined( 'WP_DEBUG' ) && WP_DEBUG && file_exists( $file ) ) {
+        return (string) filemtime( $file );
+    }
+    return QUICK_PAYPAL_PAYMENTS_VERSION;
+}
+
 function qpp_allowed_html() {
     $kses_defaults = wp_kses_allowed_html( 'post' );
     $form_elements = array(
@@ -1381,6 +1576,8 @@ function qpp_allowed_html() {
             'style'            => true,
             'data-default'     => true,
             'data-rangeslider' => true,
+            'data-target'      => true,
+            'data-title'       => true,
             'min'              => true,
             'max'              => true,
             'step'             => true,
@@ -1391,6 +1588,7 @@ function qpp_allowed_html() {
             'alt'              => true,
             'disabled'         => true,
             'required'         => true,
+            'autocomplete'     => true,
         ),
         'textarea' => array(
             'id'           => true,
@@ -1410,11 +1608,22 @@ function qpp_allowed_html() {
             'style' => true,
         ),
         'button'   => array(
+            'id'          => true,
+            'class'       => true,
+            'name'        => true,
+            'type'        => true,
+            'value'       => true,
+            'style'       => true,
+            'data-target' => true,
+            'data-title'  => true,
+            'data-value'  => true,
+            'disabled'    => true,
+        ),
+        'img'      => array(
             'id'    => true,
             'class' => true,
-            'name'  => true,
-            'type'  => true,
-            'value' => true,
+            'src'   => true,
+            'alt'   => true,
             'style' => true,
         ),
     );
@@ -1452,6 +1661,14 @@ function qpp_calculate_coupon(  $qpp, $values  ) {
 function qpp_display_multiples(  $id, $values  ) {
     $multiples = qpp_get_stored_multiples( $id );
     $content = '';
+    /*
+     * The product list used to appear with no label at all, below the terms
+     * box, so it read as a stray set of rows rather than the thing being
+     * bought. Blank stays blank, for forms that were built around that.
+     */
+    if ( '' !== trim( (string) $multiples['title'] ) ) {
+        $content .= '<p class="qpp-products-title">' . esc_html( $multiples['title'] ) . '</p>';
+    }
     for ($i = 1; $i <= 9; $i++) {
         $label = $multiples['shortcode'];
         $label = str_replace( '[product]', $multiples['product' . $i], $label );
@@ -1471,6 +1688,7 @@ function qpp_display_multiples(  $id, $values  ) {
 
 function qpp_amount_choice(  $type, $data  ) {
     $choices = $data['amount']['values'];
+    $shown = ( isset( $data['amount']['display'] ) ? $data['amount']['display'] : array() );
     $set = $data['amount']['value'];
     $currency = $data['currency'];
     $other = $data['other'];
@@ -1482,8 +1700,8 @@ function qpp_amount_choice(  $type, $data  ) {
     switch ( $type ) {
         case 'dropdown':
             $returning .= '<select name="amount">';
-            foreach ( $choices as $v ) {
-                $display = $currency['b'] . $v . $currency['a'];
+            foreach ( $choices as $k => $v ) {
+                $display = $currency['b'] . (( isset( $shown[$k] ) ? $shown[$k] : $v )) . $currency['a'];
                 $value = (float) $v;
                 $selected = ( $v == $set || $v == 'other' && $other['toggled'] ? ' selected="selected"' : '' );
                 if ( $v != 'other' ) {
@@ -1495,8 +1713,8 @@ function qpp_amount_choice(  $type, $data  ) {
             $returning .= '</select>';
             break;
         default:
-            foreach ( $choices as $v ) {
-                $display = $currency['b'] . $v . $currency['a'];
+            foreach ( $choices as $k => $v ) {
+                $display = $currency['b'] . (( isset( $shown[$k] ) ? $shown[$k] : $v )) . $currency['a'];
                 $value = (float) $v;
                 $selected = ( $v == $set || $v == 'other' && $other['toggled'] ? ' checked="checked"' : '' );
                 if ( $type != 'inline' ) {
@@ -1631,19 +1849,8 @@ function qpp_postage(  $qpp, $check, $quantity  ) {
 
 function qpp_format_amount(  $currency, $qpp, $amount  ) {
     $curr = ( $currency == '' ? 'USD' : $currency );
-    $decimal = array(
-        'HKD',
-        'JPY',
-        'MYR',
-        'TWD'
-    );
-    $d = '2';
-    foreach ( $decimal as $item ) {
-        if ( $item == $curr ) {
-            $d = '';
-            break;
-        }
-    }
+    // Empty string rather than 0, because the branch below tests it for truth.
+    $d = ( qpp_paypal_decimals( $curr ) ? '2' : '' );
     if ( !$d ) {
         $check = preg_replace( '/[^.0-9]/', '', $amount );
         $check = intval( $check );
@@ -1728,12 +1935,17 @@ function qpp_verify_form(
     	Edit: More precise quantity checking
     */
     if ( $qpp['use_quantity'] ) {
+        /*
+         * The maximum is scraped out of the message shown to the customer, which
+         * is the only place it is stored. A merchant who writes the limit in
+         * words, or translates the message, leaves no digits to find, and an
+         * empty string compares as lower than any quantity, so every submission
+         * failed with no way to see why. No digits now means no limit.
+         */
         $max = preg_replace( '/[^0-9]/', '', $qpp['quantitymaxblurb'] );
         if ( is_numeric( $v['quantity'] ) && $v['quantity'] >= 1 ) {
-            // quantity exists and is a number!
-            // double check if the quanity is invalid with the max blurb
-            if ( $qpp['quantitymax'] ) {
-                if ( $max < $v['quantity'] ) {
+            if ( $qpp['quantitymax'] && '' !== $max ) {
+                if ( (int) $max < (float) $v['quantity'] ) {
                     $errors['quantity'] = 'error';
                 }
             }
@@ -1778,6 +1990,7 @@ function qpp_verify_form(
             }
             // Validate amount
             $currency = qpp_get_stored_curr();
+            $currency = qpp_ensure_currency( $currency, $form );
             $errors['amount'] = 'error';
             $minamount = 1.0E-5;
             if ( isset( $qpp['minamount'] ) && $qpp['minamount'] > 0 ) {
@@ -1879,6 +2092,7 @@ function qpp_process_values(
     /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
     global $quick_paypal_payments_fs;
     $currency = qpp_get_stored_curr();
+    $currency = qpp_ensure_currency( $currency, $id );
     $qpp = qpp_get_stored_options( $id );
     $coupon = qpp_get_stored_coupon( $id );
     $address = qpp_get_stored_address( $id );
@@ -1903,12 +2117,14 @@ function qpp_process_values(
     $quantity = (float) (( $values['items'][0]['quantity'] < 1 ? '1' : wp_strip_all_tags( $values['items'][0]['quantity'] ) ));
     $percent = $fixedpostage = $percentpostage = 0;
     if ( $qpp['usepostage'] ) {
-        if ( is_numeric( (float) $qpp['postagepercent'] ) ) {
-            $percent = preg_replace( '/[^.,0-9]/', '', $qpp['postagepercent'] ) / 100;
+        $postagepercent = qpp_numeric_setting( $qpp['postagepercent'] );
+        if ( null !== $postagepercent ) {
+            $percent = $postagepercent / 100;
             $percentpostage = round( $amount * $quantity * $percent, 2 );
         }
-        if ( is_numeric( (float) $qpp['postagefixed'] ) ) {
-            $fixedpostage = round( (float) preg_replace( '/[^.,0-9]/', '', $qpp['postagefixed'] ), 2 );
+        $postagefixed = qpp_numeric_setting( $qpp['postagefixed'] );
+        if ( null !== $postagefixed ) {
+            $fixedpostage = round( $postagefixed, 2 );
         }
     }
     $handling = $percentpostage + $fixedpostage;
@@ -2008,6 +2224,7 @@ function qpp_process_form(
     /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
     global $quick_paypal_payments_fs;
     $currency = qpp_get_stored_curr();
+    $currency = qpp_ensure_currency( $currency, $id );
     $qpp = qpp_get_stored_options( $id );
     $send = qpp_get_stored_send( $id );
     $auto = qpp_get_stored_autoresponder( $id );
@@ -2105,7 +2322,7 @@ function qpp_process_form(
             'field21' => $values['cf'],
             'field22' => qpp_get_element( $values, 'consent' ),
         );
-        update_option( 'qpp_messages' . $id, $qpp_messages );
+        update_option( 'qpp_messages' . $id, $qpp_messages, false );
         /*
          * Record what this order is actually asking PayPal to charge, so the IPN
          * listener can verify the amount received against it rather than trusting
@@ -2134,9 +2351,68 @@ function qpp_process_form(
             }
         }
     }
+    /*
+     * Stripe takes over here when the form is set to it. The order row and the
+     * expectation record are already written above, so a Stripe payment is
+     * verified against exactly the same record a PayPal one is.
+     *
+     * qpp_get_stored_stripe() blanks enable below Platinum, so this cannot fire on
+     * a plan without it, and the qpp_stripe_* functions are stripped from the free
+     * build where enable is always empty.
+     *
+     * Recurring forms are not offered to Stripe at all, they go to PayPal. This
+     * plugin bills a fixed number of times and a Checkout Session has no way to
+     * say that: subscription_data[cancel_at] is refused as an unknown parameter,
+     * tested against the live API on 2024-06-20, 2025-03-31.basil and
+     * 2025-08-27.basil in August 2026. Creating the subscription and setting
+     * cancel_at on it afterwards would work, but leaves a window where the second
+     * call fails and a customer is billed open ended. One off payments on the
+     * same site still go to Stripe.
+     */
+    $qpp_stripe = qpp_get_stored_stripe();
+    if ( !$qpp['userecurring'] && 'checked' === $qpp_stripe['enable'] && !empty( $qpp_stripe['secret_key'] ) && function_exists( 'qpp_stripe_create_session' ) ) {
+        $stripe_reference = wp_strip_all_tags( $payment->reference );
+        if ( (int) $payment->quantity > 1 ) {
+            $stripe_reference .= ' (x' . (int) $payment->quantity . ')';
+        }
+        /*
+         * Sent as a single line of the order total rather than unit price times
+         * quantity. Dividing the total, which already carries handling and any
+         * discount, would not divide evenly and Stripe would charge a rounded
+         * figure that does not match the amount recorded for the order.
+         */
+        $stripe_session = qpp_stripe_create_session( qpp_stripe_build_session_args( array(
+            'reference'   => $stripe_reference,
+            'amount'      => (float) $A,
+            'quantity'    => 1,
+            'currency'    => substr( $currency[$id], 0, 3 ),
+            'token'       => $payment->custom,
+            'form_id'     => $id,
+            'email'       => $payment->address->email,
+            'success_url' => ( !empty( $send['thanksurl'] ) ? $send['thanksurl'] : $page_url ),
+            'cancel_url'  => ( !empty( $send['cancelurl'] ) ? $send['cancelurl'] : $page_url ),
+        ) ), $qpp_stripe['secret_key'] );
+        if ( !is_wp_error( $stripe_session ) ) {
+            /*
+             * Recorded rather than acted on. This runs during an ajax request as
+             * well as during a page render, and wp_add_inline_script() cannot reach
+             * a browser that loaded its scripts long ago. Each caller sends the
+             * customer on in the way that works where it is. The link below is the
+             * fallback if neither runs.
+             */
+            global $qpp_stripe_redirect;
+            $qpp_stripe_redirect = $stripe_session['url'];
+            return '<span><h2 id="qpp_reload">' . esc_html( $send['waiting'] ) . '</h2>' . '<p><a href="' . esc_url( $stripe_session['url'] ) . '">' . esc_html__( 'Continue to the secure payment page', 'quick-paypal-payments' ) . '</a></p></span>';
+        }
+        /*
+         * Falls through to PayPal rather than dying. The order is already recorded,
+         * and a Stripe outage should not mean the customer cannot pay at all.
+         */
+        qpp_ipn_reject( 'Stripe session could not be created: ' . $stripe_session->get_error_message(), array() );
+    }
     wp_add_inline_script( 'qpp_script', 'document.querySelector("#qpp_reload").scrollIntoView()' );
     $content = '<span><h2 id="qpp_reload">' . $send['waiting'] . '</h2>
-   
+
     <form action="' . $paypalurl . '" method="post" name="frmCart" id="frmCart" ' . $target . '>
     <input type="hidden" name="custom" value="' . trim( $payment->custom ) . '"/>
     <input type="hidden" name="tax" value="0.00">
@@ -2250,8 +2526,8 @@ function qpp_process_form(
     if ( defined( 'QPP_PAYPAL_DEBUG' ) && QPP_PAYPAL_DEBUG ) {
         //  echo 'DEBUG';
     }
-    if ( isset( $send['createuser'] ) && $send['createuser'] ) {
-        qpp_create_user( $values );
+    if ( qpp_should_create_user( $send, 'aftersubmission' ) ) {
+        qpp_create_user( $values, $send );
     }
     if ( isset( $ipn['ipn'] ) && $ipn['ipn'] == 'checked' ) {
         global $qpp_current_custom;
@@ -2279,11 +2555,15 @@ function qpp_current_page_url() {
 
 function qpp_currency(  $id  ) {
     $currency = qpp_get_stored_curr();
+    $currency = qpp_ensure_currency( $currency, $id );
     $c = array();
     $c['a'] = $c['b'] = '';
     if ( !isset( $currency[$id] ) ) {
         $currency[$id] = 0;
     }
+    // Carried alongside the symbols so callers can format to the right number
+    // of decimal places without looking the currency up again.
+    $c['code'] = strtoupper( substr( (string) $currency[$id], 0, 3 ) );
     $before = array(
         'USD' => '&#x24;',
         'CDN' => '&#x24;',
@@ -2635,63 +2915,64 @@ function qpp_messagetable(  $id, $email  ) {
     } else {
         $padding = 'cellpadding="5"';
     }
-    $dashboard .= '<table cellspacing="0" ' . $padding . '><tr>';
+    $table_class = ( $email ? '' : ' class="qpp-payments widefat striped"' );
+    $dashboard .= '<table cellspacing="0" ' . $padding . $table_class . '><thead><tr>';
     if ( !$email ) {
         $dashboard .= '<th></th>';
     }
-    $dashboard .= '<th style="text-align:left">Date Sent</th>';
+    $dashboard .= '<th>Date Sent</th>';
     foreach ( explode( ',', $options['sort'] ) as $name ) {
         $title = '';
         switch ( $name ) {
             case 'field1':
-                $dashboard .= '<th style="text-align:left">' . $options['inputreference'] . '</th>';
+                $dashboard .= '<th>' . $options['inputreference'] . '</th>';
                 break;
             case 'field2':
                 if ( !$options['use_multiples'] ) {
-                    $dashboard .= '<th style="text-align:left">' . $options['quantitylabel'] . '</th>';
+                    $dashboard .= '<th>' . $options['quantitylabel'] . '</th>';
                 }
                 break;
             case 'field3':
-                $dashboard .= '<th style="text-align:left">' . esc_html__( 'Amount', 'quick-paypal-payments' ) . '</th>';
+                $dashboard .= '<th>' . esc_html__( 'Amount', 'quick-paypal-payments' ) . '</th>';
                 break;
             case 'field4':
                 if ( $options['use_stock'] ) {
-                    $dashboard .= '<th style="text-align:left">' . $options['stocklabel'] . '</th>';
+                    $dashboard .= '<th>' . $options['stocklabel'] . '</th>';
                 }
                 break;
             case 'field5':
                 if ( $options['use_options'] ) {
-                    $dashboard .= '<th style="text-align:left">' . $options['optionlabel'] . '</th>';
+                    $dashboard .= '<th>' . $options['optionlabel'] . '</th>';
                 }
                 break;
             case 'field6':
                 if ( $options['usecoupon'] ) {
-                    $dashboard .= '<th style="text-align:left">' . $options['couponblurb'] . '</th>';
+                    $dashboard .= '<th>' . $options['couponblurb'] . '</th>';
                 }
                 break;
             case 'field8':
                 if ( $options['useemail'] || !$options['useemail'] && $address['email'] ) {
-                    $dashboard .= '<th style="text-align:left">' . $options['emailblurb'] . '</th>';
+                    $dashboard .= '<th>' . $options['emailblurb'] . '</th>';
                 }
                 break;
             case 'field17':
                 if ( $options['use_message'] ) {
-                    $dashboard .= '<th style="text-align:left:max-width:20%;">' . $options['messagelabel'] . '</th>';
+                    $dashboard .= '<th>' . $options['messagelabel'] . '</th>';
                 }
                 break;
             case 'field18':
                 if ( $options['use_datepicker'] ) {
-                    $dashboard .= '<th style="text-align:left:max-width:20%;">' . $options['datepickerlabel'] . '</th>';
+                    $dashboard .= '<th>' . $options['datepickerlabel'] . '</th>';
                 }
                 break;
             case 'field21':
                 if ( $options['use_cf'] ) {
-                    $dashboard .= '<th style="text-align:left:max-width:20%;">' . $options['cflabel'] . '</th>';
+                    $dashboard .= '<th>' . $options['cflabel'] . '</th>';
                 }
                 break;
             case 'field22':
                 if ( $options['use_consent'] ) {
-                    $dashboard .= '<th style="text-align:left:max-width:20%;">Consent</th>';
+                    $dashboard .= '<th>Consent</th>';
                 }
                 break;
         }
@@ -2709,13 +2990,13 @@ function qpp_messagetable(  $id, $email  ) {
             'night_phone_b'
         );
         foreach ( $arr as $item ) {
-            $dashboard .= '<th style="text-align:left">' . $address[$item] . '</th>';
+            $dashboard .= '<th>' . $address[$item] . '</th>';
         }
     }
     if ( $qpp_ipn['ipn'] ) {
         $dashboard .= '<th>' . $qpp_ipn['title'] . '</th>';
     }
-    $dashboard .= '</tr>';
+    $dashboard .= '</tr></thead><tbody>';
     if ( $messageoptions['messageorder'] == 'newest' ) {
         $i = count( $message ) - 1;
         $count = 0;
@@ -2764,9 +3045,9 @@ function qpp_messagetable(  $id, $email  ) {
         }
     }
     if ( $report ) {
-        $dashboard .= $content . '</table>';
+        $dashboard .= $content . '</tbody></table>';
     } else {
-        $dashboard .= '</table><p>No messages found</p>';
+        $dashboard .= '</tbody></table><p>' . esc_html__( 'No payments yet.', 'quick-paypal-payments' ) . '</p>';
     }
     $coups = '';
     for ($i = 1; $i <= $coupon['couponnumber']; $i++) {
@@ -2812,7 +3093,18 @@ function qpp_messagecontent(
     $content .= '<td>' . wp_strip_all_tags( qpp_wp_date( $format, $value['field0'] ) ) . '</td>';
     foreach ( explode( ',', $options['sort'] ) as $name ) {
         $title = '';
-        $amount = preg_replace( '/[^.,0-9]/', '', $value['field3'] );
+        /*
+         * Stored as a plain number, so 37.50 comes back as 37.5 and the list read
+         * like a price nobody would write. Formatted to whatever the currency
+         * uses, which is none for the yen and the forint.
+         */
+        $amount = preg_replace( '/[^.0-9]/', '', str_replace( ',', '.', (string) $value['field3'] ) );
+        $amount = ( is_numeric( $amount ) ? number_format(
+            (float) $amount,
+            qpp_paypal_decimals( qpp_get_element( $c, 'code', '' ) ),
+            '.',
+            ''
+        ) : $value['field3'] );
         switch ( $name ) {
             case 'field1':
                 $content .= '<td>' . $value['field1'] . '</td>';
@@ -2823,7 +3115,7 @@ function qpp_messagecontent(
                 }
                 break;
             case 'field3':
-                $content .= '<td>' . $c['b'] . $amount . $c['a'] . '</td>';
+                $content .= '<td class="qpp-amount">' . $c['b'] . $amount . $c['a'] . '</td>';
                 break;
             case 'field4':
                 if ( $options['use_stock'] ) {
@@ -2913,8 +3205,18 @@ function qpp_messagecontent(
         }
     }
     if ( $qpp_ipn['ipn'] ) {
-        $ipn = ( $qpp_setup['sandbox'] ? $value['field18'] : '' );
-        $content .= ( $value['field18'] == "Paid" ? '<td>' . $qpp_ipn['paid'] . '</td>' : '<td>' . $ipn . '</td>' );
+        if ( $value['field18'] == 'Paid' ) {
+            $content .= '<td class="qpp-paid">' . $qpp_ipn['paid'] . '</td>';
+        } elseif ( $qpp_setup['sandbox'] ) {
+            /*
+             * The order token, deliberately shown in sandbox so an IPN can be
+             * posted by hand while testing. Labelled and set in a monospace face
+             * so it reads as a reference to copy rather than a stray string.
+             */
+            $content .= '<td><span class="qpp-pending">' . esc_html__( 'Pending', 'quick-paypal-payments' ) . '</span>' . '<br /><code class="qpp-token" title="' . esc_attr__( 'Order token, for posting a test IPN', 'quick-paypal-payments' ) . '">' . esc_html( $value['field18'] ) . '</code></td>';
+        } else {
+            $content .= '<td><span class="qpp-pending">' . esc_html__( 'Pending', 'quick-paypal-payments' ) . '</span></td>';
+        }
     }
     $content .= '</tr>';
     return $content;
@@ -2925,6 +3227,14 @@ function qpp_ipn() {
     if ( !isset( $_REQUEST['qpp_ipn'] ) ) {
         return;
     }
+    /*
+     * IPN became a Silver feature in 6.0. Gated here rather than at the
+     * add_action() call because template_redirect fires long after Freemius has
+     * initialised, so there is no load order dependency on the global.
+     */
+    /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
+    global $quick_paypal_payments_fs;
+    return;
     /*
      * QPP_IPN_DEBUG_LOG_FILE is the prefixed name. IPN_DEBUG_LOG_FILE is far too
      * generic for a global constant, but site owners have it in wp-config.php to
@@ -3023,33 +3333,16 @@ function qpp_ipn() {
                     qpp_clear_ipn_expectation( $custom );
                     $message[$i]['field18'] = 'Paid';
                     $auto = qpp_get_stored_autoresponder( $item );
+                    if ( qpp_should_create_user( qpp_get_stored_send( $item ), 'afterpayment' ) ) {
+                        qpp_create_user( qpp_order_row_to_values( $message[$i] ), qpp_get_stored_send( $item ) );
+                    }
                     if ( false !== QPP_IPN_DEBUG_LOG_FILE ) {
                         error_log( gmdate( '[Y-m-d H:i e] ' ) . "Found Custom" . print_r( $auto, true ) . PHP_EOL, 3, QPP_IPN_DEBUG_LOG_FILE );
                     }
                     $send = qpp_get_stored_send( $item );
                     qpp_check_coupon( $message[$i]['field6'], $item );
                     if ( $auto['enable'] && $message[$i]['field8'] && $auto['whenconfirm'] == 'afterpayment' ) {
-                        $values = array(
-                            'reference'     => $message[$i]['field1'],
-                            'quantity'      => $message[$i]['field2'],
-                            'amount'        => $message[$i]['field3'],
-                            'stock'         => $message[$i]['field4'],
-                            'option1'       => $message[$i]['field5'],
-                            'email'         => $message[$i]['field8'],
-                            'firstname'     => $message[$i]['field9'],
-                            'lastname'      => $message[$i]['field10'],
-                            'address1'      => $message[$i]['field11'],
-                            'address2'      => $message[$i]['field12'],
-                            'city'          => $message[$i]['field13'],
-                            'state'         => $message[$i]['field14'],
-                            'zip'           => $message[$i]['field15'],
-                            'country'       => $message[$i]['field16'],
-                            'night_phone_b' => $message[$i]['field17'],
-                            'yourmessage'   => $message[$i]['field19'],
-                            'datepicker'    => $message[$i]['field20'],
-                            'cf'            => $message[$i]['field21'],
-                            'consent'       => $message[$i]['field22'],
-                        );
+                        $values = qpp_order_row_to_values( $message[$i] );
                         if ( false !== QPP_IPN_DEBUG_LOG_FILE ) {
                             error_log( gmdate( '[Y-m-d H:i e] ' ) . "About to send confirm: " . $message[$i]['field8'] . PHP_EOL, 3, QPP_IPN_DEBUG_LOG_FILE );
                         }
@@ -3059,7 +3352,7 @@ function qpp_ipn() {
                         unset($message[$i]);
                         $message = array_values( $message );
                     }
-                    update_option( 'qpp_messages' . $item, $message );
+                    update_option( 'qpp_messages' . $item, $message, false );
                 }
             }
         }
@@ -3124,8 +3417,18 @@ function qpp_send_confirmation(  $values, $form  ) {
     $send = qpp_get_stored_send( $form );
     $auto = qpp_get_stored_autoresponder( $form );
     $currency = qpp_get_stored_curr();
+    $currency = qpp_ensure_currency( $currency, $form );
     $curr = $currency[$form];
     $c = qpp_currency( $form );
+    /*
+     * $values reaches here from three callers that each build it their own
+     * way: the form on submission, the IPN listener and Stripe. Nothing
+     * enforces a shape, and this function reads a dozen keys without
+     * checking, so a caller that leaves one out warned in the middle of
+     * sending a customer their receipt. An order row carries the canonical
+     * key list, so an empty one supplies the defaults.
+     */
+    $values = array_merge( qpp_order_row_to_values( array() ), ( is_array( $values ) ? $values : array() ) );
     $auto['fromename'] = ( qpp_get_element( $auto, 'fromename', false ) ? $auto['fromename'] : get_bloginfo( 'name' ) );
     $auto['fromemail'] = ( qpp_get_element( $auto, 'fromemail', false ) ? $auto['fromemail'] : get_bloginfo( 'admin_email' ) );
     $confirmemail = ( qpp_get_element( $send, 'confirmemail', false ) ? $send['confirmemail'] : get_bloginfo( 'admin_email' ) );
@@ -3246,16 +3549,18 @@ function qpp_total_amount(  $currency, $qpp, $values  ) {
     return $amounttopay;
 }
 
-function qpp_create_user(  $values  ) {
-    $user_name = $values['firstname'];
-    $user_email = $values['email'];
+function qpp_create_user(  $values, $send = array()  ) {
+    // Called with whatever the payment path had to hand, so take neither key
+    // on trust. Both are checked for truth below anyway.
+    $user_name = qpp_get_element( $values, 'firstname' );
+    $user_email = qpp_get_element( $values, 'email' );
     $user_id = username_exists( $user_name );
     if ( !$user_id and email_exists( $user_email ) == false and $user_name and $user_email ) {
         $password = wp_generate_password( $length = 12, $include_standard_special_chars = false );
         $user_id = wp_create_user( $user_name, $password, $user_email );
         wp_update_user( array(
             'ID'   => $user_id,
-            'role' => 'subscriber',
+            'role' => qpp_creatable_role( qpp_get_element( $send, 'createuserrole', 'subscriber' ) ),
         ) );
         // Second parameter is deprecated; the notify target is the third.
         wp_new_user_notification( $user_id, null, 'both' );

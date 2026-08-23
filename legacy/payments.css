@@ -4,14 +4,14 @@
 .qpp-style {text-align:left;margin: 0 0 10px 0;padding: 0;}
 .qpp-style form {margin:0;padding: 0;}
 .qpp-style #none {border:0 solid #FFF;padding: 0;}
-.qpp-style #plain {border:1px solid #415063;padding:10px;margin: 0;}
-.qpp-style #rounded {border:1px solid #415063;padding:10px;-moz-border-radius: 10px;-webkit-box-shadow: 10px;border-radius: 10px;}
+.qpp-style #plain {border:1px solid #dcdce4;padding:22px;margin: 0;}
+.qpp-style #rounded {border:1px solid #dcdce4;padding:22px;border-radius: 10px;}
 .qpp-style #shadow {border:1px solid #415063;padding:10px;margin:0 10px 20px 0;-webkit-box-shadow: 5px 5px 5px #415063;-moz-box-shadow: 5px 5px 5px #415063;box-shadow: 5px 5px 5px #415063;}
 .qpp-style #roundshadow {border:1px solid #415063;padding:10px; margin:0 10px 20px 0;-webkit-box-shadow: 5px 5px 5px #415063;-moz-box-shadow: 5px 5px 5px #415063;box-shadow: 5px 5px 5px #415063;-moz-border-radius: 10px; -webkit-box-shadow: 10px; border-radius: 10px;}
 .qpp-style p {margin:4px 0 4px 0;padding:0;color:#465069;}
 .qpp-style input[type=text], .qpp-style textarea, .qpp-style select, .qpp-style #submit {margin:5px 0 7px 0;padding:6px;color:#465069;border:1px solid #415063;width:100%;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}
-.qpp-style input:focus, .qpp-style textarea:focus {background:#FFFFCC;}
-.qpp-style .error {color: #D31900;margin: 4px 0;}
+.qpp-style input:focus, .qpp-style textarea:focus {outline:none;border-color:#0E97EB;box-shadow:0 0 0 3px rgba(14,151,235,.18);}
+.qpp-style .error {color: #b3261e;margin: 4px 0;font-size:.9em;}
 .qpp-style img {width:100%;height:auto;overflow:hidden;}
 .qpp-style input#submit {color: #FFF;background: #343838;text-align: center;cursor: pointer;}
 .qpp-style input#couponsubmit {color: #FFF;background: #1f8416;text-align: center;cursor: pointer;margin:5px 0 7px 0;padding:6px;border:1px solid #415063;width:100%;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;font-size:inherit;}
@@ -157,4 +157,158 @@ input[type="range"]:focus + .rangeslider .rangeslider__handle {
 
 .qpp_label_tiny.qpp_input_content label {
 	font-size: 0.6em;
+}
+/*
+ * 6.0 refresh. Rules the Styling screen does not generate, so they apply
+ * whatever a site owner has saved there, and stay out of the way of anything it
+ * does control: no colours, borders, fonts or widths here.
+ */
+.qpp-style input[type=text],
+.qpp-style input[type=email],
+.qpp-style input[type=number],
+.qpp-style textarea,
+.qpp-style select {
+    border-radius: 8px;
+    transition: border-color .15s ease, box-shadow .15s ease;
+    max-width: 100%;
+}
+
+.qpp-style input#submit,
+.qpp-style input#couponsubmit {
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s ease;
+}
+
+.qpp-style input#submit:focus-visible,
+.qpp-style input#couponsubmit:focus-visible {
+    outline: 3px solid rgba(14, 151, 235, .45);
+    outline-offset: 2px;
+}
+
+/* The terms and consent rows were a checkbox and a wrapping link with nothing
+   holding them in line with each other. */
+.qpp-style p.input:has(> input[type=checkbox]) {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+}
+
+.qpp-style p.input > input[type=checkbox] {
+    margin: .25em 0 0;
+    flex: 0 0 auto;
+    width: auto;
+}
+
+.qpp-style .qpp-terms { line-height: 1.45; }
+
+/* Quantity sat tight against its label with no breathing room. */
+.qpp-style span .floatleft.input { padding-top: 8px; }
+.qpp-style span .floatright input { border-radius: 6px; }
+
+/*
+ * Theme armour.
+ *
+ * Checked against the seven most installed themes: Twenty Twenty-Five, Twenty
+ * Twenty-Four, Hello Elementor, Astra, Kadence, OceanWP and GeneratePress. The
+ * form reads correctly on all of them, so these rules are not fixes for those,
+ * they are insurance against the rest.
+ *
+ * Everything here is structural. Colours, fonts, borders and widths stay with
+ * the Styling screen, which generates its own rules, so a site owner's choices
+ * are never overridden from here.
+ */
+
+/* Themes that style `input` generically can make a hidden input visible, which
+   shows up as unexplained grey slabs above and below the fields. */
+.qpp-style input[type=hidden] { display: none !important; }
+
+/* A theme setting input { width: 100% } stretches checkboxes and radios across
+   the form, and turns the quantity box into a full width field. */
+.qpp-style input[type=checkbox],
+.qpp-style input[type=radio] {
+    width: auto;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Deliberately no min-width reset here. OceanWP draws its custom checkbox with
+   appearance:none and sizes it through min-width, so zeroing that collapses the
+   box to a hairline. Countering width:100% is enough. */
+
+/* Padding on a control the theme sized in content-box units overflows the card. */
+.qpp-style input,
+.qpp-style textarea,
+.qpp-style select,
+.qpp-style button { box-sizing: border-box; }
+
+/* The running total is a label, a currency symbol and an input on one line. A
+   theme that sizes inputs differently renders the figure smaller than the word
+   before it (OceanWP) or wide enough to break the symbol onto its own line
+   (Inspiro). Keep the row together and let the input size to its content. */
+.qpp-style p.qpp-total { white-space: nowrap; }
+.qpp-style input#qpptotal {
+    font-size: inherit;
+    line-height: inherit;
+    vertical-align: baseline;
+    width: auto;
+    padding: 0;
+    /* Themes that set inputs to display:block push the figure onto its own line,
+       away from the currency symbol. Inspiro does. */
+    display: inline-block;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* Themes fill inputs with their own tint, which reads as muddy inside the card.
+   GeneratePress does. Inherits the form's background so it follows the
+   Background setting rather than forcing white. */
+.qpp-style input[type=text],
+.qpp-style input[type=email],
+.qpp-style input[type=number],
+.qpp-style textarea,
+.qpp-style select { background-color: inherit; }
+
+/* Themes commonly restyle input[type=submit] site wide, including the colours
+   the Styling screen is supposed to control. */
+.qpp-style input#submit,
+.qpp-style input#couponsubmit {
+    text-transform: none;
+    letter-spacing: normal;
+    width: 100%;
+}
+
+/* Nothing in the form should be able to push the card wider than its column. */
+.qpp-style, .qpp-style * { max-width: 100%; }
+.qpp-style img { height: auto; }
+
+/* Heading above the multiple products list. Optional, so it only exists on a
+   form that has been given one. */
+.qpp-style .qpp-products-title {
+    margin: 14px 0 6px;
+    font-weight: 600;
+}
+
+/* An image button gives no feedback of its own, so it reads as a picture rather
+   than something to press. A theme cannot supply this: the image is the button. */
+.qpp-style input[type="image"] {
+    transition: opacity .15s ease-in-out;
+    cursor: pointer;
+}
+
+.qpp-style input[type="image"]:hover,
+.qpp-style input[type="image"]:focus {
+    opacity: .82;
+}
+
+.qpp-style input[type="image"]:active {
+    opacity: .7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .qpp-style input[type="image"] {
+        transition: none;
+    }
 }

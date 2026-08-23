@@ -1,4 +1,77 @@
 == Changelog ==
+= 6.0 =
+* The plugin now has three paid plans, Silver, Gold and Platinum, and several settings that used to be in the free version now need one of them. This has been announced in the plugin admin since 2022, along with a free upgrade to the Gold plan that covers every option the free version had. If you have not claimed it, use the notice on the settings screen before updating.
+* Silver and above: the Auto Responder that emails the payer, the IPN settings and the IPN listener, postage and handling, including postage in the amount to pay, PayPal sandbox mode, creating a WordPress user when someone pays, and email and knowledge base support. Every paid plan gets it; the free version uses the wordpress.org forum.
+* Gold and above: coupon codes, recurring payments, the range slider, donations only mode, pre-set reference options, offering a choice of prices, and amount validation.
+* Charging one set price stays free. A form that cannot set a price is a donation box rather than a payment form.
+* Platinum, unchanged from before: multiple products, the datepicker, Mailchimp data collection, and the checkout logo.
+* Settings your plan does not include are kept, not deleted. They read as switched off and the fields are hidden, but the stored values stay and come back exactly as they were if you upgrade later.
+* New in Platinum: Stripe Checkout. Take card payments as well as PayPal. The customer pays on a page hosted by Stripe, so no card details reach your site. Set it up on the new Stripe tab. Recurring forms continue to use PayPal.
+* Payments are no longer confirmed automatically in the free version, because the IPN listener needs Silver. Free forms still take payments through PayPal, but orders stay pending rather than being marked paid.
+* New: "Mark Selected as Paid" on the payments screen, so any plan can settle an order by hand after checking it in PayPal.
+* New Integrations tab. Mailchimp has moved there from the bottom of Send Options, where it was easy to miss and shared that page's Reset button. Resetting Mailchimp will no longer clear your submission settings.
+* The Products tab is now shown on every plan rather than hidden, so the feature is visible before you buy.
+* The upgrade prompt on the settings screen now offers the next plan up rather than always the top one.
+* Creating and managing forms has its own screen, under Forms, rather than sitting on the Setup screen among settings that have nothing to do with forms. The Setup tab is now Global, and holds only the settings that apply to the whole site.
+* The settings navigation is now grouped. Eleven tabs across two rows have become six sections, Setup, Form, Messages, Selling, Payments and Integrations, with the pages inside each shown beneath. Personal Details is in the navigation for the first time, having previously been reachable only from a link on the Fields screen.
+* The payment form has been restyled. It is now a constrained card that takes your theme's typeface, with softer borders, room to breathe and a clearer button, instead of a 280 pixel box with a bright green outline on every required field. These are defaults: a form whose styling you have already set keeps every choice you made.
+* Fix: a named form whose currency had never been saved showed its amount as 0.00 and printed a PHP warning above the form. The currency now falls back to the default form's, then to USD.
+* Fix: the form heading and introduction did not display on the form.
+* Fix: the PayPal image above the form, and a custom submit button image, never displayed. Their src attribute had been mangled by an old global rename.
+* Removed the Styles Location setting, which did nothing at all.
+* The admin screens have been restyled to match WordPress. Destructive buttons no longer look like the button that confirms: Reset and the Delete buttons on the payments screen are now marked in red, and Delete All says how many records it will destroy.
+* Leaving a settings tab with unsaved changes now warns you first.
+* Fix: a note on four settings screens rendered as raw markup instead of text.
+* Fix: the Knowledge Base and support forum buttons did not open in a new tab.
+* Fix: submitting a form without ticking the terms and conditions box raised a PHP warning, on exactly the submission the check exists to catch.
+* Fix: a form that refused a payment showed red boxes and no explanation if the validation messages had ever been saved blank. Blank now falls back to the wording the plugin ships with, and that wording has been rewritten to say what to do next. Use Reset on the Validation screen to go back to it.
+* Fix: the Error Checker on the Validation screen could not reach admin-ajax, so it did not exercise the same path as a real submission.
+* The checkout logo has a media library button, so a logo can be chosen or dragged in rather than uploaded elsewhere and its URL pasted. It has also moved down into Global Settings, having previously had the same prominence as the PayPal account email.
+* Removed debug logging that the payment form wrote to the browser console on every page it appeared on, including the contents of the form being submitted.
+* The Products and Coupons screens now say whether the field they configure is switched on for the form you are editing, and how to switch it on if not. Both screens could previously be filled in completely with no effect on the form and nothing to explain why. The Coupons screen also says when a form takes recurring payments, which rules coupons out entirely.
+* The multiple products list can be given a heading. It previously appeared on the form as a bare set of rows with no label.
+* Fix: saving the Products screen with "Allow quantities" unticked raised a PHP warning.
+* Two fields on the Products screen were both labelled "Form label". The second one sets the message shown when no product is chosen, and now says so.
+* Fix: nothing on the Fields screen could be switched off. Ticking a box saved, unticking it did not, so a field added to a form could never be removed again. Introduced during this release while fixing a different save bug.
+* Fix: a form set to validate a maximum quantity refused every submission if the message did not contain a number. The limit is read out of that message, so writing it in words or translating it left no limit to find and nothing on the form explained the refusal. The Fields screen now says the message has to contain the number.
+* Fix: a form with a fixed item number and no item set printed the words "Item Number" on the form where the item number should have been.
+* Fix: a choice of prices was offered with the pence dropped, so 9.50 read as "$9.5" and 12.00 as "$12". The amount charged was always right; only the display was wrong.
+* Fix: the Gold gate on offering a choice of prices read the wrong setting, so it never applied. The amount label was trimmed at its first comma instead, which also truncated any label containing one.
+* Fix: two settings tabs were a white screen. Nothing has linked to them for years, but an old bookmark reached a page that called a function the plugin no longer contains. They now fall through to the first tab like any unrecognised address.
+* Fix: saving the Products screen without filling in every one of the nine product rows raised PHP warnings.
+* Fix: choosing a form from the form selector warned if the form previously selected had since been deleted.
+* Fix: a newly installed plugin raised PHP warnings on several settings screens until the Global screen had been saved once. The default form was named by false rather than by its name, and PHP reads false as 0 when it is used to look something up.
+* Fix: the payment confirmation email and the create a WordPress user option read the payment details without checking they were all present. Whether they were depended on which of the three payment paths had sent them.
+* Fix: exporting payments to CSV warned for every record stored before a field was switched on, and exported the placeholder text from the form as though the customer had typed it.
+* Five button images now ship with the plugin and can be chosen on the Styling screen: three PayPal and two for cards. Previously the only way to use a button image was to find one elsewhere and upload it.
+* The card buttons are shown on every plan so the option is visible, and become selectable once Stripe is switched on with your keys entered. Until then they are greyed out with a link to set Stripe up, or to the plans if you are not on Platinum.
+* A card button is not displayed on a form that cannot take a card, so a form never says "Pay by Card" while sending the customer to PayPal. The setting is kept and the button returns when Stripe is available again.
+* Fix: a stray character on the Styling screen printed "</td" as text beside the input field colour.
+* Fix: pressing the button on a form set to Stripe did nothing. The form validates first and the script then posts a form out of the reply, which is how a PayPal payment leaves the site. A Stripe payment has no form to post, only a checkout address, so nothing happened and the customer waited on a spinner while a real Stripe session went unused.
+* Fix: the Stripe webhook endpoint did not exist. Stripe posted every event to it and got a 404 back, so a customer could pay and the order would stay pending for ever with nothing in the admin to explain it. Checkout itself worked, which is what made it hard to spot.
+* Fix: the Mailchimp integration was not loaded either, for the same reason.
+* Fix: with the thank you and cancel pages left blank, a Stripe payment returned the buyer to the site home rather than the page the form is on. PayPal already returned them to the page, which is what the settings screen says happens.
+* Fix: a form with postage switched on and no percentage entered failed with a server error on every submission, taking no payment at all. Charging a flat postage amount and leaving the percentage blank is an ordinary way to set the form up.
+* Fix: validating a form that collects personal details raised a PHP warning for each of those fields on every submission.
+* Postage amounts written with a comma for the decimal point are now read correctly. They were read as whole numbers, so 2,50 charged 2.00.
+* The PayPal account is now checked with PayPal as you type it, and by a button beside it. A mistyped account is the most common reason a customer sees "something went wrong" at PayPal, and until now nothing on the site could tell you: the address can be a perfectly valid email address and still not be a PayPal account. Nothing is charged by the check.
+* Every plugin screen warns while the PayPal account is missing or malformed, on each form separately, since Send Options can override it per form.
+* The currency is now chosen from the list PayPal accepts, rather than typed. The old help text admitted the problem: "If your currency is not listed the plugin will work but PayPal will not accept the payment." Currencies PayPal takes in whole units only, and those it supports for in country accounts only, are marked. A code already saved that is not on the list is kept and flagged rather than changed for you.
+* Fix: amounts in Hong Kong dollars and Malaysian ringgit had their decimals thrown away, so a 99.50 charge was taken as 99. Both currencies do accept decimals.
+* Fix: payments in Hungarian forint were refused by PayPal, because decimals were sent for a currency that does not accept them.
+* The Forms screen explains that taking a currency your PayPal account does not hold leaves every payment pending until you approve it in PayPal, which is a common reason an order never shows as paid.
+* The payment records have been restyled: striped rows, the amount lined up on the decimal point, and paid or pending said in words rather than left blank. The order token still shows against a pending payment in sandbox mode, which is how a test IPN is posted by hand, but it is now labelled as such.
+* Fix: amounts in the payment records dropped a trailing zero, so a 37.50 payment was listed as 37.5.
+* The Payments tab now links to the Payment Records screen, which is where people look for it.
+* The thank you and cancel page settings no longer talk only about PayPal, since Stripe returns the buyer to the same places.
+* The plugin's own icon now appears on the account, pricing and checkout screens, instead of a placeholder.
+* Creating a WordPress account for the buyer now lets you choose the role, on the Integrations screen. It was always Subscriber, which is still the default. Roles other plugins have added are offered, so a membership or shop role can be used. Administrator is not offered, and cannot be set by posting it.
+* The buyer's account is now created when the payment completes rather than when the form is submitted, so a buyer who does not complete payment no longer gets a working login. Marking a payment as paid by hand counts, which is the only route the free version has. Creating it on submission is still available if you want it.
+* The account creation settings point at the Members plugin, since choosing a role only does something if a plugin acts on it.
+* Tested up to PHP 8.5. The readme now describes what the free version does and what the paid version adds, rather than listing settings.
+* An image submit button now fades slightly on hover and press. An image gives no feedback of its own, so it read as a picture rather than something to click, and no theme can supply that because the image is the button.
+* A button image that ships with the plugin keeps working if the site moves domain or changes its content directory. A stored address is rebuilt from wherever the plugin is now.
+
 = 5.7.51 =
 * Security: the IPN listener now verifies the amount received, the currency, the receiving PayPal account and the payment status before marking an order paid. Previously a matching order token alone was enough, which allowed an order to be marked paid for less than its total. Thanks to Muni Nitish Kumar Yaddala for the report.
 * Security: IPN transactions are recorded so the same notification cannot be replayed.

@@ -21,8 +21,6 @@ function qpp_convert_commas(x) {
 		x[i].addEventListener(
 			'blur',
 			function () {
-				console.log('blur')
-				console.log(this.value)
 				this.value = this.value.trim();
 				if('other' == this.value ){
 					return;
@@ -72,8 +70,6 @@ function qppuncheck(form) {
 }
 
 function handleValidationResponse(e,f) {
-	console.log('response');
-	console.log(e);
 	fp = f.closest('.qpp-style');
 	var element = '';
 	if (typeof e === 'object') {
@@ -136,6 +132,15 @@ function handleValidationResponse(e,f) {
 				*/
 				return data;
 
+			} else if (data.redirect) {
+				/*
+				 * Stripe. There is no form to post, only somewhere to send the
+				 * customer, so go there. Checked before the form handling below,
+				 * which looks for a form this response does not contain.
+				 */
+				f.hide();
+				f.parent().find('.qpp-loading').show();
+				window.location.href = data.redirect;
 			} else {
 				// Hide form, show loading screen
 				f.hide();
@@ -191,40 +196,28 @@ function refreshNonce(callback) {
 		return;
 	}
 	
-	console.log('Refreshing nonce...');
-	console.debug(qpp_data.ajax_url);
 	$.post(qpp_data.ajax_url, {      //POST request
 		action: "qpp_refresh_nonce"
 	}, function(response) {            //callback
 		if (response && response.data && response.data.nonce) {
 			$('#qpp_payment_nonce').val(response.data.nonce);
-			console.log('Nonce refreshed successfully');       
 		}
 		// Always call the callback when done, regardless of success
 		if (typeof callback === 'function') callback();
 	}).fail(function() {
-		console.log('Failed to refresh nonce');
 		// Always call the callback when done, even on failure
 		if (typeof callback === 'function') callback();
 	});
 }
 
 function validateForm(ev) {
-	console.log('Form submission detected');
 	var f = $(this);
 	var c = f.find('input[clicked=true]');
 
 	if (c.attr('id') == 'couponsubmit') { // check if clicked button is the coupon apply button
-		console.log('Coupon submit button detected, proceeding with regular submission');
 		// just submit form regularly
 		return true;
 	}
-
-	console.log('Form being validated:', { 
-		form_id: f.attr('id'),
-		hasNonce: f.find('#qpp_payment_nonce').length > 0,
-		nonceValue: f.find('#qpp_payment_nonce').val()
-	});
 
 	qppcheck(f);
 	// reset the buttons' clicked state
@@ -232,15 +225,12 @@ function validateForm(ev) {
 
 	// Process the form directly without refreshing the nonce
 	// The nonce should already be refreshed by interaction
-	console.log('Processing form submission');
 
 	// Intercept request and handle with AJAX
 	var fd = $(f).serialize();
 	fd += '&' + c.attr('name') + '=' + c.val() + '&action=qpp_validate_form';
 	
-	console.log('Posting form data to ' + qpp_data.ajax_url);
 	$.post(qpp_data.ajax_url, fd, function(e) {
-		console.log('Received validation response from server');
 		handleValidationResponse(e, f);
 	}, 'JSON');
 
@@ -250,13 +240,6 @@ function validateForm(ev) {
 
 jQuery(document).ready(function() {
 	$ = jQuery;
-	
-	// Check if qpp_data is available
-	console.debug('Document ready. Checking qpp_data object:', {
-		qpp_data_exists: (typeof qpp_data !== 'undefined'),
-		ajax_url_exists: (typeof qpp_data !== 'undefined' && qpp_data.ajax_url),
-		nonce_fields: $('#qpp_payment_nonce').length
-	});
 	
 	if (typeof qpp_data === 'undefined' || !qpp_data.ajax_url) {
 		console.error('qpp_data.ajax_url is not available. Nonce refresh functionality will not work.');
@@ -272,16 +255,9 @@ jQuery(document).ready(function() {
 	// This helps prevent nonce validation failures due to cached pages
 	var nonceRefreshTimer;
 	$('.qpp-style form').on('focus click', 'input, select, textarea', function(e) {
-		console.debug('Form interaction detected:', {
-			type: e.type,
-			target: e.target.name || e.target.id || e.target.type,
-			hasNonceField: $('#qpp_payment_nonce').length > 0
-		});
-		
 		// Debounce the nonce refresh to avoid too many requests
 		clearTimeout(nonceRefreshTimer);
 		nonceRefreshTimer = setTimeout(function() {
-			console.debug('Calling refreshNonce() after debounce');
 			refreshNonce();
 		}, 500);
 	});
@@ -332,7 +308,6 @@ jQuery(document).ready(function() {
 
 					var fd = $(form).serialize();
 					fd += '&' + c.attr('name') + '=' + c.val() + '&action=qpp_validate_form';
-					console.log( 'ajax post')
 					$.ajax({
 						type:'POST',
 						url:qpp_data.ajax_url,
