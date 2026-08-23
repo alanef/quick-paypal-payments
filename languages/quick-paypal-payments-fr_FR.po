@@ -1,1781 +1,1784 @@
+# French (France) translation for Quick Paypal Payments.
 # Copyright (C) 2026 Fullworks
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
 "Project-Id-Version: Quick Paypal Payments 6.0.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/quick-paypal-payments\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Last-Translator: Fullworks\n"
+"Language-Team: French (France)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2026-08-23T17:11:48+00:00\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
+"Language: fr_FR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"PO-Revision-Date: 2026-08-23 00:00+0000\n"
 "X-Domain: quick-paypal-payments\n"
 
 #. Plugin Name of the plugin
 #: quick-paypal-payments.php
 msgid "Quick Paypal Payments"
-msgstr ""
+msgstr "Quick Paypal Payments"
 
 #. Plugin URI of the plugin
 #: quick-paypal-payments.php
 msgid "https://fullworksplugins.com/quick-paypal-payments/"
-msgstr ""
+msgstr "https://fullworksplugins.com/quick-paypal-payments/"
 
 #. Description of the plugin
 #: quick-paypal-payments.php
 msgid "Accept any amount or payment ID before submitting to paypal."
-msgstr ""
+msgstr "Acceptez n’importe quel montant ou référence de paiement avant l’envoi à PayPal."
 
 #. Author of the plugin
 #: quick-paypal-payments.php
 msgid "Fullworks"
-msgstr ""
+msgstr "Fullworks"
 
 #. Author URI of the plugin
 #: quick-paypal-payments.php
 msgid "https://fullworksplugins.com/"
-msgstr ""
+msgstr "https://fullworksplugins.com/"
 
 #. translators: %1$s is the path of the file that could not be loaded.
 #: control/autoloader.php:60
 #, php-format
 msgid "The system file attempting to be loaded at %1$s does not exist."
-msgstr ""
+msgstr "Le fichier système que l’on tente de charger à %1$s n’existe pas."
 
 #: core/class-utilities.php:318
 msgid "Payment Reference"
-msgstr ""
+msgstr "Référence du paiement"
 
 #: core/class-utilities.php:333
 msgid "Item Number"
-msgstr ""
+msgstr "Numéro d’article"
 
 #: core/class-utilities.php:352
 #: legacy/settings.php:1169
 msgid "Quantity"
-msgstr ""
+msgstr "Quantité"
 
 #: core/class-utilities.php:360
 msgid "maximum of 99"
-msgstr ""
+msgstr "maximum 99"
 
 #: core/class-utilities.php:371
 #: core/class-utilities.php:596
 msgid "Amount to pay"
-msgstr ""
+msgstr "Montant à payer"
 
 #: core/class-utilities.php:395
 msgid "Other"
-msgstr ""
+msgstr "Autre"
 
 #: core/class-utilities.php:399
 msgid "Enter Amount"
-msgstr ""
+msgstr "Saisissez le montant"
 
 #: core/class-utilities.php:414
 #: legacy/settings.php:1217
 msgid "Options"
-msgstr ""
+msgstr "Options"
 
 #: core/class-utilities.php:418
 msgid "Large,Medium,Small"
-msgstr ""
+msgstr "Grand,Moyen,Petit"
 
 #: core/class-utilities.php:437
 msgid "Handling charge will be added before payment"
-msgstr ""
+msgstr "Des frais de traitement seront ajoutés avant le paiement"
 
 #: core/class-utilities.php:459
 msgid "Spambot blocker question"
-msgstr ""
+msgstr "Question anti-spam"
 
 #: core/class-utilities.php:470
 msgid "Enter coupon code"
-msgstr ""
+msgstr "Saisissez le code promo"
 
 #: core/class-utilities.php:474
 msgid "Apply Coupon"
-msgstr ""
+msgstr "Appliquer le code"
 
 #: core/class-utilities.php:478
 msgid "Coupon Applied"
-msgstr ""
+msgstr "Code appliqué"
 
 #: core/class-utilities.php:482
 msgid "Invalid Code"
-msgstr ""
+msgstr "Code invalide"
 
 #: core/class-utilities.php:486
 msgid "Coupon No Longer Available"
-msgstr ""
+msgstr "Ce code n’est plus disponible"
 
 #: core/class-utilities.php:490
 #: legacy/quick-paypal-payments.php:3849
 msgid "Coupon Code:"
-msgstr ""
+msgstr "Code promo :"
 
 #: core/class-utilities.php:501
 msgid "I agree to the Terms and Conditions"
-msgstr ""
+msgstr "J’accepte les conditions générales"
 
 #: core/class-utilities.php:520
 msgid "Make sure you complete the next field"
-msgstr ""
+msgstr "Veillez à remplir le champ suivant"
 
 #: core/class-utilities.php:531
 msgid "Subscription details:"
-msgstr ""
+msgstr "Détails de l’abonnement :"
 
 #: core/class-utilities.php:539
 msgid "payments every "
-msgstr ""
+msgstr "paiements tous les "
 
 #: core/class-utilities.php:547
 msgid "day"
-msgstr ""
+msgstr "jour"
 
 #: core/class-utilities.php:551
 msgid "week"
-msgstr ""
+msgstr "semaine"
 
 #: core/class-utilities.php:555
 msgid "month"
-msgstr ""
+msgstr "mois"
 
 #: core/class-utilities.php:559
 msgid "year"
-msgstr ""
+msgstr "an"
 
 #: core/class-utilities.php:574
 msgid "Enter your details below"
-msgstr ""
+msgstr "Saisissez vos coordonnées ci-dessous"
 
 #: core/class-utilities.php:585
 msgid "Total:"
-msgstr ""
+msgstr "Total :"
 
 #: core/class-utilities.php:623
 msgid "Your email address"
-msgstr ""
+msgstr "Votre adresse e-mail"
 
 #: core/class-utilities.php:638
 msgid "Message"
-msgstr ""
+msgstr "Message"
 
 #: core/class-utilities.php:653
 msgid "Select date"
-msgstr ""
+msgstr "Choisissez une date"
 
 #. translators: %1$s is the [product] shortcode literal, %2$s is the [cost] shortcode literal.
 #: core/class-utilities.php:670
 #, php-format
 msgid "%1$s at $%2$s each"
-msgstr ""
+msgstr "%1$s à $%2$s l’unité"
 
 #: core/class-utilities.php:694
 msgid "Codice Fiscale"
-msgstr ""
+msgstr "Codice Fiscale"
 
 #: core/class-utilities.php:709
 #: legacy/options.php:104
 msgid "I consent to my data being retained by the site owner after payment has been processed."
-msgstr ""
+msgstr "J’accepte que le propriétaire du site conserve mes données une fois le paiement traité."
 
 #: core/class-utilities.php:932
 msgid "Payment Form"
-msgstr ""
+msgstr "Formulaire de paiement"
 
 #: core/class-utilities.php:936
 msgid "Enter the payment details and submit"
-msgstr ""
+msgstr "Saisissez les informations de paiement et validez"
 
 #: core/class-utilities.php:940
 msgid "Payment for: "
-msgstr ""
+msgstr "Paiement pour : "
 
 #: core/class-utilities.php:944
 msgid "Amount: "
-msgstr ""
+msgstr "Montant : "
 
 #: core/class-utilities.php:948
 msgid "Make Payment"
-msgstr ""
+msgstr "Payer"
 
 #: core/class-utilities.php:956
 msgid "Reset Form"
-msgstr ""
+msgstr "Réinitialiser le formulaire"
 
 #: core/class-utilities.php:960
 msgid "Oops, got a problem here"
-msgstr ""
+msgstr "Oups, il y a un problème"
 
 #: core/class-utilities.php:964
 msgid "Please check the payment details"
-msgstr ""
+msgstr "Veuillez vérifier les informations de paiement"
 
 #: core/class-utilities.php:998
 msgid "Thank you for your payment."
-msgstr ""
+msgstr "Merci pour votre paiement."
 
 #: core/class-utilities.php:1002
 msgid "Once payment has been confirmed we will process your order and be in contact soon."
-msgstr ""
+msgstr "Une fois le paiement confirmé, nous traiterons votre commande et vous contacterons rapidement."
 
 #: core/class-utilities.php:1012
 #: legacy/settings.php:2782
 msgid "First Name"
-msgstr ""
+msgstr "Prénom"
 
 #: core/class-utilities.php:1020
 #: legacy/settings.php:2788
 msgid "Last Name"
-msgstr ""
+msgstr "Nom"
 
 #: core/class-utilities.php:1028
 msgid "Your Email Address"
-msgstr ""
+msgstr "Votre adresse e-mail"
 
 #: core/class-utilities.php:1036
 #: legacy/settings.php:2800
 msgid "Address Line 1"
-msgstr ""
+msgstr "Adresse, ligne 1"
 
 #: core/class-utilities.php:1044
 #: legacy/settings.php:2806
 msgid "Address Line 2"
-msgstr ""
+msgstr "Adresse, ligne 2"
 
 #: core/class-utilities.php:1052
 #: legacy/settings.php:2812
 msgid "City"
-msgstr ""
+msgstr "Ville"
 
 #: core/class-utilities.php:1060
 #: legacy/settings.php:2818
 msgid "State"
-msgstr ""
+msgstr "Région"
 
 #: core/class-utilities.php:1068
 msgid "Zip Code"
-msgstr ""
+msgstr "Code postal"
 
 #: core/class-utilities.php:1076
 #: legacy/settings.php:2830
 msgid "Country"
-msgstr ""
+msgstr "Pays"
 
 #: core/class-utilities.php:1084
 msgid "Phone Number"
-msgstr ""
+msgstr "Numéro de téléphone"
 
 #: core/class-utilities.php:1232
 msgid "Join our mailing list"
-msgstr ""
+msgstr "Rejoindre notre liste de diffusion"
 
 #: core/class-utilities.php:1252
 msgid "Waiting for PayPal..."
-msgstr ""
+msgstr "En attente de PayPal..."
 
 #: core/class-utilities.php:1394
 msgid "United States dollar"
-msgstr ""
+msgstr "Dollar américain"
 
 #: core/class-utilities.php:1395
 msgid "Pound sterling"
-msgstr ""
+msgstr "Livre sterling"
 
 #: core/class-utilities.php:1396
 msgid "Euro"
-msgstr ""
+msgstr "Euro"
 
 #: core/class-utilities.php:1397
 msgid "Australian dollar"
-msgstr ""
+msgstr "Dollar australien"
 
 #: core/class-utilities.php:1398
 msgid "Brazilian real "
-msgstr ""
+msgstr "Réal brésilien "
 
 #: core/class-utilities.php:1399
 msgid "Canadian dollar"
-msgstr ""
+msgstr "Dollar canadien"
 
 #: core/class-utilities.php:1400
 msgid "Czech koruna"
-msgstr ""
+msgstr "Couronne tchèque"
 
 #: core/class-utilities.php:1401
 msgid "Danish krone"
-msgstr ""
+msgstr "Couronne danoise"
 
 #: core/class-utilities.php:1402
 msgid "Hong Kong dollar"
-msgstr ""
+msgstr "Dollar de Hong Kong"
 
 #: core/class-utilities.php:1403
 msgid "Hungarian forint 1"
-msgstr ""
+msgstr "Forint hongrois 1"
 
 #: core/class-utilities.php:1404
 msgid "Indian rupee "
-msgstr ""
+msgstr "Roupie indienne "
 
 #: core/class-utilities.php:1405
 msgid "Israeli new shekel"
-msgstr ""
+msgstr "Nouveau shekel israélien"
 
 #: core/class-utilities.php:1406
 msgid "Japanese yen "
-msgstr ""
+msgstr "Yen japonais "
 
 #: core/class-utilities.php:1407
 msgid "Malaysian ringgit 4"
-msgstr ""
+msgstr "Ringgit malaisien 4"
 
 #: core/class-utilities.php:1408
 msgid "Mexican peso"
-msgstr ""
+msgstr "Peso mexicain"
 
 #: core/class-utilities.php:1409
 msgid "New Taiwan dollar 1"
-msgstr ""
+msgstr "Nouveau dollar de Taïwan 1"
 
 #: core/class-utilities.php:1410
 msgid "New Zealand dollar"
-msgstr ""
+msgstr "Dollar néo-zélandais"
 
 #: core/class-utilities.php:1411
 msgid "Norwegian krone"
-msgstr ""
+msgstr "Couronne norvégienne"
 
 #: core/class-utilities.php:1412
 msgid "Philippine peso"
-msgstr ""
+msgstr "Peso philippin"
 
 #: core/class-utilities.php:1413
 msgid "Polish złoty"
-msgstr ""
+msgstr "Złoty polonais"
 
 #: core/class-utilities.php:1414
 msgid "Russian ruble"
-msgstr ""
+msgstr "Rouble russe"
 
 #: core/class-utilities.php:1415
 msgid "Singapore dollar"
-msgstr ""
+msgstr "Dollar de Singapour"
 
 #: core/class-utilities.php:1416
 msgid "Swedish krona"
-msgstr ""
+msgstr "Couronne suédoise"
 
 #: core/class-utilities.php:1417
 msgid "Swiss franc"
-msgstr ""
+msgstr "Franc suisse"
 
 #: core/class-utilities.php:1418
 msgid "Thai baht"
-msgstr ""
+msgstr "Baht thaïlandais"
 
 #: core/class-utilities.php:1424
 msgid "Albania"
-msgstr ""
+msgstr "Albanie"
 
 #: core/class-utilities.php:1425
 msgid "Algeria"
-msgstr ""
+msgstr "Algérie"
 
 #: core/class-utilities.php:1426
 msgid "Andorra"
-msgstr ""
+msgstr "Andorre"
 
 #: core/class-utilities.php:1427
 msgid "Angola"
-msgstr ""
+msgstr "Angola"
 
 #: core/class-utilities.php:1428
 msgid "Anguilla"
-msgstr ""
+msgstr "Anguilla"
 
 #: core/class-utilities.php:1429
 msgid "Antigua & Barbuda"
-msgstr ""
+msgstr "Antigua-et-Barbuda"
 
 #: core/class-utilities.php:1430
 msgid "Argentina"
-msgstr ""
+msgstr "Argentine"
 
 #: core/class-utilities.php:1431
 msgid "Armenia"
-msgstr ""
+msgstr "Arménie"
 
 #: core/class-utilities.php:1432
 msgid "Aruba"
-msgstr ""
+msgstr "Aruba"
 
 #: core/class-utilities.php:1433
 #: legacy/settings.php:1984
 msgid "Australia"
-msgstr ""
+msgstr "Australie"
 
 #: core/class-utilities.php:1434
 #: legacy/settings.php:1985
 msgid "Austria"
-msgstr ""
+msgstr "Autriche"
 
 #: core/class-utilities.php:1435
 msgid "Azerbaijan"
-msgstr ""
+msgstr "Azerbaïdjan"
 
 #: core/class-utilities.php:1436
 msgid "Bahamas"
-msgstr ""
+msgstr "Bahamas"
 
 #: core/class-utilities.php:1437
 msgid "Bahrain"
-msgstr ""
+msgstr "Bahreïn"
 
 #: core/class-utilities.php:1438
 msgid "Barbados"
-msgstr ""
+msgstr "Barbade"
 
 #: core/class-utilities.php:1439
 msgid "Belarus"
-msgstr ""
+msgstr "Biélorussie"
 
 #: core/class-utilities.php:1440
 #: legacy/settings.php:1986
 msgid "Belgium"
-msgstr ""
+msgstr "Belgique"
 
 #: core/class-utilities.php:1441
 msgid "Belize"
-msgstr ""
+msgstr "Belize"
 
 #: core/class-utilities.php:1442
 msgid "Benin"
-msgstr ""
+msgstr "Bénin"
 
 #: core/class-utilities.php:1443
 msgid "Bermuda"
-msgstr ""
+msgstr "Bermudes"
 
 #: core/class-utilities.php:1444
 msgid "Bhutan"
-msgstr ""
+msgstr "Bhoutan"
 
 #: core/class-utilities.php:1445
 msgid "Bolivia"
-msgstr ""
+msgstr "Bolivie"
 
 #: core/class-utilities.php:1446
 msgid "Bosnia & Herzegovina"
-msgstr ""
+msgstr "Bosnie-Herzégovine"
 
 #: core/class-utilities.php:1447
 msgid "Botswana"
-msgstr ""
+msgstr "Botswana"
 
 #: core/class-utilities.php:1448
 #: legacy/settings.php:1987
 msgid "Brazil"
-msgstr ""
+msgstr "Brésil"
 
 #: core/class-utilities.php:1449
 msgid "British Virgin Islands"
-msgstr ""
+msgstr "Îles Vierges britanniques"
 
 #: core/class-utilities.php:1450
 msgid "Brunei"
-msgstr ""
+msgstr "Brunei"
 
 #: core/class-utilities.php:1451
 msgid "Bulgaria"
-msgstr ""
+msgstr "Bulgarie"
 
 #: core/class-utilities.php:1452
 msgid "Burkina Faso"
-msgstr ""
+msgstr "Burkina Faso"
 
 #: core/class-utilities.php:1453
 msgid "Burundi"
-msgstr ""
+msgstr "Burundi"
 
 #: core/class-utilities.php:1454
 msgid "Cambodia"
-msgstr ""
+msgstr "Cambodge"
 
 #: core/class-utilities.php:1455
 msgid "Cameroon"
-msgstr ""
+msgstr "Cameroun"
 
 #: core/class-utilities.php:1456
 #: legacy/settings.php:1989
 msgid "Canada"
-msgstr ""
+msgstr "Canada"
 
 #: core/class-utilities.php:1457
 msgid "Cape Verde"
-msgstr ""
+msgstr "Cap-Vert"
 
 #: core/class-utilities.php:1458
 msgid "Cayman Islands"
-msgstr ""
+msgstr "Îles Caïmans"
 
 #: core/class-utilities.php:1459
 msgid "Chad"
-msgstr ""
+msgstr "Tchad"
 
 #: core/class-utilities.php:1460
 msgid "Chile"
-msgstr ""
+msgstr "Chili"
 
 #: core/class-utilities.php:1461
 #: legacy/settings.php:1991
 msgid "China"
-msgstr ""
+msgstr "Chine"
 
 #: core/class-utilities.php:1462
 msgid "China Worldwide"
-msgstr ""
+msgstr "Chine (international)"
 
 #: core/class-utilities.php:1463
 msgid "Colombia"
-msgstr ""
+msgstr "Colombie"
 
 #: core/class-utilities.php:1464
 msgid "Comoros"
-msgstr ""
+msgstr "Comores"
 
 #: core/class-utilities.php:1465
 msgid "Congo - Brazzaville"
-msgstr ""
+msgstr "Congo-Brazzaville"
 
 #: core/class-utilities.php:1466
 msgid "Congo - Kinshasa"
-msgstr ""
+msgstr "Congo-Kinshasa"
 
 #: core/class-utilities.php:1467
 msgid "Cook Islands"
-msgstr ""
+msgstr "Îles Cook"
 
 #: core/class-utilities.php:1468
 msgid "Costa Rica"
-msgstr ""
+msgstr "Costa Rica"
 
 #: core/class-utilities.php:1469
 msgid "Côte D’Ivoire"
-msgstr ""
+msgstr "Côte d’Ivoire"
 
 #: core/class-utilities.php:1470
 msgid "Croatia"
-msgstr ""
+msgstr "Croatie"
 
 #: core/class-utilities.php:1471
 msgid "Cyprus"
-msgstr ""
+msgstr "Chypre"
 
 #: core/class-utilities.php:1472
 msgid "Czech Republic"
-msgstr ""
+msgstr "République tchèque"
 
 #: core/class-utilities.php:1473
 msgid "Denmark"
-msgstr ""
+msgstr "Danemark"
 
 #: core/class-utilities.php:1474
 msgid "Djibouti"
-msgstr ""
+msgstr "Djibouti"
 
 #: core/class-utilities.php:1475
 msgid "Dominica"
-msgstr ""
+msgstr "Dominique"
 
 #: core/class-utilities.php:1476
 msgid "Dominican Republic"
-msgstr ""
+msgstr "République dominicaine"
 
 #: core/class-utilities.php:1477
 msgid "Ecuador"
-msgstr ""
+msgstr "Équateur"
 
 #: core/class-utilities.php:1478
 msgid "Egypt"
-msgstr ""
+msgstr "Égypte"
 
 #: core/class-utilities.php:1479
 msgid "El Salvador"
-msgstr ""
+msgstr "Salvador"
 
 #: core/class-utilities.php:1480
 msgid "Eritrea"
-msgstr ""
+msgstr "Érythrée"
 
 #: core/class-utilities.php:1481
 msgid "Estonia"
-msgstr ""
+msgstr "Estonie"
 
 #: core/class-utilities.php:1482
 msgid "Ethiopia"
-msgstr ""
+msgstr "Éthiopie"
 
 #: core/class-utilities.php:1483
 msgid "Falkland Islands"
-msgstr ""
+msgstr "Îles Malouines"
 
 #: core/class-utilities.php:1484
 msgid "Faroe Islands"
-msgstr ""
+msgstr "Îles Féroé"
 
 #: core/class-utilities.php:1485
 msgid "Fiji"
-msgstr ""
+msgstr "Fidji"
 
 #: core/class-utilities.php:1486
 msgid "Finland"
-msgstr ""
+msgstr "Finlande"
 
 #: core/class-utilities.php:1487
 #: legacy/settings.php:1993
 msgid "France"
-msgstr ""
+msgstr "France"
 
 #: core/class-utilities.php:1488
 msgid "French Guiana"
-msgstr ""
+msgstr "Guyane française"
 
 #: core/class-utilities.php:1489
 msgid "French Polynesia"
-msgstr ""
+msgstr "Polynésie française"
 
 #: core/class-utilities.php:1490
 msgid "Gabon"
-msgstr ""
+msgstr "Gabon"
 
 #: core/class-utilities.php:1491
 msgid "Gambia"
-msgstr ""
+msgstr "Gambie"
 
 #: core/class-utilities.php:1492
 msgid "Georgia"
-msgstr ""
+msgstr "Géorgie"
 
 #: core/class-utilities.php:1493
 #: legacy/settings.php:1994
 msgid "Germany"
-msgstr ""
+msgstr "Allemagne"
 
 #: core/class-utilities.php:1494
 msgid "Gibraltar"
-msgstr ""
+msgstr "Gibraltar"
 
 #: core/class-utilities.php:1495
 msgid "Greece"
-msgstr ""
+msgstr "Grèce"
 
 #: core/class-utilities.php:1496
 msgid "Greenland"
-msgstr ""
+msgstr "Groenland"
 
 #: core/class-utilities.php:1497
 msgid "Grenada"
-msgstr ""
+msgstr "Grenade"
 
 #: core/class-utilities.php:1498
 msgid "Guadeloupe"
-msgstr ""
+msgstr "Guadeloupe"
 
 #: core/class-utilities.php:1499
 msgid "Guatemala"
-msgstr ""
+msgstr "Guatemala"
 
 #: core/class-utilities.php:1500
 msgid "Guinea"
-msgstr ""
+msgstr "Guinée"
 
 #: core/class-utilities.php:1501
 msgid "Guinea-Bissau"
-msgstr ""
+msgstr "Guinée-Bissau"
 
 #: core/class-utilities.php:1502
 msgid "Guyana"
-msgstr ""
+msgstr "Guyana"
 
 #: core/class-utilities.php:1503
 msgid "Honduras"
-msgstr ""
+msgstr "Honduras"
 
 #: core/class-utilities.php:1504
 msgid "Hong Kong Sar China"
-msgstr ""
+msgstr "Hong Kong (RAS de Chine)"
 
 #: core/class-utilities.php:1505
 msgid "Hungary"
-msgstr ""
+msgstr "Hongrie"
 
 #: core/class-utilities.php:1506
 msgid "Iceland"
-msgstr ""
+msgstr "Islande"
 
 #: core/class-utilities.php:1507
 msgid "India"
-msgstr ""
+msgstr "Inde"
 
 #: core/class-utilities.php:1508
 msgid "Indonesia"
-msgstr ""
+msgstr "Indonésie"
 
 #: core/class-utilities.php:1509
 msgid "Ireland"
-msgstr ""
+msgstr "Irlande"
 
 #: core/class-utilities.php:1510
 msgid "Israel"
-msgstr ""
+msgstr "Israël"
 
 #: core/class-utilities.php:1511
 #: legacy/settings.php:1997
 msgid "Italy"
-msgstr ""
+msgstr "Italie"
 
 #: core/class-utilities.php:1512
 msgid "Jamaica"
-msgstr ""
+msgstr "Jamaïque"
 
 #: core/class-utilities.php:1513
 msgid "Japan"
-msgstr ""
+msgstr "Japon"
 
 #: core/class-utilities.php:1514
 msgid "Jordan"
-msgstr ""
+msgstr "Jordanie"
 
 #: core/class-utilities.php:1515
 msgid "Kazakhstan"
-msgstr ""
+msgstr "Kazakhstan"
 
 #: core/class-utilities.php:1516
 msgid "Kenya"
-msgstr ""
+msgstr "Kenya"
 
 #: core/class-utilities.php:1517
 msgid "Kiribati"
-msgstr ""
+msgstr "Kiribati"
 
 #: core/class-utilities.php:1518
 msgid "Kuwait"
-msgstr ""
+msgstr "Koweït"
 
 #: core/class-utilities.php:1519
 msgid "Kyrgyzstan"
-msgstr ""
+msgstr "Kirghizistan"
 
 #: core/class-utilities.php:1520
 msgid "Laos"
-msgstr ""
+msgstr "Laos"
 
 #: core/class-utilities.php:1521
 msgid "Latvia"
-msgstr ""
+msgstr "Lettonie"
 
 #: core/class-utilities.php:1522
 msgid "Lesotho"
-msgstr ""
+msgstr "Lesotho"
 
 #: core/class-utilities.php:1523
 msgid "Liechtenstein"
-msgstr ""
+msgstr "Liechtenstein"
 
 #: core/class-utilities.php:1524
 msgid "Lithuania"
-msgstr ""
+msgstr "Lituanie"
 
 #: core/class-utilities.php:1525
 msgid "Luxembourg"
-msgstr ""
+msgstr "Luxembourg"
 
 #: core/class-utilities.php:1526
 msgid "Macedonia"
-msgstr ""
+msgstr "Macédoine"
 
 #: core/class-utilities.php:1527
 msgid "Madagascar"
-msgstr ""
+msgstr "Madagascar"
 
 #: core/class-utilities.php:1528
 msgid "Malawi"
-msgstr ""
+msgstr "Malawi"
 
 #: core/class-utilities.php:1529
 msgid "Malaysia"
-msgstr ""
+msgstr "Malaisie"
 
 #: core/class-utilities.php:1530
 msgid "Maldives"
-msgstr ""
+msgstr "Maldives"
 
 #: core/class-utilities.php:1531
 msgid "Mali"
-msgstr ""
+msgstr "Mali"
 
 #: core/class-utilities.php:1532
 msgid "Malta"
-msgstr ""
+msgstr "Malte"
 
 #: core/class-utilities.php:1533
 msgid "Marshall Islands"
-msgstr ""
+msgstr "Îles Marshall"
 
 #: core/class-utilities.php:1534
 msgid "Martinique"
-msgstr ""
+msgstr "Martinique"
 
 #: core/class-utilities.php:1535
 msgid "Mauritania"
-msgstr ""
+msgstr "Mauritanie"
 
 #: core/class-utilities.php:1536
 msgid "Mauritius"
-msgstr ""
+msgstr "Maurice"
 
 #: core/class-utilities.php:1537
 msgid "Mayotte"
-msgstr ""
+msgstr "Mayotte"
 
 #: core/class-utilities.php:1538
 msgid "Mexico"
-msgstr ""
+msgstr "Mexique"
 
 #: core/class-utilities.php:1539
 msgid "Micronesia"
-msgstr ""
+msgstr "Micronésie"
 
 #: core/class-utilities.php:1540
 msgid "Moldova"
-msgstr ""
+msgstr "Moldavie"
 
 #: core/class-utilities.php:1541
 msgid "Monaco"
-msgstr ""
+msgstr "Monaco"
 
 #: core/class-utilities.php:1542
 msgid "Mongolia"
-msgstr ""
+msgstr "Mongolie"
 
 #: core/class-utilities.php:1543
 msgid "Montenegro"
-msgstr ""
+msgstr "Monténégro"
 
 #: core/class-utilities.php:1544
 msgid "Montserrat"
-msgstr ""
+msgstr "Montserrat"
 
 #: core/class-utilities.php:1545
 msgid "Morocco"
-msgstr ""
+msgstr "Maroc"
 
 #: core/class-utilities.php:1546
 msgid "Mozambique"
-msgstr ""
+msgstr "Mozambique"
 
 #: core/class-utilities.php:1547
 msgid "Namibia"
-msgstr ""
+msgstr "Namibie"
 
 #: core/class-utilities.php:1548
 msgid "Nauru"
-msgstr ""
+msgstr "Nauru"
 
 #: core/class-utilities.php:1549
 msgid "Nepal"
-msgstr ""
+msgstr "Népal"
 
 #: core/class-utilities.php:1550
 #: legacy/settings.php:1999
 msgid "Netherlands"
-msgstr ""
+msgstr "Pays-Bas"
 
 #: core/class-utilities.php:1551
 msgid "New Caledonia"
-msgstr ""
+msgstr "Nouvelle-Calédonie"
 
 #: core/class-utilities.php:1552
 msgid "New Zealand"
-msgstr ""
+msgstr "Nouvelle-Zélande"
 
 #: core/class-utilities.php:1553
 msgid "Nicaragua"
-msgstr ""
+msgstr "Nicaragua"
 
 #: core/class-utilities.php:1554
 msgid "Niger"
-msgstr ""
+msgstr "Niger"
 
 #: core/class-utilities.php:1555
 msgid "Nigeria"
-msgstr ""
+msgstr "Nigeria"
 
 #: core/class-utilities.php:1556
 msgid "Niue"
-msgstr ""
+msgstr "Niue"
 
 #: core/class-utilities.php:1557
 msgid "Norfolk Island"
-msgstr ""
+msgstr "Île Norfolk"
 
 #: core/class-utilities.php:1558
 msgid "Norway"
-msgstr ""
+msgstr "Norvège"
 
 #: core/class-utilities.php:1559
 msgid "Oman"
-msgstr ""
+msgstr "Oman"
 
 #: core/class-utilities.php:1560
 msgid "Palau"
-msgstr ""
+msgstr "Palaos"
 
 #: core/class-utilities.php:1561
 msgid "Panama"
-msgstr ""
+msgstr "Panama"
 
 #: core/class-utilities.php:1562
 msgid "Papua New Guinea"
-msgstr ""
+msgstr "Papouasie-Nouvelle-Guinée"
 
 #: core/class-utilities.php:1563
 msgid "Paraguay"
-msgstr ""
+msgstr "Paraguay"
 
 #: core/class-utilities.php:1564
 msgid "Peru"
-msgstr ""
+msgstr "Pérou"
 
 #: core/class-utilities.php:1565
 msgid "Philippines"
-msgstr ""
+msgstr "Philippines"
 
 #: core/class-utilities.php:1566
 msgid "Pitcairn Islands"
-msgstr ""
+msgstr "Îles Pitcairn"
 
 #: core/class-utilities.php:1567
 #: legacy/settings.php:2001
 msgid "Poland"
-msgstr ""
+msgstr "Pologne"
 
 #: core/class-utilities.php:1568
 #: legacy/settings.php:2002
 msgid "Portugal"
-msgstr ""
+msgstr "Portugal"
 
 #: core/class-utilities.php:1569
 msgid "Qatar"
-msgstr ""
+msgstr "Qatar"
 
 #: core/class-utilities.php:1570
 msgid "Réunion"
-msgstr ""
+msgstr "La Réunion"
 
 #: core/class-utilities.php:1571
 msgid "Romania"
-msgstr ""
+msgstr "Roumanie"
 
 #: core/class-utilities.php:1572
 #: legacy/settings.php:2003
 msgid "Russia"
-msgstr ""
+msgstr "Russie"
 
 #: core/class-utilities.php:1573
 msgid "Rwanda"
-msgstr ""
+msgstr "Rwanda"
 
 #: core/class-utilities.php:1574
 msgid "Samoa"
-msgstr ""
+msgstr "Samoa"
 
 #: core/class-utilities.php:1575
 msgid "San Marino"
-msgstr ""
+msgstr "Saint-Marin"
 
 #: core/class-utilities.php:1576
 msgid "São Tomé & Príncipe"
-msgstr ""
+msgstr "Sao Tomé-et-Principe"
 
 #: core/class-utilities.php:1577
 msgid "Saudi Arabia"
-msgstr ""
+msgstr "Arabie saoudite"
 
 #: core/class-utilities.php:1578
 msgid "Senegal"
-msgstr ""
+msgstr "Sénégal"
 
 #: core/class-utilities.php:1579
 msgid "Serbia"
-msgstr ""
+msgstr "Serbie"
 
 #: core/class-utilities.php:1580
 msgid "Seychelles"
-msgstr ""
+msgstr "Seychelles"
 
 #: core/class-utilities.php:1581
 msgid "Sierra Leone"
-msgstr ""
+msgstr "Sierra Leone"
 
 #: core/class-utilities.php:1582
 msgid "Singapore"
-msgstr ""
+msgstr "Singapour"
 
 #: core/class-utilities.php:1583
 msgid "Slovakia"
-msgstr ""
+msgstr "Slovaquie"
 
 #: core/class-utilities.php:1584
 msgid "Slovenia"
-msgstr ""
+msgstr "Slovénie"
 
 #: core/class-utilities.php:1585
 msgid "Solomon Islands"
-msgstr ""
+msgstr "Îles Salomon"
 
 #: core/class-utilities.php:1586
 msgid "Somalia"
-msgstr ""
+msgstr "Somalie"
 
 #: core/class-utilities.php:1587
 msgid "South Africa"
-msgstr ""
+msgstr "Afrique du Sud"
 
 #: core/class-utilities.php:1588
 msgid "South Korea"
-msgstr ""
+msgstr "Corée du Sud"
 
 #: core/class-utilities.php:1589
 #: legacy/settings.php:2008
 msgid "Spain"
-msgstr ""
+msgstr "Espagne"
 
 #: core/class-utilities.php:1590
 msgid "Sri Lanka"
-msgstr ""
+msgstr "Sri Lanka"
 
 #: core/class-utilities.php:1591
 msgid "St. Helena"
-msgstr ""
+msgstr "Sainte-Hélène"
 
 #: core/class-utilities.php:1592
 msgid "St. Kitts & Nevis"
-msgstr ""
+msgstr "Saint-Christophe-et-Niévès"
 
 #: core/class-utilities.php:1593
 msgid "St. Lucia"
-msgstr ""
+msgstr "Sainte-Lucie"
 
 #: core/class-utilities.php:1594
 msgid "St. Pierre & Miquelon"
-msgstr ""
+msgstr "Saint-Pierre-et-Miquelon"
 
 #: core/class-utilities.php:1595
 msgid "St. Vincent & Grenadines"
-msgstr ""
+msgstr "Saint-Vincent-et-les-Grenadines"
 
 #: core/class-utilities.php:1596
 msgid "Suriname"
-msgstr ""
+msgstr "Suriname"
 
 #: core/class-utilities.php:1597
 msgid "Svalbard & Jan Mayen"
-msgstr ""
+msgstr "Svalbard et Jan Mayen"
 
 #: core/class-utilities.php:1598
 msgid "Swaziland"
-msgstr ""
+msgstr "Eswatini"
 
 #: core/class-utilities.php:1599
 msgid "Sweden"
-msgstr ""
+msgstr "Suède"
 
 #: core/class-utilities.php:1600
 #: legacy/settings.php:1990
 msgid "Switzerland"
-msgstr ""
+msgstr "Suisse"
 
 #: core/class-utilities.php:1601
 msgid "Taiwan"
-msgstr ""
+msgstr "Taïwan"
 
 #: core/class-utilities.php:1602
 msgid "Tajikistan"
-msgstr ""
+msgstr "Tadjikistan"
 
 #: core/class-utilities.php:1603
 msgid "Tanzania"
-msgstr ""
+msgstr "Tanzanie"
 
 #: core/class-utilities.php:1604
 msgid "Thailand"
-msgstr ""
+msgstr "Thaïlande"
 
 #: core/class-utilities.php:1605
 msgid "Togo"
-msgstr ""
+msgstr "Togo"
 
 #: core/class-utilities.php:1606
 msgid "Tonga"
-msgstr ""
+msgstr "Tonga"
 
 #: core/class-utilities.php:1607
 msgid "Trinidad & Tobago"
-msgstr ""
+msgstr "Trinité-et-Tobago"
 
 #: core/class-utilities.php:1608
 msgid "Tunisia"
-msgstr ""
+msgstr "Tunisie"
 
 #: core/class-utilities.php:1609
 msgid "Turkmenistan"
-msgstr ""
+msgstr "Turkménistan"
 
 #: core/class-utilities.php:1610
 msgid "Turks & Caicos Islands"
-msgstr ""
+msgstr "Îles Turques-et-Caïques"
 
 #: core/class-utilities.php:1611
 msgid "Tuvalu"
-msgstr ""
+msgstr "Tuvalu"
 
 #: core/class-utilities.php:1612
 msgid "Uganda"
-msgstr ""
+msgstr "Ouganda"
 
 #: core/class-utilities.php:1613
 msgid "Ukraine"
-msgstr ""
+msgstr "Ukraine"
 
 #: core/class-utilities.php:1614
 msgid "United Arab Emirates"
-msgstr ""
+msgstr "Émirats arabes unis"
 
 #: core/class-utilities.php:1615
 #: legacy/settings.php:2012
 msgid "United Kingdom"
-msgstr ""
+msgstr "Royaume-Uni"
 
 #: core/class-utilities.php:1616
 #: legacy/settings.php:2013
 msgid "United States"
-msgstr ""
+msgstr "États-Unis"
 
 #: core/class-utilities.php:1617
 msgid "Uruguay"
-msgstr ""
+msgstr "Uruguay"
 
 #: core/class-utilities.php:1618
 msgid "Vanuatu"
-msgstr ""
+msgstr "Vanuatu"
 
 #: core/class-utilities.php:1619
 msgid "Vatican City"
-msgstr ""
+msgstr "Vatican"
 
 #: core/class-utilities.php:1620
 msgid "Venezuela"
-msgstr ""
+msgstr "Venezuela"
 
 #: core/class-utilities.php:1621
 msgid "Vietnam"
-msgstr ""
+msgstr "Viêt Nam"
 
 #: core/class-utilities.php:1622
 msgid "Wallis & Futuna"
-msgstr ""
+msgstr "Wallis-et-Futuna"
 
 #: core/class-utilities.php:1623
 msgid "Yemen"
-msgstr ""
+msgstr "Yémen"
 
 #: core/class-utilities.php:1624
 msgid "Zambia"
-msgstr ""
+msgstr "Zambie"
 
 #: core/class-utilities.php:1625
 msgid "Zimbabwe"
-msgstr ""
+msgstr "Zimbabwe"
 
 #: legacy/messages.php:70
 msgid "Silver confirms payments automatically from PayPal, so you do not have to check them by hand."
-msgstr ""
+msgstr "Silver confirme les paiements automatiquement depuis PayPal, vous n’avez donc plus à les vérifier à la main."
 
 #: legacy/messages.php:71
 #: legacy/settings.php:518
 msgid "See plans and prices"
-msgstr ""
+msgstr "Voir les offres et les tarifs"
 
 #: legacy/messages.php:89
 #: legacy/quick-paypal-payments.php:3058
 msgid "Default"
-msgstr ""
+msgstr "Par défaut"
 
 #. translators: 1: form name, 2: today's date.
 #: legacy/messages.php:92
 #, php-format
 msgid "Payment List for %1$s as at %2$s"
-msgstr ""
+msgstr "Liste des paiements pour %1$s au %2$s"
 
 #: legacy/messages.php:96
 msgid "That is not a valid email address, nothing was sent."
-msgstr ""
+msgstr "Ce n’est pas une adresse e-mail valide, rien n’a été envoyé."
 
 #. translators: %s: email address.
 #: legacy/messages.php:107
 #, php-format
 msgid "Message list has been sent to %s."
-msgstr ""
+msgstr "La liste des messages a été envoyée à %s."
 
 #: legacy/messages.php:113
 msgid "Payment list has been reset."
-msgstr ""
+msgstr "La liste des paiements a été réinitialisée."
 
 #: legacy/messages.php:126
 msgid "The message options have been updated."
-msgstr ""
+msgstr "Les options des messages ont été mises à jour."
 
 #. translators: %d is the number of payments marked as paid.
 #: legacy/messages.php:155
 #, php-format
 msgid "%d payment marked as paid."
 msgid_plural "%d payments marked as paid."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d paiement marqué comme payé."
+msgstr[1] "%d paiements marqués comme payés."
 
 #: legacy/messages.php:165
 msgid "No payments were changed. Select the payments you have checked in PayPal, then mark them as paid."
-msgstr ""
+msgstr "Aucun paiement n’a été modifié. Sélectionnez les paiements que vous avez vérifiés dans PayPal, puis marquez-les comme payés."
 
 #: legacy/messages.php:184
 msgid "Selected payments have been deleted."
-msgstr ""
+msgstr "Les paiements sélectionnés ont été supprimés."
 
 #: legacy/messages.php:207
 msgid "Show"
-msgstr ""
+msgstr "Afficher"
 
 #: legacy/messages.php:209
 msgid "all messages."
-msgstr ""
+msgstr "tous les messages."
 
 #: legacy/messages.php:210
 msgid "List"
-msgstr ""
+msgstr "Trier"
 
 #: legacy/messages.php:210
 msgid "oldest first"
-msgstr ""
+msgstr "plus anciens d’abord"
 
 #: legacy/messages.php:211
 msgid "newest first"
-msgstr ""
+msgstr "plus récents d’abord"
 
 #: legacy/messages.php:213
 msgid "Hide paid transactions"
-msgstr ""
+msgstr "Masquer les transactions payées"
 
 #: legacy/messages.php:215
 msgid "Show addresses"
-msgstr ""
+msgstr "Afficher les adresses"
 
 #: legacy/messages.php:217
 msgid "Update options"
-msgstr ""
+msgstr "Mettre à jour les options"
 
 #: legacy/messages.php:227
 #: legacy/settings.php:2235
 #: legacy/settings.php:3440
 msgid "the default form"
-msgstr ""
+msgstr "le formulaire par défaut"
 
 #. translators: %d is the number of payment records.
 #: legacy/messages.php:230
 #, php-format
 msgid "Delete All (%d record)"
 msgid_plural "Delete All (%d records)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Tout supprimer (%d enregistrement)"
+msgstr[1] "Tout supprimer (%d enregistrements)"
 
 #. translators: 1: number of payment records, 2: name of the form.
 #: legacy/messages.php:235
 #, php-format
 msgid "Permanently delete %1$d payment record for %2$s? This cannot be undone. Export to CSV first if you need it."
 msgid_plural "Permanently delete all %1$d payment records for %2$s? This cannot be undone. Export to CSV first if you need them."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Supprimer définitivement %1$d enregistrement de paiement pour %2$s ? Cette action est irréversible. Exportez-le d’abord en CSV si vous en avez besoin."
+msgstr[1] "Supprimer définitivement les %1$d enregistrements de paiement pour %2$s ? Cette action est irréversible. Exportez-les d’abord en CSV si vous en avez besoin."
 
 #: legacy/messages.php:249
 msgid "Send to this email address:"
-msgstr ""
+msgstr "Envoyer à cette adresse e-mail :"
 
 #: legacy/messages.php:250
 msgid "Email List"
-msgstr ""
+msgstr "Envoyer la liste par e-mail"
 
 #: legacy/messages.php:251
 msgid "Export to CSV"
-msgstr ""
+msgstr "Exporter en CSV"
 
 #: legacy/messages.php:253
 msgid "Mark Selected as Paid"
-msgstr ""
+msgstr "Marquer la sélection comme payée"
 
 #: legacy/messages.php:255
 msgid "Delete Selected"
-msgstr ""
+msgstr "Supprimer la sélection"
 
 #: legacy/messages.php:255
 msgid "Delete the selected payment records? This cannot be undone."
-msgstr ""
+msgstr "Supprimer les enregistrements de paiement sélectionnés ? Cette action est irréversible."
 
 #: legacy/messages.php:260
 msgid "Payments are not confirmed automatically on your plan. Check a payment in your PayPal account, then select it above and mark it as paid."
-msgstr ""
+msgstr "Avec votre offre, les paiements ne sont pas confirmés automatiquement. Vérifiez le paiement dans votre compte PayPal, puis sélectionnez-le ci-dessus et marquez-le comme payé."
 
 #: legacy/options.php:105
 msgid "Consent Given"
-msgstr ""
+msgstr "Consentement donné"
 
 #: legacy/options.php:106
 msgid "Consent NOT Given"
-msgstr ""
+msgstr "Consentement NON donné"
 
 #: legacy/paypal-account.php:46
 msgid "No PayPal account has been entered, so this form cannot take a payment."
-msgstr ""
+msgstr "Aucun compte PayPal n’a été saisi, ce formulaire ne peut donc pas accepter de paiement."
 
 #: legacy/paypal-account.php:50
 msgid "The PayPal account has a space at the start or the end."
-msgstr ""
+msgstr "Le compte PayPal contient une espace au début ou à la fin."
 
 #: legacy/paypal-account.php:63
 msgid "The PayPal account is not a valid email address, so PayPal will refuse every payment."
-msgstr ""
+msgstr "Le compte PayPal n’est pas une adresse e-mail valide, PayPal refusera donc tous les paiements."
 
 #: legacy/paypal-account.php:95
 msgid "PayPal does not recognise this account. Check the address for a typo, and check it is the address the PayPal account is registered to."
-msgstr ""
+msgstr "PayPal ne reconnaît pas ce compte. Vérifiez que l’adresse ne contient pas de faute de frappe et qu’il s’agit bien de l’adresse à laquelle le compte PayPal est enregistré."
 
 #: legacy/paypal-account.php:96
 msgid "PayPal will not accept payments to this account. It may not be confirmed, or it may not be able to receive payments in this currency."
-msgstr ""
+msgstr "PayPal n’acceptera pas de paiements vers ce compte. Il n’est peut-être pas confirmé, ou il ne peut peut-être pas recevoir de paiements dans cette devise."
 
 #: legacy/paypal-account.php:97
 msgid "PayPal does not support this currency for this account."
-msgstr ""
+msgstr "PayPal ne prend pas en charge cette devise pour ce compte."
 
 #: legacy/paypal-account.php:122
 msgid "PayPal accepted this account. A payment to it will reach the checkout page."
-msgstr ""
+msgstr "PayPal a accepté ce compte. Un paiement vers celui-ci atteindra la page de paiement."
 
 #. translators: %s is an error code from PayPal.
 #: legacy/paypal-account.php:146
 #, php-format
 msgid "PayPal refused this account and gave the reason %s."
-msgstr ""
+msgstr "PayPal a refusé ce compte pour le motif %s."
 
 #: legacy/paypal-account.php:153
 msgid "PayPal did not accept this account, and did not say why."
-msgstr ""
+msgstr "PayPal n’a pas accepté ce compte, sans en donner la raison."
 
 #. translators: %s is an error message from WordPress.
 #: legacy/paypal-account.php:204
 #, php-format
 msgid "Could not reach PayPal to check: %s"
-msgstr ""
+msgstr "Impossible de joindre PayPal pour vérifier : %s"
 
 #: legacy/paypal-account.php:293
 msgid "(PayPal does not list this one)"
-msgstr ""
+msgstr "(PayPal ne propose pas celle-ci)"
 
 #: legacy/paypal-account.php:303
 msgid "(whole units only)"
-msgstr ""
+msgstr "(unités entières seulement)"
 
 #: legacy/paypal-account.php:306
 msgid "(in country accounts only)"
-msgstr ""
+msgstr "(comptes du pays seulement)"
 
 #: legacy/quick-paypal-payments.php:1329
 msgid "No products selected."
-msgstr ""
+msgstr "Aucun produit sélectionné."
 
 #: legacy/quick-paypal-payments.php:2560
 msgid "Continue to the secure payment page"
-msgstr ""
+msgstr "Continuer vers la page de paiement sécurisée"
 
 #: legacy/quick-paypal-payments.php:2817
 msgid "Paypal Payments"
-msgstr ""
+msgstr "Paiements PayPal"
 
 #: legacy/quick-paypal-payments.php:2818
 msgid "Add paypal payment form to your sidebar"
-msgstr ""
+msgstr "Ajoutez un formulaire de paiement PayPal à votre colonne latérale"
 
 #: legacy/quick-paypal-payments.php:2881
 msgid "DEPRECATION NOTICE"
-msgstr ""
+msgstr "AVIS D’OBSOLESCENCE"
 
 #: legacy/quick-paypal-payments.php:2883
 msgid "This is a legacy Widget and is limited in functionality and may be withdrawn in the future"
-msgstr ""
+msgstr "Ceci est un ancien widget, aux fonctions limitées, qui pourra être retiré à l’avenir"
 
 #: legacy/quick-paypal-payments.php:2885
 msgid "Replace with a shortcode e.g. [qpp form=myform]"
-msgstr ""
+msgstr "Remplacez-le par un shortcode, par ex. [qpp form=myform]"
 
 #: legacy/quick-paypal-payments.php:3017
 #: legacy/settings.php:3512
 #: legacy/settings.php:3513
 msgid "Settings"
-msgstr ""
+msgstr "Réglages"
 
 #: legacy/quick-paypal-payments.php:3062
 #: legacy/quick-paypal-payments.php:3091
 #: legacy/settings.php:1177
 #: legacy/settings.php:3206
 msgid "Amount"
-msgstr ""
+msgstr "Montant"
 
 #: legacy/quick-paypal-payments.php:3065
 #: legacy/settings.php:1145
 msgid "Reference"
-msgstr ""
+msgstr "Référence"
 
 #: legacy/quick-paypal-payments.php:3078
 #: legacy/settings.php:3203
 msgid "Date Sent"
-msgstr ""
+msgstr "Date d’envoi"
 
 #: legacy/quick-paypal-payments.php:3130
 #: legacy/settings.php:1401
 msgid "Consent"
-msgstr ""
+msgstr "Consentement"
 
 #: legacy/quick-paypal-payments.php:3185
 msgid "No payments yet."
-msgstr ""
+msgstr "Aucun paiement pour l’instant."
 
 #: legacy/quick-paypal-payments.php:3200
 msgid "Coupons remaining"
-msgstr ""
+msgstr "Codes promo restants"
 
 #: legacy/quick-paypal-payments.php:3340
 #: legacy/quick-paypal-payments.php:3344
 msgid "Pending"
-msgstr ""
+msgstr "En attente"
 
 #: legacy/quick-paypal-payments.php:3341
 msgid "Order token, for posting a test IPN"
-msgstr ""
+msgstr "Jeton de commande, pour envoyer un IPN de test"
 
 #: legacy/quick-paypal-payments.php:3628
 msgid "Order Details:"
-msgstr ""
+msgstr "Détails de la commande :"
 
 #: legacy/quick-paypal-payments.php:3631
 msgid "Item"
-msgstr ""
+msgstr "Article"
 
 #: legacy/quick-paypal-payments.php:3631
 #: legacy/settings.php:2994
 msgid "Qty"
-msgstr ""
+msgstr "Qté"
 
 #: legacy/quick-paypal-payments.php:3700
 msgid "Payment Notification"
-msgstr ""
+msgstr "Notification de paiement"
 
 #: legacy/quick-paypal-payments.php:3703
 #: legacy/settings.php:72
 #: legacy/settings.php:1311
 msgid "Personal Details"
-msgstr ""
+msgstr "Coordonnées"
 
 #: legacy/settings.php:52
 msgid "Quick PayPal Payments"
-msgstr ""
+msgstr "Quick PayPal Payments"
 
 #: legacy/settings.php:53
 msgid "Take PayPal and card payments from a shortcode."
-msgstr ""
+msgstr "Acceptez les paiements PayPal et par carte depuis un shortcode."
 
 #: legacy/settings.php:61
 #: legacy/settings.php:62
 msgid "Global"
-msgstr ""
+msgstr "Global"
 
 #: legacy/settings.php:65
 msgid "Forms"
-msgstr ""
+msgstr "Formulaires"
 
 #: legacy/settings.php:69
 msgid "Create / Manage"
-msgstr ""
+msgstr "Créer / Gérer"
 
 #: legacy/settings.php:70
 msgid "Fields"
-msgstr ""
+msgstr "Champs"
 
 #: legacy/settings.php:71
 msgid "Styling"
-msgstr ""
+msgstr "Style"
 
 #: legacy/settings.php:76
 msgid "Messages"
-msgstr ""
+msgstr "Messages"
 
 #: legacy/settings.php:78
 msgid "Validation"
-msgstr ""
+msgstr "Validation"
 
 #: legacy/settings.php:79
 #: legacy/settings.php:2030
 #: legacy/settings.php:2535
 msgid "Auto Responder"
-msgstr ""
+msgstr "Réponse automatique"
 
 #: legacy/settings.php:83
 msgid "Selling"
-msgstr ""
+msgstr "Vente"
 
 #: legacy/settings.php:85
 msgid "Products"
-msgstr ""
+msgstr "Produits"
 
 #: legacy/settings.php:86
 msgid "Coupons"
-msgstr ""
+msgstr "Codes promo"
 
 #: legacy/settings.php:90
 #: legacy/settings.php:880
 #: legacy/settings.php:2453
 msgid "Payments"
-msgstr ""
+msgstr "Paiements"
 
 #: legacy/settings.php:92
 #: legacy/settings.php:2597
 msgid "Send Options"
-msgstr ""
+msgstr "Options d’envoi"
 
 #: legacy/settings.php:103
 #: legacy/settings.php:3499
 #: legacy/settings.php:3500
 msgid "Payment Records"
-msgstr ""
+msgstr "Historique des paiements"
 
 #: legacy/settings.php:109
 #: legacy/settings.php:110
 #: legacy/settings.php:2197
 msgid "Integrations"
-msgstr ""
+msgstr "Intégrations"
 
 #: legacy/settings.php:263
 #: legacy/settings.php:1377
 #: legacy/settings.php:1383
 #: legacy/settings.php:3067
 msgid "Multiple Products"
-msgstr ""
+msgstr "Produits multiples"
 
 #. translators: 1: feature name, 2: plan name such as Silver.
 #: legacy/settings.php:290
 #, php-format
 msgid "%1$s is available in the %2$s plan and above."
-msgstr ""
+msgstr "%1$s est disponible à partir de l’offre %2$s."
 
 #: legacy/settings.php:317
 msgid "Forms &rarr; Fields"
-msgstr ""
+msgstr "Formulaires &rarr; Champs"
 
 #. translators: %s: what the screen configures, e.g. "Coupons".
 #: legacy/settings.php:322
 #, php-format
 msgid "%s cannot be used on this form."
-msgstr ""
+msgstr "%s ne peut pas être utilisé sur ce formulaire."
 
 #: legacy/settings.php:324
 msgid "Anything set here is kept, and applies again if that changes."
-msgstr ""
+msgstr "Tout ce qui est réglé ici est conservé et s’applique de nouveau si cela change."
 
 #. translators: 1: what the screen configures, e.g. "Coupons", 2: the row label on the Fields screen, 3: a link to the Fields screen.
 #: legacy/settings.php:332
 #, php-format
 msgid "%1$s are switched on for this form, so what you set here appears on it. Untick \"%2$s\" on %3$s to switch them off."
-msgstr ""
+msgstr "%1$s sont activés sur ce formulaire, donc ce que vous réglez ici y apparaît. Décochez « %2$s » dans %3$s pour les désactiver."
 
 #. translators: 1: what the screen configures, e.g. "Coupons", 2: the row label on the Fields screen, 3: a link to the Fields screen.
 #: legacy/settings.php:343
 #, php-format
 msgid "%1$s are switched off for this form, so nothing set here will appear on it. Tick \"%2$s\" on %3$s to switch them on. Your settings are kept either way."
-msgstr ""
+msgstr "%1$s sont désactivés sur ce formulaire, donc rien de ce que vous réglez ici n’y apparaîtra. Cochez « %2$s » dans %3$s pour les activer. Vos réglages sont conservés dans tous les cas."
 
 #: legacy/settings.php:394
 msgid "Stop checking PayPal by hand"
-msgstr ""
+msgstr "Arrêtez de vérifier PayPal à la main"
 
 #: legacy/settings.php:396
 msgid "Payments confirm themselves. An order marks itself paid the moment PayPal takes the money, instead of sitting there until you go and look."
-msgstr ""
+msgstr "Les paiements se confirment tout seuls. Une commande se marque payée dès que PayPal encaisse l’argent, au lieu d’attendre que vous alliez voir."
 
 #: legacy/settings.php:397
 msgid "Your buyer gets a thank you email automatically, with their order details in it."
-msgstr ""
+msgstr "Votre acheteur reçoit automatiquement un e-mail de remerciement avec le détail de sa commande."
 
 #: legacy/settings.php:398
 msgid "Charge postage and handling, as a fixed amount or a percentage of the order."
-msgstr ""
+msgstr "Facturez des frais de port et de traitement, en montant fixe ou en pourcentage de la commande."
 
 #: legacy/settings.php:399
 msgid "Test everything safely in PayPal sandbox before you take a real payment."
-msgstr ""
+msgstr "Testez tout en sécurité dans le bac à sable PayPal avant d’encaisser un vrai paiement."
 
 #: legacy/settings.php:400
 msgid "Create a WordPress account for the buyer as they pay, so paying and having a login are one step."
-msgstr ""
+msgstr "Créez un compte WordPress pour l’acheteur au moment du paiement, pour que payer et obtenir un accès ne fassent qu’un."
 
 #: legacy/settings.php:401
 msgid "Email and knowledge base support, instead of the public forum."
-msgstr ""
+msgstr "Support par e-mail et base de connaissances, au lieu du forum public."
 
 #: legacy/settings.php:405
 msgid "Sell, rather than just collect money"
-msgstr ""
+msgstr "Vendez, au lieu de simplement encaisser"
 
 #: legacy/settings.php:407
 msgid "Coupon codes, fixed amount or percentage, with your own expiry and usage limits."
-msgstr ""
+msgstr "Codes promo, montant fixe ou pourcentage, avec vos propres limites d’expiration et d’utilisation."
 
 #: legacy/settings.php:408
 msgid "Recurring payments, so a subscription or a payment plan bills itself."
-msgstr ""
+msgstr "Paiements récurrents, pour qu’un abonnement ou un échéancier se facture tout seul."
 
 #: legacy/settings.php:409
 msgid "Take donations, with a slider or a set of suggested amounts instead of an empty box."
-msgstr ""
+msgstr "Recevez des dons, avec un curseur ou des montants suggérés plutôt qu’une case vide."
 
 #: legacy/settings.php:410
 msgid "Offer a choice of prices as buttons or a dropdown, instead of one price or an empty box."
-msgstr ""
+msgstr "Proposez un choix de prix sous forme de boutons ou de liste déroulante, plutôt qu’un prix unique ou une case vide."
 
 #: legacy/settings.php:414
 msgid "Take cards, not just PayPal"
-msgstr ""
+msgstr "Acceptez les cartes, pas seulement PayPal"
 
 #: legacy/settings.php:416
 msgid "Stripe Checkout, so customers who will not use PayPal can pay by card. Hosted by Stripe, so no card details touch your site."
-msgstr ""
+msgstr "Stripe Checkout, pour que les clients qui refusent PayPal puissent payer par carte. Hébergé par Stripe, donc aucune donnée de carte ne transite par votre site."
 
 #: legacy/settings.php:417
 msgid "Sell up to nine products from one form, with their own prices and quantities."
-msgstr ""
+msgstr "Vendez jusqu’à neuf produits depuis un seul formulaire, avec leurs propres prix et quantités."
 
 #: legacy/settings.php:418
 msgid "Collect a date on the form, for bookings, deliveries or appointments."
-msgstr ""
+msgstr "Collectez une date sur le formulaire, pour les réservations, livraisons ou rendez-vous."
 
 #: legacy/settings.php:419
 msgid "Add every buyer to your Mailchimp list as they pay."
-msgstr ""
+msgstr "Ajoutez chaque acheteur à votre liste Mailchimp au moment du paiement."
 
 #. translators: 1: plan name, 2: the plans beneath it, e.g. "Gold and Silver".
 #: legacy/settings.php:462
 #, php-format
 msgid "%1$s includes everything in %2$s as well:"
-msgstr ""
+msgstr "%1$s inclut aussi tout ce qu’il y a dans %2$s :"
 
 #. translators: joins two plan names in a list.
 #: legacy/settings.php:465
 msgid " and "
-msgstr ""
+msgstr " et "
 
 #: legacy/settings.php:473
 msgid "And above that:"
-msgstr ""
+msgstr "Et au-dessus :"
 
 #: legacy/settings.php:511
 msgid "Start your free trial"
-msgstr ""
+msgstr "Commencer votre essai gratuit"
 
 #: legacy/settings.php:560
 msgid "Try every feature free"
-msgstr ""
+msgstr "Essayez toutes les fonctionnalités gratuitement"
 
 #: legacy/settings.php:561
 msgid "Automatic payment confirmation, coupons, recurring payments and card payments with Stripe. The lot, for the whole trial."
-msgstr ""
+msgstr "Confirmation automatique des paiements, codes promo, paiements récurrents et paiements par carte avec Stripe. Tout, pendant toute la durée de l’essai."
 
 #: legacy/settings.php:568
 msgid "payments confirmed automatically, the Auto Responder, postage and handling, creating a WordPress user when someone pays, and email and knowledge base support"
-msgstr ""
+msgstr "la confirmation automatique des paiements, la réponse automatique, les frais de port et de traitement, la création d’un utilisateur WordPress quand quelqu’un paie, et le support par e-mail et base de connaissances"
 
 #: legacy/settings.php:571
 msgid "coupon codes, recurring payments, the range slider, donations mode and pre-set amounts"
-msgstr ""
+msgstr "les codes promo, les paiements récurrents, le curseur, le mode dons et les montants prédéfinis"
 
 #: legacy/settings.php:574
 msgid "Stripe card payments, multiple products, the datepicker and Mailchimp"
-msgstr ""
+msgstr "les paiements par carte Stripe, les produits multiples, le sélecteur de date et Mailchimp"
 
 #. translators: %s: plan name such as Silver.
 #: legacy/settings.php:580
 #, php-format
 msgid "Upgrade to %s"
-msgstr ""
+msgstr "Passer à %s"
 
 #. translators: %s: a list of what the next plan adds.
 #: legacy/settings.php:585
 #, php-format
 msgid "Upgrading gives %s."
-msgstr ""
+msgstr "La mise à niveau apporte %s."
 
 #: legacy/settings.php:646
 msgid "The forms have been updated."
-msgstr ""
+msgstr "Les formulaires ont été mis à jour."
 
 #. translators: %s is the name of the deleted form.
 #: legacy/settings.php:673
 #, php-format
 msgid "The form named %s has been deleted."
-msgstr ""
+msgstr "Le formulaire nommé %s a été supprimé."
 
 #: legacy/settings.php:688
 msgid "Your Forms"
-msgstr ""
+msgstr "Vos formulaires"
 
 #: legacy/settings.php:689
 msgid "The selected form is the one the other tabs edit."
-msgstr ""
+msgstr "Le formulaire sélectionné est celui que modifient les autres onglets."
 
 #: legacy/settings.php:692
 msgid "Form name"
-msgstr ""
+msgstr "Nom du formulaire"
 
 #: legacy/settings.php:693
 msgid "Currency"
-msgstr ""
+msgstr "Devise"
 
 #: legacy/settings.php:694
 #: legacy/settings.php:2628
 msgid "Shortcode"
-msgstr ""
+msgstr "Shortcode"
 
 #: legacy/settings.php:711
 msgid "Delete"
-msgstr ""
+msgstr "Supprimer"
 
 #. translators: %s: form name.
 #: legacy/settings.php:713
 #, php-format
 msgid "Delete the form %s and all of its settings? This cannot be undone."
-msgstr ""
+msgstr "Supprimer le formulaire %s et tous ses réglages ? Cette action est irréversible."
 
 #: legacy/settings.php:721
 #: legacy/settings.php:1455
@@ -1791,164 +1794,164 @@ msgstr ""
 #: legacy/settings.php:3019
 #: legacy/settings.php:3085
 msgid "Save Changes"
-msgstr ""
+msgstr "Enregistrer les modifications"
 
 #: legacy/settings.php:722
 msgid "Create New Form"
-msgstr ""
+msgstr "Créer un nouveau formulaire"
 
 #: legacy/settings.php:723
 msgid "Enter form name (letters only - no numbers, spaces or punctuation marks)"
-msgstr ""
+msgstr "Saisissez le nom du formulaire (lettres seulement, sans chiffres, espaces ni ponctuation)"
 
 #: legacy/settings.php:725
 msgid "Currency:"
-msgstr ""
+msgstr "Devise :"
 
 #: legacy/settings.php:726
 msgid "Only the currencies PayPal accepts are listed. A currency PayPal does not take is refused at the checkout, which the customer sees as the payment simply not working."
-msgstr ""
+msgstr "Seules les devises acceptées par PayPal sont listées. Une devise que PayPal n’accepte pas est refusée au paiement, ce que le client perçoit comme un paiement qui ne fonctionne tout simplement pas."
 
 #: legacy/settings.php:727
 msgid "If you take payment in a currency your PayPal account does not hold, set your Payment Receiving Preferences in PayPal to accept it. Otherwise every payment sits pending until you approve it by hand, and the order stays unpaid here until you do."
-msgstr ""
+msgstr "Si vous encaissez dans une devise que votre compte PayPal ne détient pas, réglez vos préférences de réception des paiements dans PayPal pour l’accepter. Sinon, chaque paiement reste en attente jusqu’à ce que vous l’approuviez à la main, et la commande reste impayée ici jusque-là."
 
 #: legacy/settings.php:729
 msgid "Copy settings from an existing form."
-msgstr ""
+msgstr "Copier les réglages d’un formulaire existant."
 
 #: legacy/settings.php:730
 msgid "Do not copy settings"
-msgstr ""
+msgstr "Ne pas copier les réglages"
 
 #: legacy/settings.php:738
 msgid "Create Form"
-msgstr ""
+msgstr "Créer le formulaire"
 
 #: legacy/settings.php:742
 msgid "Using your forms"
-msgstr ""
+msgstr "Utiliser vos formulaires"
 
 #: legacy/settings.php:743
 msgid "Each form has its own fields, styling, messages and send options. Select a form above, then use the other tabs to edit it."
-msgstr ""
+msgstr "Chaque formulaire a ses propres champs, style, messages et options d’envoi. Sélectionnez un formulaire ci-dessus, puis utilisez les autres onglets pour le modifier."
 
 #: legacy/settings.php:744
 msgid "Put a form on a page with its shortcode. The default form is [qpp], and a named form adds the name."
-msgstr ""
+msgstr "Placez un formulaire sur une page avec son shortcode. Le formulaire par défaut est [qpp], et un formulaire nommé ajoute le nom."
 
 #: legacy/settings.php:745
 msgid "Creating a form can copy the settings of one you already have, which is usually quicker than starting again."
-msgstr ""
+msgstr "La création d’un formulaire peut copier les réglages d’un formulaire existant, ce qui est généralement plus rapide que de repartir de zéro."
 
 #: legacy/settings.php:774
 msgid "The settings have been updated."
-msgstr ""
+msgstr "Les réglages ont été mis à jour."
 
 #: legacy/settings.php:806
 msgid "Everything has been reset."
-msgstr ""
+msgstr "Tout a été réinitialisé."
 
 #: legacy/settings.php:812
 msgid "Account Email"
-msgstr ""
+msgstr "E-mail du compte"
 
 #: legacy/settings.php:813
 msgid "Important!"
-msgstr ""
+msgstr "Important !"
 
 #: legacy/settings.php:813
 msgid "Enter your PAYPAL email address"
-msgstr ""
+msgstr "Saisissez votre adresse e-mail PAYPAL"
 
 #: legacy/settings.php:816
 msgid "Check this account with PayPal"
-msgstr ""
+msgstr "Vérifier ce compte auprès de PayPal"
 
 #: legacy/settings.php:817
 msgid "Checked with PayPal when you change it, and whenever you press the button. Nothing is charged. A typed address can look perfectly valid and still not be a PayPal account, which is the usual reason a customer sees \"something went wrong\"."
-msgstr ""
+msgstr "Vérifié auprès de PayPal quand vous le modifiez et chaque fois que vous appuyez sur le bouton. Rien n’est facturé. Une adresse saisie peut sembler parfaitement valide sans être un compte PayPal, ce qui est la raison habituelle pour laquelle un client voit « une erreur s’est produite »."
 
 #: legacy/settings.php:819
 msgid "Global Settings"
-msgstr ""
+msgstr "Réglages globaux"
 
 #: legacy/settings.php:821
 msgid "Use Paypal sandbox (developer use only)"
-msgstr ""
+msgstr "Utiliser le bac à sable PayPal (réservé aux développeurs)"
 
 #: legacy/settings.php:822
 msgid "Disable IPN Error logging"
-msgstr ""
+msgstr "Désactiver la journalisation des erreurs IPN"
 
 #: legacy/settings.php:824
 msgid "Sandbox mode and IPN error logging control"
-msgstr ""
+msgstr "Le contrôle du mode bac à sable et de la journalisation des erreurs IPN"
 
 #: legacy/settings.php:826
 msgid "Do not store messages in the database (this will disable all notifications)."
-msgstr ""
+msgstr "Ne pas enregistrer les messages dans la base de données (cela désactivera toutes les notifications)."
 
 #: legacy/settings.php:834
 #: legacy/settings.php:837
 msgid "Checkout logo"
-msgstr ""
+msgstr "Logo de paiement"
 
 #: legacy/settings.php:837
 #: legacy/settings.php:1453
 #: legacy/settings.php:1622
 #: legacy/settings.php:1804
 msgid "Choose image"
-msgstr ""
+msgstr "Choisir une image"
 
 #: legacy/settings.php:839
 msgid "Optional. A 150x50 pixel image shown in the corner of the PayPal checkout pages."
-msgstr ""
+msgstr "Facultatif. Une image de 150x50 pixels affichée dans le coin des pages de paiement PayPal."
 
 #: legacy/settings.php:841
 msgid "A logo on the PayPal checkout pages"
-msgstr ""
+msgstr "Un logo sur les pages de paiement PayPal"
 
 #: legacy/settings.php:845
 msgid "Update Settings"
-msgstr ""
+msgstr "Mettre à jour les réglages"
 
 #: legacy/settings.php:845
 msgid "Reset Everything"
-msgstr ""
+msgstr "Tout réinitialiser"
 
 #: legacy/settings.php:845
 msgid "This will delete all your forms and settings. Are you sure you want to reset everything?"
-msgstr ""
+msgstr "Cela supprimera tous vos formulaires et réglages. Voulez-vous vraiment tout réinitialiser ?"
 
 #: legacy/settings.php:851
 msgid "Adding the payment form to your site"
-msgstr ""
+msgstr "Ajouter le formulaire de paiement à votre site"
 
 #. translators: %s: the shortcode, [qpp], in a code tag.
 #: legacy/settings.php:854
 #, php-format
 msgid "To add the basic payment form to your posts or pages use the shortcode: %s. Shortcodes for named forms are given on the left."
-msgstr ""
+msgstr "Pour ajouter le formulaire de paiement de base à vos articles ou pages, utilisez le shortcode %s. Les shortcodes des formulaires nommés sont indiqués à gauche."
 
 #: legacy/settings.php:857
 msgid "There is also a widget called \"Quick Paypal Payments\" you can drag and drop into a sidebar."
-msgstr ""
+msgstr "Il existe aussi un widget nommé « Quick Paypal Payments » que vous pouvez glisser-déposer dans une colonne latérale."
 
 #: legacy/settings.php:858
 msgid "That's it. The payment form is ready to use."
-msgstr ""
+msgstr "C’est tout. Le formulaire de paiement est prêt à l’emploi."
 
 #: legacy/settings.php:859
 msgid "Shortcodes and Examples"
-msgstr ""
+msgstr "Shortcodes et exemples"
 
 #. translators: %s: a link with the text "on this page".
 #: legacy/settings.php:862
 #: legacy/settings.php:1435
 #, php-format
 msgid "All the shortcodes are given %s."
-msgstr ""
+msgstr "Tous les shortcodes sont indiqués %s."
 
 #: legacy/settings.php:863
 #: legacy/settings.php:868
@@ -1956,202 +1959,202 @@ msgstr ""
 #: legacy/settings.php:1880
 #: legacy/settings.php:1885
 msgid "on this page"
-msgstr ""
+msgstr "sur cette page"
 
 #. translators: %s: a link with the text "on this page".
 #: legacy/settings.php:867
 #, php-format
 msgid "There are examples of payment forms %s."
-msgstr ""
+msgstr "Des exemples de formulaires de paiement sont disponibles %s."
 
 #: legacy/settings.php:870
 msgid "Options and Settings"
-msgstr ""
+msgstr "Options et réglages"
 
 #: legacy/settings.php:871
 msgid "Form Settings."
-msgstr ""
+msgstr "Réglages du formulaire."
 
 #: legacy/settings.php:871
 msgid "Change the layout of the form, add or remove fields and the order they appear and edit the labels and captions."
-msgstr ""
+msgstr "Modifiez la disposition du formulaire, ajoutez ou retirez des champs et leur ordre, et modifiez les libellés et légendes."
 
 #: legacy/settings.php:872
 msgid "Styling."
-msgstr ""
+msgstr "Style."
 
 #: legacy/settings.php:872
 msgid "Change fonts, colours, borders, images and submit button."
-msgstr ""
+msgstr "Modifiez les polices, couleurs, bordures, images et le bouton d’envoi."
 
 #: legacy/settings.php:873
 msgid "Send Options."
-msgstr ""
+msgstr "Options d’envoi."
 
 #: legacy/settings.php:873
 msgid "Change how the form is sent."
-msgstr ""
+msgstr "Modifiez la façon dont le formulaire est envoyé."
 
 #: legacy/settings.php:874
 msgid "Validation Messages."
-msgstr ""
+msgstr "Messages de validation."
 
 #: legacy/settings.php:874
 msgid "Change the error message."
-msgstr ""
+msgstr "Modifiez le message d’erreur."
 
 #: legacy/settings.php:875
 msgid "Auto Responder."
-msgstr ""
+msgstr "Réponse automatique."
 
 #: legacy/settings.php:875
 msgid "Set up a thank you message."
-msgstr ""
+msgstr "Configurez un message de remerciement."
 
 #: legacy/settings.php:876
 msgid "Instant Payment Notification."
-msgstr ""
+msgstr "Notification instantanée de paiement."
 
 #: legacy/settings.php:876
 msgid "Keep track of completed payments."
-msgstr ""
+msgstr "Suivez les paiements terminés."
 
 #: legacy/settings.php:877
 msgid "Payment Records."
-msgstr ""
+msgstr "Historique des paiements."
 
 #. translators: %s: the word "Payments" in bold, the dashboard menu item.
 #: legacy/settings.php:879
 #, php-format
 msgid "See all the payment records. Or click on the %s link in the dashboard menu."
-msgstr ""
+msgstr "Consultez tout l’historique des paiements. Ou cliquez sur le lien %s dans le menu du tableau de bord."
 
 #: legacy/settings.php:882
 msgid "Support"
-msgstr ""
+msgstr "Support"
 
 #: legacy/settings.php:883
 msgid "First please check the knowledge base to see if a resolution to your issue is already documented"
-msgstr ""
+msgstr "Consultez d’abord la base de connaissances pour voir si une solution à votre problème est déjà documentée"
 
 #: legacy/settings.php:884
 msgid "Knowledge Base"
-msgstr ""
+msgstr "Base de connaissances"
 
 #: legacy/settings.php:889
 msgid "If you can not find an answer, for the free version please raise your support questions on the WordPress community forum"
-msgstr ""
+msgstr "Si vous ne trouvez pas de réponse, pour la version gratuite, posez vos questions de support sur le forum de la communauté WordPress"
 
 #: legacy/settings.php:890
 msgid "WordPress Support Forum"
-msgstr ""
+msgstr "Forum de support WordPress"
 
 #. translators: %s: a link with the text "upgrade to a paid plan".
 #: legacy/settings.php:893
 #, php-format
 msgid "If you require urgent or personal support please %s"
-msgstr ""
+msgstr "Si vous avez besoin d’un support urgent ou personnalisé, %s"
 
 #: legacy/settings.php:894
 msgid "upgrade to a paid plan"
-msgstr ""
+msgstr "passez à une offre payante"
 
 #: legacy/settings.php:897
 msgid "If you can not find an answer, please use the contact form here"
-msgstr ""
+msgstr "Si vous ne trouvez pas de réponse, utilisez le formulaire de contact"
 
 #: legacy/settings.php:898
 msgid "Contact"
-msgstr ""
+msgstr "Contact"
 
 #: legacy/settings.php:1090
 msgid "The form and submission settings have been updated."
-msgstr ""
+msgstr "Les réglages du formulaire et d’envoi ont été mis à jour."
 
 #: legacy/settings.php:1094
 msgid "The form and submission settings have been reset."
-msgstr ""
+msgstr "Les réglages du formulaire et d’envoi ont été réinitialisés."
 
 #. translators: %s: form name.
 #: legacy/settings.php:1125
 #, php-format
 msgid "Form settings for %s"
-msgstr ""
+msgstr "Réglages du formulaire %s"
 
 #: legacy/settings.php:1127
 msgid "Default form settings"
-msgstr ""
+msgstr "Réglages du formulaire par défaut"
 
 #: legacy/settings.php:1131
 msgid "Paypal form heading (optional)"
-msgstr ""
+msgstr "Titre du formulaire PayPal (facultatif)"
 
 #: legacy/settings.php:1133
 msgid "This is the text that will appear below the heading and above the form (optional):"
-msgstr ""
+msgstr "Texte affiché sous le titre et au-dessus du formulaire (facultatif) :"
 
 #: legacy/settings.php:1135
 #: legacy/settings.php:1137
 msgid "Form Fields"
-msgstr ""
+msgstr "Champs du formulaire"
 
 #: legacy/settings.php:1136
 msgid "Drag and drop to change order of the fields"
-msgstr ""
+msgstr "Glissez-déposez pour changer l’ordre des champs"
 
 #: legacy/settings.php:1137
 msgid "Labels and Options"
-msgstr ""
+msgstr "Libellés et options"
 
 #: legacy/settings.php:1150
 msgid "Display as a pre-set reference"
-msgstr ""
+msgstr "Afficher comme référence prédéfinie"
 
 #: legacy/settings.php:1150
 msgid "Use commas to separate options: Red,Green, Blue"
-msgstr ""
+msgstr "Séparez les options par des virgules : Rouge,Vert, Bleu"
 
 #: legacy/settings.php:1150
 msgid "Use semi-colons to combine with amount: Red;$5,Green;$10,Blue;£20"
-msgstr ""
+msgstr "Utilisez des points-virgules pour associer un montant : Rouge;$5,Vert;$10,Bleu;£20"
 
 #: legacy/settings.php:1151
 #: legacy/settings.php:1202
 #: legacy/settings.php:1221
 msgid "Options Selector:"
-msgstr ""
+msgstr "Sélecteur d’options :"
 
 #: legacy/settings.php:1151
 #: legacy/settings.php:1202
 #: legacy/settings.php:1221
 msgid "Radio"
-msgstr ""
+msgstr "Boutons radio"
 
 #: legacy/settings.php:1152
 #: legacy/settings.php:1203
 #: legacy/settings.php:1223
 msgid "Dropdown"
-msgstr ""
+msgstr "Liste déroulante"
 
 #: legacy/settings.php:1153
 msgid "Inline"
-msgstr ""
+msgstr "En ligne"
 
 #: legacy/settings.php:1154
 msgid "None"
-msgstr ""
+msgstr "Aucun"
 
 #: legacy/settings.php:1156
 msgid "Pre-set reference options"
-msgstr ""
+msgstr "Les options de référence prédéfinies"
 
 #: legacy/settings.php:1161
 msgid "Use Item Number"
-msgstr ""
+msgstr "Utiliser un numéro d’article"
 
 #: legacy/settings.php:1164
 msgid "Display as a pre-set item number"
-msgstr ""
+msgstr "Afficher comme numéro d’article prédéfini"
 
 #: legacy/settings.php:1165
 #: legacy/settings.php:1349
@@ -2160,320 +2163,320 @@ msgstr ""
 #: legacy/settings.php:1396
 #: legacy/settings.php:1412
 msgid "Required Field"
-msgstr ""
+msgstr "Champ obligatoire"
 
 #: legacy/settings.php:1172
 msgid "Display and validate a maximum quantity"
-msgstr ""
+msgstr "Afficher et valider une quantité maximale"
 
 #: legacy/settings.php:1172
 msgid "Message that will display on the form. The limit is the number in it, so the message must contain one:"
-msgstr ""
+msgstr "Message affiché sur le formulaire. La limite est le nombre qu’il contient, le message doit donc en comporter un :"
 
 #: legacy/settings.php:1187
 msgid "Charge one set price"
-msgstr ""
+msgstr "Facturer un prix fixe"
 
 #. translators: %s: the heading "Fixed payment and shortcode labels", in bold.
 #: legacy/settings.php:1190
 #, php-format
 msgid "Set the price in %s further down this screen."
-msgstr ""
+msgstr "Définissez le prix dans %s plus bas sur cet écran."
 
 #: legacy/settings.php:1191
 #: legacy/settings.php:1432
 msgid "Fixed payment and shortcode labels"
-msgstr ""
+msgstr "Libellés de paiement fixe et de shortcode"
 
 #: legacy/settings.php:1196
 #: legacy/settings.php:1332
 msgid "Minimum value"
-msgstr ""
+msgstr "Valeur minimale"
 
 #: legacy/settings.php:1197
 msgid "Do not validate (use default amount value)"
-msgstr ""
+msgstr "Ne pas valider (utiliser le montant par défaut)"
 
 #: legacy/settings.php:1198
 msgid "Separate prices with commas to offer a choice: £10,£20,£30"
-msgstr ""
+msgstr "Séparez les prix par des virgules pour proposer un choix : £10,£20,£30"
 
 #: legacy/settings.php:1201
 msgid "Option List Settings"
-msgstr ""
+msgstr "Réglages de la liste d’options"
 
 #: legacy/settings.php:1204
 msgid "Display inline radio fields"
-msgstr ""
+msgstr "Afficher les boutons radio en ligne"
 
 #: legacy/settings.php:1205
 msgid "Add input field to dropdown"
-msgstr ""
+msgstr "Ajouter un champ de saisie à la liste déroulante"
 
 #: legacy/settings.php:1206
 msgid "Caption:"
-msgstr ""
+msgstr "Légende :"
 
 #: legacy/settings.php:1208
 msgid "Instruction:"
-msgstr ""
+msgstr "Consigne :"
 
 #: legacy/settings.php:1212
 msgid "Offering a choice of prices, and amount validation"
-msgstr ""
+msgstr "Proposer un choix de prix et valider le montant"
 
 #: legacy/settings.php:1220
 msgid "Options (separate with a comma):"
-msgstr ""
+msgstr "Options (séparées par une virgule) :"
 
 #: legacy/settings.php:1222
 #: ui/admin/class-admin-settings.php:145
 msgid "Checkbox"
-msgstr ""
+msgstr "Case à cocher"
 
 #: legacy/settings.php:1224
 msgid "Display inline radio and checkbox fields"
-msgstr ""
+msgstr "Afficher les boutons radio et cases à cocher en ligne"
 
 #: legacy/settings.php:1227
 msgid "Handling"
-msgstr ""
+msgstr "Traitement"
 
 #: legacy/settings.php:1232
 msgid "Post and Packing charge type:"
-msgstr ""
+msgstr "Type de frais de port et d’emballage :"
 
 #: legacy/settings.php:1233
 msgid "Percentage of the total"
-msgstr ""
+msgstr "Pourcentage du total"
 
 #: legacy/settings.php:1234
 msgid "Fixed amount"
-msgstr ""
+msgstr "Montant fixe"
 
 #: legacy/settings.php:1238
 msgid "Postage and handling"
-msgstr ""
+msgstr "Les frais de port et de traitement"
 
 #: legacy/settings.php:1243
 msgid "Maths Captcha"
-msgstr ""
+msgstr "Captcha mathématique"
 
 #: legacy/settings.php:1246
 msgid "Add a maths checker to the form to (hopefully) block most of the spambots."
-msgstr ""
+msgstr "Ajoutez une vérification mathématique au formulaire pour bloquer (on l’espère) la plupart des robots spammeurs."
 
 #: legacy/settings.php:1249
 #: legacy/settings.php:2984
 msgid "Coupon Code"
-msgstr ""
+msgstr "Code promo"
 
 #: legacy/settings.php:1254
 msgid "Button label:"
-msgstr ""
+msgstr "Libellé du bouton :"
 
 #: legacy/settings.php:1256
 msgid "Coupon applied message:"
-msgstr ""
+msgstr "Message de code appliqué :"
 
 #: legacy/settings.php:1258
 msgid "Set coupon codes"
-msgstr ""
+msgstr "Définir les codes promo"
 
 #: legacy/settings.php:1262
 #: legacy/settings.php:2983
 msgid "Coupon codes"
-msgstr ""
+msgstr "Les codes promo"
 
 #: legacy/settings.php:1268
 msgid "Terms and Conditions"
-msgstr ""
+msgstr "Conditions générales"
 
 #: legacy/settings.php:1271
 msgid "URL of Terms and Conditions:"
-msgstr ""
+msgstr "URL des conditions générales :"
 
 #: legacy/settings.php:1273
 msgid "Open link in a new page"
-msgstr ""
+msgstr "Ouvrir le lien dans une nouvelle page"
 
 #: legacy/settings.php:1278
 msgid "Additional Information"
-msgstr ""
+msgstr "Informations complémentaires"
 
 #: legacy/settings.php:1281
 msgid "Add additional information to your form"
-msgstr ""
+msgstr "Ajoutez des informations complémentaires à votre formulaire"
 
 #: legacy/settings.php:1285
 msgid "Recurring Payments"
-msgstr ""
+msgstr "Paiements récurrents"
 
 #: legacy/settings.php:1289
 msgid "Recurring payments"
-msgstr ""
+msgstr "Les paiements récurrents"
 
 #: legacy/settings.php:1295
 msgid "Number of payments:"
-msgstr ""
+msgstr "Nombre de paiements :"
 
 #: legacy/settings.php:1295
 msgid "(max 52 , min 2)"
-msgstr ""
+msgstr "(max 52, min 2)"
 
 #: legacy/settings.php:1296
 msgid "Message:"
-msgstr ""
+msgstr "Message :"
 
 #: legacy/settings.php:1305
 msgid "Allow users to change number of payments."
-msgstr ""
+msgstr "Autoriser les utilisateurs à modifier le nombre de paiements."
 
 #: legacy/settings.php:1306
 msgid "WARNING!"
-msgstr ""
+msgstr "ATTENTION !"
 
 #: legacy/settings.php:1306
 msgid "Recurring payments only work if you have a Business or Premier account."
-msgstr ""
+msgstr "Les paiements récurrents ne fonctionnent qu’avec un compte Business ou Premier."
 
 #: legacy/settings.php:1306
 msgid "Using recurring payments will disable some form fields."
-msgstr ""
+msgstr "Utiliser les paiements récurrents désactivera certains champs du formulaire."
 
 #: legacy/settings.php:1314
 msgid "Personal details Settings"
-msgstr ""
+msgstr "Réglages des coordonnées"
 
 #: legacy/settings.php:1319
 msgid "Show totals"
-msgstr ""
+msgstr "Afficher les totaux"
 
 #: legacy/settings.php:1322
 msgid "Show live totals on your form. Warning: Only works if you have one form of a type on the page"
-msgstr ""
+msgstr "Affichez les totaux en direct sur votre formulaire. Attention : ne fonctionne que s’il n’y a qu’un formulaire de chaque type sur la page"
 
 #: legacy/settings.php:1326
 msgid "Range slider"
-msgstr ""
+msgstr "Curseur"
 
 #: legacy/settings.php:1331
 msgid "The range slider replaces the amount field."
-msgstr ""
+msgstr "Le curseur remplace le champ montant."
 
 #: legacy/settings.php:1333
 msgid "Maximum value"
-msgstr ""
+msgstr "Valeur maximale"
 
 #: legacy/settings.php:1334
 msgid "Initial value"
-msgstr ""
+msgstr "Valeur initiale"
 
 #: legacy/settings.php:1335
 msgid "Step"
-msgstr ""
+msgstr "Pas"
 
 #: legacy/settings.php:1339
 msgid "The range slider"
-msgstr ""
+msgstr "Le curseur"
 
 #: legacy/settings.php:1345
 msgid "Email Address"
-msgstr ""
+msgstr "Adresse e-mail"
 
 #: legacy/settings.php:1348
 msgid "Use this to collect the Payers email address."
-msgstr ""
+msgstr "Utilisez ceci pour collecter l’adresse e-mail du payeur."
 
 #: legacy/settings.php:1354
 msgid "Add textbox for comments"
-msgstr ""
+msgstr "Ajouter une zone de texte pour les commentaires"
 
 #: legacy/settings.php:1363
 #: legacy/settings.php:1369
 msgid "Add datepicker"
-msgstr ""
+msgstr "Ajouter un sélecteur de date"
 
 #: legacy/settings.php:1371
 msgid "The datepicker"
-msgstr ""
+msgstr "Le sélecteur de date"
 
 #: legacy/settings.php:1380
 msgid "Using multiple products will disable the Reference, Amount and Quantity fields."
-msgstr ""
+msgstr "Utiliser les produits multiples désactivera les champs Référence, Montant et Quantité."
 
 #: legacy/settings.php:1380
 msgid "Edit Multiple Product Details"
-msgstr ""
+msgstr "Modifier les produits"
 
 #: legacy/settings.php:1385
 #: legacy/settings.php:3066
 msgid "Multiple products"
-msgstr ""
+msgstr "Les produits multiples"
 
 #: legacy/settings.php:1391
 msgid "Codice Fiscale (Solo Italia)"
-msgstr ""
+msgstr "Codice Fiscale (Italie uniquement)"
 
 #: legacy/settings.php:1404
 msgid "Add a checkbox to permit data storage. You may use html links above."
-msgstr ""
+msgstr "Ajoutez une case à cocher pour autoriser la conservation des données. Vous pouvez utiliser des liens HTML ci-dessus."
 
 #: legacy/settings.php:1406
 msgid "Add consent info to PayPal item line. Blank out if not required."
-msgstr ""
+msgstr "Ajoutez l’information de consentement à la ligne d’article PayPal. Laissez vide si inutile."
 
 #: legacy/settings.php:1409
 msgid "if consent given"
-msgstr ""
+msgstr "si le consentement est donné"
 
 #: legacy/settings.php:1411
 msgid "if consent NOT given"
-msgstr ""
+msgstr "si le consentement N’est PAS donné"
 
 #: legacy/settings.php:1433
 msgid "These are the labels that will display if you are using a fixed reference or amount or shortcode attributes."
-msgstr ""
+msgstr "Ce sont les libellés affichés si vous utilisez une référence ou un montant fixes, ou des attributs de shortcode."
 
 #: legacy/settings.php:1438
 msgid "Label for the payment Reference/ID/Number:"
-msgstr ""
+msgstr "Libellé de la référence/ID/numéro de paiement :"
 
 #: legacy/settings.php:1440
 msgid "Label for the amount field:"
-msgstr ""
+msgstr "Libellé du champ montant :"
 
 #: legacy/settings.php:1442
 msgid "Submit button caption"
-msgstr ""
+msgstr "Texte du bouton d’envoi"
 
 #: legacy/settings.php:1444
 msgid "Reset button"
-msgstr ""
+msgstr "Bouton de réinitialisation"
 
 #: legacy/settings.php:1445
 msgid "Show Reset Button"
-msgstr ""
+msgstr "Afficher le bouton de réinitialisation"
 
 #: legacy/settings.php:1447
 msgid "PayPal Image"
-msgstr ""
+msgstr "Image PayPal"
 
 #: legacy/settings.php:1448
 msgid "Upload an image and select where you want it to display (Leave blank if you don't want to use an image)."
-msgstr ""
+msgstr "Téléversez une image et choisissez où l’afficher (laissez vide si vous ne voulez pas d’image)."
 
 #: legacy/settings.php:1449
 msgid "Below form title:"
-msgstr ""
+msgstr "Sous le titre du formulaire :"
 
 #: legacy/settings.php:1449
 msgid "Below Submit Button:"
-msgstr ""
+msgstr "Sous le bouton d’envoi :"
 
 #: legacy/settings.php:1453
 msgid "Image above or below the form"
-msgstr ""
+msgstr "Image au-dessus ou en dessous du formulaire"
 
 #: legacy/settings.php:1455
 #: legacy/settings.php:1855
@@ -2486,1108 +2489,1108 @@ msgstr ""
 #: legacy/settings.php:3019
 #: legacy/settings.php:3085
 msgid "Reset"
-msgstr ""
+msgstr "Réinitialiser"
 
 #: legacy/settings.php:1455
 #: legacy/settings.php:2059
 msgid "Are you sure you want to reset the form settings?"
-msgstr ""
+msgstr "Voulez-vous vraiment réinitialiser les réglages du formulaire ?"
 
 #: legacy/settings.php:1461
 #: legacy/settings.php:2067
 #: legacy/settings.php:3090
 msgid "Form Preview"
-msgstr ""
+msgstr "Aperçu du formulaire"
 
 #: legacy/settings.php:1462
 #: legacy/settings.php:2068
 #: legacy/settings.php:3091
 msgid "Note: The preview form uses the wordpress admin styles. Your form will use the theme styles so won't look exactly like the one below."
-msgstr ""
+msgstr "Remarque : l’aperçu utilise les styles de l’administration WordPress. Votre formulaire utilisera les styles du thème et ne ressemblera donc pas exactement à celui ci-dessous."
 
 #: legacy/settings.php:1533
 msgid "The form styles have been updated."
-msgstr ""
+msgstr "Les styles du formulaire ont été mis à jour."
 
 #: legacy/settings.php:1537
 msgid "The form styles have been reset."
-msgstr ""
+msgstr "Les styles du formulaire ont été réinitialisés."
 
 #. translators: %s: form name.
 #: legacy/settings.php:1575
 #, php-format
 msgid "Style options for %s"
-msgstr ""
+msgstr "Options de style pour %s"
 
 #: legacy/settings.php:1577
 msgid "Default form style options"
-msgstr ""
+msgstr "Options de style du formulaire par défaut"
 
 #: legacy/settings.php:1583
 #: legacy/settings.php:2415
 #: legacy/settings.php:2991
 msgid "Note:"
-msgstr ""
+msgstr "Remarque :"
 
 #: legacy/settings.php:1583
 #: legacy/settings.php:2991
 msgid "Leave fields blank if you don't want to use them"
-msgstr ""
+msgstr "Laissez les champs vides si vous ne voulez pas les utiliser"
 
 #: legacy/settings.php:1586
 msgid "Form Width"
-msgstr ""
+msgstr "Largeur du formulaire"
 
 #: legacy/settings.php:1590
 msgid "100% (fill the available space)"
-msgstr ""
+msgstr "100 % (occuper l’espace disponible)"
 
 #: legacy/settings.php:1591
 msgid "Pixel (fixed):"
-msgstr ""
+msgstr "Pixels (fixe) :"
 
 #: legacy/settings.php:1592
 msgid "use px, em or %. Default is px."
-msgstr ""
+msgstr "utilisez px, em ou %. Par défaut : px."
 
 #: legacy/settings.php:1595
 msgid "Form Border"
-msgstr ""
+msgstr "Bordure du formulaire"
 
 #: legacy/settings.php:1598
 msgid "Type:"
-msgstr ""
+msgstr "Type :"
 
 #: legacy/settings.php:1599
 msgid "No border"
-msgstr ""
+msgstr "Aucune bordure"
 
 #: legacy/settings.php:1600
 msgid "Plain Border"
-msgstr ""
+msgstr "Bordure simple"
 
 #: legacy/settings.php:1601
 msgid "Round Corners"
-msgstr ""
+msgstr "Coins arrondis"
 
 #: legacy/settings.php:1602
 msgid "Shadowed Border"
-msgstr ""
+msgstr "Bordure ombrée"
 
 #: legacy/settings.php:1603
 msgid "Rounded Shadowed Border"
-msgstr ""
+msgstr "Bordure arrondie ombrée"
 
 #: legacy/settings.php:1606
 msgid "Style:"
-msgstr ""
+msgstr "Style :"
 
 #: legacy/settings.php:1610
 #: legacy/settings.php:1619
 msgid "Background"
-msgstr ""
+msgstr "Arrière-plan"
 
 #: legacy/settings.php:1613
 msgid "Colour:"
-msgstr ""
+msgstr "Couleur :"
 
 #: legacy/settings.php:1614
 msgid "White"
-msgstr ""
+msgstr "Blanc"
 
 #: legacy/settings.php:1615
 msgid "Use theme colours"
-msgstr ""
+msgstr "Utiliser les couleurs du thème"
 
 #: legacy/settings.php:1619
 msgid "Image:"
-msgstr ""
+msgstr "Image :"
 
 #: legacy/settings.php:1622
 msgid "Background image"
-msgstr ""
+msgstr "Image d’arrière-plan"
 
 #: legacy/settings.php:1624
 msgid "Font Styles"
-msgstr ""
+msgstr "Styles de police"
 
 #: legacy/settings.php:1628
 msgid "Use theme font styles"
-msgstr ""
+msgstr "Utiliser les polices du thème"
 
 #: legacy/settings.php:1629
 msgid "Use Plugin font styles (enter font family and size below)"
-msgstr ""
+msgstr "Utiliser les polices de l’extension (saisissez la famille et la taille ci-dessous)"
 
 #: legacy/settings.php:1633
 msgid "Form Header"
-msgstr ""
+msgstr "En-tête du formulaire"
 
 #: legacy/settings.php:1636
 msgid "Header"
-msgstr ""
+msgstr "En-tête"
 
 #: legacy/settings.php:1642
 msgid "Header Size:"
-msgstr ""
+msgstr "Taille de l’en-tête :"
 
 #: legacy/settings.php:1645
 msgid "Header Colour:"
-msgstr ""
+msgstr "Couleur de l’en-tête :"
 
 #: legacy/settings.php:1649
 msgid "Field Label Locations"
-msgstr ""
+msgstr "Position des libellés"
 
 #: legacy/settings.php:1652
 msgid "Reduce in size on focus"
-msgstr ""
+msgstr "Réduire la taille au focus"
 
 #: legacy/settings.php:1653
 msgid "Placeholders"
-msgstr ""
+msgstr "Textes indicatifs"
 
 #: legacy/settings.php:1654
 msgid "Above Input Fields"
-msgstr ""
+msgstr "Au-dessus des champs de saisie"
 
 #: legacy/settings.php:1657
 msgid "Input fields"
-msgstr ""
+msgstr "Champs de saisie"
 
 #: legacy/settings.php:1660
 #: legacy/settings.php:1710
 msgid "Font Family:"
-msgstr ""
+msgstr "Famille de police :"
 
 #: legacy/settings.php:1664
 #: legacy/settings.php:1714
 msgid "Font Size:"
-msgstr ""
+msgstr "Taille de police :"
 
 #: legacy/settings.php:1668
 #: legacy/settings.php:1698
 #: legacy/settings.php:1718
 #: legacy/settings.php:1725
 msgid "Font Colour:"
-msgstr ""
+msgstr "Couleur de police :"
 
 #: legacy/settings.php:1672
 msgid "Normal Border:"
-msgstr ""
+msgstr "Bordure normale :"
 
 #: legacy/settings.php:1676
 msgid "Required Border:"
-msgstr ""
+msgstr "Bordure obligatoire :"
 
 #: legacy/settings.php:1680
 msgid "Error Colour:"
-msgstr ""
+msgstr "Couleur d’erreur :"
 
 #: legacy/settings.php:1684
 msgid "Corners:"
-msgstr ""
+msgstr "Coins :"
 
 #: legacy/settings.php:1685
 msgid "Use theme settings"
-msgstr ""
+msgstr "Utiliser les réglages du thème"
 
 #: legacy/settings.php:1686
 msgid "Square corners"
-msgstr ""
+msgstr "Coins carrés"
 
 #: legacy/settings.php:1687
 msgid "5px rounded corners"
-msgstr ""
+msgstr "Coins arrondis de 5px"
 
 #: legacy/settings.php:1689
 msgid "Margins and Padding"
-msgstr ""
+msgstr "Marges et espacement interne"
 
 #: legacy/settings.php:1690
 msgid "Set the margins and padding of each bit using CSS shortcodes"
-msgstr ""
+msgstr "Définissez les marges et l’espacement interne de chaque élément avec la notation abrégée CSS"
 
 #: legacy/settings.php:1695
 msgid "Apply Coupon Button"
-msgstr ""
+msgstr "Bouton Appliquer le code"
 
 #: legacy/settings.php:1702
 #: legacy/settings.php:1728
 msgid "Background:"
-msgstr ""
+msgstr "Arrière-plan :"
 
 #: legacy/settings.php:1703
 msgid "Other settings are the same as the Submit Button"
-msgstr ""
+msgstr "Les autres réglages sont identiques à ceux du bouton d’envoi"
 
 #: legacy/settings.php:1707
 msgid "Other text content"
-msgstr ""
+msgstr "Autres textes"
 
 #: legacy/settings.php:1722
 msgid "Submit Button"
-msgstr ""
+msgstr "Bouton d’envoi"
 
 #: legacy/settings.php:1732
 msgid "Hover:"
-msgstr ""
+msgstr "Survol :"
 
 #: legacy/settings.php:1736
 msgid "Border:"
-msgstr ""
+msgstr "Bordure :"
 
 #: legacy/settings.php:1739
 msgid "Size:"
-msgstr ""
+msgstr "Taille :"
 
 #: legacy/settings.php:1740
 msgid "Same width as the form"
-msgstr ""
+msgstr "Même largeur que le formulaire"
 
 #: legacy/settings.php:1741
 msgid "Same width as the button text"
-msgstr ""
+msgstr "Même largeur que le texte du bouton"
 
 #: legacy/settings.php:1742
 msgid "Set your own width:"
-msgstr ""
+msgstr "Définir votre propre largeur :"
 
 #: legacy/settings.php:1743
 msgid "(px, % or em)"
-msgstr ""
+msgstr "(px, % ou em)"
 
 #: legacy/settings.php:1745
 msgid "Position:"
-msgstr ""
+msgstr "Position :"
 
 #: legacy/settings.php:1746
 msgid "Left"
-msgstr ""
+msgstr "Gauche"
 
 #: legacy/settings.php:1747
 msgid "Centre"
-msgstr ""
+msgstr "Centre"
 
 #: legacy/settings.php:1748
 msgid "Right"
-msgstr ""
+msgstr "Droite"
 
 #: legacy/settings.php:1751
 msgid "Button Image:"
-msgstr ""
+msgstr "Image du bouton :"
 
 #: legacy/settings.php:1779
 msgid "No image"
-msgstr ""
+msgstr "Aucune image"
 
 #: legacy/settings.php:1794
 msgid "Card buttons need Stripe switched on, with your keys entered."
-msgstr ""
+msgstr "Les boutons carte nécessitent que Stripe soit activé, avec vos clés saisies."
 
 #: legacy/settings.php:1796
 msgid "Set up Stripe"
-msgstr ""
+msgstr "Configurer Stripe"
 
 #: legacy/settings.php:1798
 msgid "Taking card payments through Stripe"
-msgstr ""
+msgstr "Accepter les paiements par carte via Stripe"
 
 #: legacy/settings.php:1804
 msgid "Submit button image"
-msgstr ""
+msgstr "Image du bouton d’envoi"
 
 #: legacy/settings.php:1805
 msgid "Leave blank for a text button styled with the settings above."
-msgstr ""
+msgstr "Laissez vide pour un bouton texte stylé avec les réglages ci-dessus."
 
 #: legacy/settings.php:1809
 msgid "Slider"
-msgstr ""
+msgstr "Curseur"
 
 #: legacy/settings.php:1812
 msgid "Thickness"
-msgstr ""
+msgstr "Épaisseur"
 
 #: legacy/settings.php:1816
 msgid "Normal Background"
-msgstr ""
+msgstr "Arrière-plan normal"
 
 #: legacy/settings.php:1820
 msgid "Revealed Background"
-msgstr ""
+msgstr "Arrière-plan parcouru"
 
 #: legacy/settings.php:1824
 msgid "Handle Background"
-msgstr ""
+msgstr "Arrière-plan de la poignée"
 
 #: legacy/settings.php:1828
 msgid "Handle Border"
-msgstr ""
+msgstr "Bordure de la poignée"
 
 #: legacy/settings.php:1832
 msgid "Corners"
-msgstr ""
+msgstr "Coins"
 
 #: legacy/settings.php:1836
 msgid "Output Size"
-msgstr ""
+msgstr "Taille de la valeur"
 
 #: legacy/settings.php:1840
 msgid "Output Colour"
-msgstr ""
+msgstr "Couleur de la valeur"
 
 #: legacy/settings.php:1846
 msgid "Custom CSS"
-msgstr ""
+msgstr "CSS personnalisé"
 
 #: legacy/settings.php:1847
 msgid "Use Custom CSS"
-msgstr ""
+msgstr "Utiliser du CSS personnalisé"
 
 #. translators: %s: the CSS id .qpp-style, in a code tag.
 #: legacy/settings.php:1851
 #, php-format
 msgid "The main style wrapper is the %s id."
-msgstr ""
+msgstr "Le conteneur de style principal est l’id %s."
 
 #: legacy/settings.php:1854
 msgid "The form borders are: #none, #plain, #rounded, #shadow, #roundshadow."
-msgstr ""
+msgstr "Les bordures du formulaire sont : #none, #plain, #rounded, #shadow, #roundshadow."
 
 #: legacy/settings.php:1855
 msgid "Are you sure you want to reset the form styles?"
-msgstr ""
+msgstr "Voulez-vous vraiment réinitialiser les styles du formulaire ?"
 
 #: legacy/settings.php:1859
 msgid "Test Form"
-msgstr ""
+msgstr "Formulaire de test"
 
 #: legacy/settings.php:1860
 msgid "Not all of your style selections will display here (because of how WordPress works). So check the form on your site."
-msgstr ""
+msgstr "Tous vos choix de style ne s’afficheront pas ici (à cause du fonctionnement de WordPress). Vérifiez donc le formulaire sur votre site."
 
 #. translators: %s: a link with the text "on this page".
 #: legacy/settings.php:1879
 #, php-format
 msgid "There are some more examples of payment forms %s."
-msgstr ""
+msgstr "D’autres exemples de formulaires de paiement sont disponibles %s."
 
 #. translators: %s: a link with the text "on this page".
 #: legacy/settings.php:1884
 #, php-format
 msgid "And there are loads of shortcode options %s."
-msgstr ""
+msgstr "Et il y a de nombreuses options de shortcode %s."
 
 #: legacy/settings.php:1938
 msgid "The submission settings have been updated."
-msgstr ""
+msgstr "Les réglages d’envoi ont été mis à jour."
 
 #: legacy/settings.php:1943
 msgid "The submission settings have been reset."
-msgstr ""
+msgstr "Les réglages d’envoi ont été réinitialisés."
 
 #. translators: %s: form name.
 #: legacy/settings.php:1968
 #, php-format
 msgid "Send settings for %s"
-msgstr ""
+msgstr "Réglages d’envoi pour %s"
 
 #: legacy/settings.php:1970
 msgid "Default form send options"
-msgstr ""
+msgstr "Options d’envoi du formulaire par défaut"
 
 #: legacy/settings.php:1976
 msgid "Submission Message"
-msgstr ""
+msgstr "Message d’envoi"
 
 #: legacy/settings.php:1977
 msgid "This is what the visitor sees while the paypal page loads"
-msgstr ""
+msgstr "C’est ce que voit le visiteur pendant le chargement de la page PayPal"
 
 #: legacy/settings.php:1980
 msgid "Force Locale"
-msgstr ""
+msgstr "Forcer la langue"
 
 #: legacy/settings.php:1981
 msgid "This may or may not work, Paypal has some very strange rule regarding language"
-msgstr ""
+msgstr "Cela peut fonctionner ou non, PayPal a des règles très étranges concernant la langue"
 
 #: legacy/settings.php:1982
 msgid "Use Locale"
-msgstr ""
+msgstr "Utiliser la langue"
 
 #: legacy/settings.php:1988
 msgid "Brazilian Portuguese (for Portugal and Brazil only)"
-msgstr ""
+msgstr "Portugais du Brésil (pour le Portugal et le Brésil uniquement)"
 
 #: legacy/settings.php:1992
 msgid "Danish (for Denmark only)"
-msgstr ""
+msgstr "Danois (pour le Danemark uniquement)"
 
 #: legacy/settings.php:1995
 msgid "Hebrew (all)"
-msgstr ""
+msgstr "Hébreu (tous)"
 
 #: legacy/settings.php:1996
 msgid "Indonesian (for Indonesia only)"
-msgstr ""
+msgstr "Indonésien (pour l’Indonésie uniquement)"
 
 #: legacy/settings.php:1998
 msgid "Japanese (for Japan only)"
-msgstr ""
+msgstr "Japonais (pour le Japon uniquement)"
 
 #: legacy/settings.php:2000
 msgid "Norwegian (for Norway only)"
-msgstr ""
+msgstr "Norvégien (pour la Norvège uniquement)"
 
 #: legacy/settings.php:2004
 msgid "Russian (for Lithuania, Latvia, and Ukraine only)"
-msgstr ""
+msgstr "Russe (pour la Lituanie, la Lettonie et l’Ukraine uniquement)"
 
 #: legacy/settings.php:2005
 msgid "Simplified Chinese (for China only)"
-msgstr ""
+msgstr "Chinois simplifié (pour la Chine uniquement)"
 
 #: legacy/settings.php:2006
 msgid "Traditional Chinese (for Hong Kong only)"
-msgstr ""
+msgstr "Chinois traditionnel (pour Hong Kong uniquement)"
 
 #: legacy/settings.php:2007
 msgid "Traditional Chinese (for Taiwan only)"
-msgstr ""
+msgstr "Chinois traditionnel (pour Taïwan uniquement)"
 
 #: legacy/settings.php:2009
 msgid "Swedish (for Sweden only)"
-msgstr ""
+msgstr "Suédois (pour la Suède uniquement)"
 
 #: legacy/settings.php:2010
 msgid "Thai (for Thailand only)"
-msgstr ""
+msgstr "Thaï (pour la Thaïlande uniquement)"
 
 #: legacy/settings.php:2011
 msgid "Turkish (for Turkey only)"
-msgstr ""
+msgstr "Turc (pour la Turquie uniquement)"
 
 #: legacy/settings.php:2016
 msgid "Cancel and Thank you pages"
-msgstr ""
+msgstr "Pages d’annulation et de remerciement"
 
 #: legacy/settings.php:2017
 msgid "Where the buyer is sent after paying, or after changing their mind. Leave them blank and they come back to the page the form is on. This applies whichever gateway takes the payment."
-msgstr ""
+msgstr "Où l’acheteur est envoyé après avoir payé, ou après avoir changé d’avis. Laissez-les vides et il revient sur la page du formulaire. Cela s’applique quelle que soit la passerelle qui encaisse le paiement."
 
 #: legacy/settings.php:2018
 msgid "URL of cancellation page"
-msgstr ""
+msgstr "URL de la page d’annulation"
 
 #: legacy/settings.php:2020
 msgid "URL of thank you page"
-msgstr ""
+msgstr "URL de la page de remerciement"
 
 #: legacy/settings.php:2022
 msgid "Confirmation Message"
-msgstr ""
+msgstr "Message de confirmation"
 
 #: legacy/settings.php:2023
 msgid "Send yourself a copy of the payment details."
-msgstr ""
+msgstr "Envoyez-vous une copie des détails du paiement."
 
 #. translators: %s: a link with the text "Auto Responder".
 #: legacy/settings.php:2029
 #, php-format
 msgid "You can send the payer a confirmation message using the %s options."
-msgstr ""
+msgstr "Vous pouvez envoyer au payeur un message de confirmation avec les options %s."
 
 #: legacy/settings.php:2033
 msgid "Sending the payer a confirmation email"
-msgstr ""
+msgstr "Envoyer au payeur un e-mail de confirmation"
 
 #: legacy/settings.php:2036
 msgid "Custom Paypal Settings"
-msgstr ""
+msgstr "Réglages PayPal personnalisés"
 
 #: legacy/settings.php:2038
 msgid "Form is for donations only"
-msgstr ""
+msgstr "Le formulaire est réservé aux dons"
 
 #: legacy/settings.php:2040
 msgid "Donations only mode"
-msgstr ""
+msgstr "Le mode dons uniquement"
 
 #: legacy/settings.php:2043
 msgid "Include Postage and Processing in the amount to pay."
-msgstr ""
+msgstr "Inclure les frais de port et de traitement dans le montant à payer."
 
 #: legacy/settings.php:2045
 msgid "Including postage in the amount to pay"
-msgstr ""
+msgstr "Inclure les frais de port dans le montant à payer"
 
 #: legacy/settings.php:2048
 msgid "If you have a custom PayPal page enter the URL here. Leave blank to use the standard PayPal payment page"
-msgstr ""
+msgstr "Si vous avez une page PayPal personnalisée, saisissez son URL ici. Laissez vide pour utiliser la page de paiement PayPal standard"
 
 #: legacy/settings.php:2050
 msgid "Alternate PayPal email address:"
-msgstr ""
+msgstr "Autre adresse e-mail PayPal :"
 
 #: legacy/settings.php:2052
 msgid "Open in existing page"
-msgstr ""
+msgstr "Ouvrir dans la page actuelle"
 
 #: legacy/settings.php:2053
 msgid "Open link in new page/tab"
-msgstr ""
+msgstr "Ouvrir dans une nouvelle page/un nouvel onglet"
 
 #: legacy/settings.php:2053
 msgid "This is very browser dependent. Use with caution!"
-msgstr ""
+msgstr "Cela dépend beaucoup du navigateur. À utiliser avec prudence !"
 
 #: legacy/settings.php:2055
 msgid "Google onClick Event"
-msgstr ""
+msgstr "Événement onClick Google"
 
 #: legacy/settings.php:2091
 msgid "The error settings have been updated."
-msgstr ""
+msgstr "Les réglages d’erreur ont été mis à jour."
 
 #: legacy/settings.php:2095
 msgid "The error messages have been reset."
-msgstr ""
+msgstr "Les messages d’erreur ont été réinitialisés."
 
 #. translators: %s: form name.
 #: legacy/settings.php:2104
 #, php-format
 msgid "Error message settings for %s"
-msgstr ""
+msgstr "Réglages des messages d’erreur pour %s"
 
 #: legacy/settings.php:2106
 msgid "Default form error message"
-msgstr ""
+msgstr "Message d’erreur du formulaire par défaut"
 
 #: legacy/settings.php:2110
 msgid "Shown above the form when a payment cannot be submitted. Leave a field blank to use the wording the plugin ships with."
-msgstr ""
+msgstr "Affiché au-dessus du formulaire quand un paiement ne peut pas être envoyé. Laissez un champ vide pour utiliser le texte fourni avec l’extension."
 
 #: legacy/settings.php:2113
 msgid "Error header"
-msgstr ""
+msgstr "Titre de l’erreur"
 
 #: legacy/settings.php:2117
 msgid "Error message"
-msgstr ""
+msgstr "Message d’erreur"
 
 #: legacy/settings.php:2121
 msgid "Are you sure you want to reset the error message?"
-msgstr ""
+msgstr "Voulez-vous vraiment réinitialiser le message d’erreur ?"
 
 #: legacy/settings.php:2126
 msgid "Error Checker"
-msgstr ""
+msgstr "Vérificateur d’erreurs"
 
 #: legacy/settings.php:2127
 msgid "Try sending a blank form to test your error messages."
-msgstr ""
+msgstr "Essayez d’envoyer un formulaire vide pour tester vos messages d’erreur."
 
 #: legacy/settings.php:2163
 msgid "The Mailchimp settings have been updated."
-msgstr ""
+msgstr "Les réglages Mailchimp ont été mis à jour."
 
 #: legacy/settings.php:2168
 msgid "The Mailchimp settings have been reset."
-msgstr ""
+msgstr "Les réglages Mailchimp ont été réinitialisés."
 
 #: legacy/settings.php:2189
 msgid "The account creation setting has been updated."
-msgstr ""
+msgstr "Le réglage de création de compte a été mis à jour."
 
 #: legacy/settings.php:2198
 msgid "Send what your forms collect on to the other services you use."
-msgstr ""
+msgstr "Transmettez ce que vos formulaires collectent aux autres services que vous utilisez."
 
 #: legacy/settings.php:2205
 msgid "Add every buyer to your mailing list as they pay."
-msgstr ""
+msgstr "Ajoutez chaque acheteur à votre liste de diffusion au moment du paiement."
 
 #: legacy/settings.php:2212
 msgid "Buyers who tick the opt-in box on your form are added to your audience automatically, with their first name, last name and email address."
-msgstr ""
+msgstr "Les acheteurs qui cochent la case d’inscription sur votre formulaire sont ajoutés automatiquement à votre audience, avec leur prénom, leur nom et leur adresse e-mail."
 
 #: legacy/settings.php:2215
 msgid "Connected"
-msgstr ""
+msgstr "Connecté"
 
 #: legacy/settings.php:2216
 msgid "Not connected"
-msgstr ""
+msgstr "Non connecté"
 
 #: legacy/settings.php:2218
 msgid "Status"
-msgstr ""
+msgstr "État"
 
 #: legacy/settings.php:2219
 msgid "Your form must collect an email address, and show the opt-in checkbox, for anyone to be added. The fields sent are EMAIL, FNAME and LNAME."
-msgstr ""
+msgstr "Votre formulaire doit collecter une adresse e-mail et afficher la case d’inscription pour que quelqu’un soit ajouté. Les champs envoyés sont EMAIL, FNAME et LNAME."
 
 #: legacy/settings.php:2220
 msgid "Help setting up Mailchimp"
-msgstr ""
+msgstr "Aide pour configurer Mailchimp"
 
 #: legacy/settings.php:2222
 msgid "Enable Mailchimp data collection."
-msgstr ""
+msgstr "Activer la collecte de données Mailchimp."
 
 #: legacy/settings.php:2223
 msgid "Opt-in message shown on the form"
-msgstr ""
+msgstr "Message d’inscription affiché sur le formulaire"
 
 #: legacy/settings.php:2224
 msgid "API key"
-msgstr ""
+msgstr "Clé API"
 
 #: legacy/settings.php:2225
 msgid "Audience (list) ID"
-msgstr ""
+msgstr "ID d’audience (liste)"
 
 #: legacy/settings.php:2227
 msgid "Are you sure you want to reset the Mailchimp settings?"
-msgstr ""
+msgstr "Voulez-vous vraiment réinitialiser les réglages Mailchimp ?"
 
 #: legacy/settings.php:2241
 msgid "WordPress accounts"
-msgstr ""
+msgstr "Comptes WordPress"
 
 #: legacy/settings.php:2242
 msgid "Give the buyer a login on your site when they pay."
-msgstr ""
+msgstr "Donnez à l’acheteur un accès à votre site quand il paie."
 
 #: legacy/settings.php:2248
 msgid "Creating a WordPress account when someone pays"
-msgstr ""
+msgstr "Créer un compte WordPress quand quelqu’un paie"
 
 #: legacy/settings.php:2249
 msgid "You choose the role, and the buyer is emailed a link to set their own password."
-msgstr ""
+msgstr "Vous choisissez le rôle, et l’acheteur reçoit par e-mail un lien pour définir son propre mot de passe."
 
 #. translators: %s is the name of the form these settings apply to.
 #: legacy/settings.php:2252
 #, php-format
 msgid "These settings apply to %s."
-msgstr ""
+msgstr "Ces réglages s’appliquent à %s."
 
 #: legacy/settings.php:2254
 msgid "The buyer is emailed a link to set their own password."
-msgstr ""
+msgstr "L’acheteur reçoit par e-mail un lien pour définir son propre mot de passe."
 
 #: legacy/settings.php:2255
 msgid "The username is the first name they entered, so your form has to collect a name and an email address."
-msgstr ""
+msgstr "L’identifiant est le prénom saisi, votre formulaire doit donc collecter un nom et une adresse e-mail."
 
 #: legacy/settings.php:2256
 msgid "Nothing happens if that username or email address already has an account, so a second buyer with the same first name will not get one."
-msgstr ""
+msgstr "Rien ne se passe si cet identifiant ou cette adresse e-mail a déjà un compte, donc un second acheteur avec le même prénom n’en recevra pas."
 
 #: legacy/settings.php:2259
 msgid "Create a WordPress account when this form is submitted."
-msgstr ""
+msgstr "Créer un compte WordPress lors de l’envoi de ce formulaire."
 
 #: legacy/settings.php:2262
 msgid "Create the account:"
-msgstr ""
+msgstr "Créer le compte :"
 
 #: legacy/settings.php:2264
 msgid "when the payment completes"
-msgstr ""
+msgstr "quand le paiement est terminé"
 
 #: legacy/settings.php:2266
 msgid "when the form is submitted, before paying"
-msgstr ""
+msgstr "quand le formulaire est envoyé, avant le paiement"
 
 #: legacy/settings.php:2267
 msgid "A payment completes when it is confirmed automatically, or when you mark it as paid on the payments screen. Creating the account on submission gives one to somebody who may not complete payment."
-msgstr ""
+msgstr "Un paiement est terminé quand il est confirmé automatiquement, ou quand vous le marquez comme payé sur l’écran des paiements. Créer le compte à l’envoi en donne un à quelqu’un qui n’ira peut-être pas au bout du paiement."
 
 #: legacy/settings.php:2270
 msgid "Role for the new account"
-msgstr ""
+msgstr "Rôle du nouveau compte"
 
 #: legacy/settings.php:2276
 msgid "Administrator is not offered. Anyone can submit a payment form, and the username is whatever they typed in the first name box."
-msgstr ""
+msgstr "Administrateur n’est pas proposé. N’importe qui peut envoyer un formulaire de paiement, et l’identifiant est ce qui a été tapé dans le champ prénom."
 
 #. translators: %s is a link to the Members plugin, with the link text "Members".
 #: legacy/settings.php:2292
 #, php-format
 msgid "A role only does something if a plugin acts on it. To turn paid accounts into a members area with restricted content, pair this with %s, which is free and lets you choose what each role can see."
-msgstr ""
+msgstr "Un rôle ne fait quelque chose que si une extension s’en sert. Pour transformer les comptes payants en espace membres à contenu réservé, associez ceci à %s, qui est gratuit et vous laisse choisir ce que chaque rôle peut voir."
 
 #: legacy/settings.php:2294
 msgid "Members"
-msgstr ""
+msgstr "Members"
 
 #: legacy/settings.php:2321
 #: legacy/settings.php:2334
 #: legacy/settings.php:2356
 msgid "Stripe Checkout"
-msgstr ""
+msgstr "Stripe Checkout"
 
 #: legacy/settings.php:2335
 msgid "The Stripe code is not loaded on this install. Reactivate your licence, then reload this page."
-msgstr ""
+msgstr "Le code Stripe n’est pas chargé sur cette installation. Réactivez votre licence, puis rechargez cette page."
 
 #: legacy/settings.php:2350
 msgid "The Stripe settings have been updated."
-msgstr ""
+msgstr "Les réglages Stripe ont été mis à jour."
 
 #: legacy/settings.php:2357
 msgid "Take card payments through Stripe instead of PayPal. The customer pays on a page hosted by Stripe, so no card details ever reach your site."
-msgstr ""
+msgstr "Acceptez les paiements par carte via Stripe au lieu de PayPal. Le client paie sur une page hébergée par Stripe, donc aucune donnée de carte n’atteint jamais votre site."
 
 #: legacy/settings.php:2359
 msgid "Use Stripe for this site's payment forms."
-msgstr ""
+msgstr "Utiliser Stripe pour les formulaires de paiement de ce site."
 
 #: legacy/settings.php:2360
 msgid "Secret key"
-msgstr ""
+msgstr "Clé secrète"
 
 #: legacy/settings.php:2361
 msgid "From Stripe, Developers, API keys. Starts sk_live_ or sk_test_."
-msgstr ""
+msgstr "Dans Stripe, Développeurs, Clés API. Commence par sk_live_ ou sk_test_."
 
 #: legacy/settings.php:2362
 msgid "Webhook signing secret"
-msgstr ""
+msgstr "Secret de signature du webhook"
 
 #: legacy/settings.php:2363
 msgid "Starts whsec_. Without it payments cannot be confirmed, because there is no way to tell a real notification from a forged one."
-msgstr ""
+msgstr "Commence par whsec_. Sans lui, les paiements ne peuvent pas être confirmés, car rien ne permet de distinguer une vraie notification d’une fausse."
 
 #: legacy/settings.php:2369
 msgid "Setting Stripe up"
-msgstr ""
+msgstr "Configurer Stripe"
 
 #: legacy/settings.php:2371
 msgid "In Stripe go to Developers, then Webhooks, and add an endpoint."
-msgstr ""
+msgstr "Dans Stripe, allez dans Développeurs, puis Webhooks, et ajoutez un point de terminaison."
 
 #: legacy/settings.php:2372
 msgid "Paste this URL as the endpoint:"
-msgstr ""
+msgstr "Collez cette URL comme point de terminaison :"
 
 #. translators: %s: the Stripe event name checkout.session.completed, in a code tag.
 #: legacy/settings.php:2375
 #, php-format
 msgid "Choose the event %s. Nothing else is needed."
-msgstr ""
+msgstr "Choisissez l’événement %s. Rien d’autre n’est nécessaire."
 
 #: legacy/settings.php:2378
 msgid "Copy the signing secret Stripe shows you into the box on the left."
-msgstr ""
+msgstr "Copiez le secret de signature affiché par Stripe dans la case à gauche."
 
 #: legacy/settings.php:2379
 msgid "Copy your secret key from Developers, API keys."
-msgstr ""
+msgstr "Copiez votre clé secrète depuis Développeurs, Clés API."
 
 #: legacy/settings.php:2381
 msgid "Use your test keys first. A test payment appears in your payment list exactly as a live one would."
-msgstr ""
+msgstr "Utilisez d’abord vos clés de test. Un paiement de test apparaît dans votre liste de paiements exactement comme un vrai."
 
 #: legacy/settings.php:2382
 msgid "Recurring forms still go through PayPal."
-msgstr ""
+msgstr "Les formulaires récurrents passent toujours par PayPal."
 
 #: legacy/settings.php:2382
 msgid "Stripe Checkout will not accept a subscription that stops after a set number of payments, so a recurring form falls back to PayPal rather than billing a customer open ended. One off payments on the same site still go through Stripe."
-msgstr ""
+msgstr "Stripe Checkout n’accepte pas un abonnement qui s’arrête après un nombre défini de paiements, donc un formulaire récurrent se rabat sur PayPal plutôt que de facturer un client sans fin. Les paiements uniques sur le même site passent toujours par Stripe."
 
 #: legacy/settings.php:2393
 msgid "Instant Payment Notification"
-msgstr ""
+msgstr "Notification instantanée de paiement"
 
 #: legacy/settings.php:2406
 msgid "The IPN settings have been updated."
-msgstr ""
+msgstr "Les réglages IPN ont été mis à jour."
 
 #: legacy/settings.php:2410
 msgid "The IPN settings have been reset."
-msgstr ""
+msgstr "Les réglages IPN ont été réinitialisés."
 
 #: legacy/settings.php:2414
 msgid "Instant Payment Notifications"
-msgstr ""
+msgstr "Notifications instantanées de paiement"
 
 #. translators: %s: the heading "Setting IPN up in PayPal", in bold.
 #: legacy/settings.php:2417
 #, php-format
 msgid "IPN needs a PayPal Business or Premier account, and IPN must be switched on in that account. See %s alongside."
-msgstr ""
+msgstr "L’IPN nécessite un compte PayPal Business ou Premier, et l’IPN doit être activée dans ce compte. Voir %s ci-contre."
 
 #: legacy/settings.php:2418
 #: legacy/settings.php:2458
 msgid "Setting IPN up in PayPal"
-msgstr ""
+msgstr "Configurer l’IPN dans PayPal"
 
 #: legacy/settings.php:2424
 msgid "Enable IPN."
-msgstr ""
+msgstr "Activer l’IPN."
 
 #: legacy/settings.php:2428
 msgid "Payment Report Column header:"
-msgstr ""
+msgstr "En-tête de colonne du rapport de paiement :"
 
 #: legacy/settings.php:2433
 msgid "Payment Complete Label:"
-msgstr ""
+msgstr "Libellé de paiement terminé :"
 
 #: legacy/settings.php:2438
 msgid "Third Party Listener URL (optional: advanced):"
-msgstr ""
+msgstr "URL d’écouteur tiers (facultatif : avancé) :"
 
 #: legacy/settings.php:2443
 msgid "Delete record after payment."
-msgstr ""
+msgstr "Supprimer l’enregistrement après paiement."
 
 #: legacy/settings.php:2446
 msgid "Are you sure you want to reset the IPN settings?"
-msgstr ""
+msgstr "Voulez-vous vraiment réinitialiser les réglages IPN ?"
 
 #: legacy/settings.php:2449
 msgid "If you set a Listener URL above this plugin will not automatically handle IPN's, this is for advanced usage e.g. split IPN handling. If you haven't set an IPN listener URL above this is the one you need to get payment confirmation:"
-msgstr ""
+msgstr "Si vous définissez une URL d’écouteur ci-dessus, cette extension ne traitera pas les IPN automatiquement ; c’est pour un usage avancé, par ex. un traitement IPN réparti. Si vous n’avez pas défini d’URL d’écouteur IPN ci-dessus, voici celle dont vous avez besoin pour obtenir la confirmation de paiement :"
 
 #. translators: 1: the word "Payments" in bold, the dashboard menu item, 2: a link with the text "click here".
 #: legacy/settings.php:2452
 #, php-format
 msgid "To check completed payments click on the %1$s link in your dashboard menu or %2$s."
-msgstr ""
+msgstr "Pour vérifier les paiements terminés, cliquez sur le lien %1$s dans le menu de votre tableau de bord ou %2$s."
 
 #: legacy/settings.php:2454
 msgid "click here"
-msgstr ""
+msgstr "cliquez ici"
 
 #: legacy/settings.php:2459
 msgid "PayPal have moved their IPN documentation more than once, so the steps are repeated here in full."
-msgstr ""
+msgstr "PayPal a déplacé sa documentation IPN plus d’une fois, les étapes sont donc reprises ici en entier."
 
 #: legacy/settings.php:2461
 msgid "Log in to your PayPal account"
-msgstr ""
+msgstr "Connectez-vous à votre compte PayPal"
 
 #. translators: %s: the word "Business" in bold.
 #: legacy/settings.php:2464
 #, php-format
 msgid "You need a %s account. If yours is Personal, follow PayPal's instructions to upgrade it first"
-msgstr ""
+msgstr "Il vous faut un compte %s. Si le vôtre est Personnel, suivez d’abord les instructions de PayPal pour le faire évoluer"
 
 #: legacy/settings.php:2465
 msgid "Business"
-msgstr ""
+msgstr "Business"
 
 #. translators: %s: a link with the text "Business profile -> Notifications -> Instant payment notifications".
 #: legacy/settings.php:2469
 #, php-format
 msgid "Go to %s"
-msgstr ""
+msgstr "Allez dans %s"
 
 #: legacy/settings.php:2470
 msgid "Business profile &rarr; Notifications &rarr; Instant payment notifications"
-msgstr ""
+msgstr "Profil professionnel &rarr; Notifications &rarr; Notifications instantanées de paiement"
 
 #. translators: 1, 2, 3: the PayPal button names Manage, Update and Choose IPN Settings, in bold.
 #: legacy/settings.php:2474
 #, php-format
 msgid "Click %1$s (or %2$s, then %3$s)"
-msgstr ""
+msgstr "Cliquez sur %1$s (ou %2$s, puis %3$s)"
 
 #: legacy/settings.php:2475
 msgid "Manage"
-msgstr ""
+msgstr "Gérer"
 
 #: legacy/settings.php:2476
 msgid "Update"
-msgstr ""
+msgstr "Mettre à jour"
 
 #: legacy/settings.php:2477
 msgid "Choose IPN Settings"
-msgstr ""
+msgstr "Choisir les réglages IPN"
 
 #: legacy/settings.php:2479
 msgid "Enter this Notification URL:"
-msgstr ""
+msgstr "Saisissez cette URL de notification :"
 
 #. translators: %s: the PayPal option name "Receive IPN messages (Enabled)", in bold.
 #: legacy/settings.php:2482
 #, php-format
 msgid "Select %s"
-msgstr ""
+msgstr "Sélectionnez %s"
 
 #: legacy/settings.php:2483
 msgid "Receive IPN messages (Enabled)"
-msgstr ""
+msgstr "Recevoir les messages IPN (Activé)"
 
 #. translators: %s: the button name "Save", in bold.
 #: legacy/settings.php:2487
 #, php-format
 msgid "Click %s"
-msgstr ""
+msgstr "Cliquez sur %s"
 
 #: legacy/settings.php:2488
 #: ui/admin/class-admin-pages.php:210
 msgid "Save"
-msgstr ""
+msgstr "Enregistrer"
 
 #. translators: %s: a link with the text "IPN history".
 #: legacy/settings.php:2493
 #, php-format
 msgid "To see what PayPal actually sent, and to resend it, open your %s. That is the first place to look if a payment has not been marked complete."
-msgstr ""
+msgstr "Pour voir ce que PayPal a réellement envoyé, et le renvoyer, ouvrez votre %s. C’est le premier endroit à consulter si un paiement n’a pas été marqué terminé."
 
 #: legacy/settings.php:2494
 msgid "IPN history"
-msgstr ""
+msgstr "historique IPN"
 
 #. translators: %s: a link with the text "IPN setup guide".
 #: legacy/settings.php:2498
 #, php-format
 msgid "PayPal's own reference is the %s."
-msgstr ""
+msgstr "La référence de PayPal est le %s."
 
 #: legacy/settings.php:2499
 msgid "IPN setup guide"
-msgstr ""
+msgstr "guide de configuration IPN"
 
 #: legacy/settings.php:2503
 msgid "IPN Simulation"
-msgstr ""
+msgstr "Simulation IPN"
 
 #: legacy/settings.php:2504
 msgid "IPN can be blocked or restricted by your server settings, theme or other plugins. The good news is you can simulate the notifications to check if all is working."
-msgstr ""
+msgstr "L’IPN peut être bloquée ou restreinte par les réglages de votre serveur, votre thème ou d’autres extensions. La bonne nouvelle est que vous pouvez simuler les notifications pour vérifier que tout fonctionne."
 
 #: legacy/settings.php:2505
 msgid "To carry out a simulation:"
-msgstr ""
+msgstr "Pour effectuer une simulation :"
 
 #. translators: %s: a link with the text "plugin setup page".
 #: legacy/settings.php:2509
 #, php-format
 msgid "Enable the PayPal Sandbox on the %s"
-msgstr ""
+msgstr "Activez le bac à sable PayPal sur la %s"
 
 #: legacy/settings.php:2510
 msgid "plugin setup page"
-msgstr ""
+msgstr "page de configuration de l’extension"
 
 #: legacy/settings.php:2512
 msgid "Fill in and send your payment form (you do not need to make an actual payment)"
-msgstr ""
+msgstr "Remplissez et envoyez votre formulaire de paiement (vous n’avez pas besoin d’effectuer un vrai paiement)"
 
 #. translators: %s: a link with the text "Payments Report".
 #: legacy/settings.php:2515
 #, php-format
 msgid "Go to the %s and copy the long number in the last column from the payment you have just made"
-msgstr ""
+msgstr "Allez dans le %s et copiez le long numéro de la dernière colonne du paiement que vous venez d’effectuer"
 
 #: legacy/settings.php:2516
 msgid "Payments Report"
-msgstr ""
+msgstr "rapport des paiements"
 
 #: legacy/settings.php:2518
 msgid "Go to the IPN simulation page:"
-msgstr ""
+msgstr "Allez sur la page de simulation IPN :"
 
 #: legacy/settings.php:2519
 msgid "Login and enter the IPN listener URL"
-msgstr ""
+msgstr "Connectez-vous et saisissez l’URL de l’écouteur IPN"
 
 #: legacy/settings.php:2520
 msgid "Select 'Express Checkout' from the drop down"
-msgstr ""
+msgstr "Sélectionnez « Express Checkout » dans la liste déroulante"
 
 #: legacy/settings.php:2521
 msgid "Scroll to the bottom of the page and enter the long number you copied at step 3 into the 'Custom' field"
-msgstr ""
+msgstr "Descendez en bas de la page et saisissez le long numéro copié à l’étape 3 dans le champ « Custom »"
 
 #: legacy/settings.php:2522
 msgid "Click 'Send IPN'. Scroll up the page and you should see an 'IPN Verified' message."
-msgstr ""
+msgstr "Cliquez sur « Send IPN ». Remontez la page et vous devriez voir un message « IPN Verified »."
 
 #: legacy/settings.php:2523
 msgid "Go back to your Payments Report and refresh, you should now see the payment completed message"
-msgstr ""
+msgstr "Retournez dans votre rapport des paiements et actualisez, vous devriez maintenant voir le message de paiement terminé"
 
 #. translators: %s: form name.
 #: legacy/settings.php:2559
 #, php-format
 msgid "The autoresponder settings for %s have been updated."
-msgstr ""
+msgstr "Les réglages de réponse automatique pour %s ont été mis à jour."
 
 #: legacy/settings.php:2561
 msgid "The default form autoresponder settings have been updated."
-msgstr ""
+msgstr "Les réglages de réponse automatique du formulaire par défaut ont été mis à jour."
 
 #. translators: %s: form name.
 #: legacy/settings.php:2568
 #, php-format
 msgid "The autoresponder settings for the form called %s have been reset."
-msgstr ""
+msgstr "Les réglages de réponse automatique du formulaire nommé %s ont été réinitialisés."
 
 #: legacy/settings.php:2570
 msgid "The default form autoresponder settings have been reset."
-msgstr ""
+msgstr "Les réglages de réponse automatique du formulaire par défaut ont été réinitialisés."
 
 #. translators: %s: form name.
 #: legacy/settings.php:2583
 #, php-format
 msgid "Autoresponse settings for %s"
-msgstr ""
+msgstr "Réglages de réponse automatique pour %s"
 
 #: legacy/settings.php:2585
 msgid "Default form autoresponse settings"
-msgstr ""
+msgstr "Réglages de réponse automatique du formulaire par défaut"
 
 #: legacy/settings.php:2588
 msgid "The auto responder sends a confirmation message to the Payer. Use the editor below to send links, images and anything else you normally add to a post or page."
-msgstr ""
+msgstr "La réponse automatique envoie un message de confirmation au payeur. Utilisez l’éditeur ci-dessous pour envoyer des liens, des images et tout ce que vous ajoutez habituellement à un article ou une page."
 
 #. translators: %s: a link with the text "Form Settings".
 #: legacy/settings.php:2591
 #, php-format
 msgid "Note that the autoresponder only works if you collect an email address on the %s."
-msgstr ""
+msgstr "Notez que la réponse automatique ne fonctionne que si vous collectez une adresse e-mail dans les %s."
 
 #: legacy/settings.php:2592
 msgid "Form Settings"
-msgstr ""
+msgstr "Réglages du formulaire"
 
 #. translators: %s: a link with the text "Send Options".
 #: legacy/settings.php:2596
 #, php-format
 msgid "If you want to receive notification messages use the option on the %s tab."
-msgstr ""
+msgstr "Si vous voulez recevoir des messages de notification, utilisez l’option de l’onglet %s."
 
 #: legacy/settings.php:2600
 msgid "Enable Auto Responder"
-msgstr ""
+msgstr "Activer la réponse automatique"
 
 #: legacy/settings.php:2601
 msgid "After submission to PayPal"
-msgstr ""
+msgstr "Après l’envoi à PayPal"
 
 #. translators: %s: a link with the text "IPN".
 #: legacy/settings.php:2604
 #, php-format
 msgid "After payment (only works if %s is enabled)"
-msgstr ""
+msgstr "Après le paiement (ne fonctionne que si %s est activée)"
 
 #: legacy/settings.php:2605
 msgid "IPN"
-msgstr ""
+msgstr "l’IPN"
 
 #: legacy/settings.php:2607
 msgid "From Name"
-msgstr ""
+msgstr "Nom de l’expéditeur"
 
 #. translators: %s: a link with the text "Site Title".
 #. translators: %s: a link with the text "PayPal email address".
@@ -3595,462 +3598,433 @@ msgstr ""
 #: legacy/settings.php:2615
 #, php-format
 msgid "Defaults to your %s if left blank."
-msgstr ""
+msgstr "Par défaut, votre %s si laissé vide."
 
 #: legacy/settings.php:2610
 msgid "Site Title"
-msgstr ""
+msgstr "titre du site"
 
 #: legacy/settings.php:2613
 msgid "From Email"
-msgstr ""
+msgstr "E-mail de l’expéditeur"
 
 #: legacy/settings.php:2616
 msgid "PayPal email address"
-msgstr ""
+msgstr "adresse e-mail PayPal"
 
 #: legacy/settings.php:2619
 msgid "Subject"
-msgstr ""
+msgstr "Objet"
 
 #: legacy/settings.php:2621
 msgid "Message Content"
-msgstr ""
+msgstr "Contenu du message"
 
 #: legacy/settings.php:2624
 msgid "personal details"
-msgstr ""
+msgstr "coordonnées"
 
 #: legacy/settings.php:2625
 msgid "You can use the following shortcodes in the message body:"
-msgstr ""
+msgstr "Vous pouvez utiliser les shortcodes suivants dans le corps du message :"
 
 #: legacy/settings.php:2629
 msgid "Replacement Text"
-msgstr ""
+msgstr "Texte de remplacement"
 
 #. translators: %s: a link with the text "personal details".
 #: legacy/settings.php:2635
 #, php-format
 msgid "The registrants first name if you are using the %s option."
-msgstr ""
+msgstr "Le prénom de l’acheteur, si vous utilisez l’option %s."
 
 #. translators: %s: a link with the text "personal details".
 #: legacy/settings.php:2643
 #, php-format
 msgid "The registrants first and last name if you are using the %s option."
-msgstr ""
+msgstr "Le prénom et le nom de l’acheteur, si vous utilisez l’option %s."
 
 #: legacy/settings.php:2649
 msgid "The name of the item being purchased"
-msgstr ""
+msgstr "Le nom de l’article acheté"
 
 #: legacy/settings.php:2653
 msgid "The total amount to be paid without the currency symbol"
-msgstr ""
+msgstr "Le montant total à payer sans le symbole de devise"
 
 #: legacy/settings.php:2657
 msgid "The total amount to be paid with currency symbol"
-msgstr ""
+msgstr "Le montant total à payer avec le symbole de devise"
 
 #: legacy/settings.php:2661
 msgid "The number of items purchased"
-msgstr ""
+msgstr "Le nombre d’articles achetés"
 
 #: legacy/settings.php:2665
 msgid "The option selected"
-msgstr ""
+msgstr "L’option sélectionnée"
 
 #: legacy/settings.php:2669
 msgid "The stock, SKU or item number"
-msgstr ""
+msgstr "Le numéro de stock, SKU ou d’article"
 
 #: legacy/settings.php:2673
 msgid "The payment information (reference, quantity, options, stock number, amount)"
-msgstr ""
+msgstr "Les informations de paiement (référence, quantité, options, numéro de stock, montant)"
 
 #: legacy/settings.php:2677
 msgid "A table with the names and quantities of each item ordered (Platinum only)"
-msgstr ""
+msgstr "Un tableau avec les noms et quantités de chaque article commandé (Platinum uniquement)"
 
 #: legacy/settings.php:2680
 msgid "Add payment details to the message"
-msgstr ""
+msgstr "Ajouter les détails du paiement au message"
 
 #: legacy/settings.php:2681
 msgid "Are you sure you want to reset the auto responder settings?"
-msgstr ""
+msgstr "Voulez-vous vraiment réinitialiser les réglages de réponse automatique ?"
 
 #: legacy/settings.php:2725
 msgid "The form settings have been updated."
-msgstr ""
+msgstr "Les réglages du formulaire ont été mis à jour."
 
 #: legacy/settings.php:2731
 msgid "The personal details fields have been reset."
-msgstr ""
+msgstr "Les champs de coordonnées ont été réinitialisés."
 
 #. translators: %s: form name.
 #: legacy/settings.php:2739
 #, php-format
 msgid "Personal Information Fields for %s"
-msgstr ""
+msgstr "Champs de coordonnées pour %s"
 
 #: legacy/settings.php:2741
 msgid "Personal Information Fields"
-msgstr ""
+msgstr "Champs de coordonnées"
 
 #: legacy/settings.php:2766
 msgid "Note: The information will be collected and saved and passed to PayPal but usage is dependent on browser and user settings. Which means they may have to fill in the information again when they get to PayPal"
-msgstr ""
+msgstr "Remarque : les informations seront collectées, enregistrées et transmises à PayPal, mais leur utilisation dépend des réglages du navigateur et de l’utilisateur. Il se peut donc qu’il doive les ressaisir en arrivant sur PayPal"
 
 #: legacy/settings.php:2767
 msgid "1. Delete labels for fields you do not want to use."
-msgstr ""
+msgstr "1. Supprimez les libellés des champs que vous ne voulez pas utiliser."
 
 #. translators: %s: the column heading "R", in bold.
 #: legacy/settings.php:2770
 #, php-format
 msgid "2. Check the %s box for mandatory/required fields."
-msgstr ""
+msgstr "2. Cochez la case %s pour les champs obligatoires."
 
 #: legacy/settings.php:2771
 #: legacy/settings.php:2778
 msgctxt "column heading, short for Required"
 msgid "R"
-msgstr ""
+msgstr "O"
 
 #: legacy/settings.php:2776
 msgid "Field"
-msgstr ""
+msgstr "Champ"
 
 #: legacy/settings.php:2777
 msgid "Label"
-msgstr ""
+msgstr "Libellé"
 
 #: legacy/settings.php:2794
 msgid "Email"
-msgstr ""
+msgstr "E-mail"
 
 #: legacy/settings.php:2824
 msgid "Zip"
-msgstr ""
+msgstr "Code postal"
 
 #: legacy/settings.php:2836
 msgid "Default / Permitted Countries"
-msgstr ""
+msgstr "Pays par défaut / autorisés"
 
 #: legacy/settings.php:2838
 msgid "Default Country"
-msgstr ""
+msgstr "Pays par défaut"
 
 #: legacy/settings.php:2841
 msgid "Permitted ( Multi-select)"
-msgstr ""
+msgstr "Autorisés (sélection multiple)"
 
 #: legacy/settings.php:2847
 msgid "Phone"
-msgstr ""
+msgstr "Téléphone"
 
 #: legacy/settings.php:2852
 msgid "Are you sure you want to reset the personal details fields?"
-msgstr ""
+msgstr "Voulez-vous vraiment réinitialiser les champs de coordonnées ?"
 
 #: legacy/settings.php:2857
 msgid "Example Form"
-msgstr ""
+msgstr "Exemple de formulaire"
 
 #: legacy/settings.php:2872
 msgid "Coupon Codes"
-msgstr ""
+msgstr "Codes promo"
 
 #: legacy/settings.php:2920
 msgid "The coupon settings have been updated."
-msgstr ""
+msgstr "Les réglages des codes promo ont été mis à jour."
 
 #: legacy/settings.php:2924
 msgid "The coupon settings have been reset."
-msgstr ""
+msgstr "Les réglages des codes promo ont été réinitialisés."
 
 #. translators: %s: form name.
 #: legacy/settings.php:2975
 #, php-format
 msgid "Coupon codes for %s"
-msgstr ""
+msgstr "Codes promo pour %s"
 
 #: legacy/settings.php:2977
 msgid "Default form coupon codes"
-msgstr ""
+msgstr "Codes promo du formulaire par défaut"
 
 #: legacy/settings.php:2988
 msgid "A form set to take recurring payments cannot also take a coupon."
-msgstr ""
+msgstr "Un formulaire configuré pour les paiements récurrents ne peut pas aussi accepter un code promo."
 
 #: legacy/settings.php:2992
 msgid "Number of Coupons:"
-msgstr ""
+msgstr "Nombre de codes :"
 
 #: legacy/settings.php:2994
 msgid "Code"
-msgstr ""
+msgstr "Code"
 
 #: legacy/settings.php:2994
 msgid "Percentage"
-msgstr ""
+msgstr "Pourcentage"
 
 #: legacy/settings.php:2994
 msgid "Fixed Amount"
-msgstr ""
+msgstr "Montant fixe"
 
 #: legacy/settings.php:2994
 msgid "(remaining / blank unlimited)"
-msgstr ""
+msgstr "(restants / vide = illimité)"
 
 #: legacy/settings.php:2998
 msgid "Enter Coupon Code"
-msgstr ""
+msgstr "Saisissez le code promo"
 
 #: legacy/settings.php:3010
 msgid "Invalid Coupon Code Message"
-msgstr ""
+msgstr "Message de code promo invalide"
 
 #: legacy/settings.php:3012
 msgid "Expired Coupon Message"
-msgstr ""
+msgstr "Message de code promo expiré"
 
 #: legacy/settings.php:3014
 msgid "Coupon Code Autofill"
-msgstr ""
+msgstr "Remplissage automatique du code promo"
 
 #: legacy/settings.php:3015
 msgid "You can add coupon codes to URLs which will autofill the field. The URL format is: mysite.com/mypaymentpage/?coupon=code. The code you set will appear on the form with the following caption:"
-msgstr ""
+msgstr "Vous pouvez ajouter des codes promo aux URL pour remplir le champ automatiquement. Le format est : monsite.com/mapagedepaiement/?coupon=code. Le code apparaîtra sur le formulaire avec la légende suivante :"
 
 #: legacy/settings.php:3017
 msgid "Clone Coupon Settings"
-msgstr ""
+msgstr "Cloner les réglages des codes"
 
 #: legacy/settings.php:3018
 msgid "Duplicate coupon codes across all forms"
-msgstr ""
+msgstr "Dupliquer les codes promo sur tous les formulaires"
 
 #: legacy/settings.php:3019
 msgid "Are you sure you want to reset the coupon codes?"
-msgstr ""
+msgstr "Voulez-vous vraiment réinitialiser les codes promo ?"
 
 #: legacy/settings.php:3024
 msgid "Coupon Check"
-msgstr ""
+msgstr "Vérification des codes"
 
 #: legacy/settings.php:3025
 msgid "Test your coupon codes."
-msgstr ""
+msgstr "Testez vos codes promo."
 
 #: legacy/settings.php:3050
 msgid "The products have been updated."
-msgstr ""
+msgstr "Les produits ont été mis à jour."
 
 #: legacy/settings.php:3054
 msgid "The multiple product settings have been reset."
-msgstr ""
+msgstr "Les réglages des produits multiples ont été réinitialisés."
 
 #: legacy/settings.php:3062
 msgid "Multiple Products Settings"
-msgstr ""
+msgstr "Réglages des produits multiples"
 
 #: legacy/settings.php:3070
 msgid "A product appears on the form only when it has a name. Leave the rest blank."
-msgstr ""
+msgstr "Un produit n’apparaît sur le formulaire que s’il a un nom. Laissez le reste vide."
 
 #: legacy/settings.php:3071
 msgid "Heading above the products:"
-msgstr ""
+msgstr "Titre au-dessus des produits :"
 
 #: legacy/settings.php:3072
 msgid "Leave blank for no heading."
-msgstr ""
+msgstr "Laissez vide pour ne pas afficher de titre."
 
 #: legacy/settings.php:3073
 msgid "Label for each product:"
-msgstr ""
+msgstr "Libellé de chaque produit :"
 
 #: legacy/settings.php:3074
 msgid "[product] and [cost] are replaced by the name and cost of each product below."
-msgstr ""
+msgstr "[product] et [cost] sont remplacés par le nom et le prix de chaque produit ci-dessous."
 
 #: legacy/settings.php:3075
 msgid "Allow quantities"
-msgstr ""
+msgstr "Autoriser les quantités"
 
 #: legacy/settings.php:3076
 msgid "Ticked gives each product a quantity box. Unticked gives it a tick box."
-msgstr ""
+msgstr "Coché, chaque produit a un champ quantité. Décoché, une case à cocher."
 
 #: legacy/settings.php:3078
 msgid "Product Name"
-msgstr ""
+msgstr "Nom du produit"
 
 #: legacy/settings.php:3078
 msgid "Cost"
-msgstr ""
+msgstr "Prix"
 
 #: legacy/settings.php:3084
 msgid "Message when no product is chosen:"
-msgstr ""
+msgstr "Message quand aucun produit n’est choisi :"
 
 #: legacy/settings.php:3085
 msgid "Are you sure you want to reset the products?"
-msgstr ""
+msgstr "Voulez-vous vraiment réinitialiser les produits ?"
 
 #: legacy/settings.php:3184
 msgid "You do not have permission to export payment records."
-msgstr ""
+msgstr "Vous n’avez pas l’autorisation d’exporter l’historique des paiements."
 
 #: legacy/settings.php:3380
 msgid "Checking with PayPal..."
-msgstr ""
+msgstr "Vérification auprès de PayPal..."
 
 #: legacy/settings.php:3447
 msgid "Quick PayPal Payments cannot take a payment."
-msgstr ""
+msgstr "Quick PayPal Payments ne peut pas accepter de paiement."
 
 #. translators: %s is a comma separated list of form names.
 #: legacy/settings.php:3451
 #, php-format
 msgid "Affects: %s."
-msgstr ""
+msgstr "Concerne : %s."
 
 #: legacy/settings.php:3472
 msgid "You cannot do that."
-msgstr ""
+msgstr "Vous ne pouvez pas faire cela."
 
 #: quick-paypal-payments.php:122
 msgid "You already have a pro version of Quick PayPal Payments (Premium) installed, please check versions and delete one of them. The correct one should be in the folder wp-content/quick-paypal-payments-premium - this one you are trying is in folder wp-content/plugins/"
-msgstr ""
+msgstr "Vous avez déjà une version Pro de Quick PayPal Payments (Premium) installée ; vérifiez les versions et supprimez-en une. La bonne devrait se trouver dans le dossier wp-content/quick-paypal-payments-premium ; celle que vous essayez est dans le dossier wp-content/plugins/"
 
 #: ui/admin/class-admin-pages.php:101
 msgid "Are you sure want to do this?"
-msgstr ""
+msgstr "Voulez-vous vraiment faire cela ?"
 
 #: ui/admin/class-admin-pages.php:185
 msgid "Save Options"
-msgstr ""
+msgstr "Enregistrer les options"
 
 #: ui/admin/class-admin-pages.php:221
 msgid "Settings reset to defaults."
-msgstr ""
+msgstr "Réglages rétablis aux valeurs par défaut."
 
 #: ui/admin/class-admin-settings.php:47
 msgid "Quick_Paypal_Payments Settings"
-msgstr ""
+msgstr "Réglages de Quick_Paypal_Payments"
 
 #: ui/admin/class-admin-settings.php:121
 msgid "Settings 1"
-msgstr ""
+msgstr "Réglages 1"
 
 #: ui/admin/class-admin-settings.php:129
 msgid "Settings 2"
-msgstr ""
+msgstr "Réglages 2"
 
 #: ui/admin/class-admin-settings.php:152
 msgid "Checkbox description"
-msgstr ""
+msgstr "Description de la case à cocher"
 
 #: ui/admin/class-admin-settings.php:156
 msgid "Text"
-msgstr ""
+msgstr "Texte"
 
 #: ui/admin/class-admin-settings.php:164
 msgid "Text Description"
-msgstr ""
+msgstr "Description du texte"
 
 #: ui/admin/class-admin-settings.php:194
 msgid "Minutes"
-msgstr ""
+msgstr "Minutes"
 
 #: ui/admin/class-admin-settings.php:198
 msgid "Hours"
-msgstr ""
+msgstr "Heures"
 
 #: ui/admin/class-admin-settings.php:202
 msgid "Days"
-msgstr ""
+msgstr "Jours"
 
 #: ui/admin/class-admin-settings.php:209
 #: ui/admin/class-admin-settings.php:219
 msgid "Number"
-msgstr ""
+msgstr "Nombre"
 
 #: ui/admin/class-admin-settings.php:217
 msgid "Integer"
-msgstr ""
+msgstr "Entier"
 
 #: ui/admin/class-admin-settings.php:224
 msgid "Number with units"
-msgstr ""
+msgstr "Nombre avec unités"
 
 #: ui/admin/class-admin-settings.php:244
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
 #. translators: %1$s is the plugin logo markup, %2$s is the account email address.
 #: ui/admin/class-admin.php:182
 #, php-format
-msgid ""
-"%1$s<strong>Important action required - Your Pro Install was successful - but you need to activate your licence</strong>. <p>Version 6 has changed which features need a paid plan, and you MUST take action now to keep your premium features!!<br>\n"
-" You have installed the PREMIUM plugin, but have not activated your <strong>licence</strong>. Don't worry it is easy.\n"
-"</p><p>If you do not have your licence you can use your email <strong>%2$s</strong>  to login at <a href=\"https://fullworks.net/account/\" target=\"_blank\">\n"
-"https://fullworks.net/account/</a> to get your licence key.\n"
-"</p>"
-msgstr ""
+msgid "%1$s<strong>Important action required - Your Pro Install was successful - but you need to activate your licence</strong>. <p>Version 6 has changed which features need a paid plan, and you MUST take action now to keep your premium features!!<br>\n You have installed the PREMIUM plugin, but have not activated your <strong>licence</strong>. Don't worry it is easy.\n</p><p>If you do not have your licence you can use your email <strong>%2$s</strong>  to login at <a href=\"https://fullworks.net/account/\" target=\"_blank\">\nhttps://fullworks.net/account/</a> to get your licence key.\n</p>"
+msgstr "%1$s<strong>Action importante requise : votre installation Pro a réussi, mais vous devez activer votre licence</strong>. <p>La version 6 a changé quelles fonctionnalités nécessitent une offre payante, et vous DEVEZ agir maintenant pour conserver vos fonctionnalités premium.<br>\n Vous avez installé l’extension PREMIUM, mais vous n’avez pas activé votre <strong>licence</strong>. Pas d’inquiétude, c’est facile.\n</p><p>Si vous n’avez pas votre licence, vous pouvez utiliser votre e-mail <strong>%2$s</strong>  pour vous connecter sur <a href=\"https://fullworks.net/account/\" target=\"_blank\">\nhttps://fullworks.net/account/</a> et obtenir votre clé de licence.\n</p>"
 
 #. translators: %1$s is the plugin logo markup, %2$s is an optional failure message, %3$s is the download request URL, %4$s is the account email address.
 #: ui/admin/class-admin.php:200
 #, php-format
-msgid ""
-"%1$s<strong>Important action required</strong>. %2$s<p>Version 6 has changed which features need a paid plan, and you MUST take action now to keep your premium features!!<br>\n"
-" You will need to <strong>download and install the PREMIUM</strong> plugin to keep your premium features. Don't worry it is easy.</p>\n"
-"<p></p><a target=\"_blank\" href=\"%3$s\" class=\"button\" >CLICK HERE TO GET YOUR DOWNLOAD AND LICENCE BY EMAIL</a></p><p>If you do not download and install the premium plugin \n"
-"- version 6 is now released and features you depend on are switched off until you do. Your settings are kept, so they come back as soon as your licence is active.</p>\n"
-"<p>The email will be sent to <strong>%4$s</strong> If you don't get the email soon, check your spam </p><p>To be clear if you already have paid for the Pro version - you do not have to pay again</p>"
-msgstr ""
+msgid "%1$s<strong>Important action required</strong>. %2$s<p>Version 6 has changed which features need a paid plan, and you MUST take action now to keep your premium features!!<br>\n You will need to <strong>download and install the PREMIUM</strong> plugin to keep your premium features. Don't worry it is easy.</p>\n<p></p><a target=\"_blank\" href=\"%3$s\" class=\"button\" >CLICK HERE TO GET YOUR DOWNLOAD AND LICENCE BY EMAIL</a></p><p>If you do not download and install the premium plugin \n- version 6 is now released and features you depend on are switched off until you do. Your settings are kept, so they come back as soon as your licence is active.</p>\n<p>The email will be sent to <strong>%4$s</strong> If you don't get the email soon, check your spam </p><p>To be clear if you already have paid for the Pro version - you do not have to pay again</p>"
+msgstr "%1$s<strong>Action importante requise</strong>. %2$s<p>La version 6 a changé quelles fonctionnalités nécessitent une offre payante, et vous DEVEZ agir maintenant pour conserver vos fonctionnalités premium.<br>\n Vous devrez <strong>télécharger et installer l’extension PREMIUM</strong> pour conserver vos fonctionnalités premium. Pas d’inquiétude, c’est facile.</p>\n<p></p><a target=\"_blank\" href=\"%3$s\" class=\"button\" >CLIQUEZ ICI POUR RECEVOIR VOTRE TÉLÉCHARGEMENT ET VOTRE LICENCE PAR E-MAIL</a></p><p>Si vous ne téléchargez pas et n’installez pas l’extension premium, \n la version 6 est maintenant publiée et les fonctionnalités dont vous dépendez sont désactivées jusqu’à ce que vous le fassiez. Vos réglages sont conservés et reviennent dès que votre licence est active.</p>\n<p>L’e-mail sera envoyé à <strong>%4$s</strong>. Si vous ne le recevez pas rapidement, vérifiez vos spams. </p><p>Pour être clair : si vous avez déjà payé la version Pro, vous n’avez pas à payer de nouveau.</p>"
 
 #. translators: %1$s is the plugin logo markup, %2$s is the account email address.
 #: ui/admin/class-admin.php:213
 #, php-format
-msgid ""
-"%1$s<strong>Important action required - Your licence request was successful</strong>. <p>Version 6 has changed which features need a paid plan, and you MUST take action now to keep your premium features!!<br>\n"
-" You have requested the PREMIUM plugin, please install it to keep your premium features. Don't worry it is easy.\n"
-"</p><p>If you do not download and install the premium plugin - version 6 is now released and features you depend on are switched off until you do. Your settings are kept, so they come back as soon as your licence is active.\n"
-"The email was sent to <strong>%2$s</strong>. </p><p>If you do not have access to <strong>%2$s</strong>( check your spam ) contact me at \n"
-"<a target=\"_blank\" href=\"mailto:support@fullworks.net\">support</a> with your details.</p><p>You can also use your email <strong>%2$s</strong>  to login at <a href=\"https://fullworks.net/account/\" target=\"_blank\">\n"
-"https://fullworks.net/account/</a> to get your download and licence key\n"
-"</p>"
-msgstr ""
+msgid "%1$s<strong>Important action required - Your licence request was successful</strong>. <p>Version 6 has changed which features need a paid plan, and you MUST take action now to keep your premium features!!<br>\n You have requested the PREMIUM plugin, please install it to keep your premium features. Don't worry it is easy.\n</p><p>If you do not download and install the premium plugin - version 6 is now released and features you depend on are switched off until you do. Your settings are kept, so they come back as soon as your licence is active.\nThe email was sent to <strong>%2$s</strong>. </p><p>If you do not have access to <strong>%2$s</strong>( check your spam ) contact me at \n<a target=\"_blank\" href=\"mailto:support@fullworks.net\">support</a> with your details.</p><p>You can also use your email <strong>%2$s</strong>  to login at <a href=\"https://fullworks.net/account/\" target=\"_blank\">\nhttps://fullworks.net/account/</a> to get your download and licence key\n</p>"
+msgstr "%1$s<strong>Action importante requise : votre demande de licence a réussi</strong>. <p>La version 6 a changé quelles fonctionnalités nécessitent une offre payante, et vous DEVEZ agir maintenant pour conserver vos fonctionnalités premium.<br>\n Vous avez demandé l’extension PREMIUM ; installez-la pour conserver vos fonctionnalités premium. Pas d’inquiétude, c’est facile.\n</p><p>Si vous ne téléchargez pas et n’installez pas l’extension premium, la version 6 est maintenant publiée et les fonctionnalités dont vous dépendez sont désactivées jusqu’à ce que vous le fassiez. Vos réglages sont conservés et reviennent dès que votre licence est active.\nL’e-mail a été envoyé à <strong>%2$s</strong>. </p><p>Si vous n’avez pas accès à <strong>%2$s</strong> (vérifiez vos spams), contactez-moi via le \n<a target=\"_blank\" href=\"mailto:support@fullworks.net\">support</a> avec vos coordonnées.</p><p>Vous pouvez aussi utiliser votre e-mail <strong>%2$s</strong>  pour vous connecter sur <a href=\"https://fullworks.net/account/\" target=\"_blank\">\nhttps://fullworks.net/account/</a> et obtenir votre téléchargement et votre clé de licence.\n</p>"
 
 #. translators: %1$s is the plugin logo markup, %2$s is an optional failure message, %3$s is the account email address, %4$s is the download request URL.
 #: ui/admin/class-admin.php:239
 #, php-format
-msgid ""
-"%1$s<strong>Important NOTICE for FREE users of this plugin</strong>. %2$s<p>Version 6 has moved some features that used to be free to the paid plans, this is necessary to be able to continue to support the free version.\n"
-"</p><p>\n"
-"As the free version now has fewer features than it used to, <strong>no one likes free things being taken away</strong> so we are still offering a free lifetime upgrade to the Pro GOLD plan, which is the equivalent of the old free version. Your settings have not been deleted, they come back as soon as your licence is active. </p>\n"
-"<p>The licence will be given to your email, if you do not have access to <strong>%3$s</strong> please change it before requesting!</p><p><a href=\"https://wordpress.org/support/topic/the-futures-of-this-plugin-understanding-why-there-is-an-offer-of-gold-plan/\" target=\"_blank\">Read more details as why this is happening here on the official WordPress support forum</a></p>\n"
-"<a target=\"_blank\" href=\"%4$s\" class=\"button\" >CLICK HERE TO GET YOUR DOWNLOAD AND LICENCE BY EMAIL</a>"
-msgstr ""
+msgid "%1$s<strong>Important NOTICE for FREE users of this plugin</strong>. %2$s<p>Version 6 has moved some features that used to be free to the paid plans, this is necessary to be able to continue to support the free version.\n</p><p>\nAs the free version now has fewer features than it used to, <strong>no one likes free things being taken away</strong> so we are still offering a free lifetime upgrade to the Pro GOLD plan, which is the equivalent of the old free version. Your settings have not been deleted, they come back as soon as your licence is active. </p>\n<p>The licence will be given to your email, if you do not have access to <strong>%3$s</strong> please change it before requesting!</p><p><a href=\"https://wordpress.org/support/topic/the-futures-of-this-plugin-understanding-why-there-is-an-offer-of-gold-plan/\" target=\"_blank\">Read more details as why this is happening here on the official WordPress support forum</a></p>\n<a target=\"_blank\" href=\"%4$s\" class=\"button\" >CLICK HERE TO GET YOUR DOWNLOAD AND LICENCE BY EMAIL</a>"
+msgstr "%1$s<strong>AVIS important pour les utilisateurs GRATUITS de cette extension</strong>. %2$s<p>La version 6 a déplacé vers les offres payantes certaines fonctionnalités qui étaient gratuites ; c’est nécessaire pour pouvoir continuer à maintenir la version gratuite.\n</p><p>\nComme la version gratuite a maintenant moins de fonctionnalités qu’avant, et que <strong>personne n’aime qu’on lui retire des choses gratuites</strong>, nous offrons toujours une mise à niveau gratuite à vie vers l’offre Pro GOLD, l’équivalent de l’ancienne version gratuite. Vos réglages n’ont pas été supprimés ; ils reviennent dès que votre licence est active. </p>\n<p>La licence sera envoyée à votre e-mail ; si vous n’avez pas accès à <strong>%3$s</strong>, changez-le avant de faire la demande !</p><p><a href=\"https://wordpress.org/support/topic/the-futures-of-this-plugin-understanding-why-there-is-an-offer-of-gold-plan/\" target=\"_blank\">Lisez plus de détails sur les raisons de ce changement sur le forum de support officiel de WordPress</a></p>\n<a target=\"_blank\" href=\"%4$s\" class=\"button\" >CLIQUEZ ICI POUR RECEVOIR VOTRE TÉLÉCHARGEMENT ET VOTRE LICENCE PAR E-MAIL</a>"
 
 #. translators: %1$s is the plugin logo markup, %2$s is the account email address.
 #: ui/admin/class-admin.php:249
 #, php-format
-msgid ""
-"%1$s<strong>Important action required - Your licence request was successful</strong>. <p>you MUST take action now!!<br>\n"
-" You have requested the Pro GOLD plugin free offer, please install it. Don't worry it is easy.\n"
-"</p><p>If you do not download and install the premium plugin - version 6 is now released and features you depend on are switched off until you do. Your settings are kept, so they come back as soon as your licence is active.\n"
-"The email was sent to <strong>%2$s</strong>. </p><p>If you do not have access to <strong>%2$s</strong>( check your spam ) contact me at \n"
-"<a target=\"_blank\" href=\"mailto:support@fullworks.net\">support</a> with your details.</p><p>You can also use your email <strong>%2$s</strong>  to login at <a href=\"https://fullworks.net/account/\" target=\"_blank\">\n"
-"https://fullworks.net/account/</a> to get your download and licence key\n"
-"</p>"
-msgstr ""
+msgid "%1$s<strong>Important action required - Your licence request was successful</strong>. <p>you MUST take action now!!<br>\n You have requested the Pro GOLD plugin free offer, please install it. Don't worry it is easy.\n</p><p>If you do not download and install the premium plugin - version 6 is now released and features you depend on are switched off until you do. Your settings are kept, so they come back as soon as your licence is active.\nThe email was sent to <strong>%2$s</strong>. </p><p>If you do not have access to <strong>%2$s</strong>( check your spam ) contact me at \n<a target=\"_blank\" href=\"mailto:support@fullworks.net\">support</a> with your details.</p><p>You can also use your email <strong>%2$s</strong>  to login at <a href=\"https://fullworks.net/account/\" target=\"_blank\">\nhttps://fullworks.net/account/</a> to get your download and licence key\n</p>"
+msgstr "%1$s<strong>Action importante requise : votre demande de licence a réussi</strong>. <p>Vous DEVEZ agir maintenant !<br>\n Vous avez demandé l’offre gratuite de l’extension Pro GOLD ; installez-la. Pas d’inquiétude, c’est facile.\n</p><p>Si vous ne téléchargez pas et n’installez pas l’extension premium, la version 6 est maintenant publiée et les fonctionnalités dont vous dépendez sont désactivées jusqu’à ce que vous le fassiez. Vos réglages sont conservés et reviennent dès que votre licence est active.\nL’e-mail a été envoyé à <strong>%2$s</strong>. </p><p>Si vous n’avez pas accès à <strong>%2$s</strong> (vérifiez vos spams), contactez-moi via le \n<a target=\"_blank\" href=\"mailto:support@fullworks.net\">support</a> avec vos coordonnées.</p><p>Vous pouvez aussi utiliser votre e-mail <strong>%2$s</strong>  pour vous connecter sur <a href=\"https://fullworks.net/account/\" target=\"_blank\">\nhttps://fullworks.net/account/</a> et obtenir votre téléchargement et votre clé de licence.\n</p>"
 
 #: ui/admin/class-admin.php:280
 msgid "Security check invalid, expired or missing"
-msgstr ""
+msgstr "Contrôle de sécurité invalide, expiré ou manquant"

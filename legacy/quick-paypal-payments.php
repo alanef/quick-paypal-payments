@@ -1281,7 +1281,7 @@ function qpp_display_form(
                 if ( $qpp['usecoupon'] && qpp_get_element( $values, 'couponapplied' ) != 'checked' ) {
                     if ( $values['couponerror'] ) {
                         if ( $values['noproduct'] ) {
-                            $content .= '<p style="color:' . $style['error-colour'] . ';">No products selected.</p>';
+                            $content .= '<p style="color:' . $style['error-colour'] . ';">' . esc_html__( 'No products selected.', 'quick-paypal-payments' ) . '</p>';
                         } else {
                             $content .= '<p style="color:' . $style['error-colour'] . ';">' . $values['couponerror'] . '</p>';
                         }
@@ -2631,7 +2631,7 @@ class qpp_widget extends WP_Widget {
         parent::__construct( 
             'qpp_widget',
             // Base ID
-            'Paypal Payments',
+            __( 'Paypal Payments', 'quick-paypal-payments' ),
             // Name
             array(
                 'description' => __( 'Add paypal payment form to your sidebar', 'quick-paypal-payments' ),
@@ -2902,13 +2902,13 @@ function qpp_messagetable(  $id, $email  ) {
     ${$messageoptions['messageorder']} = "checked";
     $title = $id;
     if ( $id == '' ) {
-        $title = 'Default';
+        $title = esc_html__( 'Default', 'quick-paypal-payments' );
     }
     if ( $options['fixedamount'] ) {
-        $options['inputamount'] = ( $options['shortcodeamount'] ? $options['shortcodeamount'] : 'Amount' );
+        $options['inputamount'] = ( $options['shortcodeamount'] ? $options['shortcodeamount'] : esc_html__( 'Amount', 'quick-paypal-payments' ) );
     }
     if ( $options['fixedreference'] ) {
-        $options['inputreference'] = ( $options['shortcodereference'] ? $options['shortcodereference'] : 'Reference' );
+        $options['inputreference'] = ( $options['shortcodereference'] ? $options['shortcodereference'] : esc_html__( 'Reference', 'quick-paypal-payments' ) );
     }
     if ( !$email ) {
         $dashboard = '<div class="wrap"><div id="qpp-widget">';
@@ -2920,7 +2920,7 @@ function qpp_messagetable(  $id, $email  ) {
     if ( !$email ) {
         $dashboard .= '<th></th>';
     }
-    $dashboard .= '<th>Date Sent</th>';
+    $dashboard .= '<th>' . esc_html__( 'Date Sent', 'quick-paypal-payments' ) . '</th>';
     foreach ( explode( ',', $options['sort'] ) as $name ) {
         $title = '';
         switch ( $name ) {
@@ -2972,7 +2972,7 @@ function qpp_messagetable(  $id, $email  ) {
                 break;
             case 'field22':
                 if ( $options['use_consent'] ) {
-                    $dashboard .= '<th>Consent</th>';
+                    $dashboard .= '<th>' . esc_html__( 'Consent', 'quick-paypal-payments' ) . '</th>';
                 }
                 break;
         }
@@ -3062,7 +3062,7 @@ function qpp_messagetable(  $id, $email  ) {
         }
     }
     if ( $coups ) {
-        $dashboard .= '<h2>Coupons remaining</h2>' . $coups;
+        $dashboard .= '<h2>' . esc_html__( 'Coupons remaining', 'quick-paypal-payments' ) . '</h2>' . $coups;
     }
     $dashboard .= '</div></div>';
     return $dashboard;
@@ -3439,9 +3439,9 @@ function qpp_send_confirmation(  $values, $form  ) {
     $amt = ( $qpp['shortcodeamount'] && $qpp['fixedamount'] ? $qpp['shortcodeamount'] : $qpp['totalsblurb'] . ' ' );
     $rcolon = ( strpos( $ref, ':' ) ? '' : ': ' );
     $acolon = ( strpos( $amt, ':' ) ? '' : ': ' );
-    $details = '<h2>Order Details:</h2>';
+    $details = '<h2>' . esc_html__( 'Order Details:', 'quick-paypal-payments' ) . '</h2>';
     if ( $qpp['use_multiples'] ) {
-        $multiple = '<table><tr><th>Item</th><th>Qty</th></tr>';
+        $multiple = '<table><tr><th>' . esc_html__( 'Item', 'quick-paypal-payments' ) . '</th><th>' . esc_html__( 'Qty', 'quick-paypal-payments' ) . '</th></tr>';
         foreach ( $values['items'] as $k => $item ) {
             if ( $item['quantity'] ) {
                 $multiple .= '<tr><td>' . $item['item_name'] . '</td><td>' . $item['quantity'] . '</td></tr>';
@@ -3505,10 +3505,10 @@ function qpp_send_confirmation(  $values, $form  ) {
         );
     }
     if ( isset( $send['confirmmessage'] ) && $send['confirmmessage'] ) {
-        $subject = 'Payment Notification';
+        $subject = esc_html__( 'Payment Notification', 'quick-paypal-payments' );
         $contentb = '';
         if ( $qpp['useaddress'] ) {
-            $contentb .= '<h2>Personal Details</h2>
+            $contentb .= '<h2>' . esc_html__( 'Personal Details', 'quick-paypal-payments' ) . '</h2>
             <table>
             <tr><td>' . $address['email'] . '</td><td>' . $values['email'] . '</td></tr></tr>
             <tr><td>' . $address['firstname'] . '</td><td>' . $values['firstname'] . '</td></tr>
@@ -3651,7 +3651,7 @@ function qpp_start_transaction(
         }
         // Add the discount
         $item = $order->NewItem( -1 * abs( $discount ), 1 );
-        $item->setAttribute( 'NAME', 'Coupon Code: ' . $v['coupon']['code'] );
+        $item->setAttribute( 'NAME', __( 'Coupon Code:', 'quick-paypal-payments' ) . ' ' . $v['coupon']['code'] );
     }
     /*
     	Handle Shipping & Handling

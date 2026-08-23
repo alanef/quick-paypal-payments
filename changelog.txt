@@ -1,4 +1,12 @@
 == Changelog ==
+= 6.0.2 =
+* Spanish, French, German and Italian translations are now included with the plugin. They cover the admin screens and the text the plugin writes itself; the form labels and messages you set on the Fields, Messages and Validation screens are your own text and stay as you typed them.
+* The whole of the settings area and the payments list are now translatable. Around five hundred pieces of admin text were plain English in the code, so no translation could ever reach them.
+* Fixed: the Reset button on the Personal Details screen deleted the validation messages instead of resetting the personal details fields.
+* Bundled translations were never loaded before, because the plugin header spelt Text Domain wrongly and never registered its languages folder with WordPress. Both are fixed, and a translation from wordpress.org for the same language will still take precedence if one ever exists.
+* The translation template has been regenerated for 6.0. It was last built before the 6.0 work and was missing everything added since.
+* Removed a stale template file from the languages folder that had been shipping with the plugin since 2018 and had nothing to do with it.
+
 = 6.0.1 =
 * Version numbering only. 6.0 was released with the plugin numbered 6.0 while wordpress.org was tagged 6.0.0, so the directory could not find the release its stable tag pointed at. Everything is numbered the same way now. No code has changed since 6.0.
 

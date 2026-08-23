@@ -64,7 +64,7 @@ function qpp_mark_paid_upsell() {
     /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
     global $quick_paypal_payments_fs;
     $upurl = qpp_upgrade_url();
-    return 'Silver confirms payments automatically from PayPal, so you do not have to check them by hand. <a href="' . esc_url( $upurl ) . '">See plans and prices</a>.';
+    return esc_html__( 'Silver confirms payments automatically from PayPal, so you do not have to check them by hand.', 'quick-paypal-payments' ) . ' <a href="' . esc_url( $upurl ) . '">' . esc_html__( 'See plans and prices', 'quick-paypal-payments' ) . '</a>.';
 }
 
 function qpp_show_messages(  $id  ) {
@@ -81,12 +81,13 @@ function qpp_show_messages(  $id  ) {
         $content = qpp_messagetable( $id, 'checked' );
         $title = $id;
         if ( $id == '' ) {
-            $title = 'Default';
+            $title = esc_html__( 'Default', 'quick-paypal-payments' );
         }
-        $title = 'Payment List for ' . $title . ' as at ' . wp_date( 'j M Y' );
+        /* translators: 1: form name, 2: today's date. */
+        $title = sprintf( esc_html__( 'Payment List for %1$s as at %2$s', 'quick-paypal-payments' ), $title, wp_date( 'j M Y' ) );
         $sendtoemail = sanitize_email( wp_unslash( $_POST['sendtoemail'] ) );
         if ( !is_email( $sendtoemail ) ) {
-            qpp_admin_notice( 'That is not a valid email address, nothing was sent.' );
+            qpp_admin_notice( esc_html__( 'That is not a valid email address, nothing was sent.', 'quick-paypal-payments' ) );
             return;
         }
         // sanitize_email() strips the CR/LF that would otherwise let a crafted
@@ -99,12 +100,13 @@ function qpp_show_messages(  $id  ) {
             $content,
             $headers
         );
-        qpp_admin_notice( 'Message list has been sent to ' . $sendtoemail . '.' );
+        /* translators: %s: email address. */
+        qpp_admin_notice( sprintf( esc_html__( 'Message list has been sent to %s.', 'quick-paypal-payments' ), $sendtoemail ) );
     }
     if ( isset( $_POST['qpp_reset_message'] ) ) {
         check_admin_referer( 'qpp_download_form', 'qpp_download_form_nonce' );
         delete_option( 'qpp_messages' . $id );
-        qpp_admin_notice( 'Payment list has been reset.' );
+        qpp_admin_notice( esc_html__( 'Payment list has been reset.', 'quick-paypal-payments' ) );
     }
     if ( isset( $_POST['Submit'] ) ) {
         check_admin_referer( 'qpp_payments_form', 'qpp_payments_form_nonce' );
@@ -121,7 +123,7 @@ function qpp_show_messages(  $id  ) {
         }
         $messageoptions = qpp_merge_msg( $messageoptions );
         update_option( 'qpp_messageoptions', $messageoptions );
-        qpp_admin_notice( "The message options have been updated." );
+        qpp_admin_notice( esc_html__( 'The message options have been updated.', 'quick-paypal-payments' ) );
     }
     if ( isset( $_POST['qpp_mark_paid'] ) ) {
         check_admin_referer( 'qpp_download_form', 'qpp_download_form_nonce' );
@@ -156,7 +158,7 @@ function qpp_show_messages(  $id  ) {
                     $result['marked']
                  ) . ' ' . qpp_mark_paid_upsell() );
             } else {
-                qpp_admin_notice( 'No payments were changed. Select the payments you have checked in PayPal, then mark them as paid.' );
+                qpp_admin_notice( esc_html__( 'No payments were changed. Select the payments you have checked in PayPal, then mark them as paid.', 'quick-paypal-payments' ) );
             }
         }
     }
@@ -174,7 +176,7 @@ function qpp_show_messages(  $id  ) {
         }
         $message = array_values( $message );
         update_option( 'qpp_messages' . $id, $message, false );
-        qpp_admin_notice( 'Selected payments have been deleted.' );
+        qpp_admin_notice( esc_html__( 'Selected payments have been deleted.', 'quick-paypal-payments' ) );
     }
     global $current_user;
     if ( !$sendtoemail ) {
@@ -198,17 +200,17 @@ function qpp_show_messages(  $id  ) {
         true,
         false
     );
-    $dashboard .= '<p><b>Show</b> <input style="margin:0; padding:0; border:none;" type="radio" name="messageqty" value="fifty" "' . esc_attr( $fifty ) . ' /> 50 
+    $dashboard .= '<p><b>' . esc_html__( 'Show', 'quick-paypal-payments' ) . '</b> <input style="margin:0; padding:0; border:none;" type="radio" name="messageqty" value="fifty" "' . esc_attr( $fifty ) . ' /> 50 
     <input style="margin:0; padding:0; border:none;" type="radio" name="messageqty" value="hundred" ' . esc_attr( $hundred ) . ' /> 100 
-    <input style="margin:0; padding:0; border:none;" type="radio" name="messageqty" value="all" ' . esc_attr( $all ) . ' /> all messages.&nbsp;&nbsp;
-    <b>List</b> <input style="margin:0; padding:0; border:none;" type="radio" name="messageorder" value="oldest" ' . esc_attr( $oldest ) . ' /> oldest first 
-    <input style="margin:0; padding:0; border:none;" type="radio" name="messageorder" value="newest" ' . esc_attr( $newest ) . ' /> newest first
+    <input style="margin:0; padding:0; border:none;" type="radio" name="messageqty" value="all" ' . esc_attr( $all ) . ' /> ' . esc_html__( 'all messages.', 'quick-paypal-payments' ) . '&nbsp;&nbsp;
+    <b>' . esc_html__( 'List', 'quick-paypal-payments' ) . '</b> <input style="margin:0; padding:0; border:none;" type="radio" name="messageorder" value="oldest" ' . esc_attr( $oldest ) . ' /> ' . esc_html__( 'oldest first', 'quick-paypal-payments' ) . ' 
+    <input style="margin:0; padding:0; border:none;" type="radio" name="messageorder" value="newest" ' . esc_attr( $newest ) . ' /> ' . esc_html__( 'newest first', 'quick-paypal-payments' ) . '
     &nbsp;&nbsp;
-    <input style="margin:0; padding:0; border:none;" type="checkbox" name="hidepaid" value="checked" ' . esc_attr( $messageoptions['hidepaid'] ) . ' /> Hide paid transactions
+    <input style="margin:0; padding:0; border:none;" type="checkbox" name="hidepaid" value="checked" ' . esc_attr( $messageoptions['hidepaid'] ) . ' /> ' . esc_html__( 'Hide paid transactions', 'quick-paypal-payments' ) . '
     &nbsp;&nbsp;
-    <input style="margin:0; padding:0; border:none;" type="checkbox" name="showaddress" value="checked" ' . esc_attr( $messageoptions['showaddress'] ) . ' /> Show addresses
+    <input style="margin:0; padding:0; border:none;" type="checkbox" name="showaddress" value="checked" ' . esc_attr( $messageoptions['showaddress'] ) . ' /> ' . esc_html__( 'Show addresses', 'quick-paypal-payments' ) . '
     &nbsp;&nbsp;
-    <input type="submit" name="Submit" class="button-secondary" value="Update options" />
+    <input type="submit" name="Submit" class="button-secondary" value="' . esc_attr__( 'Update options', 'quick-paypal-payments' ) . '" />
     </form></p>';
     /*
      * Delete All permanently destroys the payment record for this form and was a
@@ -218,7 +220,7 @@ function qpp_show_messages(  $id  ) {
      */
     $stored_rows = get_option( 'qpp_messages' . $id );
     $stored_count = ( is_array( $stored_rows ) ? count( $stored_rows ) : 0 );
-    $delete_all_form = ( '' === $id ? 'the default form' : $id );
+    $delete_all_form = ( '' === $id ? esc_html__( 'the default form', 'quick-paypal-payments' ) : $id );
     $delete_all_label = sprintf( 
         /* translators: %d is the number of payment records. */
         _n(
@@ -249,17 +251,17 @@ function qpp_show_messages(  $id  ) {
     );
     $dashboard .= qpp_messagetable( $id, '' );
     $dashboard .= '<input type="hidden" name="formname" value = "' . esc_attr( $id ) . '" />
-    <p>Send to this email address: <input type="text" name="sendtoemail" value="' . esc_attr( $sendtoemail ) . '">&nbsp;
-    <input type="submit" name="qpp_emaillist" class="button-primary" value="Email List" />&nbsp;
-    <input type="submit" name="download_qpp_csv" class="button-primary" value="Export to CSV" />
+    <p>' . esc_html__( 'Send to this email address:', 'quick-paypal-payments' ) . ' <input type="text" name="sendtoemail" value="' . esc_attr( $sendtoemail ) . '">&nbsp;
+    <input type="submit" name="qpp_emaillist" class="button-primary" value="' . esc_attr__( 'Email List', 'quick-paypal-payments' ) . '" />&nbsp;
+    <input type="submit" name="download_qpp_csv" class="button-primary" value="' . esc_attr__( 'Export to CSV', 'quick-paypal-payments' ) . '" />
     
-    <input type="submit" name="qpp_mark_paid" class="button-primary" value="Mark Selected as Paid" />
+    <input type="submit" name="qpp_mark_paid" class="button-primary" value="' . esc_attr__( 'Mark Selected as Paid', 'quick-paypal-payments' ) . '" />
 
-    <input type="submit" name="qpp_delete_selected" class="button-secondary qpp-danger" value="Delete Selected" onclick="return window.confirm( \'Delete the selected payment records? This cannot be undone.\' );"/>
+    <input type="submit" name="qpp_delete_selected" class="button-secondary qpp-danger" value="' . esc_attr__( 'Delete Selected', 'quick-paypal-payments' ) . '" onclick="return window.confirm( \'' . esc_js( __( 'Delete the selected payment records? This cannot be undone.', 'quick-paypal-payments' ) ) . '\' );"/>
     <input type="submit" name="qpp_reset_message" class="button-secondary qpp-danger" value="' . esc_attr( $delete_all_label ) . '" onclick="return window.confirm( \'' . esc_js( $delete_all_warning ) . '\' );"/>
     </form>
     ';
-    $dashboard .= '<p class="description">Payments are not confirmed automatically on your plan. Check a payment in your PayPal account, then select it above and mark it as paid.</p>';
+    $dashboard .= '<p class="description">' . esc_html__( 'Payments are not confirmed automatically on your plan. Check a payment in your PayPal account, then select it above and mark it as paid.', 'quick-paypal-payments' ) . '</p>';
     $dashboard .= qpp_upgrade_box();
     echo wp_kses( $dashboard, qpp_allowed_html() );
 }

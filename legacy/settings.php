@@ -238,7 +238,7 @@ function qpp_tabbed_page() {
             qpp_integrations_page( $id );
             break;
         case 'multipleproducts':
-            qpp_upgrade_page( 'platinum', 'Multiple Products' );
+            qpp_upgrade_page( 'platinum', esc_html__( 'Multiple Products', 'quick-paypal-payments' ) );
             break;
     }
 }
@@ -259,7 +259,12 @@ function qpp_upgrade_prompt(  $plan, $feature  ) {
     // Shared with the sidebar box so the wording and the destination always
     // agree. This used to link to the trial while saying "See plans and prices".
     $cta = qpp_upgrade_cta();
-    return '<span class="description">' . esc_html( $feature ) . ' is available in the ' . esc_html( ucfirst( $plan ) ) . ' plan and above. <a href="' . esc_url( $cta['url'] ) . '">' . esc_html( $cta['label'] ) . '</a></span>';
+    return '<span class="description">' . sprintf( 
+        /* translators: 1: feature name, 2: plan name such as Silver. */
+        esc_html__( '%1$s is available in the %2$s plan and above.', 'quick-paypal-payments' ),
+        esc_html( $feature ),
+        esc_html( ucfirst( $plan ) )
+     ) . ' <a href="' . esc_url( $cta['url'] ) . '">' . esc_html( $cta['label'] ) . '</a></span>';
 }
 
 /**
@@ -285,14 +290,26 @@ function qpp_field_status_notice(
     $field_label,
     $blocked = ''
 ) {
-    $fields = '<a href="' . esc_url( admin_url( 'options-general.php?page=quick-paypal-payments&tab=settings' ) ) . '">Forms &rarr; Fields</a>';
+    $fields = '<a href="' . esc_url( admin_url( 'options-general.php?page=quick-paypal-payments&tab=settings' ) ) . '">' . esc_html__( 'Forms &rarr; Fields', 'quick-paypal-payments' ) . '</a>';
     if ( '' !== $blocked ) {
-        return '<p class="qpp-status qpp-status-blocked"><strong>' . esc_html( $feature ) . ' cannot be used on this form.</strong> ' . esc_html( $blocked ) . ' Anything set here is kept, and applies again if that changes.</p>';
+        return '<p class="qpp-status qpp-status-blocked"><strong>' . sprintf( esc_html__( '%s cannot be used on this form.', 'quick-paypal-payments' ), esc_html( $feature ) ) . '</strong> ' . esc_html( $blocked ) . ' ' . esc_html__( 'Anything set here is kept, and applies again if that changes.', 'quick-paypal-payments' ) . '</p>';
     }
     if ( $enabled ) {
-        return '<p class="qpp-status qpp-status-on"><strong>' . esc_html( $feature ) . ' are switched on for this form</strong>, so what you set here appears on it. Untick &quot;' . esc_html( $field_label ) . '&quot; on ' . $fields . ' to switch them off.</p>';
+        return '<p class="qpp-status qpp-status-on">' . sprintf(
+            /* translators: 1: what the screen configures, e.g. "Coupons", 2: the row label on the Fields screen, 3: a link to the Fields screen. */
+            esc_html__( '%1$s are switched on for this form, so what you set here appears on it. Untick "%2$s" on %3$s to switch them off.', 'quick-paypal-payments' ),
+            '<strong>' . esc_html( $feature ) . '</strong>',
+            esc_html( $field_label ),
+            $fields
+        ) . '</p>';
     }
-    return '<p class="qpp-status qpp-status-off"><strong>' . esc_html( $feature ) . ' are switched off for this form</strong>, so nothing set here will appear on it. Tick &quot;' . esc_html( $field_label ) . '&quot; on ' . $fields . ' to switch them on. Your settings are kept either way.</p>';
+    return '<p class="qpp-status qpp-status-off">' . sprintf(
+        /* translators: 1: what the screen configures, e.g. "Coupons", 2: the row label on the Fields screen, 3: a link to the Fields screen. */
+        esc_html__( '%1$s are switched off for this form, so nothing set here will appear on it. Tick "%2$s" on %3$s to switch them on. Your settings are kept either way.', 'quick-paypal-payments' ),
+        '<strong>' . esc_html( $feature ) . '</strong>',
+        esc_html( $field_label ),
+        $fields
+    ) . '</p>';
 }
 
 /**
@@ -332,32 +349,32 @@ function qpp_upgrade_page(  $plan, $feature  ) {
 function qpp_upgrade_pitch(  $highlight = ''  ) {
     $pitches = array(
         'silver'   => array(
-            'title' => 'Stop checking PayPal by hand',
+            'title' => __( 'Stop checking PayPal by hand', 'quick-paypal-payments' ),
             'lines' => array(
-                'Payments confirm themselves. An order marks itself paid the moment PayPal takes the money, instead of sitting there until you go and look.',
-                'Your buyer gets a thank you email automatically, with their order details in it.',
-                'Charge postage and handling, as a fixed amount or a percentage of the order.',
-                'Test everything safely in PayPal sandbox before you take a real payment.',
-                'Create a WordPress account for the buyer as they pay, so paying and having a login are one step.',
-                'Email and knowledge base support, instead of the public forum.'
+                __( 'Payments confirm themselves. An order marks itself paid the moment PayPal takes the money, instead of sitting there until you go and look.', 'quick-paypal-payments' ),
+                __( 'Your buyer gets a thank you email automatically, with their order details in it.', 'quick-paypal-payments' ),
+                __( 'Charge postage and handling, as a fixed amount or a percentage of the order.', 'quick-paypal-payments' ),
+                __( 'Test everything safely in PayPal sandbox before you take a real payment.', 'quick-paypal-payments' ),
+                __( 'Create a WordPress account for the buyer as they pay, so paying and having a login are one step.', 'quick-paypal-payments' ),
+                __( 'Email and knowledge base support, instead of the public forum.', 'quick-paypal-payments' )
             ),
         ),
         'gold'     => array(
-            'title' => 'Sell, rather than just collect money',
+            'title' => __( 'Sell, rather than just collect money', 'quick-paypal-payments' ),
             'lines' => array(
-                'Coupon codes, fixed amount or percentage, with your own expiry and usage limits.',
-                'Recurring payments, so a subscription or a payment plan bills itself.',
-                'Take donations, with a slider or a set of suggested amounts instead of an empty box.',
-                'Offer a choice of prices as buttons or a dropdown, instead of one price or an empty box.'
+                __( 'Coupon codes, fixed amount or percentage, with your own expiry and usage limits.', 'quick-paypal-payments' ),
+                __( 'Recurring payments, so a subscription or a payment plan bills itself.', 'quick-paypal-payments' ),
+                __( 'Take donations, with a slider or a set of suggested amounts instead of an empty box.', 'quick-paypal-payments' ),
+                __( 'Offer a choice of prices as buttons or a dropdown, instead of one price or an empty box.', 'quick-paypal-payments' )
             ),
         ),
         'platinum' => array(
-            'title' => 'Take cards, not just PayPal',
+            'title' => __( 'Take cards, not just PayPal', 'quick-paypal-payments' ),
             'lines' => array(
-                'Stripe Checkout, so customers who will not use PayPal can pay by card. Hosted by Stripe, so no card details touch your site.',
-                'Sell up to nine products from one form, with their own prices and quantities.',
-                'Collect a date on the form, for bookings, deliveries or appointments.',
-                'Add every buyer to your Mailchimp list as they pay.'
+                __( 'Stripe Checkout, so customers who will not use PayPal can pay by card. Hosted by Stripe, so no card details touch your site.', 'quick-paypal-payments' ),
+                __( 'Sell up to nine products from one form, with their own prices and quantities.', 'quick-paypal-payments' ),
+                __( 'Collect a date on the form, for bookings, deliveries or appointments.', 'quick-paypal-payments' ),
+                __( 'Add every buyer to your Mailchimp list as they pay.', 'quick-paypal-payments' )
             ),
         ),
     );
@@ -389,13 +406,19 @@ function qpp_upgrade_pitch(  $highlight = ''  ) {
         $out .= $render( $highlight, true );
         if ( !empty( $below ) ) {
             $names = array_map( 'ucfirst', $below );
-            $out .= '<p>' . esc_html( ucfirst( $highlight ) ) . ' includes everything in ' . esc_html( implode( ' and ', array_reverse( $names ) ) ) . ' as well:</p>';
+            $out .= '<p>' . sprintf( 
+                /* translators: 1: plan name, 2: the plans beneath it, e.g. "Gold and Silver". */
+                esc_html__( '%1$s includes everything in %2$s as well:', 'quick-paypal-payments' ),
+                esc_html( ucfirst( $highlight ) ),
+                /* translators: joins two plan names in a list. */
+                esc_html( implode( __( ' and ', 'quick-paypal-payments' ), array_reverse( $names ) ) )
+             ) . '</p>';
             foreach ( array_reverse( $below ) as $plan ) {
                 $out .= $render( $plan, false );
             }
         }
         if ( !empty( $above ) ) {
-            $out .= '<p>And above that:</p>';
+            $out .= '<p>' . esc_html__( 'And above that:', 'quick-paypal-payments' ) . '</p>';
             foreach ( $above as $plan ) {
                 $out .= $render( $plan, false );
             }
@@ -428,12 +451,14 @@ function qpp_upgrade_cta() {
     if ( $on_free && $trial_available ) {
         return array(
             'url'   => $quick_paypal_payments_fs->get_trial_url(),
-            'label' => 'Start your free trial',
+            'label' => __( 'Start your free trial', 'quick-paypal-payments' ),
+            'trial' => true,
         );
     }
     return array(
         'url'   => $quick_paypal_payments_fs->get_upgrade_url(),
-        'label' => 'See plans and prices',
+        'label' => __( 'See plans and prices', 'quick-paypal-payments' ),
+        'trial' => false,
     );
 }
 
@@ -458,23 +483,31 @@ function qpp_upgrade_box() {
     /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
     global $quick_paypal_payments_fs;
     $cta = qpp_upgrade_cta();
-    if ( 'Start your free trial' === $cta['label'] ) {
+    if ( $cta['trial'] ) {
         /*
          * No trial length here. It is set in the Freemius dashboard and already
          * stated in their own admin banner and on the plans page, so repeating it
          * only creates something that can go stale or disagree.
          */
         return '<div class="qppupgrade"><a href="' . esc_url( $cta['url'] ) . '">
-        <h3>Try every feature free</h3>
-        <p>Automatic payment confirmation, coupons, recurring payments and card payments with Stripe. The lot, for the whole trial.</p>
+        <h3>' . esc_html__( 'Try every feature free', 'quick-paypal-payments' ) . '</h3>
+        <p>' . esc_html__( 'Automatic payment confirmation, coupons, recurring payments and card payments with Stripe. The lot, for the whole trial.', 'quick-paypal-payments' ) . '</p>
         <p>' . esc_html( $cta['label'] ) . '</p>
         </a></div>';
     }
     $upnext = 'Silver';
-    $upgives = 'payments confirmed automatically, the Auto Responder, postage and handling, creating a WordPress user when someone pays, and email and knowledge base support';
+    $upgives = __( 'payments confirmed automatically, the Auto Responder, postage and handling, creating a WordPress user when someone pays, and email and knowledge base support', 'quick-paypal-payments' );
     return '<div class="qppupgrade"><a href="' . esc_url( $cta['url'] ) . '">
-        <h3>Upgrade to ' . esc_html( $upnext ) . '</h3>
-        <p>Upgrading gives ' . esc_html( $upgives ) . '.</p>
+        <h3>' . sprintf( 
+        /* translators: %s: plan name such as Silver. */
+        esc_html__( 'Upgrade to %s', 'quick-paypal-payments' ),
+        esc_html( $upnext )
+     ) . '</h3>
+        <p>' . sprintf( 
+        /* translators: %s: a list of what the next plan adds. */
+        esc_html__( 'Upgrading gives %s.', 'quick-paypal-payments' ),
+        esc_html( $upgives )
+     ) . '</p>
         <p>' . esc_html( $cta['label'] ) . '</p>
         </a></div>';
 }
@@ -526,7 +559,7 @@ function qpp_forms_page(  $id  ) {
         update_option( 'qpp_email', $qpp_email );
         update_option( 'qpp_setup', $stored );
         $qpp_setup = qpp_get_stored_setup();
-        qpp_admin_notice( 'The forms have been updated.' );
+        qpp_admin_notice( esc_html__( 'The forms have been updated.', 'quick-paypal-payments' ) );
         if ( !empty( $_POST['qpp_clone'] ) && !empty( $_POST['new_form'] ) ) {
             qpp_clone( $qpp_setup['current'], sanitize_text_field( wp_unslash( $_POST['qpp_clone'] ) ) );
         }
@@ -567,9 +600,9 @@ function qpp_forms_page(  $id  ) {
     <p class="description">' . esc_html__( 'The selected form is the one the other tabs edit.', 'quick-paypal-payments' ) . '</p>
     <table>
     <tr>
-    <td><b>Form name&nbsp;&nbsp;</b></td>
-    <td><b>Currency</b></td>
-    <td><b>Shortcode</b></td>
+    <td><b>' . esc_html__( 'Form name', 'quick-paypal-payments' ) . '&nbsp;&nbsp;</b></td>
+    <td><b>' . esc_html__( 'Currency', 'quick-paypal-payments' ) . '</b></td>
+    <td><b>' . esc_html__( 'Shortcode', 'quick-paypal-payments' ) . '</b></td>
     <td></td>
     </tr>';
     foreach ( $arr as $item ) {
@@ -585,7 +618,11 @@ function qpp_forms_page(  $id  ) {
         <td>';
         if ( $item ) {
             $content .= '<input type="hidden" name="deleteform' . esc_attr( $item ) . '" value="' . esc_attr( $item ) . '">
-            <input type="submit" name="delete' . esc_attr( $item ) . '" class="button-secondary qpp-danger" value="' . esc_attr__( 'Delete', 'quick-paypal-payments' ) . '" onclick="return window.confirm( \'Delete the form ' . esc_js( $item ) . ' and all of its settings? This cannot be undone.\' );" />';
+            <input type="submit" name="delete' . esc_attr( $item ) . '" class="button-secondary qpp-danger" value="' . esc_attr__( 'Delete', 'quick-paypal-payments' ) . '" onclick="return window.confirm( \'' . esc_js( sprintf( 
+                /* translators: %s: form name. */
+                __( 'Delete the form %s and all of its settings? This cannot be undone.', 'quick-paypal-payments' ),
+                $item
+             ) ) . '\' );" />';
         }
         $content .= '</td></tr>';
     }
@@ -639,7 +676,7 @@ function qpp_setup(  $id  ) {
         $stored['nostore'] = ( isset( $_POST['nostore'] ) ? sanitize_text_field( wp_unslash( $_POST['nostore'] ) ) : '' );
         update_option( 'qpp_setup', $stored );
         $qpp_setup = qpp_get_stored_setup();
-        qpp_admin_notice( "The settings have been updated." );
+        qpp_admin_notice( esc_html__( 'The settings have been updated.', 'quick-paypal-payments' ) );
         /*
          * Said at the moment it is typed, rather than found out later by a
          * customer. The value is still saved, because losing what someone typed
@@ -666,57 +703,77 @@ function qpp_setup(  $id  ) {
     }
     if ( isset( $_POST['Reset'] ) && check_admin_referer( "save_qpp" ) ) {
         qpp_delete_everything();
-        qpp_admin_notice( "Everything has been reset." );
+        qpp_admin_notice( esc_html__( 'Everything has been reset.', 'quick-paypal-payments' ) );
         $qpp_setup = qpp_get_stored_setup();
     }
     $content = '<div class="qpp-settings"><div class="qpp-options">
     <form method="post" action="">
-    <h2>Account Email</h2>
-    <p><span style="color:red; font-weight: bold; margin-right: 3px">Important!</span> Enter your PAYPAL email address</p>
+    <h2>' . esc_html__( 'Account Email', 'quick-paypal-payments' ) . '</h2>
+    <p><span style="color:red; font-weight: bold; margin-right: 3px">' . esc_html__( 'Important!', 'quick-paypal-payments' ) . '</span> ' . esc_html__( 'Enter your PAYPAL email address', 'quick-paypal-payments' ) . '</p>
     <input type="text" id="qpp_account_email" class="qpp-account-email" label="Email" name="email" value="' . esc_attr( $qpp_setup['email'] ) . '" /></p>
     <p id="qpp_account_status" class="qpp-account-status"></p>
     <p><input type="submit" name="qpp_check_account" class="button-secondary" value="' . esc_attr__( 'Check this account with PayPal', 'quick-paypal-payments' ) . '" />
     <br /><span class="description">' . esc_html__( 'Checked with PayPal when you change it, and whenever you press the button. Nothing is charged. A typed address can look perfectly valid and still not be a PayPal account, which is the usual reason a customer sees "something went wrong".', 'quick-paypal-payments' ) . '</span></p>
     ';
-    $content .= '<h2>Global Settings</h2>';
-    $content .= '<p>' . qpp_upgrade_prompt( 'silver', 'Sandbox mode and IPN error logging control' ) . '</p>';
-    $content .= '<p><input type="checkbox" name="nostore"' . checked( $qpp_setup['nostore'], 'checked', false ) . ' value="checked"> Do not store messages in the database (this will disable all notifications).</p>';
+    $content .= '<h2>' . esc_html__( 'Global Settings', 'quick-paypal-payments' ) . '</h2>';
+    $content .= '<p>' . qpp_upgrade_prompt( 'silver', esc_html__( 'Sandbox mode and IPN error logging control', 'quick-paypal-payments' ) ) . '</p>';
+    $content .= '<p><input type="checkbox" name="nostore"' . checked( $qpp_setup['nostore'], 'checked', false ) . ' value="checked"> ' . esc_html__( 'Do not store messages in the database (this will disable all notifications).', 'quick-paypal-payments' ) . '</p>';
     /*
      * The checkout logo is a cosmetic touch on pages PayPal hosts, and almost
      * nobody sets it. It used to have its own heading directly under the account
      * email, which gave the most obscure field on the screen the same weight as
      * the one the plugin cannot work without.
      */
-    $content .= '<p><label for="qpp_image_url">Checkout logo</label><br />';
-    $content .= qpp_upgrade_prompt( 'platinum', 'A logo on the PayPal checkout pages' );
+    $content .= '<p><label for="qpp_image_url">' . esc_html__( 'Checkout logo', 'quick-paypal-payments' ) . '</label><br />';
+    $content .= qpp_upgrade_prompt( 'platinum', esc_html__( 'A logo on the PayPal checkout pages', 'quick-paypal-payments' ) );
     $content .= '</p>';
-    $content .= '<p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="Update Settings" /> <input type="submit" name="Reset" class="button-secondary" value="Reset Everything" onclick="return window.confirm( \'This will delete all your forms and settings.\\nAre you sure you want to reset everything?\' );"/></p>';
+    $content .= '<p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="' . esc_attr__( 'Update Settings', 'quick-paypal-payments' ) . '" /> <input type="submit" name="Reset" class="button-secondary" value="' . esc_attr__( 'Reset Everything', 'quick-paypal-payments' ) . '" onclick="return window.confirm( \'' . esc_js( __( 'This will delete all your forms and settings. Are you sure you want to reset everything?', 'quick-paypal-payments' ) ) . '\' );"/></p>';
     $content .= wp_nonce_field( "save_qpp" );
     $content .= '</form>';
     $content .= '</div>
     <div class="qpp-options" style="float:right">';
     $content .= qpp_upgrade_box();
-    $content .= '<h2>Adding the payment form to your site</h2>
-    <p>To add the basic payment form to your posts or pages use the shortcode: <code>[qpp]</code>. Shortcodes for named forms are given on the left.</p>
-    <p>There is also a widget called "Quick Paypal Payments" you can drag and drop into a sidebar.</p>
-    <p>That\'s it. The payment form is ready to use.</p>
-    <h2>Shortcodes and Examples</h2>
-    <p>All the shortcodes are given <a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">on this page</a>.</p>
-    <p>There are examples of payment forms <a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">on this page</a>.</p>
-    <h2>Options and Settings</h2>
-    <p><span style="font-weight:bold"><a href="?page=quick-paypal-payments&tab=settings">Form Settings.</a></span> Change the layout of the form, add or remove fields and the order they appear and edit the labels and captions.</p>
-    <p><span style="font-weight:bold"><a href="?page=quick-paypal-payments&tab=styles">Styling.</a></span> Change fonts, colours, borders, images and submit button.</p>
-    <p><span style="font-weight:bold"><a href="?page=quick-paypal-payments&tab=send">Send Options.</a></span> Change how the form is sent.</p>
-    <p><span style="font-weight:bold"><a href="?page=quick-paypal-payments&tab=error">Validation Messages.</a></span> Change the error message.</p>
-    <p><span style="font-weight:bold"><a href="?page=quick-paypal-payments&tab=autoresponce">Auto Responder.</a></span> Set up a thank you message.</p>
-    <p><span style="font-weight:bold"><a href="?page=quick-paypal-payments&tab=ipn">Instant Payment Notification.</a></span> Keep track of completed payments.</p>
-    <p><span style="font-weight:bold"><a href="' . esc_url( admin_url( '?page=quick-paypal-payments-messages' ) ) . '">Payment Records.</a></span> See all the payment records. Or click on the <b>Payments</b> link in the dashboard menu.</p>
-    <h2>Support</h2>
-    <p>First please check the knowledge base to see if a resolution to your issue is already documented</p>
-    <a href="https://fullworks.net/docs/quick-paypal-payments/" class="button" target="_blank" rel="noopener">Knowledge Base</a>';
-    $content .= '<p>If you can not find an answer, for the free version please raise your support questions on the WordPress community forum </p>
-<a href="https://wordpress.org/support/plugin/quick-paypal-payments/" class="button" target="_blank" rel="noopener">WordPress Support Forum</a>
-<p>If you require urgent or personal support please <a href="' . esc_url( $quick_paypal_payments_fs->get_upgrade_url() ) . '" >upgrade to a paid plan</a></p>';
+    $content .= '<h2>' . esc_html__( 'Adding the payment form to your site', 'quick-paypal-payments' ) . '</h2>
+    <p>' . sprintf( 
+        /* translators: %s: the shortcode, [qpp], in a code tag. */
+        esc_html__( 'To add the basic payment form to your posts or pages use the shortcode: %s. Shortcodes for named forms are given on the left.', 'quick-paypal-payments' ),
+        '<code>[qpp]</code>'
+     ) . '</p>
+    <p>' . esc_html__( 'There is also a widget called "Quick Paypal Payments" you can drag and drop into a sidebar.', 'quick-paypal-payments' ) . '</p>
+    <p>' . esc_html__( 'That\'s it. The payment form is ready to use.', 'quick-paypal-payments' ) . '</p>
+    <h2>' . esc_html__( 'Shortcodes and Examples', 'quick-paypal-payments' ) . '</h2>
+    <p>' . sprintf( 
+        /* translators: %s: a link with the text "on this page". */
+        esc_html__( 'All the shortcodes are given %s.', 'quick-paypal-payments' ),
+        '<a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">' . esc_html__( 'on this page', 'quick-paypal-payments' ) . '</a>'
+     ) . '</p>
+    <p>' . sprintf( 
+        /* translators: %s: a link with the text "on this page". */
+        esc_html__( 'There are examples of payment forms %s.', 'quick-paypal-payments' ),
+        '<a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">' . esc_html__( 'on this page', 'quick-paypal-payments' ) . '</a>'
+     ) . '</p>
+    <h2>' . esc_html__( 'Options and Settings', 'quick-paypal-payments' ) . '</h2>
+    <p><span style="font-weight:bold"><a href="?page=quick-paypal-payments&tab=settings">' . esc_html__( 'Form Settings.', 'quick-paypal-payments' ) . '</a></span> ' . esc_html__( 'Change the layout of the form, add or remove fields and the order they appear and edit the labels and captions.', 'quick-paypal-payments' ) . '</p>
+    <p><span style="font-weight:bold"><a href="?page=quick-paypal-payments&tab=styles">' . esc_html__( 'Styling.', 'quick-paypal-payments' ) . '</a></span> ' . esc_html__( 'Change fonts, colours, borders, images and submit button.', 'quick-paypal-payments' ) . '</p>
+    <p><span style="font-weight:bold"><a href="?page=quick-paypal-payments&tab=send">' . esc_html__( 'Send Options.', 'quick-paypal-payments' ) . '</a></span> ' . esc_html__( 'Change how the form is sent.', 'quick-paypal-payments' ) . '</p>
+    <p><span style="font-weight:bold"><a href="?page=quick-paypal-payments&tab=error">' . esc_html__( 'Validation Messages.', 'quick-paypal-payments' ) . '</a></span> ' . esc_html__( 'Change the error message.', 'quick-paypal-payments' ) . '</p>
+    <p><span style="font-weight:bold"><a href="?page=quick-paypal-payments&tab=autoresponce">' . esc_html__( 'Auto Responder.', 'quick-paypal-payments' ) . '</a></span> ' . esc_html__( 'Set up a thank you message.', 'quick-paypal-payments' ) . '</p>
+    <p><span style="font-weight:bold"><a href="?page=quick-paypal-payments&tab=ipn">' . esc_html__( 'Instant Payment Notification.', 'quick-paypal-payments' ) . '</a></span> ' . esc_html__( 'Keep track of completed payments.', 'quick-paypal-payments' ) . '</p>
+    <p><span style="font-weight:bold"><a href="' . esc_url( admin_url( '?page=quick-paypal-payments-messages' ) ) . '">' . esc_html__( 'Payment Records.', 'quick-paypal-payments' ) . '</a></span> ' . sprintf( 
+        /* translators: %s: the word "Payments" in bold, the dashboard menu item. */
+        esc_html__( 'See all the payment records. Or click on the %s link in the dashboard menu.', 'quick-paypal-payments' ),
+        '<b>' . esc_html__( 'Payments', 'quick-paypal-payments' ) . '</b>'
+     ) . '</p>
+    <h2>' . esc_html__( 'Support', 'quick-paypal-payments' ) . '</h2>
+    <p>' . esc_html__( 'First please check the knowledge base to see if a resolution to your issue is already documented', 'quick-paypal-payments' ) . '</p>
+    <a href="https://fullworks.net/docs/quick-paypal-payments/" class="button" target="_blank" rel="noopener">' . esc_html__( 'Knowledge Base', 'quick-paypal-payments' ) . '</a>';
+    $content .= '<p>' . esc_html__( 'If you can not find an answer, for the free version please raise your support questions on the WordPress community forum', 'quick-paypal-payments' ) . '</p>
+<a href="https://wordpress.org/support/plugin/quick-paypal-payments/" class="button" target="_blank" rel="noopener">' . esc_html__( 'WordPress Support Forum', 'quick-paypal-payments' ) . '</a>
+<p>' . sprintf( 
+        /* translators: %s: a link with the text "upgrade to a paid plan". */
+        esc_html__( 'If you require urgent or personal support please %s', 'quick-paypal-payments' ),
+        '<a href="' . esc_url( $quick_paypal_payments_fs->get_upgrade_url() ) . '" >' . esc_html__( 'upgrade to a paid plan', 'quick-paypal-payments' ) . '</a>'
+     ) . '</p>';
     $content .= '</div>
     </div>';
     echo wp_kses( $content, qpp_allowed_html() );
@@ -897,11 +954,11 @@ function qpp_form_options(  $id  ) {
             $qpp['use_stock'] = '';
         }
         update_option( 'qpp_options' . $id, $qpp );
-        qpp_admin_notice( "The form and submission settings have been updated." );
+        qpp_admin_notice( esc_html__( 'The form and submission settings have been updated.', 'quick-paypal-payments' ) );
     }
     if ( isset( $_POST['Reset'] ) && check_admin_referer( "save_qpp" ) ) {
         delete_option( 'qpp_options' . $id );
-        qpp_admin_notice( "The form and submission settings have been reset." );
+        qpp_admin_notice( esc_html__( 'The form and submission settings have been reset.', 'quick-paypal-payments' ) );
     }
     $qpp_setup = qpp_get_stored_setup();
     $id = $qpp_setup['current'];
@@ -928,19 +985,20 @@ function qpp_form_options(  $id  ) {
     });});' );
     $content .= '<div class="qpp-settings"><div class="qpp-options">';
     if ( $id ) {
-        $content .= '<h2>Form settings for ' . $id . '</h2>';
+        /* translators: %s: form name. */
+        $content .= '<h2>' . sprintf( esc_html__( 'Form settings for %s', 'quick-paypal-payments' ), esc_html( $id ) ) . '</h2>';
     } else {
-        $content .= '<h2>Default form settings</h2>';
+        $content .= '<h2>' . esc_html__( 'Default form settings', 'quick-paypal-payments' ) . '</h2>';
     }
     $content .= qpp_change_form( $qpp_setup );
     $content .= '<form action="" method="POST">
-    <p>Paypal form heading (optional)</p>
+    <p>' . esc_html__( 'Paypal form heading (optional)', 'quick-paypal-payments' ) . '</p>
     <input type="text" style="width:100%" name="title" value="' . esc_attr( $qpp['title'] ) . '" />
-    <p>This is the text that will appear below the heading and above the form (optional):</p>
+    <p>' . esc_html__( 'This is the text that will appear below the heading and above the form (optional):', 'quick-paypal-payments' ) . '</p>
     <input type="text" style="width:100%" name="blurb" value="' . esc_attr( $qpp['blurb'] ) . '" />
-    <h2>Form Fields</h2>
-    <p>Drag and drop to change order of the fields</p>
-    <div style="margin-left:7px;font-weight:bold;"><div style="float:left; width:30%;">Form Fields</div><div style="float:left; width:30%;">Labels and Options</div></div>
+    <h2>' . esc_html__( 'Form Fields', 'quick-paypal-payments' ) . '</h2>
+    <p>' . esc_html__( 'Drag and drop to change order of the fields', 'quick-paypal-payments' ) . '</p>
+    <div style="margin-left:7px;font-weight:bold;"><div style="float:left; width:30%;">' . esc_html__( 'Form Fields', 'quick-paypal-payments' ) . '</div><div style="float:left; width:30%;">' . esc_html__( 'Labels and Options', 'quick-paypal-payments' ) . '</div></div>
     <div style="clear:left"></div>
     <ul id="qpp_sort">';
     foreach ( explode( ',', $qpp['sort'] ) as $name ) {
@@ -948,30 +1006,30 @@ function qpp_form_options(  $id  ) {
         switch ( $name ) {
             case 'field1':
                 $check = '&nbsp;';
-                $type = 'Reference';
+                $type = esc_html__( 'Reference', 'quick-paypal-payments' );
                 $input = 'inputreference';
                 $checked = 'checked';
-                $options = qpp_upgrade_prompt( 'gold', 'Pre-set reference options' );
+                $options = qpp_upgrade_prompt( 'gold', esc_html__( 'Pre-set reference options', 'quick-paypal-payments' ) );
                 break;
             case 'field2':
                 $check = '<input type="checkbox" name="use_stock" ' . checked( $qpp['use_stock'], 'checked', false ) . ' value="checked" />';
-                $type = 'Use Item Number';
+                $type = esc_html__( 'Use Item Number', 'quick-paypal-payments' );
                 $input = 'stocklabel';
                 $checked = $qpp['use_stock'];
-                $options = '<input type="checkbox" name="fixedstock" ' . checked( $qpp['fixedstock'], 'checked', false ) . ' value="checked" /> Display as a pre-set item number<br>
-<input type="checkbox" name="ruse_stock" ' . esc_attr( $qpp['ruse_stock'] ) . ' value="checked" /> Required Field';
+                $options = '<input type="checkbox" name="fixedstock" ' . checked( $qpp['fixedstock'], 'checked', false ) . ' value="checked" /> ' . esc_html__( 'Display as a pre-set item number', 'quick-paypal-payments' ) . '<br>
+<input type="checkbox" name="ruse_stock" ' . esc_attr( $qpp['ruse_stock'] ) . ' value="checked" /> ' . esc_html__( 'Required Field', 'quick-paypal-payments' );
                 break;
             case 'field3':
                 $check = ( $qpp['userecurring'] ? '&nbsp;' : '<input type="checkbox"   name="use_quantity" ' . esc_attr( $qpp['use_quantity'] ) . ' value="checked" />' );
-                $type = 'Quantity';
+                $type = esc_html__( 'Quantity', 'quick-paypal-payments' );
                 $input = 'quantitylabel';
                 $checked = $qpp['use_quantity'];
-                $options = '<input type="checkbox" name="quantitymax" ' . checked( $qpp['quantitymax'], 'checked', false ) . ' value="checked" /> Display and validate a maximum quantity<br><span class="description">Message that will display on the form. The limit is the number in it, so the message must contain one:</span><br>
+                $options = '<input type="checkbox" name="quantitymax" ' . checked( $qpp['quantitymax'], 'checked', false ) . ' value="checked" /> ' . esc_html__( 'Display and validate a maximum quantity', 'quick-paypal-payments' ) . '<br><span class="description">' . esc_html__( 'Message that will display on the form. The limit is the number in it, so the message must contain one:', 'quick-paypal-payments' ) . '</span><br>
             <input type="text" name="quantitymaxblurb" value="' . esc_attr( $qpp['quantitymaxblurb'] ) . '" />';
                 break;
             case 'field4':
                 $check = '&nbsp;';
-                $type = 'Amount';
+                $type = esc_html__( 'Amount', 'quick-paypal-payments' );
                 $input = 'inputamount';
                 $checked = 'checked';
                 /*
@@ -981,67 +1039,71 @@ function qpp_form_options(  $id  ) {
                  * it does not work. What stays paid is the powerful part: a list
                  * of prices, how it is rendered, and amount validation.
                  */
-                $options = '<input type="checkbox" class="qpp_fixed_amount" name="fixedamount" ' . checked( $qpp['fixedamount'], 'checked', false ) . ' value="checked" /> Charge one set price<br>
-            <span class="description">Set the price in <strong>Fixed payment and shortcode labels</strong> further down this screen.</span><br><br>';
-                $options .= qpp_upgrade_prompt( 'gold', 'Offering a choice of prices, and amount validation' );
+                $options = '<input type="checkbox" class="qpp_fixed_amount" name="fixedamount" ' . checked( $qpp['fixedamount'], 'checked', false ) . ' value="checked" /> ' . esc_html__( 'Charge one set price', 'quick-paypal-payments' ) . '<br>
+            <span class="description">' . sprintf( 
+                    /* translators: %s: the heading "Fixed payment and shortcode labels", in bold. */
+                    esc_html__( 'Set the price in %s further down this screen.', 'quick-paypal-payments' ),
+                    '<strong>' . esc_html__( 'Fixed payment and shortcode labels', 'quick-paypal-payments' ) . '</strong>'
+                 ) . '</span><br><br>';
+                $options .= qpp_upgrade_prompt( 'gold', esc_html__( 'Offering a choice of prices, and amount validation', 'quick-paypal-payments' ) );
                 break;
             case 'field5':
                 $check = ( $qpp['userecurring'] ? '&nbsp;' : '<input type="checkbox"   name="use_options" ' . checked( $qpp['use_options'], 'checked', false ) . ' value="checked" />' );
-                $type = 'Options';
+                $type = esc_html__( 'Options', 'quick-paypal-payments' );
                 $input = 'optionlabel';
                 $checked = $qpp['use_options'];
-                $options = '<span class="description">Options (separate with a comma):</span><br><textarea  name="optionvalues" label="Radio" rows="2">' . $qpp['optionvalues'] . '</textarea><br>
-            Options Selector: <input type="radio" name="optionselector" value="optionsradio" ' . checked( $qpp['optionselector'], 'optionsradio', false ) . ' /> Radio&nbsp;
-            <input type="radio" name="optionselector" value="optionscheckbox" ' . checked( $qpp['optionselector'], 'optionscheckbox', false ) . ' /> Checkbox&nbsp;
-            <input type="radio" name="optionselector" value="optionsdropdown" ' . checked( $qpp['optionselector'], 'optionscheckbox', false ) . ' /> Dropdown<br>
-            <input type="checkbox" name="inline_options" ' . checked( $qpp['inline_options'], 'checked', false ) . ' value="checked" />&nbsp;Display inline radio and checkbox fields';
+                $options = '<span class="description">' . esc_html__( 'Options (separate with a comma):', 'quick-paypal-payments' ) . '</span><br><textarea  name="optionvalues" label="Radio" rows="2">' . $qpp['optionvalues'] . '</textarea><br>
+            ' . esc_html__( 'Options Selector:', 'quick-paypal-payments' ) . ' <input type="radio" name="optionselector" value="optionsradio" ' . checked( $qpp['optionselector'], 'optionsradio', false ) . ' /> ' . esc_html__( 'Radio', 'quick-paypal-payments' ) . '&nbsp;
+            <input type="radio" name="optionselector" value="optionscheckbox" ' . checked( $qpp['optionselector'], 'optionscheckbox', false ) . ' /> ' . esc_html__( 'Checkbox', 'quick-paypal-payments' ) . '&nbsp;
+            <input type="radio" name="optionselector" value="optionsdropdown" ' . checked( $qpp['optionselector'], 'optionscheckbox', false ) . ' /> ' . esc_html__( 'Dropdown', 'quick-paypal-payments' ) . '<br>
+            <input type="checkbox" name="inline_options" ' . checked( $qpp['inline_options'], 'checked', false ) . ' value="checked" />&nbsp;' . esc_html__( 'Display inline radio and checkbox fields', 'quick-paypal-payments' );
                 break;
             case 'field6':
-                $type = 'Handling';
+                $type = esc_html__( 'Handling', 'quick-paypal-payments' );
                 $check = '&nbsp;';
                 $input = '';
-                $options = qpp_upgrade_prompt( 'silver', 'Postage and handling' );
+                $options = qpp_upgrade_prompt( 'silver', esc_html__( 'Postage and handling', 'quick-paypal-payments' ) );
                 break;
             case 'field8':
                 $check = '<input  type="checkbox"   name="captcha"' . checked( $qpp['captcha'], 'checked', false ) . ' value="checked" />';
-                $type = 'Maths Captcha';
+                $type = esc_html__( 'Maths Captcha', 'quick-paypal-payments' );
                 $input = 'mathscaption';
                 $checked = $qpp['captcha'];
-                $options = '<span class="description">Add a maths checker to the form to (hopefully) block most of the spambots.</span>';
+                $options = '<span class="description">' . esc_html__( 'Add a maths checker to the form to (hopefully) block most of the spambots.', 'quick-paypal-payments' ) . '</span>';
                 break;
             case 'field9':
-                $type = 'Coupon Code';
+                $type = esc_html__( 'Coupon Code', 'quick-paypal-payments' );
                 $check = '&nbsp;';
                 $input = '';
-                $options = qpp_upgrade_prompt( 'gold', 'Coupon codes' );
+                $options = qpp_upgrade_prompt( 'gold', esc_html__( 'Coupon codes', 'quick-paypal-payments' ) );
                 break;
             case 'field10':
                 $check = '<input  type="checkbox" name="useterms"' . checked( $qpp['useterms'], 'checked', false ) . ' value="checked" />';
-                $type = 'Terms and Conditions';
+                $type = esc_html__( 'Terms and Conditions', 'quick-paypal-payments' );
                 $input = 'termsblurb';
                 $checked = $qpp['termsblurb'];
-                $options = '<span class="description">URL of Terms and Conditions:</span><br>
+                $options = '<span class="description">' . esc_html__( 'URL of Terms and Conditions:', 'quick-paypal-payments' ) . '</span><br>
             <input type="text" name="termsurl" value="' . esc_attr( $qpp['termsurl'] ) . '" /><br>
-            <input  type="checkbox" name="termspage"' . checked( $qpp['termspage'], 'checked', false ) . ' value="checked" /> Open link in a new page';
+            <input  type="checkbox" name="termspage"' . checked( $qpp['termspage'], 'checked', false ) . ' value="checked" /> ' . esc_html__( 'Open link in a new page', 'quick-paypal-payments' );
                 break;
             case 'field11':
                 $check = '<input  type="checkbox" name="useblurb"' . checked( $qpp['useblurb'], 'checked', false ) . ' value="checked" />';
-                $type = 'Additional Information';
+                $type = esc_html__( 'Additional Information', 'quick-paypal-payments' );
                 $input = 'extrablurb';
                 $checked = $qpp['useblurb'];
-                $options = '<span class="description">Add additional information to your form</span>';
+                $options = '<span class="description">' . esc_html__( 'Add additional information to your form', 'quick-paypal-payments' ) . '</span>';
                 break;
             case 'field12':
-                $type = 'Recurring Payments';
+                $type = esc_html__( 'Recurring Payments', 'quick-paypal-payments' );
                 $check = '&nbsp;';
                 $input = '';
-                $options = qpp_upgrade_prompt( 'gold', 'Recurring payments' );
+                $options = qpp_upgrade_prompt( 'gold', esc_html__( 'Recurring payments', 'quick-paypal-payments' ) );
                 break;
                 $check = '<input  type="checkbox" name="userecurring"' . checked( $qpp['userecurring'], 'checked', false ) . ' value="checked" />';
                 $input = 'recurringblurb';
                 $checked = $qpp['userecurring'];
-                $options = '<p>Number of payments: <input type="text" style="width:2em;padding:2px" name="recurringhowmany" value="' . esc_attr( $qpp['recurringhowmany'] ) . '" /> (max 52 , min 2)<br>
-            Message: <input type="text" style="width:10em;padding:2px" name="every" value="' . esc_attr( $qpp['every'] ) . '" /></p>
+                $options = '<p>' . esc_html__( 'Number of payments:', 'quick-paypal-payments' ) . ' <input type="text" style="width:2em;padding:2px" name="recurringhowmany" value="' . esc_attr( $qpp['recurringhowmany'] ) . '" /> ' . esc_html__( '(max 52 , min 2)', 'quick-paypal-payments' ) . '<br>
+            ' . esc_html__( 'Message:', 'quick-paypal-payments' ) . ' <input type="text" style="width:10em;padding:2px" name="every" value="' . esc_attr( $qpp['every'] ) . '" /></p>
             <p><input type="radio" name="recurring" value="D"' . esc_attr( $D ) . ' /> 
             <input type="text" style="width:6em;padding:2px" name="Dperiod" value="' . esc_attr( $qpp['Dperiod'] ) . '" /></p>
             <p><input type="radio" name="recurring" value="W"' . esc_attr( $W ) . ' />
@@ -1050,72 +1112,72 @@ function qpp_form_options(  $id  ) {
             <input type="text" style="width:6em;padding:2px" name="Mperiod" value="' . esc_attr( $qpp['Mperiod'] ) . '" /></p>
             <p><input type="radio" name="recurring" value="Y"' . esc_attr( $Y ) . ' /> 
             <input type="text" style="width:6em;padding:2px" name="Yperiod" value="' . esc_attr( $qpp['Yperiod'] ) . '" /></p>
-            <p><input  type="checkbox" name="variablerecurring"' . checked( $qpp['variablerecurring'], 'checked', false ) . ' value="checked" />&nbsp;Allow users to change number of payments.</p>
-            <p><span style="color:red">WARNING!</span> Recurring payments only work if you have a Business or Premier account.<br>Using recurring payments will disable some form fields.</p>';
+            <p><input  type="checkbox" name="variablerecurring"' . checked( $qpp['variablerecurring'], 'checked', false ) . ' value="checked" />&nbsp;' . esc_html__( 'Allow users to change number of payments.', 'quick-paypal-payments' ) . '</p>
+            <p><span style="color:red">' . esc_html__( 'WARNING!', 'quick-paypal-payments' ) . '</span> ' . esc_html__( 'Recurring payments only work if you have a Business or Premier account.', 'quick-paypal-payments' ) . '<br>' . esc_html__( 'Using recurring payments will disable some form fields.', 'quick-paypal-payments' ) . '</p>';
                 break;
             case 'field13':
                 $check = '<input  type="checkbox" name="useaddress"' . checked( $qpp['useaddress'], 'checked', false ) . ' value="checked" />';
-                $type = 'Personal Details';
+                $type = esc_html__( 'Personal Details', 'quick-paypal-payments' );
                 $input = 'addressblurb';
                 $checked = $qpp['useaddress'];
-                $options = '<p><a href="?page=quick-paypal-payments&tab=address">Personal details Settings</a></p>';
+                $options = '<p><a href="?page=quick-paypal-payments&tab=address">' . esc_html__( 'Personal details Settings', 'quick-paypal-payments' ) . '</a></p>';
                 break;
             case 'field14':
                 $check = '<input  type="checkbox" name="usetotals"' . checked( $qpp['usetotals'], 'checked', false ) . ' value="checked" />';
-                $type = 'Show totals';
+                $type = esc_html__( 'Show totals', 'quick-paypal-payments' );
                 $input = 'totalsblurb';
                 $checked = $qpp['usetotals'];
-                $options = '<span class="description">Show live totals on your form. Warning: Only works if you have one form of a type on the page</span>';
+                $options = '<span class="description">' . esc_html__( 'Show live totals on your form. Warning: Only works if you have one form of a type on the page', 'quick-paypal-payments' ) . '</span>';
                 break;
             case 'field15':
-                $type = 'Range slider';
+                $type = esc_html__( 'Range slider', 'quick-paypal-payments' );
                 $check = '&nbsp;';
                 $input = '';
-                $options = qpp_upgrade_prompt( 'gold', 'The range slider' );
+                $options = qpp_upgrade_prompt( 'gold', esc_html__( 'The range slider', 'quick-paypal-payments' ) );
                 break;
             case 'field16':
                 $check = '<input  type="checkbox" name="useemail"' . checked( $qpp['useemail'], 'checked', false ) . ' value="checked" />';
-                $type = 'Email Address';
+                $type = esc_html__( 'Email Address', 'quick-paypal-payments' );
                 $input = 'emailblurb';
                 $checked = $qpp['useemail'];
-                $options = '<span class="description">Use this to collect the Payers email address.</span><br>
-            <input  type="checkbox" name="ruseemail"' . checked( $qpp['ruseemail'], 'checked', false ) . ' value="checked" /> Required Field';
+                $options = '<span class="description">' . esc_html__( 'Use this to collect the Payers email address.', 'quick-paypal-payments' ) . '</span><br>
+            <input  type="checkbox" name="ruseemail"' . checked( $qpp['ruseemail'], 'checked', false ) . ' value="checked" /> ' . esc_html__( 'Required Field', 'quick-paypal-payments' );
                 break;
             case 'field17':
                 $check = '<input  type="checkbox" name="use_message"' . checked( $qpp['use_message'], 'checked', false ) . ' value="checked" />';
-                $type = 'Add textbox for comments';
+                $type = esc_html__( 'Add textbox for comments', 'quick-paypal-payments' );
                 $input = 'messagelabel';
                 $checked = $qpp['use_message'];
-                $options = '<input  type="checkbox" name="ruse_message"' . checked( $qpp['ruse_message'], 'checked', false ) . ' value="checked" /> Required Field';
+                $options = '<input  type="checkbox" name="ruse_message"' . checked( $qpp['ruse_message'], 'checked', false ) . ' value="checked" /> ' . esc_html__( 'Required Field', 'quick-paypal-payments' );
                 break;
             case 'field18':
                 $check = '&nbsp;';
-                $type = 'Add datepicker';
+                $type = esc_html__( 'Add datepicker', 'quick-paypal-payments' );
                 $input = '';
-                $options = qpp_upgrade_prompt( 'platinum', 'The datepicker' );
+                $options = qpp_upgrade_prompt( 'platinum', esc_html__( 'The datepicker', 'quick-paypal-payments' ) );
                 break;
             case 'field19':
                 $check = '&nbsp;';
-                $type = 'Multiple Products';
+                $type = esc_html__( 'Multiple Products', 'quick-paypal-payments' );
                 $input = '';
-                $options = qpp_upgrade_prompt( 'platinum', 'Multiple products' );
+                $options = qpp_upgrade_prompt( 'platinum', esc_html__( 'Multiple products', 'quick-paypal-payments' ) );
                 break;
             case 'field21':
                 $check = '<input  type="checkbox" name="use_cf"' . checked( $qpp['use_cf'], 'checked', false ) . ' value="checked" />';
-                $type = 'Codice Fiscale (Solo Italia)';
+                $type = esc_html__( 'Codice Fiscale (Solo Italia)', 'quick-paypal-payments' );
                 $input = 'cflabel';
                 $checked = $qpp['use_cf'];
                 // Reads its own option, as every sibling Required Field checkbox does.
                 // This read $qpp['field22'], so the box never showed as ticked once saved.
-                $options = '<input  type="checkbox" name="ruse_cf"' . checked( $qpp['ruse_cf'], 'checked', false ) . ' value="checked" /> Required Field';
+                $options = '<input  type="checkbox" name="ruse_cf"' . checked( $qpp['ruse_cf'], 'checked', false ) . ' value="checked" /> ' . esc_html__( 'Required Field', 'quick-paypal-payments' );
                 break;
             case 'field22':
                 $check = '<input  type="checkbox" name="use_consent"' . checked( $qpp['use_consent'], 'checked', false ) . ' value="checked" />';
-                $type = 'Consent';
+                $type = esc_html__( 'Consent', 'quick-paypal-payments' );
                 $input = 'consentlabel';
                 $checked = $qpp['use_consent'];
                 $options = '<span class="description">' . esc_html__( 'Add a checkbox to permit data storage. You may use html links above.', 'quick-paypal-payments' ) . '</span><br>' . '<span class="description">' . esc_html__( 'Add consent info to PayPal item line. Blank out if not required.', 'quick-paypal-payments' ) . '</span><br>' . '<input type="text" name="consentpaypal" value="' . esc_attr( $qpp['consentpaypal'] ) . '" />' . esc_html__( 'if consent given', 'quick-paypal-payments' ) . '<br>' . '<input type="text" name="noconsentpaypal" value="' . esc_attr( $qpp['noconsentpaypal'] ) . '" />' . esc_html__( 'if consent NOT given', 'quick-paypal-payments' ) . '<br>';
-                $options .= '<input  type="checkbox" name="ruse_consent"' . checked( $qpp['ruse_consent'], 'checked', false ) . ' value="checked" /> Required Field';
+                $options .= '<input  type="checkbox" name="ruse_consent"' . checked( $qpp['ruse_consent'], 'checked', false ) . ' value="checked" /> ' . esc_html__( 'Required Field', 'quick-paypal-payments' );
                 break;
         }
         $li_class = ( $checked ? 'button_active' : 'button_inactive' );
@@ -1135,33 +1197,37 @@ function qpp_form_options(  $id  ) {
         }
     }
     $content .= '</ul>
-    <h2>Fixed payment and shortcode labels</h2>
-    <p>These are the labels that will display if you are using a fixed reference or amount or shortcode attributes</a>. All the shortcodes are given <a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">on this page</a>.</p>
-    <p>Label for the payment Reference/ID/Number:</p>
+    <h2>' . esc_html__( 'Fixed payment and shortcode labels', 'quick-paypal-payments' ) . '</h2>
+    <p>' . esc_html__( 'These are the labels that will display if you are using a fixed reference or amount or shortcode attributes.', 'quick-paypal-payments' ) . ' ' . sprintf( 
+        /* translators: %s: a link with the text "on this page". */
+        esc_html__( 'All the shortcodes are given %s.', 'quick-paypal-payments' ),
+        '<a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">' . esc_html__( 'on this page', 'quick-paypal-payments' ) . '</a>'
+     ) . '</p>
+    <p>' . esc_html__( 'Label for the payment Reference/ID/Number:', 'quick-paypal-payments' ) . '</p>
     <input type="text" name="shortcodereference" value="' . esc_attr( $qpp['shortcodereference'] ) . '" />
-    <p>Label for the amount field:</p>
+    <p>' . esc_html__( 'Label for the amount field:', 'quick-paypal-payments' ) . '</p>
     <input type="text" name="shortcodeamount" value="' . esc_attr( $qpp['shortcodeamount'] ) . '" />
-    <h2>Submit button caption</h2>
+    <h2>' . esc_html__( 'Submit button caption', 'quick-paypal-payments' ) . '</h2>
     <input type="text" name="submitcaption" value="' . esc_attr( $qpp['submitcaption'] ) . '" />
-    <h2>Reset button</h2>
-    <p><input  type="checkbox" name="use_reset"' . checked( $qpp['use_reset'], 'checked', false ) . ' value="checked" /> Show Reset Button</p>
+    <h2>' . esc_html__( 'Reset button', 'quick-paypal-payments' ) . '</h2>
+    <p><input  type="checkbox" name="use_reset"' . checked( $qpp['use_reset'], 'checked', false ) . ' value="checked" /> ' . esc_html__( 'Show Reset Button', 'quick-paypal-payments' ) . '</p>
     <input type="text" name="resetcaption" value="' . esc_attr( $qpp['resetcaption'] ) . '" />
-    <h2>PayPal Image</h2>
-    <p>Upload an image and select where you want it to display (Leave blank if you don\'t want to use an image).</p>
-    <p>Below form title: <input type="radio" label="paypal-location" name="paypal-location" value="imageabove"' . esc_attr( $imageabove ) . ' /> Below Submit Button:&nbsp;
+    <h2>' . esc_html__( 'PayPal Image', 'quick-paypal-payments' ) . '</h2>
+    <p>' . esc_html__( 'Upload an image and select where you want it to display (Leave blank if you don\'t want to use an image).', 'quick-paypal-payments' ) . '</p>
+    <p>' . esc_html__( 'Below form title:', 'quick-paypal-payments' ) . ' <input type="radio" label="paypal-location" name="paypal-location" value="imageabove"' . esc_attr( $imageabove ) . ' /> ' . esc_html__( 'Below Submit Button:', 'quick-paypal-payments' ) . '&nbsp;
     <input type="radio" label="paypal-location" name="paypal-location" value="imagebelow"' . esc_attr( $imagebelow ) . ' /></p>
     <p>
     <input id="qpp_upload_image" type="text" name="paypal-url" value="' . esc_attr( $qpp['paypal-url'] ) . '" />
-    <input class="button qpp-media-pick" type="button" data-target="#qpp_upload_image" data-title="Image above or below the form" value="Choose image" />
+    <input class="button qpp-media-pick" type="button" data-target="#qpp_upload_image" data-title="' . esc_attr__( 'Image above or below the form', 'quick-paypal-payments' ) . '" value="' . esc_attr__( 'Choose image', 'quick-paypal-payments' ) . '" />
     </p>
-    <p><input type="submit" name="qpp_submit" class="button-primary" style="color: #FFF;" value="Save Changes" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="Reset" onclick="return window.confirm( \'Are you sure you want to reset the form settings?\' );"/></p>
+    <p><input type="submit" name="qpp_submit" class="button-primary" style="color: #FFF;" value="' . esc_attr__( 'Save Changes', 'quick-paypal-payments' ) . '" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="' . esc_attr__( 'Reset', 'quick-paypal-payments' ) . '" onclick="return window.confirm( \'' . esc_js( __( 'Are you sure you want to reset the form settings?', 'quick-paypal-payments' ) ) . '\' );"/></p>
     <input type="hidden" id="qpp_settings_sort" name="sort" value="' . esc_attr( $qpp['sort'] ) . '" />';
     $content .= wp_nonce_field( "save_qpp" );
     $content .= '</form>
     </div>
     <div class="qpp-options" style="float:right;">
-    <h2>Form Preview</h2>
-    <p>Note: The preview form uses the wordpress admin styles. Your form will use the theme styles so won\'t look exactly like the one below.</p>';
+    <h2>' . esc_html__( 'Form Preview', 'quick-paypal-payments' ) . '</h2>
+    <p>' . esc_html__( 'Note: The preview form uses the wordpress admin styles. Your form will use the theme styles so won\'t look exactly like the one below.', 'quick-paypal-payments' ) . '</p>';
     if ( $id ) {
         $form = ' form="' . $id . '"';
     }
@@ -1171,9 +1237,7 @@ function qpp_form_options(  $id  ) {
         'amount' => '',
     );
     $content .= qpp_loop( $args, true );
-    $content .= '<p>There are some more examples of payment forms <a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">on this page</a>.</p>
-    <p>And there are loads of shortcode options <a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">on this page</a>.</p>
-    </div></div>';
+    $content .= qpp_examples_footer() . '</div></div>';
     echo wp_kses( $content, qpp_allowed_html() );
 }
 
@@ -1237,11 +1301,11 @@ function qpp_styles(  $id  ) {
             }
         }
         update_option( 'qpp_style' . $id, $styles );
-        qpp_admin_notice( "The form styles have been updated." );
+        qpp_admin_notice( esc_html__( 'The form styles have been updated.', 'quick-paypal-payments' ) );
     }
     if ( isset( $_POST['Reset'] ) && check_admin_referer( "save_qpp" ) ) {
         delete_option( 'qpp_style' . $id );
-        qpp_admin_notice( "The form styles have been reset." );
+        qpp_admin_notice( esc_html__( 'The form styles have been reset.', 'quick-paypal-payments' ) );
     }
     $font = $h2 = $h3 = $h4 = $percent = $pixel = $none = $plain = $shadow = $roundshadow = false;
     $corner = $square = $round = $rounded = $color = $white = $square = $theme = $submitrandom = false;
@@ -1276,65 +1340,66 @@ function qpp_styles(  $id  ) {
     $content = qpp_head_css();
     $content .= '<div class="qpp-settings"><div class="qpp-options">';
     if ( $id ) {
-        $content .= '<h2>Style options for ' . $id . '</h2>';
+        /* translators: %s: form name. */
+        $content .= '<h2>' . sprintf( esc_html__( 'Style options for %s', 'quick-paypal-payments' ), esc_html( $id ) ) . '</h2>';
     } else {
-        $content .= '<h2>Default form style options</h2>';
+        $content .= '<h2>' . esc_html__( 'Default form style options', 'quick-paypal-payments' ) . '</h2>';
     }
     $content .= qpp_change_form( $qpp_setup );
     $qpp = qpp_get_stored_options( $id );
     $content .= '
     <form method="post" action=""> 
-    <p class="description"><strong>Note:</strong> Leave fields blank if you don\'t want to use them</p>
+    <p class="description"><strong>' . esc_html__( 'Note:', 'quick-paypal-payments' ) . '</strong> ' . esc_html__( 'Leave fields blank if you don\'t want to use them', 'quick-paypal-payments' ) . '</p>
     <table>
     <tr>
-    <td colspan="2"><h2>Form Width</h2></td>
+    <td colspan="2"><h2>' . esc_html__( 'Form Width', 'quick-paypal-payments' ) . '</h2></td>
     </tr>
     <tr>
     <td width="30%"></td>
-    <td><input type="radio" name="widthtype" value="percent"' . esc_attr( $percent ) . ' /> 100% (fill the available space)<br />
-    <input type="radio" name="widthtype" value="pixel"' . esc_attr( $pixel ) . ' /> Pixel (fixed): 
-    <input type="text" style="width:4em" label="width" name="width" value="' . esc_attr( $style['width'] ) . '" /> use px, em or %. Default is px.</td>
+    <td><input type="radio" name="widthtype" value="percent"' . esc_attr( $percent ) . ' /> ' . esc_html__( '100% (fill the available space)', 'quick-paypal-payments' ) . '<br />
+    <input type="radio" name="widthtype" value="pixel"' . esc_attr( $pixel ) . ' /> ' . esc_html__( 'Pixel (fixed):', 'quick-paypal-payments' ) . ' 
+    <input type="text" style="width:4em" label="width" name="width" value="' . esc_attr( $style['width'] ) . '" /> ' . esc_html__( 'use px, em or %. Default is px.', 'quick-paypal-payments' ) . '</td>
     </tr>
     <tr>
-    <td colspan="2"><h2>Form Border</h2></td>
+    <td colspan="2"><h2>' . esc_html__( 'Form Border', 'quick-paypal-payments' ) . '</h2></td>
     </tr>
     <tr>
-    <td>Type:</td>
-    <td><input type="radio" name="border" value="none"' . esc_attr( $none ) . ' /> No border<br />
-    <input type="radio" name="border" value="plain"' . esc_attr( $plain ) . ' /> Plain Border<br />
-    <input type="radio" name="border" value="rounded"' . esc_attr( $rounded ) . ' /> Round Corners<br />
-    <input type="radio" name="border" value="shadow"' . esc_attr( $shadow ) . ' /> Shadowed Border<br />
-    <input type="radio" name="border" value="roundshadow"' . esc_attr( $roundshadow ) . ' /> Rounded Shadowed Border</td>
+    <td>' . esc_html__( 'Type:', 'quick-paypal-payments' ) . '</td>
+    <td><input type="radio" name="border" value="none"' . esc_attr( $none ) . ' /> ' . esc_html__( 'No border', 'quick-paypal-payments' ) . '<br />
+    <input type="radio" name="border" value="plain"' . esc_attr( $plain ) . ' /> ' . esc_html__( 'Plain Border', 'quick-paypal-payments' ) . '<br />
+    <input type="radio" name="border" value="rounded"' . esc_attr( $rounded ) . ' /> ' . esc_html__( 'Round Corners', 'quick-paypal-payments' ) . '<br />
+    <input type="radio" name="border" value="shadow"' . esc_attr( $shadow ) . ' /> ' . esc_html__( 'Shadowed Border', 'quick-paypal-payments' ) . '<br />
+    <input type="radio" name="border" value="roundshadow"' . esc_attr( $roundshadow ) . ' /> ' . esc_html__( 'Rounded Shadowed Border', 'quick-paypal-payments' ) . '</td>
     </tr>
     <tr>
-    <td>Style:</td>
+    <td>' . esc_html__( 'Style:', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" label="form-border" name="form-border" value="' . esc_attr( $style['form-border'] ) . '" /></td>
     </tr>
     <tr>
-    <td colspan="2"><h2>Background</h2></td>
+    <td colspan="2"><h2>' . esc_html__( 'Background', 'quick-paypal-payments' ) . '</h2></td>
     </tr>
     <tr>
-    <td>Colour:</td>
-    <td><input type="radio" name="background" value="white"' . esc_attr( $white ) . ' /> White<br />
-    <input type="radio" name="background" value="theme"' . esc_attr( $theme ) . ' /> Use theme colours<br />
+    <td>' . esc_html__( 'Colour:', 'quick-paypal-payments' ) . '</td>
+    <td><input type="radio" name="background" value="white"' . esc_attr( $white ) . ' /> ' . esc_html__( 'White', 'quick-paypal-payments' ) . '<br />
+    <input type="radio" name="background" value="theme"' . esc_attr( $theme ) . ' /> ' . esc_html__( 'Use theme colours', 'quick-paypal-payments' ) . '<br />
     <input style="margin-bottom:5px;" type="radio" name="background" value="color"' . esc_attr( $color ) . ' />
     <input type="text" class="qpp-color" label="background" name="backgroundhex" value="' . esc_attr( $style['backgroundhex'] ) . '" /></td>
     </tr>
-    <tr><td>Background<br>Image:</td>
+    <tr><td>' . esc_html__( 'Background', 'quick-paypal-payments' ) . '<br>' . esc_html__( 'Image:', 'quick-paypal-payments' ) . '</td>
     <td>
     <input id="qpp_background_image" type="text" name="backgroundimage" value="' . esc_attr( $style['backgroundimage'] ) . '" />
-    <input class="button qpp-media-pick" type="button" data-target="#qpp_background_image" data-title="Background image" value="Choose image" /></td>
+    <input class="button qpp-media-pick" type="button" data-target="#qpp_background_image" data-title="' . esc_attr__( 'Background image', 'quick-paypal-payments' ) . '" value="' . esc_attr__( 'Choose image', 'quick-paypal-payments' ) . '" /></td>
     </tr>
-    <tr><td colspan="2"><h2>Font Styles</h2></td>
+    <tr><td colspan="2"><h2>' . esc_html__( 'Font Styles', 'quick-paypal-payments' ) . '</h2></td>
     </tr>
     <tr>
     <td></td>
-    <td><input  type="radio" name="font" value="theme"' . esc_attr( $theme ) . ' /> Use theme font styles<br />
-    <input  type="radio" name="font" value="plugin"' . esc_attr( $plugin ) . ' /> Use Plugin font styles (enter font family and size below)
+    <td><input  type="radio" name="font" value="theme"' . esc_attr( $theme ) . ' /> ' . esc_html__( 'Use theme font styles', 'quick-paypal-payments' ) . '<br />
+    <input  type="radio" name="font" value="plugin"' . esc_attr( $plugin ) . ' /> ' . esc_html__( 'Use Plugin font styles (enter font family and size below)', 'quick-paypal-payments' ) . '
     </td>
     </tr>
     <tr>
-    <td colspan="2"><h2>Form Header</h2></td>
+    <td colspan="2"><h2>' . esc_html__( 'Form Header', 'quick-paypal-payments' ) . '</h2></td>
     </tr>
     <tr>
     <td style="vertical-align:top;">' . esc_html__( 'Header', 'quick-paypal-payments' ) . '</td>
@@ -1343,14 +1408,14 @@ function qpp_styles(  $id  ) {
     <input type="radio" name="header-type" value="h4"' . esc_attr( $h4 ) . ' /> H4</td>
     </tr>
     <tr>
-    <td>Header Size:</td>
+    <td>' . esc_html__( 'Header Size:', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" style="width:6em" label="header-size" name="header-size" value="' . esc_attr( $style['header-size'] ) . '" /></td>
     </tr>
-    <tr><td>Header Colour:</td>
+    <tr><td>' . esc_html__( 'Header Colour:', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" class="qpp-color" label="header-colour" name="header-colour" value="' . esc_attr( $style['header-colour'] ) . '" /></td>
     </tr>
     <tr>
-    <td colspan="2"><h2>Field Label Locations</h2></td>
+    <td colspan="2"><h2>' . esc_html__( 'Field Label Locations', 'quick-paypal-payments' ) . '</h2></td>
     <tr>
     <td colspan="2"><input type="radio" name="labeltype" value="tiny"' . esc_attr( $tiny ) . ' />
      ' . esc_html__( 'Reduce in size on focus', 'quick-paypal-payments' ) . '&nbsp;&nbsp;&nbsp;
@@ -1358,37 +1423,37 @@ function qpp_styles(  $id  ) {
      <input type="radio" name="labeltype" value="plain"' . esc_attr( $plain ) . ' /> ' . esc_html__( 'Above Input Fields', 'quick-paypal-payments' ) . '</td>
     </tr>
     <tr>
-    <td colspan="2"><h2>Input fields</h2></td>
+    <td colspan="2"><h2>' . esc_html__( 'Input fields', 'quick-paypal-payments' ) . '</h2></td>
     </tr>
     <tr>
-    <td>Font Family: </td>
+    <td>' . esc_html__( 'Font Family:', 'quick-paypal-payments' ) . ' </td>
     <td><input type="text" label="font-family" name="font-family" value="' . esc_attr( $style['font-family'] ) . '" /></td>
     </tr>
     <tr>
-    <td>Font Size: </td>
+    <td>' . esc_html__( 'Font Size:', 'quick-paypal-payments' ) . ' </td>
     <td><input type="text" label="font-size" name="font-size" value="' . esc_attr( $style['font-size'] ) . '" /></td>
     </tr>
     <tr>
-    <td>Font Colour: </td>
+    <td>' . esc_html__( 'Font Colour:', 'quick-paypal-payments' ) . ' </td>
     <td><input type="text" class="qpp-color" label="font-colour" name="font-colour" value="' . esc_attr( $style['font-colour'] ) . '" /></td>
     </tr>
     <tr>
-    <td>Normal Border: </td>
+    <td>' . esc_html__( 'Normal Border:', 'quick-paypal-payments' ) . ' </td>
     <td><input type="text" label="input-border" name="input-border" value="' . esc_attr( $style['input-border'] ) . '" /></td>
     </tr>
     <tr>
-    <td>Required Border: </td>
+    <td>' . esc_html__( 'Required Border:', 'quick-paypal-payments' ) . ' </td>
     <td><input type="text" name="required-border" value="' . esc_attr( $style['required-border'] ) . '" /></td>
     </tr>
     <tr>
-    <td>Error Colour: </td>
+    <td>' . esc_html__( 'Error Colour:', 'quick-paypal-payments' ) . ' </td>
     <td><input type="text" class="qpp-color" name="error-colour" value="' . esc_attr( $style['error-colour'] ) . '" /></td>
     </tr>
     <tr>
-    <td>Corners: </td>
-    <td><input type="radio" name="corners" value="corner"' . esc_attr( $corner ) . ' /> Use theme settings<br />
-    <input type="radio" name="corners" value="square"' . esc_attr( $square ) . ' /> Square corners<br />
-    <input type="radio" name="corners" value="round"' . esc_attr( $round ) . ' /> 5px rounded corners</td></tr>
+    <td>' . esc_html__( 'Corners:', 'quick-paypal-payments' ) . ' </td>
+    <td><input type="radio" name="corners" value="corner"' . esc_attr( $corner ) . ' /> ' . esc_html__( 'Use theme settings', 'quick-paypal-payments' ) . '<br />
+    <input type="radio" name="corners" value="square"' . esc_attr( $square ) . ' /> ' . esc_html__( 'Square corners', 'quick-paypal-payments' ) . '<br />
+    <input type="radio" name="corners" value="round"' . esc_attr( $round ) . ' /> ' . esc_html__( '5px rounded corners', 'quick-paypal-payments' ) . '</td></tr>
     <tr>
     <td style="vertical-align:top;">' . esc_html__( 'Margins and Padding', 'quick-paypal-payments' ) . '</td>
     <td><span class="description">' . esc_html__( 'Set the margins and padding of each bit using CSS shortcodes', 'quick-paypal-payments' ) . ':</span><br>
@@ -1396,63 +1461,63 @@ function qpp_styles(  $id  ) {
     </tr>
     <tr>';
     if ( $qpp['usecoupon'] ) {
-        $content .= '<td colspan="2"><h2>Apply Coupon Button</h2></td>
+        $content .= '<td colspan="2"><h2>' . esc_html__( 'Apply Coupon Button', 'quick-paypal-payments' ) . '</h2></td>
     </tr>
     <tr>
-    <td>Font Colour: </td>
+    <td>' . esc_html__( 'Font Colour:', 'quick-paypal-payments' ) . ' </td>
     <td><input type="text" class="qpp-color" label="coupon-colour" name="coupon-colour" value="' . esc_attr( $style['coupon-colour'] ) . '" /></td>
     </tr>
     <tr>
-    <td>Background: </td>
-    <td><input type="text" class="qpp-color" label="coupon-background" name="coupon-background" value="' . esc_attr( $style['coupon-background'] ) . '" /><br>Other settings are the same as the Submit Button</td>
+    <td>' . esc_html__( 'Background:', 'quick-paypal-payments' ) . ' </td>
+    <td><input type="text" class="qpp-color" label="coupon-background" name="coupon-background" value="' . esc_attr( $style['coupon-background'] ) . '" /><br>' . esc_html__( 'Other settings are the same as the Submit Button', 'quick-paypal-payments' ) . '</td>
     </tr>';
     }
     $content .= '<tr>
-    <td colspan="2"><h2>Other text content</h2></td>
+    <td colspan="2"><h2>' . esc_html__( 'Other text content', 'quick-paypal-payments' ) . '</h2></td>
     </tr>
     <tr>
-    <td>Font Family: </td>
+    <td>' . esc_html__( 'Font Family:', 'quick-paypal-payments' ) . ' </td>
     <td><input type="text" label="text-font-family" name="text-font-family" value="' . esc_attr( $style['text-font-family'] ) . '" /></td>
     </tr>
     <tr>
-    <td>Font Size: </td>
+    <td>' . esc_html__( 'Font Size:', 'quick-paypal-payments' ) . ' </td>
     <td><input type="text" style="width:6em" label="text-font-size" name="text-font-size" value="' . esc_attr( $style['text-font-size'] ) . '" /></td>
     </tr>
     <tr>
-    <td>Font Colour: </td>
+    <td>' . esc_html__( 'Font Colour:', 'quick-paypal-payments' ) . ' </td>
     <td><input type="text" class="qpp-color" label="text-font-colour" name="text-font-colour" value="' . esc_attr( $style['text-font-colour'] ) . '" /></td>
     </tr>
     <tr>
-    <td colspan="2"><h2>Submit Button</h2></td>
+    <td colspan="2"><h2>' . esc_html__( 'Submit Button', 'quick-paypal-payments' ) . '</h2></td>
     </tr>
     <tr>
-    <td>Font Colour:</td>
+    <td>' . esc_html__( 'Font Colour:', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" class="qpp-color" label="submit-colour" name="submit-colour" value="' . esc_attr( $style['submit-colour'] ) . '" /></td></tr>
     <tr>
-    <td>Background:</td>
+    <td>' . esc_html__( 'Background:', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" class="qpp-color" label="submit-background" name="submit-background" value="' . esc_attr( $style['submit-background'] ) . '" /></td>
     </tr>
     <tr>
-    <td>Hover: </td>
+    <td>' . esc_html__( 'Hover:', 'quick-paypal-payments' ) . ' </td>
     <td><input type="text" class="qcf-color" label="submit-hover-background" name="submit-hover-background" value="' . esc_attr( $style['submit-hover-background'] ) . '" /></td>
     </tr>
     <tr>
-    <td>Border:</td>
+    <td>' . esc_html__( 'Border:', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" label="submit-border" name="submit-border" value="' . esc_attr( $style['submit-border'] ) . '" /></td></tr>
     <tr>
-    <td>Size:</td>
-    <td><input type="radio" name="submitwidth" value="submitpercent"' . esc_attr( $submitpercent ) . ' /> Same width as the form<br />
-    <input type="radio" name="submitwidth" value="submitrandom"' . esc_attr( $submitrandom ) . ' /> Same width as the button text<br />
-    <input type="radio" name="submitwidth" value="submitpixel"' . esc_attr( $submitpixel ) . ' /> Set your own width: 
-    <input type="text" style="width:5em" label="submitwidthset" name="submitwidthset" value="' . esc_attr( $style['submitwidthset'] ) . '" /> (px, % or em)</td></tr>
+    <td>' . esc_html__( 'Size:', 'quick-paypal-payments' ) . '</td>
+    <td><input type="radio" name="submitwidth" value="submitpercent"' . esc_attr( $submitpercent ) . ' /> ' . esc_html__( 'Same width as the form', 'quick-paypal-payments' ) . '<br />
+    <input type="radio" name="submitwidth" value="submitrandom"' . esc_attr( $submitrandom ) . ' /> ' . esc_html__( 'Same width as the button text', 'quick-paypal-payments' ) . '<br />
+    <input type="radio" name="submitwidth" value="submitpixel"' . esc_attr( $submitpixel ) . ' /> ' . esc_html__( 'Set your own width:', 'quick-paypal-payments' ) . ' 
+    <input type="text" style="width:5em" label="submitwidthset" name="submitwidthset" value="' . esc_attr( $style['submitwidthset'] ) . '" /> ' . esc_html__( '(px, % or em)', 'quick-paypal-payments' ) . '</td></tr>
     <tr>
-    <td>Position:</td>
-    <td><input type="radio" name="submitposition" value="submitleft"' . esc_attr( $submitleft ) . ' /> Left 
-    <input type="radio" name="submitposition" value="submitmiddle"' . esc_attr( $submitmiddle ) . ' /> Centre 
-    <input type="radio" name="submitposition" value="submitright"' . esc_attr( $submitright ) . ' /> Right</td>
+    <td>' . esc_html__( 'Position:', 'quick-paypal-payments' ) . '</td>
+    <td><input type="radio" name="submitposition" value="submitleft"' . esc_attr( $submitleft ) . ' /> ' . esc_html__( 'Left', 'quick-paypal-payments' ) . ' 
+    <input type="radio" name="submitposition" value="submitmiddle"' . esc_attr( $submitmiddle ) . ' /> ' . esc_html__( 'Centre', 'quick-paypal-payments' ) . ' 
+    <input type="radio" name="submitposition" value="submitright"' . esc_attr( $submitright ) . ' /> ' . esc_html__( 'Right', 'quick-paypal-payments' ) . '</td>
     </tr>
     <tr>
-    <td style="vertical-align:top;">Button Image: </td><td>';
+    <td style="vertical-align:top;">' . esc_html__( 'Button Image:', 'quick-paypal-payments' ) . ' </td><td>';
     /*
      * The buttons that ship with the plugin. They were sitting in the images
      * folder with no way to reach them, so the only route to a button image was
@@ -1486,63 +1551,67 @@ function qpp_styles(  $id  ) {
     $content .= '</p>';
     if ( !$stripe_live ) {
         $content .= '<p class="description qpp-button-locked">';
-        $content .= qpp_upgrade_prompt( 'platinum', 'Taking card payments through Stripe' );
+        $content .= qpp_upgrade_prompt( 'platinum', esc_html__( 'Taking card payments through Stripe', 'quick-paypal-payments' ) );
         $content .= '</p>';
     }
     $content .= '<p><input id="qpp_submit_button" class="qpp-media-url" type="text" name="submit-button" value="' . esc_attr( $style['submit-button'] ) . '" />
-    <input class="button-secondary qpp-media-pick" type="button" data-target="#qpp_submit_button" data-title="Submit button image" value="Choose image" /></p>
+    <input class="button-secondary qpp-media-pick" type="button" data-target="#qpp_submit_button" data-title="' . esc_attr__( 'Submit button image', 'quick-paypal-payments' ) . '" value="' . esc_attr__( 'Choose image', 'quick-paypal-payments' ) . '" /></p>
     <p class="description">' . esc_html__( 'Leave blank for a text button styled with the settings above.', 'quick-paypal-payments' ) . '</p>
     </td></tr>';
     if ( $qpp['use_slider'] ) {
         $content .= '<tr>
-    <td colspan="2"><h2>Slider</h2></td>
+    <td colspan="2"><h2>' . esc_html__( 'Slider', 'quick-paypal-payments' ) . '</h2></td>
     </tr>
     <tr>
-    <td>Thickness</td>
+    <td>' . esc_html__( 'Thickness', 'quick-paypal-payments' ) . '</td>
     <td><input type="number" step = "0.125"  min="0.25" style="width:7em" label="input-border" name="slider-thickness" value="' . esc_attr( $style['slider-thickness'] ) . '" />em</td>
     </tr>
     <tr>
-    <td>Normal Background</td>
+    <td>' . esc_html__( 'Normal Background', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" class="qpp-color" label="input-border" name="slider-background" value="' . esc_attr( $style['slider-background'] ) . '" /></td>
     </tr>
     <tr>
-    <td>Revealed Background</td>
+    <td>' . esc_html__( 'Revealed Background', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" class="qpp-color" label="input-border" name="slider-revealed" value="' . esc_attr( $style['slider-revealed'] ) . '" /></td>
     </tr>
     <tr>
-    <td>Handle Background</td>
+    <td>' . esc_html__( 'Handle Background', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" class="qpp-color" label="input-border" name="handle-background" value="' . esc_attr( $style['handle-background'] ) . '" /></td>
     </tr>
     <tr>
-    <td>Handle Border</td>
+    <td>' . esc_html__( 'Handle Border', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" class="qpp-color" label="input-border" name="handle-border" value="' . esc_attr( $style['handle-border'] ) . '" /></td>
     </tr>
     <tr>
-    <td>Corners</td>
+    <td>' . esc_html__( 'Corners', 'quick-paypal-payments' ) . '</td>
     <td><input type="number"  style="width:4em" name="handle-corners" value="' . esc_attr( $style['handle-corners'] ) . '" />&nbsp;%</td>
     </tr>
     <tr>
-    <td>Output Size</td>
+    <td>' . esc_html__( 'Output Size', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" style="width:5em" label="input-border" name="output-size" value="' . esc_attr( $style['output-size'] ) . '" /></td>
     </tr>
     <tr>
-    <td>Output Colour</td>
+    <td>' . esc_html__( 'Output Colour', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" class="qpp-color" label="input-border" name="output-colour" value="' . esc_attr( $style['output-colour'] ) . '" /></td>
     </tr>';
     }
     $content .= '</table>
 
-    <h2>Custom CSS</h2>
-    <p><input  type="checkbox" style="margin:0; padding: 0; border: none" name="use_custom"' . checked( $style['use_custom'], 'checked', false ) . ' value="checked" /> Use Custom CSS</p>
+    <h2>' . esc_html__( 'Custom CSS', 'quick-paypal-payments' ) . '</h2>
+    <p><input  type="checkbox" style="margin:0; padding: 0; border: none" name="use_custom"' . checked( $style['use_custom'], 'checked', false ) . ' value="checked" /> ' . esc_html__( 'Use Custom CSS', 'quick-paypal-payments' ) . '</p>
     <p><textarea style="width:100%; height: 200px" name="custom">' . $style['custom'] . '</textarea></p>
-    <p>The main style wrapper is the <code>.qpp-style</code> id.</p>
-    <p>The form borders are: #none, #plain, #rounded, #shadow, #roundshadow.</p>
-    <p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="Save Changes" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="Reset" onclick="return window.confirm( \'Are you sure you want to reset the form styles?\' );"/></p>';
+    <p>' . sprintf( 
+        /* translators: %s: the CSS id .qpp-style, in a code tag. */
+        esc_html__( 'The main style wrapper is the %s id.', 'quick-paypal-payments' ),
+        '<code>.qpp-style</code>'
+     ) . '</p>
+    <p>' . esc_html__( 'The form borders are: #none, #plain, #rounded, #shadow, #roundshadow.', 'quick-paypal-payments' ) . '</p>
+    <p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="' . esc_attr__( 'Save Changes', 'quick-paypal-payments' ) . '" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="' . esc_attr__( 'Reset', 'quick-paypal-payments' ) . '" onclick="return window.confirm( \'' . esc_js( __( 'Are you sure you want to reset the form styles?', 'quick-paypal-payments' ) ) . '\' );"/></p>';
     $content .= wp_nonce_field( "save_qpp" );
     $content .= '</form>
     </div>
-    <div class="qpp-options" style="float:right;"> <h2>Test Form</h2>
-    <p>Not all of your style selections will display here (because of how WordPress works). So check the form on your site.</p>';
+    <div class="qpp-options" style="float:right;"> <h2>' . esc_html__( 'Test Form', 'quick-paypal-payments' ) . '</h2>
+    <p>' . esc_html__( 'Not all of your style selections will display here (because of how WordPress works). So check the form on your site.', 'quick-paypal-payments' ) . '</p>';
     if ( $id ) {
         $form = ' form="' . $id . '"';
     }
@@ -1552,10 +1621,26 @@ function qpp_styles(  $id  ) {
         'amount' => '',
     );
     $content .= qpp_loop( $args, true );
-    $content .= '<p>There are some more examples of payment forms <a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">on this page</a>.</p>
-    <p>And there are loads of shortcode options <a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">on this page</a>.</p>
-    </div></div>';
+    $content .= qpp_examples_footer() . '</div></div>';
     echo wp_kses( $content, qpp_allowed_html() );
+}
+
+/**
+ * The two documentation links under every form preview.
+ *
+ * @return string
+ */
+function qpp_examples_footer() {
+    return '<p>' . sprintf( 
+        /* translators: %s: a link with the text "on this page". */
+        esc_html__( 'There are some more examples of payment forms %s.', 'quick-paypal-payments' ),
+        '<a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">' . esc_html__( 'on this page', 'quick-paypal-payments' ) . '</a>'
+     ) . '</p>
+    <p>' . sprintf( 
+        /* translators: %s: a link with the text "on this page". */
+        esc_html__( 'And there are loads of shortcode options %s.', 'quick-paypal-payments' ),
+        '<a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">' . esc_html__( 'on this page', 'quick-paypal-payments' ) . '</a>'
+     ) . '</p>';
 }
 
 function qpp_send_page(  $id  ) {
@@ -1605,11 +1690,11 @@ function qpp_send_page(  $id  ) {
             $send[$item] = sanitize_text_field( $send[$item] );
         }
         update_option( 'qpp_send' . $id, $send );
-        qpp_admin_notice( "The submission settings have been updated." );
+        qpp_admin_notice( esc_html__( 'The submission settings have been updated.', 'quick-paypal-payments' ) );
     }
     if ( isset( $_POST['Reset'] ) && check_admin_referer( "save_qpp" ) ) {
         delete_option( 'qpp_send' . $id );
-        qpp_admin_notice( "The submission settings have been reset." );
+        qpp_admin_notice( esc_html__( 'The submission settings have been reset.', 'quick-paypal-payments' ) );
     }
     $qpp_setup = qpp_get_stored_setup();
     $id = $qpp_setup['current'];
@@ -1629,87 +1714,88 @@ function qpp_send_page(  $id  ) {
     $content = qpp_head_css();
     $content .= '<div class="qpp-settings"><div class="qpp-options">';
     if ( $id ) {
-        $content .= '<h2>Send settings for ' . $id . '</h2>';
+        /* translators: %s: form name. */
+        $content .= '<h2>' . sprintf( esc_html__( 'Send settings for %s', 'quick-paypal-payments' ), esc_html( $id ) ) . '</h2>';
     } else {
-        $content .= '<h2>Default form send options</h2>';
+        $content .= '<h2>' . esc_html__( 'Default form send options', 'quick-paypal-payments' ) . '</h2>';
     }
     $content .= qpp_change_form( $qpp_setup );
     $content .= '
     <form action="" method="POST">
     
-    <h2>Submission Message</h2>
-    <p>This is what the visitor sees while the paypal page loads</p>
+    <h2>' . esc_html__( 'Submission Message', 'quick-paypal-payments' ) . '</h2>
+    <p>' . esc_html__( 'This is what the visitor sees while the paypal page loads', 'quick-paypal-payments' ) . '</p>
     <input type="text" style="width:100%" name="waiting" value="' . esc_attr( $send['waiting'] ) . '" />
     
-    <h2>Force Locale</h2>
-    <p clsss="description">This may or may not work, Paypal has some very strange rule regarding language</p>
-    <p><input  type="checkbox" name="use_lc"' . checked( $send['use_lc'], 'checked', false ) . ' value="checked" /> Use Locale</p>
+    <h2>' . esc_html__( 'Force Locale', 'quick-paypal-payments' ) . '</h2>
+    <p class="description">' . esc_html__( 'This may or may not work, Paypal has some very strange rule regarding language', 'quick-paypal-payments' ) . '</p>
+    <p><input  type="checkbox" name="use_lc"' . checked( $send['use_lc'], 'checked', false ) . ' value="checked" /> ' . esc_html__( 'Use Locale', 'quick-paypal-payments' ) . '</p>
     <select name="lc">
-    <option value="AU" ' . $AU . '>Australia</option>
-    <option value="AT" ' . $AT . '>Austria</option>
-    <option value="BE" ' . $BE . '>Belgium</option>
-    <option value="BR" ' . $BR . '>Brazil</option>
-    <option value="pt_BR" ' . $pt_BR . '>Brazilian Portuguese (for Portugal and Brazil only)</option>
-    <option value="CA" ' . $CA . '>Canada</option>
-    <option value="CH" ' . $CH . '>Switzerland</option>
-    <option value="CN" ' . $CN . '>China</option>
-    <option value="da_DK" ' . $da_DK . '>Danish (for Denmark only)</option>
-    <option value="FR" ' . $FR . '>France</option>
-    <option value="DE" ' . $DE . '>Germany</option>
-    <option value="he_IL" ' . $he_IL . '>Hebrew (all)</option>
-    <option value="id_ID" ' . $id_ID . '>Indonesian (for Indonesia only)</option>
-    <option value="IT" ' . $IT . '>Italy</option>
-    <option value="ja_JP" ' . $ja_JP . '>Japanese (for Japan only)</option>
-    <option value="NL" ' . $NL . '>Netherlands</option>
-    <option value="no_NO" ' . $no_NO . '>Norwegian (for Norway only)</option>
-    <option value="PL" ' . $PL . '>Poland</option>
-    <option value="PT" ' . $PT . '>Portugal</option>
-    <option value="RU" ' . $RU . '>Russia</option>
-    <option value="ru_RU" ' . $ru_RU . '>Russian (for Lithuania, Latvia, and Ukraine only)</option>
-    <option value="zh_CN" ' . $zh_CN . '>Simplified Chinese (for China only)</option>
-    <option value="zh_HK" ' . $zh_HK . '>Traditional Chinese (for Hong Kong only)</option>
-    <option value="zh_TW" ' . $zh_TW . '>Traditional Chinese (for Taiwan only)</option>
-    <option value="ES" ' . $ES . '>Spain</option>
-    <option value="sv_SE" ' . $sv_SE . '>Swedish (for Sweden only)</option>
-    <option value="th_TH" ' . $th_TH . '>Thai (for Thailand only)</option>
-    <option value="tr_TR" ' . $tr_TR . '>Turkish (for Turkey only)</option>
-    <option value="GB" ' . $GB . '>United Kingdom</option>
-    <option value="US" ' . $US . '>United States</option>
+    <option value="AU" ' . $AU . '>' . esc_html__( 'Australia', 'quick-paypal-payments' ) . '</option>
+    <option value="AT" ' . $AT . '>' . esc_html__( 'Austria', 'quick-paypal-payments' ) . '</option>
+    <option value="BE" ' . $BE . '>' . esc_html__( 'Belgium', 'quick-paypal-payments' ) . '</option>
+    <option value="BR" ' . $BR . '>' . esc_html__( 'Brazil', 'quick-paypal-payments' ) . '</option>
+    <option value="pt_BR" ' . $pt_BR . '>' . esc_html__( 'Brazilian Portuguese (for Portugal and Brazil only)', 'quick-paypal-payments' ) . '</option>
+    <option value="CA" ' . $CA . '>' . esc_html__( 'Canada', 'quick-paypal-payments' ) . '</option>
+    <option value="CH" ' . $CH . '>' . esc_html__( 'Switzerland', 'quick-paypal-payments' ) . '</option>
+    <option value="CN" ' . $CN . '>' . esc_html__( 'China', 'quick-paypal-payments' ) . '</option>
+    <option value="da_DK" ' . $da_DK . '>' . esc_html__( 'Danish (for Denmark only)', 'quick-paypal-payments' ) . '</option>
+    <option value="FR" ' . $FR . '>' . esc_html__( 'France', 'quick-paypal-payments' ) . '</option>
+    <option value="DE" ' . $DE . '>' . esc_html__( 'Germany', 'quick-paypal-payments' ) . '</option>
+    <option value="he_IL" ' . $he_IL . '>' . esc_html__( 'Hebrew (all)', 'quick-paypal-payments' ) . '</option>
+    <option value="id_ID" ' . $id_ID . '>' . esc_html__( 'Indonesian (for Indonesia only)', 'quick-paypal-payments' ) . '</option>
+    <option value="IT" ' . $IT . '>' . esc_html__( 'Italy', 'quick-paypal-payments' ) . '</option>
+    <option value="ja_JP" ' . $ja_JP . '>' . esc_html__( 'Japanese (for Japan only)', 'quick-paypal-payments' ) . '</option>
+    <option value="NL" ' . $NL . '>' . esc_html__( 'Netherlands', 'quick-paypal-payments' ) . '</option>
+    <option value="no_NO" ' . $no_NO . '>' . esc_html__( 'Norwegian (for Norway only)', 'quick-paypal-payments' ) . '</option>
+    <option value="PL" ' . $PL . '>' . esc_html__( 'Poland', 'quick-paypal-payments' ) . '</option>
+    <option value="PT" ' . $PT . '>' . esc_html__( 'Portugal', 'quick-paypal-payments' ) . '</option>
+    <option value="RU" ' . $RU . '>' . esc_html__( 'Russia', 'quick-paypal-payments' ) . '</option>
+    <option value="ru_RU" ' . $ru_RU . '>' . esc_html__( 'Russian (for Lithuania, Latvia, and Ukraine only)', 'quick-paypal-payments' ) . '</option>
+    <option value="zh_CN" ' . $zh_CN . '>' . esc_html__( 'Simplified Chinese (for China only)', 'quick-paypal-payments' ) . '</option>
+    <option value="zh_HK" ' . $zh_HK . '>' . esc_html__( 'Traditional Chinese (for Hong Kong only)', 'quick-paypal-payments' ) . '</option>
+    <option value="zh_TW" ' . $zh_TW . '>' . esc_html__( 'Traditional Chinese (for Taiwan only)', 'quick-paypal-payments' ) . '</option>
+    <option value="ES" ' . $ES . '>' . esc_html__( 'Spain', 'quick-paypal-payments' ) . '</option>
+    <option value="sv_SE" ' . $sv_SE . '>' . esc_html__( 'Swedish (for Sweden only)', 'quick-paypal-payments' ) . '</option>
+    <option value="th_TH" ' . $th_TH . '>' . esc_html__( 'Thai (for Thailand only)', 'quick-paypal-payments' ) . '</option>
+    <option value="tr_TR" ' . $tr_TR . '>' . esc_html__( 'Turkish (for Turkey only)', 'quick-paypal-payments' ) . '</option>
+    <option value="GB" ' . $GB . '>' . esc_html__( 'United Kingdom', 'quick-paypal-payments' ) . '</option>
+    <option value="US" ' . $US . '>' . esc_html__( 'United States', 'quick-paypal-payments' ) . '</option>
     </select>
     
-    <h2>Cancel and Thank you pages</h2>
-    <p>Where the buyer is sent after paying, or after changing their mind. Leave them blank and they come back to the page the form is on. This applies whichever gateway takes the payment.</p>
-    <p>URL of cancellation page</p>
+    <h2>' . esc_html__( 'Cancel and Thank you pages', 'quick-paypal-payments' ) . '</h2>
+    <p>' . esc_html__( 'Where the buyer is sent after paying, or after changing their mind. Leave them blank and they come back to the page the form is on. This applies whichever gateway takes the payment.', 'quick-paypal-payments' ) . '</p>
+    <p>' . esc_html__( 'URL of cancellation page', 'quick-paypal-payments' ) . '</p>
     <input type="text" style="width:100%" name="cancelurl" value="' . esc_attr( qpp_get_element( $send, 'cancelurl' ) ) . '" />
-    <p>URL of thank you page</p>
+    <p>' . esc_html__( 'URL of thank you page', 'quick-paypal-payments' ) . '</p>
     <input type="text" style="width:100%" name="thanksurl" value="' . esc_attr( qpp_get_element( $send, 'thanksurl' ) ) . '" />
-    <h2>Confirmation Message</h2>
-    <p><input  type="checkbox" name="confirmmessage"' . checked( qpp_get_element( $send, 'confirmmessage' ), 'checked', false ) . ' value="checked" /> Send yourself a copy of the payment details.</p>
+    <h2>' . esc_html__( 'Confirmation Message', 'quick-paypal-payments' ) . '</h2>
+    <p><input  type="checkbox" name="confirmmessage"' . checked( qpp_get_element( $send, 'confirmmessage' ), 'checked', false ) . ' value="checked" /> ' . esc_html__( 'Send yourself a copy of the payment details.', 'quick-paypal-payments' ) . '</p>
     <p><input type="text" style="width:100%" name="confirmemail" value="' . esc_attr( qpp_get_element( $send, 'confirmemail' ) ) . '" /></p>
     ';
-    $content .= '<p>' . qpp_upgrade_prompt( 'silver', 'Sending the payer a confirmation email' ) . '</p>';
-    $content .= '<h2>Custom Paypal Settings</h2>';
-    $content .= '<p>' . qpp_upgrade_prompt( 'gold', 'Donations only mode' ) . '</p>';
-    $content .= '<p>' . qpp_upgrade_prompt( 'silver', 'Including postage in the amount to pay' ) . '</p>';
-    $content .= '<p>If you have a custom PayPal page enter the URL here. Leave blank to use the standard PayPal payment page</p>
+    $content .= '<p>' . qpp_upgrade_prompt( 'silver', esc_html__( 'Sending the payer a confirmation email', 'quick-paypal-payments' ) ) . '</p>';
+    $content .= '<h2>' . esc_html__( 'Custom Paypal Settings', 'quick-paypal-payments' ) . '</h2>';
+    $content .= '<p>' . qpp_upgrade_prompt( 'gold', esc_html__( 'Donations only mode', 'quick-paypal-payments' ) ) . '</p>';
+    $content .= '<p>' . qpp_upgrade_prompt( 'silver', esc_html__( 'Including postage in the amount to pay', 'quick-paypal-payments' ) ) . '</p>';
+    $content .= '<p>' . esc_html__( 'If you have a custom PayPal page enter the URL here. Leave blank to use the standard PayPal payment page', 'quick-paypal-payments' ) . '</p>
     <p><input type="text" style="width:100%" name="customurl" value="' . esc_attr( qpp_get_element( $send, 'customurl' ) ) . '" /></p>
-    <p>Alternate PayPal email address:</p>
+    <p>' . esc_html__( 'Alternate PayPal email address:', 'quick-paypal-payments' ) . '</p>
     <p><input type="text" style="width:100%" name="email" value="' . esc_attr( qpp_get_element( $send, 'email' ) ) . '" /></p>
-    <p><input type="radio" name="target" value="current"' . esc_attr( $current ) . ' /> Open in existing page<br>
-    <input type="radio" name="target" value="newpage"' . esc_attr( $newpage ) . ' /> Open link in new page/tab <span class="description">This is very browser dependent. Use with caution!</span></p>
+    <p><input type="radio" name="target" value="current"' . esc_attr( $current ) . ' /> ' . esc_html__( 'Open in existing page', 'quick-paypal-payments' ) . '<br>
+    <input type="radio" name="target" value="newpage"' . esc_attr( $newpage ) . ' /> ' . esc_html__( 'Open link in new page/tab', 'quick-paypal-payments' ) . ' <span class="description">' . esc_html__( 'This is very browser dependent. Use with caution!', 'quick-paypal-payments' ) . '</span></p>
     
-    <h2>Google onClick Event</h2>
+    <h2>' . esc_html__( 'Google onClick Event', 'quick-paypal-payments' ) . '</h2>
     <p><input type="text" style="width:100%" name="google_onclick" value="' . esc_attr( qpp_get_element( $send, 'google_onclick' ) ) . '" /></p>
     
     ';
-    $content .= '<p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="Save Changes" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="Reset" onclick="return window.confirm( \'Are you sure you want to reset the form settings?\' );"/></p>';
+    $content .= '<p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="' . esc_attr__( 'Save Changes', 'quick-paypal-payments' ) . '" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="' . esc_attr__( 'Reset', 'quick-paypal-payments' ) . '" onclick="return window.confirm( \'' . esc_js( __( 'Are you sure you want to reset the form settings?', 'quick-paypal-payments' ) ) . '\' );"/></p>';
     $content .= wp_nonce_field( "save_qpp" );
     $content .= '</form>';
     $content .= '</div>
     <div class="qpp-options" style="float:right;">
     
-    <h2>Form Preview</h2>
-    <p>Note: The preview form uses the wordpress admin styles. Your form will use the theme styles so won\'t look exactly like the one below.</p>';
+    <h2>' . esc_html__( 'Form Preview', 'quick-paypal-payments' ) . '</h2>
+    <p>' . esc_html__( 'Note: The preview form uses the wordpress admin styles. Your form will use the theme styles so won\'t look exactly like the one below.', 'quick-paypal-payments' ) . '</p>';
     if ( $id ) {
         $form = ' form="' . $id . '"';
     }
@@ -1719,9 +1805,7 @@ function qpp_send_page(  $id  ) {
         'amount' => '',
     );
     $content .= qpp_loop( $args, true );
-    $content .= '<p>There are some more examples of payment forms <a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">on this page</a>.</p>
-    <p>And there are loads of shortcode options <a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">on this page</a>.</p>
-    </div></div>';
+    $content .= qpp_examples_footer() . '</div></div>';
     echo wp_kses( $content, qpp_allowed_html() );
 }
 
@@ -1736,11 +1820,11 @@ function qpp_error_page(  $id  ) {
             $error[$item] = sanitize_text_field( $error[$item] );
         }
         update_option( 'qpp_error' . $id, $error );
-        qpp_admin_notice( "The error settings have been updated." );
+        qpp_admin_notice( esc_html__( 'The error settings have been updated.', 'quick-paypal-payments' ) );
     }
     if ( isset( $_POST['Reset'] ) && check_admin_referer( "save_qpp" ) ) {
         delete_option( 'qpp_error' . $id );
-        qpp_admin_notice( "The error messages have been reset." );
+        qpp_admin_notice( esc_html__( 'The error messages have been reset.', 'quick-paypal-payments' ) );
     }
     $qpp_setup = qpp_get_stored_setup();
     $id = $qpp_setup['current'];
@@ -1748,30 +1832,31 @@ function qpp_error_page(  $id  ) {
     $content = qpp_head_css();
     $content .= '<div class="qpp-settings"><div class="qpp-options">';
     if ( $id ) {
-        $content .= '<h2>Error message settings for ' . $id . '</h2>';
+        /* translators: %s: form name. */
+        $content .= '<h2>' . sprintf( esc_html__( 'Error message settings for %s', 'quick-paypal-payments' ), esc_html( $id ) ) . '</h2>';
     } else {
-        $content .= '<h2>Default form error message</h2>';
+        $content .= '<h2>' . esc_html__( 'Default form error message', 'quick-paypal-payments' ) . '</h2>';
     }
     $content .= qpp_change_form( $qpp_setup );
     $content .= '<form method="post" action="">
-    <p class="description">Shown above the form when a payment cannot be submitted. Leave a field blank to use the wording the plugin ships with.</p>
+    <p class="description">' . esc_html__( 'Shown above the form when a payment cannot be submitted. Leave a field blank to use the wording the plugin ships with.', 'quick-paypal-payments' ) . '</p>
     <table>
     <tr>
-    <td>Error header</td>
+    <td>' . esc_html__( 'Error header', 'quick-paypal-payments' ) . '</td>
     <td><input type="text"  style="width:100%" name="errortitle" value="' . esc_attr( $error['errortitle'] ) . '" /></td>
     </tr>
     <tr>
-    <td>Error message</td>
+    <td>' . esc_html__( 'Error message', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" style="width:100%" name="errorblurb" value="' . esc_attr( $error['errorblurb'] ) . '" /></td>
     </tr>
     </table>
-    <p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="Save Changes" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="Reset" onclick="return window.confirm( \'Are you sure you want to reset the error message?\' );"/></p>';
+    <p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="' . esc_attr__( 'Save Changes', 'quick-paypal-payments' ) . '" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="' . esc_attr__( 'Reset', 'quick-paypal-payments' ) . '" onclick="return window.confirm( \'' . esc_js( __( 'Are you sure you want to reset the error message?', 'quick-paypal-payments' ) ) . '\' );"/></p>';
     $content .= wp_nonce_field( "save_qpp" );
     $content .= '</form>
     </div>
     <div class="qpp-options" style="float:right;">
-    <h2>Error Checker</h2>
-    <p>Try sending a blank form to test your error messages.</p>';
+    <h2>' . esc_html__( 'Error Checker', 'quick-paypal-payments' ) . '</h2>
+    <p>' . esc_html__( 'Try sending a blank form to test your error messages.', 'quick-paypal-payments' ) . '</p>';
     if ( $id ) {
         $form = ' form="' . $id . '"';
     }
@@ -1781,9 +1866,7 @@ function qpp_error_page(  $id  ) {
         'amount' => '',
     );
     $content .= qpp_loop( $args, true );
-    $content .= '<p>There are some more examples of payment forms <a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">on this page</a>.</p>
-    <p>And there are loads of shortcode options <a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">on this page</a>.</p>
-    </div></div>';
+    $content .= qpp_examples_footer() . '</div></div>';
     echo wp_kses( $content, qpp_allowed_html() );
 }
 
@@ -1815,11 +1898,11 @@ function qpp_integrations_page(  $id  ) {
             $list[$item] = ( isset( $_POST[$item] ) ? sanitize_text_field( wp_unslash( $_POST[$item] ) ) : '' );
         }
         update_option( 'qpp_mailinglist', $list );
-        qpp_admin_notice( 'The Mailchimp settings have been updated.' );
+        qpp_admin_notice( esc_html__( 'The Mailchimp settings have been updated.', 'quick-paypal-payments' ) );
     }
     if ( $entitled && isset( $_POST['qpp_mailchimp_reset'] ) && check_admin_referer( "save_qpp" ) ) {
         delete_option( 'qpp_mailinglist' );
-        qpp_admin_notice( 'The Mailchimp settings have been reset.' );
+        qpp_admin_notice( esc_html__( 'The Mailchimp settings have been reset.', 'quick-paypal-payments' ) );
     }
     if ( $quick_paypal_payments_fs->is_plan_or_trial__premium_only( 'silver' ) && isset( $_POST['qpp_createuser_save'] ) && check_admin_referer( "save_qpp" ) ) {
         // Read, change one key, write. This option holds the whole Send Options
@@ -1834,7 +1917,7 @@ function qpp_integrations_page(  $id  ) {
         $send['createuserwhen'] = ( 'aftersubmission' === qpp_get_element( $_POST, 'createuserwhen' ) ? 'aftersubmission' : 'afterpayment' );
         $send['createuserrole'] = qpp_creatable_role( ( isset( $_POST['createuserrole'] ) ? sanitize_key( wp_unslash( $_POST['createuserrole'] ) ) : '' ) );
         update_option( 'qpp_send' . $id, $send );
-        qpp_admin_notice( 'The account creation setting has been updated.' );
+        qpp_admin_notice( esc_html__( 'The account creation setting has been updated.', 'quick-paypal-payments' ) );
     }
     $send = qpp_get_stored_send( $id );
     $list = qpp_get_stored_mailinglist();
@@ -1866,7 +1949,7 @@ function qpp_integrations_page(  $id  ) {
         <p>' . esc_html__( 'API key', 'quick-paypal-payments' ) . '<br><input type="password" autocomplete="new-password" style="width:100%" name="mailchimpkey" value="' . esc_attr( $list['mailchimpkey'] ) . '" /></p>
         <p>' . esc_html__( 'Audience (list) ID', 'quick-paypal-payments' ) . '<br><input type="text" style="width:100%" name="mailchimplistid" value="' . esc_attr( $list['mailchimplistid'] ) . '" /></p>
         <p><input type="submit" name="qpp_mailchimp_save" class="button-primary" value="' . esc_attr__( 'Save Changes', 'quick-paypal-payments' ) . '" />
-        <input type="submit" name="qpp_mailchimp_reset" class="button-secondary" value="' . esc_attr__( 'Reset', 'quick-paypal-payments' ) . '" onclick="return window.confirm( \'Are you sure you want to reset the Mailchimp settings?\' );" /></p>';
+        <input type="submit" name="qpp_mailchimp_reset" class="button-secondary" value="' . esc_attr__( 'Reset', 'quick-paypal-payments' ) . '" onclick="return window.confirm( \'' . esc_js( __( 'Are you sure you want to reset the Mailchimp settings?', 'quick-paypal-payments' ) ) . '\' );" /></p>';
         $content .= wp_nonce_field( "save_qpp" );
         $content .= '</form>';
     }
@@ -1882,7 +1965,7 @@ function qpp_integrations_page(  $id  ) {
         </span>
       </div>
       <div style="padding:20px 24px;">';
-    $content .= '<p>' . qpp_upgrade_prompt( 'silver', 'Creating a WordPress account when someone pays' ) . '</p>
+    $content .= '<p>' . qpp_upgrade_prompt( 'silver', esc_html__( 'Creating a WordPress account when someone pays', 'quick-paypal-payments' ) ) . '</p>
         <p class="description">' . esc_html__( 'You choose the role, and the buyer is emailed a link to set their own password.', 'quick-paypal-payments' ) . '</p>';
     $content .= '</div>
     </div>
@@ -1899,7 +1982,7 @@ function qpp_integrations_page(  $id  ) {
 function qpp_stripe_page() {
     /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
     global $quick_paypal_payments_fs;
-    qpp_upgrade_page( 'platinum', 'Stripe Checkout' );
+    qpp_upgrade_page( 'platinum', esc_html__( 'Stripe Checkout', 'quick-paypal-payments' ) );
     return;
     /*
      * The Stripe code is required at plugin load behind can_use_premium_code(),
@@ -1908,7 +1991,7 @@ function qpp_stripe_page() {
      * undefined function. Say so instead.
      */
     if ( !function_exists( 'qpp_stripe_webhook_url' ) ) {
-        echo wp_kses( '<div class="qpp-settings"><div class="qpp-options"><h2>Stripe Checkout</h2>' . '<p>The Stripe code is not loaded on this install. Reactivate your licence, then reload this page.</p>' . '</div></div>', qpp_allowed_html() );
+        echo wp_kses( '<div class="qpp-settings"><div class="qpp-options"><h2>' . esc_html__( 'Stripe Checkout', 'quick-paypal-payments' ) . '</h2>' . '<p>' . esc_html__( 'The Stripe code is not loaded on this install. Reactivate your licence, then reload this page.', 'quick-paypal-payments' ) . '</p>' . '</div></div>', qpp_allowed_html() );
         return;
     }
     if ( isset( $_POST['Submit'] ) && check_admin_referer( "save_qpp" ) ) {
@@ -1918,33 +2001,37 @@ function qpp_stripe_page() {
             $stripe[$item] = ( isset( $_POST[$item] ) ? sanitize_text_field( wp_unslash( $_POST[$item] ) ) : '' );
         }
         update_option( 'qpp_stripe', $stripe );
-        qpp_admin_notice( 'The Stripe settings have been updated.' );
+        qpp_admin_notice( esc_html__( 'The Stripe settings have been updated.', 'quick-paypal-payments' ) );
     }
     $stripe = qpp_get_stored_stripe();
     $content = '<div class="qpp-settings"><div class="qpp-options">
-    <h2>Stripe Checkout</h2>
-    <p>Take card payments through Stripe instead of PayPal. The customer pays on a page hosted by Stripe, so no card details ever reach your site.</p>
+    <h2>' . esc_html__( 'Stripe Checkout', 'quick-paypal-payments' ) . '</h2>
+    <p>' . esc_html__( 'Take card payments through Stripe instead of PayPal. The customer pays on a page hosted by Stripe, so no card details ever reach your site.', 'quick-paypal-payments' ) . '</p>
     <form method="post" action="">
-    <p><input type="checkbox" name="enable"' . checked( $stripe['enable'], 'checked', false ) . ' value="checked" /> Use Stripe for this site\'s payment forms.</p>
-    <p>Secret key<br><input type="password" autocomplete="new-password" style="width:100%" name="secret_key" value="' . esc_attr( $stripe['secret_key'] ) . '" /></p>
-    <p class="description">From Stripe, Developers, API keys. Starts sk_live_ or sk_test_.</p>
-    <p>Webhook signing secret<br><input type="password" autocomplete="new-password" style="width:100%" name="webhook_secret" value="' . esc_attr( $stripe['webhook_secret'] ) . '" /></p>
-    <p class="description">Starts whsec_. Without it payments cannot be confirmed, because there is no way to tell a real notification from a forged one.</p>
-    <p><input type="submit" name="Submit" class="button-primary" value="Save Changes" /></p>';
+    <p><input type="checkbox" name="enable"' . checked( $stripe['enable'], 'checked', false ) . ' value="checked" /> ' . esc_html__( 'Use Stripe for this site\'s payment forms.', 'quick-paypal-payments' ) . '</p>
+    <p>' . esc_html__( 'Secret key', 'quick-paypal-payments' ) . '<br><input type="password" autocomplete="new-password" style="width:100%" name="secret_key" value="' . esc_attr( $stripe['secret_key'] ) . '" /></p>
+    <p class="description">' . esc_html__( 'From Stripe, Developers, API keys. Starts sk_live_ or sk_test_.', 'quick-paypal-payments' ) . '</p>
+    <p>' . esc_html__( 'Webhook signing secret', 'quick-paypal-payments' ) . '<br><input type="password" autocomplete="new-password" style="width:100%" name="webhook_secret" value="' . esc_attr( $stripe['webhook_secret'] ) . '" /></p>
+    <p class="description">' . esc_html__( 'Starts whsec_. Without it payments cannot be confirmed, because there is no way to tell a real notification from a forged one.', 'quick-paypal-payments' ) . '</p>
+    <p><input type="submit" name="Submit" class="button-primary" value="' . esc_attr__( 'Save Changes', 'quick-paypal-payments' ) . '" /></p>';
     $content .= wp_nonce_field( "save_qpp" );
     $content .= '</form>
     </div>
     <div class="qpp-options" style="float:right">
-    <h2>Setting Stripe up</h2>
+    <h2>' . esc_html__( 'Setting Stripe up', 'quick-paypal-payments' ) . '</h2>
     <ol>
-    <li>In Stripe go to Developers, then Webhooks, and add an endpoint.</li>
-    <li>Paste this URL as the endpoint:<br><code>' . esc_url( qpp_stripe_webhook_url() ) . '</code></li>
-    <li>Choose the event <code>checkout.session.completed</code>. Nothing else is needed.</li>
-    <li>Copy the signing secret Stripe shows you into the box on the left.</li>
-    <li>Copy your secret key from Developers, API keys.</li>
+    <li>' . esc_html__( 'In Stripe go to Developers, then Webhooks, and add an endpoint.', 'quick-paypal-payments' ) . '</li>
+    <li>' . esc_html__( 'Paste this URL as the endpoint:', 'quick-paypal-payments' ) . '<br><code>' . esc_url( qpp_stripe_webhook_url() ) . '</code></li>
+    <li>' . sprintf( 
+        /* translators: %s: the Stripe event name checkout.session.completed, in a code tag. */
+        esc_html__( 'Choose the event %s. Nothing else is needed.', 'quick-paypal-payments' ),
+        '<code>checkout.session.completed</code>'
+     ) . '</li>
+    <li>' . esc_html__( 'Copy the signing secret Stripe shows you into the box on the left.', 'quick-paypal-payments' ) . '</li>
+    <li>' . esc_html__( 'Copy your secret key from Developers, API keys.', 'quick-paypal-payments' ) . '</li>
     </ol>
-    <p>Use your test keys first. A test payment appears in your payment list exactly as a live one would.</p>
-    <p><strong>Recurring forms still go through PayPal.</strong> Stripe Checkout will not accept a subscription that stops after a set number of payments, so a recurring form falls back to PayPal rather than billing a customer open ended. One off payments on the same site still go through Stripe.</p>
+    <p>' . esc_html__( 'Use your test keys first. A test payment appears in your payment list exactly as a live one would.', 'quick-paypal-payments' ) . '</p>
+    <p><strong>' . esc_html__( 'Recurring forms still go through PayPal.', 'quick-paypal-payments' ) . '</strong> ' . esc_html__( 'Stripe Checkout will not accept a subscription that stops after a set number of payments, so a recurring form falls back to PayPal rather than billing a customer open ended. One off payments on the same site still go through Stripe.', 'quick-paypal-payments' ) . '</p>
     </div></div>';
     echo wp_kses( $content, qpp_allowed_html() );
 }
@@ -1952,7 +2039,7 @@ function qpp_stripe_page() {
 function qpp_ipn_page() {
     /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
     global $quick_paypal_payments_fs;
-    qpp_upgrade_page( 'silver', 'Instant Payment Notification' );
+    qpp_upgrade_page( 'silver', esc_html__( 'Instant Payment Notification', 'quick-paypal-payments' ) );
     return;
     if ( isset( $_POST['Submit'] ) && check_admin_referer( "save_qpp" ) ) {
         $options = array(
@@ -1969,77 +2056,124 @@ function qpp_ipn_page() {
             $ipn[$item] = sanitize_text_field( $ipn[$item] );
         }
         update_option( 'qpp_ipn', $ipn );
-        qpp_admin_notice( "The IPN settings have been updated." );
+        qpp_admin_notice( esc_html__( 'The IPN settings have been updated.', 'quick-paypal-payments' ) );
     }
     if ( isset( $_POST['Reset'] ) && check_admin_referer( "save_qpp" ) ) {
         delete_option( 'qpp_ipn' );
-        qpp_admin_notice( "The IPN settings have been reset." );
+        qpp_admin_notice( esc_html__( 'The IPN settings have been reset.', 'quick-paypal-payments' ) );
     }
     $ipn = qpp_get_stored_ipn();
     $content = '<div class="qpp-settings"><div class="qpp-options">
-	<h2>Instant Payment Notifications</h2>
-    <p><b>Note:</b> IPN needs a PayPal Business or Premier account, and IPN must be switched on in that account. See <b>Setting IPN up in PayPal</b> alongside.</p>
+	<h2>' . esc_html__( 'Instant Payment Notifications', 'quick-paypal-payments' ) . '</h2>
+    <p><b>' . esc_html__( 'Note:', 'quick-paypal-payments' ) . '</b> ' . sprintf( 
+        /* translators: %s: the heading "Setting IPN up in PayPal", in bold. */
+        esc_html__( 'IPN needs a PayPal Business or Premier account, and IPN must be switched on in that account. See %s alongside.', 'quick-paypal-payments' ),
+        '<b>' . esc_html__( 'Setting IPN up in PayPal', 'quick-paypal-payments' ) . '</b>'
+     ) . '</p>
 	<form method="post" action="">
     <table>
     <tr>
     <td><input  type="checkbox" name="ipn"' . checked( $ipn['ipn'], 'checked', false ) . ' value="checked" /></td>
-    <td colspan="2"> Enable IPN.</td>
+    <td colspan="2"> ' . esc_html__( 'Enable IPN.', 'quick-paypal-payments' ) . '</td>
     </tr>
     <tr>
     <td></td>
-    <td width ="40%">Payment Report Column header:</td>
+    <td width ="40%">' . esc_html__( 'Payment Report Column header:', 'quick-paypal-payments' ) . '</td>
     <td><input type="text"  style="width:100%" name="title" value="' . esc_attr( $ipn['title'] ) . '" /></td>
     </tr>
     <tr>
     <td></td>
-    <td>Payment Complete Label:</td>
+    <td>' . esc_html__( 'Payment Complete Label:', 'quick-paypal-payments' ) . '</td>
     <td><input type="text"  style="width:100%" name="paid" value="' . esc_attr( $ipn['paid'] ) . '" /></td>
     </tr>
     <tr>
     <td></td>
-    <td>Third Party Listener URL (optional: advanced):</td>
+    <td>' . esc_html__( 'Third Party Listener URL (optional: advanced):', 'quick-paypal-payments' ) . '</td>
     <td><input type="text"  style="width:100%" name="listener" value="' . esc_attr( qpp_get_element( $ipn, 'listener' ) ) . '" /></td>
     </tr>
     <tr>
     <td><input  type="checkbox" name="deleterecord"' . checked( qpp_get_element( $ipn, 'deleterecord' ), 'checked', false ) . ' value="checked" /></td>
-    <td colspan="2"> Delete record after payment.</td>
+    <td colspan="2"> ' . esc_html__( 'Delete record after payment.', 'quick-paypal-payments' ) . '</td>
     </tr>
     </table>
-    <p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="Save Changes" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="Reset" onclick="return window.confirm( \'Are you sure you want to reset the IPN settings?\' );"/></p>';
+    <p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="' . esc_attr__( 'Save Changes', 'quick-paypal-payments' ) . '" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="' . esc_attr__( 'Reset', 'quick-paypal-payments' ) . '" onclick="return window.confirm( \'' . esc_js( __( 'Are you sure you want to reset the IPN settings?', 'quick-paypal-payments' ) ) . '\' );"/></p>';
     $content .= wp_nonce_field( "save_qpp" );
     $content .= '</form>
-    <p>If you set a Listener URL above this plugin will not automatically handle IPN\'s, this is for advanced usage e.g. split IPN handling. If you haven\'t set an IPN listener URL above this is the one you need to get payment confirmation:<pre>' . site_url( '/?qpp_ipn' ) . '</pre></p>
-    <p>To check completed payments click on the <b>Payments</b> link in your dashboard menu or <a href="?page=quick-paypal-payments-messages">click here</a>.</p>
+    <p>' . esc_html__( 'If you set a Listener URL above this plugin will not automatically handle IPN\'s, this is for advanced usage e.g. split IPN handling. If you haven\'t set an IPN listener URL above this is the one you need to get payment confirmation:', 'quick-paypal-payments' ) . '<pre>' . site_url( '/?qpp_ipn' ) . '</pre></p>
+    <p>' . sprintf( 
+        /* translators: 1: the word "Payments" in bold, the dashboard menu item, 2: a link with the text "click here". */
+        esc_html__( 'To check completed payments click on the %1$s link in your dashboard menu or %2$s.', 'quick-paypal-payments' ),
+        '<b>' . esc_html__( 'Payments', 'quick-paypal-payments' ) . '</b>',
+        '<a href="?page=quick-paypal-payments-messages">' . esc_html__( 'click here', 'quick-paypal-payments' ) . '</a>'
+     ) . '</p>
     </div>
     <div class="qpp-options" style="float:right;">
-    <h2>Setting IPN up in PayPal</h2>
-    <p>PayPal have moved their IPN documentation more than once, so the steps are repeated here in full.</p>
+    <h2>' . esc_html__( 'Setting IPN up in PayPal', 'quick-paypal-payments' ) . '</h2>
+    <p>' . esc_html__( 'PayPal have moved their IPN documentation more than once, so the steps are repeated here in full.', 'quick-paypal-payments' ) . '</p>
     <ol>
-    <li>Log in to your PayPal account</li>
-    <li>You need a <b>Business</b> account. If yours is Personal, follow PayPal\'s instructions to upgrade it first</li>
-    <li>Go to <a href="https://www.paypal.com/businessmanage/account/notifications" target="_blank">Business profile &rarr; Notifications &rarr; Instant payment notifications</a></li>
-    <li>Click <b>Manage</b> (or <b>Update</b>, then <b>Choose IPN Settings</b>)</li>
-    <li>Enter this Notification URL:<pre>' . esc_url( site_url( '/?qpp_ipn' ) ) . '</pre></li>
-    <li>Select <b>Receive IPN messages (Enabled)</b></li>
-    <li>Click <b>Save</b></li>
+    <li>' . esc_html__( 'Log in to your PayPal account', 'quick-paypal-payments' ) . '</li>
+    <li>' . sprintf( 
+        /* translators: %s: the word "Business" in bold. */
+        esc_html__( 'You need a %s account. If yours is Personal, follow PayPal\'s instructions to upgrade it first', 'quick-paypal-payments' ),
+        '<b>' . esc_html__( 'Business', 'quick-paypal-payments' ) . '</b>'
+     ) . '</li>
+    <li>' . sprintf( 
+        /* translators: %s: a link with the text "Business profile -> Notifications -> Instant payment notifications". */
+        esc_html__( 'Go to %s', 'quick-paypal-payments' ),
+        '<a href="https://www.paypal.com/businessmanage/account/notifications" target="_blank">' . esc_html__( 'Business profile &rarr; Notifications &rarr; Instant payment notifications', 'quick-paypal-payments' ) . '</a>'
+     ) . '</li>
+    <li>' . sprintf(
+        /* translators: 1, 2, 3: the PayPal button names Manage, Update and Choose IPN Settings, in bold. */
+        esc_html__( 'Click %1$s (or %2$s, then %3$s)', 'quick-paypal-payments' ),
+        '<b>' . esc_html__( 'Manage', 'quick-paypal-payments' ) . '</b>',
+        '<b>' . esc_html__( 'Update', 'quick-paypal-payments' ) . '</b>',
+        '<b>' . esc_html__( 'Choose IPN Settings', 'quick-paypal-payments' ) . '</b>'
+    ) . '</li>
+    <li>' . esc_html__( 'Enter this Notification URL:', 'quick-paypal-payments' ) . '<pre>' . esc_url( site_url( '/?qpp_ipn' ) ) . '</pre></li>
+    <li>' . sprintf( 
+        /* translators: %s: the PayPal option name "Receive IPN messages (Enabled)", in bold. */
+        esc_html__( 'Select %s', 'quick-paypal-payments' ),
+        '<b>' . esc_html__( 'Receive IPN messages (Enabled)', 'quick-paypal-payments' ) . '</b>'
+     ) . '</li>
+    <li>' . sprintf( 
+        /* translators: %s: the button name "Save", in bold. */
+        esc_html__( 'Click %s', 'quick-paypal-payments' ),
+        '<b>' . esc_html__( 'Save', 'quick-paypal-payments' ) . '</b>'
+     ) . '</li>
     </ol>
-    <p>To see what PayPal actually sent, and to resend it, open your <a href="https://www.paypal.com/merchantnotification/ipn/history" target="_blank">IPN history</a>. That is the first place to look if a payment has not been marked complete.</p>
-    <p>PayPal\'s own reference is the <a href="https://developer.paypal.com/api/nvp-soap/ipn/IPNSetup/" target="_blank">IPN setup guide</a>.</p>
+    <p>' . sprintf( 
+        /* translators: %s: a link with the text "IPN history". */
+        esc_html__( 'To see what PayPal actually sent, and to resend it, open your %s. That is the first place to look if a payment has not been marked complete.', 'quick-paypal-payments' ),
+        '<a href="https://www.paypal.com/merchantnotification/ipn/history" target="_blank">' . esc_html__( 'IPN history', 'quick-paypal-payments' ) . '</a>'
+     ) . '</p>
+    <p>' . sprintf( 
+        /* translators: %s: a link with the text "IPN setup guide". */
+        esc_html__( 'PayPal\'s own reference is the %s.', 'quick-paypal-payments' ),
+        '<a href="https://developer.paypal.com/api/nvp-soap/ipn/IPNSetup/" target="_blank">' . esc_html__( 'IPN setup guide', 'quick-paypal-payments' ) . '</a>'
+     ) . '</p>
     </div>
     <div class="qpp-options" style="float:right;clear:right;">
-    <h2>IPN Simulation</h2>
-    <p>IPN can be blocked or restricted by your server settings, theme or other plugins. The good news is you can simulate the notifications to check if all is working.</p>
-    <p>To carry out a simulation:</p>
+    <h2>' . esc_html__( 'IPN Simulation', 'quick-paypal-payments' ) . '</h2>
+    <p>' . esc_html__( 'IPN can be blocked or restricted by your server settings, theme or other plugins. The good news is you can simulate the notifications to check if all is working.', 'quick-paypal-payments' ) . '</p>
+    <p>' . esc_html__( 'To carry out a simulation:', 'quick-paypal-payments' ) . '</p>
     <ol>
-    <li>Enable the PayPal Sandbox on the <a href="?page=quick-paypal-payments&tab=setup">plugin setup page</a></li>
-    <li>Fill in and send your payment form (you do not need to make an actual payment)</li>
-    <li>Go to the <a href="?page=quick-paypal-payments-messages">Payments Report</a> and copy the long number in the last column from the payment you have just made</li>
-    <li>Go to the IPN simulation page: <a href="https://developer.paypal.com/dashboard/ipnSimulator" target="_blank">https://developer.paypal.com/dashboard/ipnSimulator</a></li>
-    <li>Login and enter the IPN listener URL</li>
-    <li>Select \'Express Checkout\' from the drop down</li>
-    <li>Scroll to the bottom of the page and enter the long number you copied at step 3 into the \'Custom\' field</li>
-    <li>Click \'Send IPN\'. Scroll up the page and you should see an \'IPN Verified\' message.</li>
-    <li>Go back to your Payments Report and refresh, you should now see the payment completed message</li>
+    <li>' . sprintf( 
+        /* translators: %s: a link with the text "plugin setup page". */
+        esc_html__( 'Enable the PayPal Sandbox on the %s', 'quick-paypal-payments' ),
+        '<a href="?page=quick-paypal-payments&tab=setup">' . esc_html__( 'plugin setup page', 'quick-paypal-payments' ) . '</a>'
+     ) . '</li>
+    <li>' . esc_html__( 'Fill in and send your payment form (you do not need to make an actual payment)', 'quick-paypal-payments' ) . '</li>
+    <li>' . sprintf( 
+        /* translators: %s: a link with the text "Payments Report". */
+        esc_html__( 'Go to the %s and copy the long number in the last column from the payment you have just made', 'quick-paypal-payments' ),
+        '<a href="?page=quick-paypal-payments-messages">' . esc_html__( 'Payments Report', 'quick-paypal-payments' ) . '</a>'
+     ) . '</li>
+    <li>' . esc_html__( 'Go to the IPN simulation page:', 'quick-paypal-payments' ) . ' <a href="https://developer.paypal.com/dashboard/ipnSimulator" target="_blank">https://developer.paypal.com/dashboard/ipnSimulator</a></li>
+    <li>' . esc_html__( 'Login and enter the IPN listener URL', 'quick-paypal-payments' ) . '</li>
+    <li>' . esc_html__( 'Select \'Express Checkout\' from the drop down', 'quick-paypal-payments' ) . '</li>
+    <li>' . esc_html__( 'Scroll to the bottom of the page and enter the long number you copied at step 3 into the \'Custom\' field', 'quick-paypal-payments' ) . '</li>
+    <li>' . esc_html__( 'Click \'Send IPN\'. Scroll up the page and you should see an \'IPN Verified\' message.', 'quick-paypal-payments' ) . '</li>
+    <li>' . esc_html__( 'Go back to your Payments Report and refresh, you should now see the payment completed message', 'quick-paypal-payments' ) . '</li>
     </ol>
     </div>
     </div>';
@@ -2049,7 +2183,7 @@ function qpp_ipn_page() {
 function qpp_autoresponce_page(  $id  ) {
     /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
     global $quick_paypal_payments_fs;
-    qpp_upgrade_page( 'silver', 'Auto Responder' );
+    qpp_upgrade_page( 'silver', esc_html__( 'Auto Responder', 'quick-paypal-payments' ) );
     return;
     qpp_change_form_update();
     $afterpayment = $aftersubmission = false;
@@ -2070,14 +2204,20 @@ function qpp_autoresponce_page(  $id  ) {
         }
         update_option( 'qpp_autoresponder' . $id, $auto );
         if ( $id ) {
-            qpp_admin_notice( "The autoresponder settings for " . $id . " have been updated." );
+            /* translators: %s: form name. */
+            qpp_admin_notice( sprintf( esc_html__( 'The autoresponder settings for %s have been updated.', 'quick-paypal-payments' ), $id ) );
         } else {
-            qpp_admin_notice( "The default form autoresponder settings have been updated." );
+            qpp_admin_notice( esc_html__( 'The default form autoresponder settings have been updated.', 'quick-paypal-payments' ) );
         }
     }
     if ( isset( $_POST['Reset'] ) && check_admin_referer( "save_qpp" ) ) {
         delete_option( 'qpp_autoresponder' . $id );
-        qpp_admin_notice( "The autoresponder settings for the form called " . $id . " have been reset." );
+        if ( $id ) {
+            /* translators: %s: form name. */
+            qpp_admin_notice( sprintf( esc_html__( 'The autoresponder settings for the form called %s have been reset.', 'quick-paypal-payments' ), $id ) );
+        } else {
+            qpp_admin_notice( esc_html__( 'The default form autoresponder settings have been reset.', 'quick-paypal-payments' ) );
+        }
     }
     $qpp_setup = qpp_get_stored_setup();
     $id = $qpp_setup['current'];
@@ -2087,79 +2227,109 @@ function qpp_autoresponce_page(  $id  ) {
     $message = $auto['message'];
     $content = '<div class="qpp-settings"><div class="qpp-options" style="width:90%;">';
     if ( $id ) {
-        $content .= '<h2 style="color:#B52C00">Autoresponse settings for ' . $id . '</h2>';
+        /* translators: %s: form name. */
+        $content .= '<h2 style="color:#B52C00">' . sprintf( esc_html__( 'Autoresponse settings for %s', 'quick-paypal-payments' ), esc_html( $id ) ) . '</h2>';
     } else {
-        $content .= '<h2 style="color:#B52C00">Default form autoresponse settings</h2>';
+        $content .= '<h2 style="color:#B52C00">' . esc_html__( 'Default form autoresponse settings', 'quick-paypal-payments' ) . '</h2>';
     }
     $content .= qpp_change_form( $qpp_setup );
-    $content .= '<p>The auto responder sends a confirmation message to the Payer. Use the editor below to send links, images and anything else you normally add to a post or page.</p>
-    <p class="description">Note that the autoresponder only works if you collect an email address on the <a href="?page=quick-paypal-payments&tab=settings">Form Settings</a>.</p>
-    <p class="description">If you want to receive notificationmessages use the option on the <a href="?page=quick-paypal-payments&tab=send">Send Options</a> tab.</p>
+    $content .= '<p>' . esc_html__( 'The auto responder sends a confirmation message to the Payer. Use the editor below to send links, images and anything else you normally add to a post or page.', 'quick-paypal-payments' ) . '</p>
+    <p class="description">' . sprintf( 
+        /* translators: %s: a link with the text "Form Settings". */
+        esc_html__( 'Note that the autoresponder only works if you collect an email address on the %s.', 'quick-paypal-payments' ),
+        '<a href="?page=quick-paypal-payments&tab=settings">' . esc_html__( 'Form Settings', 'quick-paypal-payments' ) . '</a>'
+     ) . '</p>
+    <p class="description">' . sprintf( 
+        /* translators: %s: a link with the text "Send Options". */
+        esc_html__( 'If you want to receive notification messages use the option on the %s tab.', 'quick-paypal-payments' ),
+        '<a href="?page=quick-paypal-payments&tab=send">' . esc_html__( 'Send Options', 'quick-paypal-payments' ) . '</a>'
+     ) . '</p>
     <form method="post" action="">
-    <p><input type="checkbox" name="enable"' . checked( $auto['enable'], 'checked', false ) . ' value="checked" /> Enable Auto Responder</p> 
-    <p><input type="radio" name="whenconfirm" value="aftersubmission"' . checked( $auto['whenconfirm'], 'aftersubmission', false ) . ' /> After submission to PayPal<br>
-    <input type="radio" name="whenconfirm" value="afterpayment"' . checked( $auto['whenconfirm'], 'afterpayment', false ) . ' /> After payment (only works if <a href="?page=quick-paypal-payments&tab=ipn">IPN</a> is enabled)</span></p>
-    <p>From Name (<span class="description">Defaults to your <a href="' . get_admin_url() . 'options-general.php">Site Title</a> if left blank.</span>):<br>
+    <p><input type="checkbox" name="enable"' . checked( $auto['enable'], 'checked', false ) . ' value="checked" /> ' . esc_html__( 'Enable Auto Responder', 'quick-paypal-payments' ) . '</p> 
+    <p><input type="radio" name="whenconfirm" value="aftersubmission"' . checked( $auto['whenconfirm'], 'aftersubmission', false ) . ' /> ' . esc_html__( 'After submission to PayPal', 'quick-paypal-payments' ) . '<br>
+    <input type="radio" name="whenconfirm" value="afterpayment"' . checked( $auto['whenconfirm'], 'afterpayment', false ) . ' /> ' . sprintf( 
+        /* translators: %s: a link with the text "IPN". */
+        esc_html__( 'After payment (only works if %s is enabled)', 'quick-paypal-payments' ),
+        '<a href="?page=quick-paypal-payments&tab=ipn">' . esc_html__( 'IPN', 'quick-paypal-payments' ) . '</a>'
+     ) . '</p>
+    <p>' . esc_html__( 'From Name', 'quick-paypal-payments' ) . ' (<span class="description">' . sprintf( 
+        /* translators: %s: a link with the text "Site Title". */
+        esc_html__( 'Defaults to your %s if left blank.', 'quick-paypal-payments' ),
+        '<a href="' . get_admin_url() . 'options-general.php">' . esc_html__( 'Site Title', 'quick-paypal-payments' ) . '</a>'
+     ) . '</span>):<br>
     <input type="text" style="width:50%" name="fromname" value="' . esc_attr( $auto['fromname'] ) . '" /></p>
-    <p>From Email (<span class="description">Defaults to the your <a href="?page=quick-paypal-payments&tab=setup">PayPal email address</a> if left blank.</span>):<br>
+    <p>' . esc_html__( 'From Email', 'quick-paypal-payments' ) . ' (<span class="description">' . sprintf( 
+        /* translators: %s: a link with the text "PayPal email address". */
+        esc_html__( 'Defaults to your %s if left blank.', 'quick-paypal-payments' ),
+        '<a href="?page=quick-paypal-payments&tab=setup">' . esc_html__( 'PayPal email address', 'quick-paypal-payments' ) . '</a>'
+     ) . '</span>):<br>
     <input type="text" style="width:50%" name="fromemail" value="' . esc_attr( $auto['fromemail'] ) . '" /></p>
-    <p>Subject</p>
+    <p>' . esc_html__( 'Subject', 'quick-paypal-payments' ) . '</p>
     <input style="width:100%" type="text" name="subject" value="' . esc_attr( $auto['subject'] ) . '"/><br>
-    <p>Message Content</p>';
+    <p>' . esc_html__( 'Message Content', 'quick-paypal-payments' ) . '</p>';
     echo wp_kses( $content, qpp_allowed_html() );
     wp_editor( $message, 'message', $settings = array(
         'textarea_rows' => '20',
         'wpautop'       => false,
     ) );
-    $content = '<p>You can use the following shortcodes in the message body:</p>
+    $personal_details = '<a href="?page=quick-paypal-payments&tab=address">' . esc_html__( 'personal details', 'quick-paypal-payments' ) . '</a>';
+    $content = '<p>' . esc_html__( 'You can use the following shortcodes in the message body:', 'quick-paypal-payments' ) . '</p>
     <table>
     <tr>
-    <th>Shortcode</th>
-    <th>Replacement Text</th>
+    <th>' . esc_html__( 'Shortcode', 'quick-paypal-payments' ) . '</th>
+    <th>' . esc_html__( 'Replacement Text', 'quick-paypal-payments' ) . '</th>
     </tr>
     <tr>
     <td>[firstname]</td>
-    <td>The registrants first name if you are using the <a href="?page=quick-paypal-payments&tab=address">personal details</a> option.</td>
+    <td>' . sprintf( 
+        /* translators: %s: a link with the text "personal details". */
+        esc_html__( 'The registrants first name if you are using the %s option.', 'quick-paypal-payments' ),
+        $personal_details
+     ) . '</td>
     </tr>
     <tr>
     <td>[name]</td>
-    <td>The registrants first and last name if you are using the <a href="?page=quick-paypal-payments&tab=address">personal details</a> option.</td>
+    <td>' . sprintf( 
+        /* translators: %s: a link with the text "personal details". */
+        esc_html__( 'The registrants first and last name if you are using the %s option.', 'quick-paypal-payments' ),
+        $personal_details
+     ) . '</td>
     </tr>
     <tr>
     <td>[reference]</td>
-    <td>The name of the item being purchased</td>
+    <td>' . esc_html__( 'The name of the item being purchased', 'quick-paypal-payments' ) . '</td>
     </tr>
     <tr>
     <td>[amount]</td>
-    <td>The total amount to be paid without the currency symbol</td>
+    <td>' . esc_html__( 'The total amount to be paid without the currency symbol', 'quick-paypal-payments' ) . '</td>
     </tr>
     <tr>
     <td>[fullamount]</td>
-    <td>The total amount to be paid with currency symbol</td>
+    <td>' . esc_html__( 'The total amount to be paid with currency symbol', 'quick-paypal-payments' ) . '</td>
     </tr>
     <tr>
     <td>[quantity]</td>
-    <td>The number of items purchased</td>
+    <td>' . esc_html__( 'The number of items purchased', 'quick-paypal-payments' ) . '</td>
     </tr>
     <tr>
     <td>[option]</td>
-    <td>The option selected</td>
+    <td>' . esc_html__( 'The option selected', 'quick-paypal-payments' ) . '</td>
     </tr>
     <tr>
     <td>[stock]</td>
-    <td>The stock, SKU or item number</td>
+    <td>' . esc_html__( 'The stock, SKU or item number', 'quick-paypal-payments' ) . '</td>
     </tr>
     <tr>
     <td>[details]</td>
-    <td>The payment information (reference, quantity, options, stock number, amount)</td>
+    <td>' . esc_html__( 'The payment information (reference, quantity, options, stock number, amount)', 'quick-paypal-payments' ) . '</td>
     </tr>
     <tr>
     <td>[multiple]</td>
-    <td>A table with the names and quantities of each item ordered (pro version only)</td>
+    <td>' . esc_html__( 'A table with the names and quantities of each item ordered (Platinum only)', 'quick-paypal-payments' ) . '</td>
     </tr>
     </table>
-    <p><input type="checkbox" name="paymentdetails"' . checked( $auto['paymentdetails'], 'checked', false ) . ' value="checked" /> Add payment details to the message</p> 
-    <p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="Save Changes" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="Reset" onclick="return window.confirm( \'Are you sure you want to reset the error settings for ' . $id . '?\' );"/></p>';
+    <p><input type="checkbox" name="paymentdetails"' . checked( $auto['paymentdetails'], 'checked', false ) . ' value="checked" /> ' . esc_html__( 'Add payment details to the message', 'quick-paypal-payments' ) . '</p> 
+    <p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="' . esc_attr__( 'Save Changes', 'quick-paypal-payments' ) . '" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="' . esc_attr__( 'Reset', 'quick-paypal-payments' ) . '" onclick="return window.confirm( \'' . esc_js( __( 'Are you sure you want to reset the auto responder settings?', 'quick-paypal-payments' ) ) . '\' );"/></p>';
     $content .= wp_nonce_field( "save_qpp" );
     $content .= '</form>
     </div>
@@ -2204,20 +2374,23 @@ function qpp_address(  $id  ) {
             $address[$item] = ( is_array( $_POST[$item] ) ? array_map( 'esc_attr', $_POST[$item] ) : esc_attr( $_POST[$item] ) );
         }
         update_option( 'qpp_address' . $id, $address );
-        qpp_admin_notice( "The form settings have been updated." );
+        qpp_admin_notice( esc_html__( 'The form settings have been updated.', 'quick-paypal-payments' ) );
     }
     if ( isset( $_POST['Reset'] ) && check_admin_referer( "save_qpp" ) ) {
-        delete_option( 'qpp_error' . $id );
-        qpp_admin_notice( "The form settings have been reset." );
+        // This deleted qpp_error, so Reset on this screen wiped the validation
+        // messages and left the address fields exactly as they were.
+        delete_option( 'qpp_address' . $id );
+        qpp_admin_notice( esc_html__( 'The personal details fields have been reset.', 'quick-paypal-payments' ) );
     }
     $qpp_setup = qpp_get_stored_setup();
     $id = $qpp_setup['current'];
     $address = qpp_get_stored_address( $id );
     $content = '<div class="qpp-settings"><div class="qpp-options">';
     if ( $id ) {
-        $content .= '<h2>Personal Information Fields for ' . $id . '</h2>';
+        /* translators: %s: form name. */
+        $content .= '<h2>' . sprintf( esc_html__( 'Personal Information Fields for %s', 'quick-paypal-payments' ), esc_html( $id ) ) . '</h2>';
     } else {
-        $content .= '<h2>Personal Information Fields</h2>';
+        $content .= '<h2>' . esc_html__( 'Personal Information Fields', 'quick-paypal-payments' ) . '</h2>';
     }
     $content .= qpp_change_form( $qpp_setup );
     $ccodes = Utilities::get_instance()->get_paypal_locales();
@@ -2238,73 +2411,77 @@ function qpp_address(  $id  ) {
         $permitted_countries .= '<option value="' . esc_attr( $code ) . '" ' . $sel . '>' . $data['region'] . '</option>';
     }
     $content .= '<form method="post" action="">
-    <p class="description">Note: The information will be collected and saved and passed to PayPal but usage is dependent on browser and user settings. Which means they may have to fill in the information again when they get to PayPal</p>
-    <p>1. Delete labels for fields you do not want to use.</p>
-    <p>2. Check the <b>R</b> box for madatory/required fields.</p>
+    <p class="description">' . esc_html__( 'Note: The information will be collected and saved and passed to PayPal but usage is dependent on browser and user settings. Which means they may have to fill in the information again when they get to PayPal', 'quick-paypal-payments' ) . '</p>
+    <p>' . esc_html__( '1. Delete labels for fields you do not want to use.', 'quick-paypal-payments' ) . '</p>
+    <p>' . sprintf( 
+        /* translators: %s: the column heading "R", in bold. */
+        esc_html__( '2. Check the %s box for mandatory/required fields.', 'quick-paypal-payments' ),
+        '<b>' . esc_html_x( 'R', 'column heading, short for Required', 'quick-paypal-payments' ) . '</b>'
+     ) . '</p>
     <table>
     <tr>
     
-    <th>Field</th>
-    <th>Label</th>
-    <th>R</th>
+    <th>' . esc_html__( 'Field', 'quick-paypal-payments' ) . '</th>
+    <th>' . esc_html__( 'Label', 'quick-paypal-payments' ) . '</th>
+    <th>' . esc_html_x( 'R', 'column heading, short for Required', 'quick-paypal-payments' ) . '</th>
     </tr>
     <tr>
     
-    <td width="20%">First Name</td>
+    <td width="20%">' . esc_html__( 'First Name', 'quick-paypal-payments' ) . '</td>
     <td><input type="text"  style="width:100%" name="firstname" value="' . esc_attr( $address['firstname'] ) . '" /></td>
     <td width="5%"><input  type="checkbox" name="rfirstname"' . checked( $address['rfirstname'], 'checked', false ) . ' value="checked" /></td>
     </tr>
     <tr>
     
-    <td>Last Name</td>
+    <td>' . esc_html__( 'Last Name', 'quick-paypal-payments' ) . '</td>
     <td><input type="text"  style="width:100%" name="lastname" value="' . esc_attr( $address['lastname'] ) . '" /></td>
     <td><input  type="checkbox" name="rlastname"' . checked( $address['rlastname'], 'checked', false ) . ' value="checked" /></td>
     </tr>
     <tr>
     
-    <td>Email</td>
+    <td>' . esc_html__( 'Email', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" style="width:100%" name="email" value="' . esc_attr( $address['email'] ) . '" /></td>
     <td><input  type="checkbox" name="remail"' . checked( $address['remail'], 'checked', false ) . ' value="checked" /></td>
     </tr>
     <tr>
     
-    <td>Address Line 1</td>
+    <td>' . esc_html__( 'Address Line 1', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" style="width:100%" name="address1" value="' . esc_attr( $address['address1'] ) . '" /></td>
     <td><input  type="checkbox" name="raddress1"' . checked( $address['raddress1'], 'checked', false ) . ' value="checked" /></td>
     </tr>
     <tr>
     
-    <td>Address Line 2</td>
+    <td>' . esc_html__( 'Address Line 2', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" style="width:100%" name="address2" value="' . esc_attr( $address['address2'] ) . '" /></td>
     <td><input  type="checkbox" name="raddress2"' . checked( $address['raddress2'], 'checked', false ) . ' value="checked" /></td>
     </tr>
     <tr>
     
-    <td>City</td>
+    <td>' . esc_html__( 'City', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" style="width:100%" name="city" value="' . esc_attr( $address['city'] ) . '" /></td>
     <td><input  type="checkbox" name="rcity"' . checked( $address['rcity'], 'checked', false ) . ' value="checked" /></td>
     </tr>
     <tr>
     
-    <td>State</td>
+    <td>' . esc_html__( 'State', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" style="width:100%" name="state" value="' . esc_attr( $address['state'] ) . '" /></td>
     <td><input  type="checkbox" name="rstate"' . checked( $address['rstate'], 'checked', false ) . ' value="checked" /></td>
     </tr>
     <tr>
     
-    <td>Zip</td>
+    <td>' . esc_html__( 'Zip', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" style="width:100%" name="zip" value="' . esc_attr( $address['zip'] ) . '" /></td>
     <td><input  type="checkbox" name="rzip"' . checked( $address['rzip'], 'checked', false ) . ' value="checked" /></td>
     </tr>
     <tr>
     
-    <td>Country</td>
+    <td>' . esc_html__( 'Country', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" style="width:100%" name="country" value="' . esc_attr( $address['country'] ) . '" /></td>
     <td><input  type="checkbox" name="rcountry"' . checked( $address['rcountry'], 'checked', false ) . ' value="checked" /></td>
     </tr>
     <tr>
     
-    <td>Default / Permitted Countries</td>
+    <td>' . esc_html__( 'Default / Permitted Countries', 'quick-paypal-payments' ) . '</td>
     <td><select style="width:40%" name="default_country">
 							<option value="" disabled selected>' . esc_html__( 'Default Country', 'quick-paypal-payments' ) . '</option>' . esc_html( $default_countries ) . '
 							
@@ -2315,17 +2492,17 @@ function qpp_address(  $id  ) {
     
     <tr>
     
-    <td>Phone</td>
+    <td>' . esc_html__( 'Phone', 'quick-paypal-payments' ) . '</td>
     <td><input type="text" style="width:100%" name="night_phone_b" value="' . esc_attr( $address['night_phone_b'] ) . '" /></td>
     <td><input  type="checkbox" name="rnight_phone_b"' . checked( $address['rnight_phone_b'], 'checked', false ) . ' value="checked" /></td>
     </tr>
     </table>
-    <p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="Save Changes" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="Reset" onclick="return window.confirm( \'Are you sure you want to reset the error message?\' );"/></p>';
+    <p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="' . esc_attr__( 'Save Changes', 'quick-paypal-payments' ) . '" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="' . esc_attr__( 'Reset', 'quick-paypal-payments' ) . '" onclick="return window.confirm( \'' . esc_js( __( 'Are you sure you want to reset the personal details fields?', 'quick-paypal-payments' ) ) . '\' );"/></p>';
     $content .= wp_nonce_field( "save_qpp" );
     $content .= '</form>
     </div>
     <div class="qpp-options" style="float:right;">
-    <h2>Example Form</h2>';
+    <h2>' . esc_html__( 'Example Form', 'quick-paypal-payments' ) . '</h2>';
     if ( $id ) {
         $form = ' form="' . $id . '"';
     }
@@ -2335,16 +2512,14 @@ function qpp_address(  $id  ) {
         'amount' => '',
     );
     $content .= qpp_loop( $args, true );
-    $content .= '<p>There are some more examples of payment forms <a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">on this page</a>.</p>
-    <p>And there are loads of shortcode options <a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">on this page</a>.</p>
-    </div></div>';
+    $content .= qpp_examples_footer() . '</div></div>';
     echo wp_kses( $content, qpp_allowed_html() );
 }
 
 function qpp_coupon_codes(  $id  ) {
     /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
     global $quick_paypal_payments_fs;
-    qpp_upgrade_page( 'gold', 'Coupon Codes' );
+    qpp_upgrade_page( 'gold', esc_html__( 'Coupon Codes', 'quick-paypal-payments' ) );
     return;
     qpp_change_form_update();
     if ( isset( $_POST['Submit'] ) && check_admin_referer( "save_qpp" ) ) {
@@ -2403,11 +2578,11 @@ function qpp_coupon_codes(  $id  ) {
                 update_option( 'qpp_coupon' . $item, $coupon );
             }
         }
-        qpp_admin_notice( "The coupon settings have been updated." );
+        qpp_admin_notice( esc_html__( 'The coupon settings have been updated.', 'quick-paypal-payments' ) );
     }
     if ( isset( $_POST['Reset'] ) && check_admin_referer( "save_qpp" ) ) {
         delete_option( 'qpp_coupon' . $id );
-        qpp_admin_notice( "The coupon settings have been reset." );
+        qpp_admin_notice( esc_html__( 'The coupon settings have been reset.', 'quick-paypal-payments' ) );
     }
     $qpp_setup = qpp_get_stored_setup();
     $id = $qpp_setup['current'];
@@ -2457,30 +2632,31 @@ function qpp_coupon_codes(  $id  ) {
     $coupon = qpp_get_stored_coupon( $id );
     $content = '<div class="qpp-settings"><div class="qpp-options">';
     if ( $id ) {
-        $content .= '<h2>Coupons codes for ' . $id . '</h2>';
+        /* translators: %s: form name. */
+        $content .= '<h2>' . sprintf( esc_html__( 'Coupon codes for %s', 'quick-paypal-payments' ), esc_html( $id ) ) . '</h2>';
     } else {
-        $content .= '<h2>Default form coupons codes</h2>';
+        $content .= '<h2>' . esc_html__( 'Default form coupon codes', 'quick-paypal-payments' ) . '</h2>';
     }
     $content .= qpp_change_form( $qpp_setup );
     $qpp = qpp_get_stored_options( $id );
     $content .= qpp_field_status_notice(
         (bool) $qpp['usecoupon'],
-        'Coupon codes',
-        'Coupon Code',
+        esc_html__( 'Coupon codes', 'quick-paypal-payments' ),
+        esc_html__( 'Coupon Code', 'quick-paypal-payments' ),
         // Recurring forms take the field away rather than leaving it unticked,
         // so saying it is switched off would send a merchant looking for a box
         // that is not on the screen.
-        ( $qpp['userecurring'] ? 'A form set to take recurring payments cannot also take a coupon.' : '' )
+        ( $qpp['userecurring'] ? esc_html__( 'A form set to take recurring payments cannot also take a coupon.', 'quick-paypal-payments' ) : '' )
     );
     $content .= '<form method="post" action="">
-    <p class="description"><strong>Note:</strong> Leave fields blank if you don\'t want to use them</p>
-    <p>Number of Coupons: <input type="text" name="couponnumber" value="' . esc_attr( $coupon['couponnumber'] ) . '" style="width:4em"></p>
+    <p class="description"><strong>' . esc_html__( 'Note:', 'quick-paypal-payments' ) . '</strong> ' . esc_html__( 'Leave fields blank if you don\'t want to use them', 'quick-paypal-payments' ) . '</p>
+    <p>' . esc_html__( 'Number of Coupons:', 'quick-paypal-payments' ) . ' <input type="text" name="couponnumber" value="' . esc_attr( $coupon['couponnumber'] ) . '" style="width:4em"></p>
     <table>
-    <tr><td>Code</td><td>Percentage</td><td>Fixed Amount</td><td>Qty<br>(remaining <br>/ blank unlimited)</td></tr>';
+    <tr><td>' . esc_html__( 'Code', 'quick-paypal-payments' ) . '</td><td>' . esc_html__( 'Percentage', 'quick-paypal-payments' ) . '</td><td>' . esc_html__( 'Fixed Amount', 'quick-paypal-payments' ) . '</td><td>' . esc_html__( 'Qty', 'quick-paypal-payments' ) . '<br>' . esc_html__( '(remaining / blank unlimited)', 'quick-paypal-payments' ) . '</td></tr>';
     for ($i = 1; $i <= $coupon['couponnumber']; $i++) {
         $percent = ( $coupon['coupontype' . $i] == 'percent' . $i ? 'checked' : '' );
         $fixed = ( $coupon['coupontype' . $i] == 'fixed' . $i ? 'checked' : '' );
-        $content .= '<tr><td><input placeholder="Enter Coupon Code" type="text" name="code' . $i . '" value="' . esc_attr( qpp_get_element( $coupon, 'code' . $i ) ) . '" /></td>
+        $content .= '<tr><td><input placeholder="' . esc_attr__( 'Enter Coupon Code', 'quick-paypal-payments' ) . '" type="text" name="code' . $i . '" value="' . esc_attr( qpp_get_element( $coupon, 'code' . $i ) ) . '" /></td>
         <td><input type="radio" name="coupontype' . $i . '" value="percent' . $i . '" ' . esc_attr( $percent ) . ' />&nbsp;
         <input type="text" style="width:4em;padding:2px" label="couponpercent' . $i . '" name="couponpercent' . $i . '" value="' . esc_attr( qpp_get_element( $coupon, 'couponpercent' . $i ) ) . '" /> %</td>
         <td><input type="radio" name="coupontype' . $i . '" value="fixed' . $i . '" ' . esc_attr( $fixed ) . ' />&nbsp;' . $b . '&nbsp;
@@ -2490,22 +2666,22 @@ function qpp_coupon_codes(  $id  ) {
     </tr>';
     }
     $content .= '</table>
-    <h2>Invalid Coupon Code Message</h2>
+    <h2>' . esc_html__( 'Invalid Coupon Code Message', 'quick-paypal-payments' ) . '</h2>
     <input id="couponerror" type="text" name="couponerror" value="' . esc_attr( $coupon['couponerror'] ) . '" /></p>
-    <h2>Expired Coupon Message</h2>
+    <h2>' . esc_html__( 'Expired Coupon Message', 'quick-paypal-payments' ) . '</h2>
     <input id="couponexpired" type="text" name="couponexpired" value="' . esc_attr( $coupon['couponexpired'] ) . '" /></p>
-    <h2>Coupon Code Autofill</h2>
-    <p>You can add coupon codes to URLs which will autofill the field. The URL format is: mysite.com/mypaymentpage/?coupon=code. The code you set will appear on the form with the following caption:<br>
+    <h2>' . esc_html__( 'Coupon Code Autofill', 'quick-paypal-payments' ) . '</h2>
+    <p>' . esc_html__( 'You can add coupon codes to URLs which will autofill the field. The URL format is: mysite.com/mypaymentpage/?coupon=code. The code you set will appear on the form with the following caption:', 'quick-paypal-payments' ) . '<br>
     <input id="couponget" type="text" name="couponget" value="' . esc_attr( $coupon['couponget'] ) . '" /></p>
-    <h2>Clone Coupon Settings</h2>
-    <p><input  type="checkbox" name="duplicate"' . checked( $coupon['duplicate'], 'checked', false ) . ' value="checked" /> Duplicate coupon codes across all forms</p>
-    <p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="Save Changes" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="Reset" onclick="return window.confirm( \'Are you sure you want to reset the coupon codes?\' );"/></p>';
+    <h2>' . esc_html__( 'Clone Coupon Settings', 'quick-paypal-payments' ) . '</h2>
+    <p><input  type="checkbox" name="duplicate"' . checked( $coupon['duplicate'], 'checked', false ) . ' value="checked" /> ' . esc_html__( 'Duplicate coupon codes across all forms', 'quick-paypal-payments' ) . '</p>
+    <p><input type="submit" name="Submit" class="button-primary" style="color: #FFF;" value="' . esc_attr__( 'Save Changes', 'quick-paypal-payments' ) . '" /> <input type="submit" name="Reset" class="button-primary" style="color: #FFF;" value="' . esc_attr__( 'Reset', 'quick-paypal-payments' ) . '" onclick="return window.confirm( \'' . esc_js( __( 'Are you sure you want to reset the coupon codes?', 'quick-paypal-payments' ) ) . '\' );"/></p>';
     $content .= wp_nonce_field( "save_qpp" );
     $content .= '</form>
     </div>
     <div class="qpp-options" style="float:right;">
-    <h2>Coupon Check</h2>
-    <p>Test your coupon codes.</p>';
+    <h2>' . esc_html__( 'Coupon Check', 'quick-paypal-payments' ) . '</h2>
+    <p>' . esc_html__( 'Test your coupon codes.', 'quick-paypal-payments' ) . '</p>';
     if ( $id ) {
         $form = ' form="' . $id . '"';
     }
@@ -2515,9 +2691,7 @@ function qpp_coupon_codes(  $id  ) {
         'amount' => '',
     );
     $content .= qpp_loop( $args, true );
-    $content .= '<p>There are some more examples of payment forms <a href="https://fullworks.net/docs/quick-paypal-payments/demos-quick-paypal-payments/" target="_blank">on this page</a>.</p>
-    <p>And there are loads of shortcode options <a href="https://fullworks.net/docs/quick-paypal-payments/usage-quick-paypal-payments/shortcode-reference/" target="_blank">on this page</a>.</p>
-    </div></div>';
+    $content .= qpp_examples_footer() . '</div></div>';
     echo wp_kses( $content, qpp_allowed_html() );
 }
 
