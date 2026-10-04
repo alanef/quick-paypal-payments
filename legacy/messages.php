@@ -63,8 +63,10 @@ function qpp_messages_admin_tabs(  $current = 'default'  ) {
 function qpp_mark_paid_upsell() {
     /** @var \Freemius $quick_paypal_payments_fs Freemius global object. */
     global $quick_paypal_payments_fs;
-    $upurl = qpp_upgrade_url();
-    return esc_html__( 'Silver confirms payments automatically from PayPal, so you do not have to check them by hand.', 'quick-paypal-payments' ) . ' <a href="' . esc_url( $upurl ) . '">' . esc_html__( 'See plans and prices', 'quick-paypal-payments' ) . '</a>.';
+    // Label and destination from the same place, so a trial link is never
+    // labelled as the plans page.
+    $cta = qpp_upgrade_cta();
+    return esc_html__( 'Silver confirms payments automatically from PayPal, so you do not have to check them by hand.', 'quick-paypal-payments' ) . ' <a href="' . esc_url( $cta['url'] ) . '">' . esc_html( $cta['label'] ) . '</a>.';
 }
 
 function qpp_show_messages(  $id  ) {
@@ -242,6 +244,33 @@ function qpp_show_messages(  $id  ) {
         $stored_count,
         $delete_all_form
      );
+    /*
+     * Without IPN nothing settles a PayPal payment but the site owner, so say
+     * how many are waiting rather than leave a paid and an unchecked payment
+     * looking the same. A row is stored before the buyer reaches the payment
+     * page, so some of these are abandoned checkouts: the wording asks whether
+     * each was paid, and offers delete, rather than pushing every one towards
+     * being marked paid. Pitching Silver only makes sense below Silver: a Silver
+     * site with IPN switched off already has the answer.
+     */
+    $ipn_settings = qpp_get_stored_ipn();
+    $unreconciled = qpp_count_unreconciled( $stored_rows );
+    if ( !$ipn_settings['ipn'] && $unreconciled > 0 ) {
+        $reconcile_note = sprintf( 
+            /* translators: %d is the number of payments not yet marked paid. */
+            _n(
+                '%d payment requires manual reconcile. Check whether it was paid, then select it below and mark it as paid, or delete it if the buyer never paid.',
+                '%d payments require manual reconcile. Check whether each was paid, then select the paid ones below and mark them as paid, and delete any the buyer never paid.',
+                $unreconciled,
+                'quick-paypal-payments'
+            ),
+            $unreconciled
+         );
+        $dashboard .= '<div class="notice notice-warning inline"><p>' . esc_html( $reconcile_note );
+        $cta = qpp_upgrade_cta();
+        $dashboard .= ' ' . esc_html__( 'Silver confirms payments automatically.', 'quick-paypal-payments' ) . ' <a href="' . esc_url( $cta['url'] ) . '">' . esc_html( $cta['label'] ) . '</a>';
+        $dashboard .= '</p></div>';
+    }
     $dashboard .= '<form method="post" id="download_form" action="">';
     $dashboard .= wp_nonce_field(
         'qpp_download_form',
@@ -261,7 +290,6 @@ function qpp_show_messages(  $id  ) {
     <input type="submit" name="qpp_reset_message" class="button-secondary qpp-danger" value="' . esc_attr( $delete_all_label ) . '" onclick="return window.confirm( \'' . esc_js( $delete_all_warning ) . '\' );"/>
     </form>
     ';
-    $dashboard .= '<p class="description">' . esc_html__( 'Payments are not confirmed automatically on your plan. Check a payment in your PayPal account, then select it above and mark it as paid.', 'quick-paypal-payments' ) . '</p>';
     $dashboard .= qpp_upgrade_box();
     echo wp_kses( $dashboard, qpp_allowed_html() );
 }

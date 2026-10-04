@@ -43,6 +43,7 @@ require_once plugin_dir_path( __FILE__ ) . '/buttons.php';
 require_once plugin_dir_path( __FILE__ ) . '/accounts.php';
 require_once plugin_dir_path( __FILE__ ) . '/paypal-account.php';
 require_once plugin_dir_path( __FILE__ ) . '/payments-admin.php';
+require_once plugin_dir_path( __FILE__ ) . '/free-gold-offer.php';
 require_once plugin_dir_path( __FILE__ ) . '/options.php';
 /*
  * Deferred to init. This file is required while the plugin is still loading, and
@@ -2872,10 +2873,23 @@ function qpp_report(  $atts  ) {
     extract( shortcode_atts( array(
         'form' => '',
     ), $atts ) );
-    return qpp_messagetable( $form, '' );
+    return qpp_messagetable( $form, '', 'public' );
 }
 
-function qpp_messagetable(  $id, $email  ) {
+/**
+ * The payments table.
+ *
+ * @param string $id      Form name, empty for the default form.
+ * @param string $email   Non-empty when the table is being emailed.
+ * @param string $context 'admin' or 'public'. An emailed table is 'email'
+ *                        whatever is passed, since $email already says so.
+ *
+ * @return string
+ */
+function qpp_messagetable(  $id, $email, $context = 'admin'  ) {
+    if ( $email ) {
+        $context = 'email';
+    }
     $qpp_setup = qpp_get_stored_setup();
     $qpp_ipn = qpp_get_stored_ipn();
     $options = qpp_get_stored_options( $id );
@@ -2933,7 +2947,7 @@ function qpp_messagetable(  $id, $email  ) {
                 }
                 break;
             case 'field3':
-                $dashboard .= '<th>' . esc_html__( 'Amount', 'quick-paypal-payments' ) . '</th>';
+                $dashboard .= '<th class="qpp-amount">' . esc_html__( 'Amount', 'quick-paypal-payments' ) . '</th>';
                 break;
             case 'field4':
                 if ( $options['use_stock'] ) {
@@ -2993,8 +3007,17 @@ function qpp_messagetable(  $id, $email  ) {
             $dashboard .= '<th>' . $address[$item] . '</th>';
         }
     }
-    if ( $qpp_ipn['ipn'] ) {
-        $dashboard .= '<th>' . $qpp_ipn['title'] . '</th>';
+    /*
+     * The public report shows no payment status at all, IPN or not: whether a
+     * named person has paid is not for publishing. Without IPN, the admin and
+     * emailed lists still get a status, worded for where they are read.
+     */
+    if ( 'public' !== $context ) {
+        if ( $qpp_ipn['ipn'] ) {
+            $dashboard .= '<th>' . $qpp_ipn['title'] . '</th>';
+        } else {
+            $dashboard .= '<th>' . esc_html__( 'Payment status', 'quick-paypal-payments' ) . '</th>';
+        }
     }
     $dashboard .= '</tr></thead><tbody>';
     if ( $messageoptions['messageorder'] == 'newest' ) {
@@ -3014,7 +3037,8 @@ function qpp_messagetable(  $id, $email  ) {
                     $address,
                     $arr,
                     $i,
-                    $email
+                    $email,
+                    $context
                 );
                 $count = $count + 1;
                 $i--;
@@ -3037,7 +3061,8 @@ function qpp_messagetable(  $id, $email  ) {
                     $address,
                     $arr,
                     $i,
-                    $email
+                    $email,
+                    $context
                 );
                 $count = $count + 1;
                 $i++;
@@ -3077,7 +3102,8 @@ function qpp_messagecontent(
     $address,
     $arr,
     $i,
-    $email
+    $email,
+    $context = 'admin'
 ) {
     $qpp_setup = qpp_get_stored_setup();
     $qpp_ipn = qpp_get_stored_ipn();
@@ -3204,7 +3230,11 @@ function qpp_messagecontent(
             $content .= '<td>' . $value[$item] . '</td>';
         }
     }
-    if ( $qpp_ipn['ipn'] ) {
+    // No status column on the public report. See qpp_messagetable().
+    if ( 'public' !== $context && !$qpp_ipn['ipn'] ) {
+        $status = qpp_payment_status_without_ipn( $value, $context );
+        $content .= '<td><span class="' . esc_attr( $status['class'] ) . '">' . esc_html( $status['label'] ) . '</span></td>';
+    } elseif ( 'public' !== $context ) {
         if ( $value['field18'] == 'Paid' ) {
             $content .= '<td class="qpp-paid">' . $qpp_ipn['paid'] . '</td>';
         } elseif ( $qpp_setup['sandbox'] ) {
@@ -3331,7 +3361,7 @@ function qpp_ipn() {
                         qpp_ipn_record_txn( $txn_id );
                     }
                     qpp_clear_ipn_expectation( $custom );
-                    $message[$i]['field18'] = 'Paid';
+                    $message[$i] = qpp_settle_order( $message[$i], 'ipn' );
                     $auto = qpp_get_stored_autoresponder( $item );
                     if ( qpp_should_create_user( qpp_get_stored_send( $item ), 'afterpayment' ) ) {
                         qpp_create_user( qpp_order_row_to_values( $message[$i] ), qpp_get_stored_send( $item ) );

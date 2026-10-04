@@ -2,16 +2,16 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Quick Paypal Payments 6.0.2\n"
+"Project-Id-Version: Quick Paypal Payments 6.0.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/quick-paypal-payments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-23T17:11:48+00:00\n"
+"POT-Creation-Date: 2026-10-04T10:53:51+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.12.0\n"
+"X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: quick-paypal-payments\n"
 
 #. Plugin Name of the plugin
@@ -41,7 +41,6 @@ msgstr ""
 
 #. translators: %1$s is the path of the file that could not be loaded.
 #: control/autoloader.php:60
-#, php-format
 msgid "The system file attempting to be loaded at %1$s does not exist."
 msgstr ""
 
@@ -113,7 +112,7 @@ msgid "Coupon No Longer Available"
 msgstr ""
 
 #: core/class-utilities.php:490
-#: legacy/quick-paypal-payments.php:3849
+#: legacy/quick-paypal-payments.php:3876
 msgid "Coupon Code:"
 msgstr ""
 
@@ -171,7 +170,6 @@ msgstr ""
 
 #. translators: %1$s is the [product] shortcode literal, %2$s is the [cost] shortcode literal.
 #: core/class-utilities.php:670
-#, php-format
 msgid "%1$s at $%2$s each"
 msgstr ""
 
@@ -1204,140 +1202,137 @@ msgstr ""
 msgid "Zimbabwe"
 msgstr ""
 
-#: legacy/messages.php:70
+#: legacy/messages.php:72
 msgid "Silver confirms payments automatically from PayPal, so you do not have to check them by hand."
 msgstr ""
 
-#: legacy/messages.php:71
-#: legacy/settings.php:518
-msgid "See plans and prices"
-msgstr ""
-
-#: legacy/messages.php:89
-#: legacy/quick-paypal-payments.php:3058
+#: legacy/messages.php:91
+#: legacy/quick-paypal-payments.php:3072
 msgid "Default"
 msgstr ""
 
 #. translators: 1: form name, 2: today's date.
-#: legacy/messages.php:92
-#, php-format
+#: legacy/messages.php:94
 msgid "Payment List for %1$s as at %2$s"
 msgstr ""
 
-#: legacy/messages.php:96
+#: legacy/messages.php:98
 msgid "That is not a valid email address, nothing was sent."
 msgstr ""
 
 #. translators: %s: email address.
-#: legacy/messages.php:107
-#, php-format
+#: legacy/messages.php:109
 msgid "Message list has been sent to %s."
 msgstr ""
 
-#: legacy/messages.php:113
+#: legacy/messages.php:115
 msgid "Payment list has been reset."
 msgstr ""
 
-#: legacy/messages.php:126
+#: legacy/messages.php:128
 msgid "The message options have been updated."
 msgstr ""
 
 #. translators: %d is the number of payments marked as paid.
-#: legacy/messages.php:155
-#, php-format
+#: legacy/messages.php:157
 msgid "%d payment marked as paid."
 msgid_plural "%d payments marked as paid."
 msgstr[0] ""
 msgstr[1] ""
 
-#: legacy/messages.php:165
+#: legacy/messages.php:167
 msgid "No payments were changed. Select the payments you have checked in PayPal, then mark them as paid."
 msgstr ""
 
-#: legacy/messages.php:184
+#: legacy/messages.php:186
 msgid "Selected payments have been deleted."
 msgstr ""
 
-#: legacy/messages.php:207
+#: legacy/messages.php:209
 msgid "Show"
 msgstr ""
 
-#: legacy/messages.php:209
+#: legacy/messages.php:211
 msgid "all messages."
 msgstr ""
 
-#: legacy/messages.php:210
+#: legacy/messages.php:212
 msgid "List"
 msgstr ""
 
-#: legacy/messages.php:210
+#: legacy/messages.php:212
 msgid "oldest first"
 msgstr ""
 
-#: legacy/messages.php:211
+#: legacy/messages.php:213
 msgid "newest first"
 msgstr ""
 
-#: legacy/messages.php:213
+#: legacy/messages.php:215
 msgid "Hide paid transactions"
 msgstr ""
 
-#: legacy/messages.php:215
+#: legacy/messages.php:217
 msgid "Show addresses"
 msgstr ""
 
-#: legacy/messages.php:217
+#: legacy/messages.php:219
 msgid "Update options"
 msgstr ""
 
-#: legacy/messages.php:227
+#: legacy/messages.php:229
 #: legacy/settings.php:2235
-#: legacy/settings.php:3440
+#: legacy/settings.php:3437
 msgid "the default form"
 msgstr ""
 
 #. translators: %d is the number of payment records.
-#: legacy/messages.php:230
-#, php-format
+#: legacy/messages.php:232
 msgid "Delete All (%d record)"
 msgid_plural "Delete All (%d records)"
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: 1: number of payment records, 2: name of the form.
-#: legacy/messages.php:235
-#, php-format
+#: legacy/messages.php:237
 msgid "Permanently delete %1$d payment record for %2$s? This cannot be undone. Export to CSV first if you need it."
 msgid_plural "Permanently delete all %1$d payment records for %2$s? This cannot be undone. Export to CSV first if you need them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: legacy/messages.php:249
+#. translators: %d is the number of payments not yet marked paid.
+#: legacy/messages.php:261
+msgid "%d payment requires manual reconcile. Check whether it was paid, then select it below and mark it as paid, or delete it if the buyer never paid."
+msgid_plural "%d payments require manual reconcile. Check whether each was paid, then select the paid ones below and mark them as paid, and delete any the buyer never paid."
+msgstr[0] ""
+msgstr[1] ""
+
+#: legacy/messages.php:272
+msgid "Silver confirms payments automatically."
+msgstr ""
+
+#: legacy/messages.php:282
 msgid "Send to this email address:"
 msgstr ""
 
-#: legacy/messages.php:250
+#: legacy/messages.php:283
 msgid "Email List"
 msgstr ""
 
-#: legacy/messages.php:251
+#: legacy/messages.php:284
 msgid "Export to CSV"
 msgstr ""
 
-#: legacy/messages.php:253
+#: legacy/messages.php:286
 msgid "Mark Selected as Paid"
 msgstr ""
 
-#: legacy/messages.php:255
+#: legacy/messages.php:288
 msgid "Delete Selected"
 msgstr ""
 
-#: legacy/messages.php:255
+#: legacy/messages.php:288
 msgid "Delete the selected payment records? This cannot be undone."
-msgstr ""
-
-#: legacy/messages.php:260
-msgid "Payments are not confirmed automatically on your plan. Check a payment in your PayPal account, then select it above and mark it as paid."
 msgstr ""
 
 #: legacy/options.php:105
@@ -1346,6 +1341,31 @@ msgstr ""
 
 #: legacy/options.php:106
 msgid "Consent NOT Given"
+msgstr ""
+
+#: legacy/payments-admin.php:119
+#: legacy/payments-admin.php:139
+msgid "Paid"
+msgstr ""
+
+#: legacy/payments-admin.php:119
+msgid "Unpaid"
+msgstr ""
+
+#: legacy/payments-admin.php:126
+msgid "Requires manual reconcile"
+msgstr ""
+
+#: legacy/payments-admin.php:133
+msgid "Manually reconciled"
+msgstr ""
+
+#: legacy/payments-admin.php:134
+msgid "Confirmed by PayPal"
+msgstr ""
+
+#: legacy/payments-admin.php:135
+msgid "Confirmed by Stripe"
 msgstr ""
 
 #: legacy/paypal-account.php:46
@@ -1372,129 +1392,131 @@ msgstr ""
 msgid "PayPal does not support this currency for this account."
 msgstr ""
 
-#: legacy/paypal-account.php:122
+#: legacy/paypal-account.php:144
 msgid "PayPal accepted this account. A payment to it will reach the checkout page."
 msgstr ""
 
 #. translators: %s is an error code from PayPal.
-#: legacy/paypal-account.php:146
-#, php-format
+#: legacy/paypal-account.php:163
 msgid "PayPal refused this account and gave the reason %s."
 msgstr ""
 
-#: legacy/paypal-account.php:153
+#: legacy/paypal-account.php:170
 msgid "PayPal did not accept this account, and did not say why."
 msgstr ""
 
 #. translators: %s is an error message from WordPress.
-#: legacy/paypal-account.php:204
-#, php-format
+#: legacy/paypal-account.php:221
 msgid "Could not reach PayPal to check: %s"
 msgstr ""
 
-#: legacy/paypal-account.php:293
+#: legacy/paypal-account.php:310
 msgid "(PayPal does not list this one)"
 msgstr ""
 
-#: legacy/paypal-account.php:303
+#: legacy/paypal-account.php:320
 msgid "(whole units only)"
 msgstr ""
 
-#: legacy/paypal-account.php:306
+#: legacy/paypal-account.php:323
 msgid "(in country accounts only)"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:1329
+#: legacy/quick-paypal-payments.php:1330
 msgid "No products selected."
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:2560
+#: legacy/quick-paypal-payments.php:2561
 msgid "Continue to the secure payment page"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:2817
+#: legacy/quick-paypal-payments.php:2818
 msgid "Paypal Payments"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:2818
+#: legacy/quick-paypal-payments.php:2819
 msgid "Add paypal payment form to your sidebar"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:2881
+#: legacy/quick-paypal-payments.php:2882
 msgid "DEPRECATION NOTICE"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:2883
+#: legacy/quick-paypal-payments.php:2884
 msgid "This is a legacy Widget and is limited in functionality and may be withdrawn in the future"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:2885
+#: legacy/quick-paypal-payments.php:2886
 msgid "Replace with a shortcode e.g. [qpp form=myform]"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3017
-#: legacy/settings.php:3512
-#: legacy/settings.php:3513
+#: legacy/quick-paypal-payments.php:3018
+#: legacy/settings.php:3509
+#: legacy/settings.php:3510
 msgid "Settings"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3062
-#: legacy/quick-paypal-payments.php:3091
+#: legacy/quick-paypal-payments.php:3076
+#: legacy/quick-paypal-payments.php:3105
 #: legacy/settings.php:1177
-#: legacy/settings.php:3206
+#: legacy/settings.php:3205
 msgid "Amount"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3065
+#: legacy/quick-paypal-payments.php:3079
 #: legacy/settings.php:1145
 msgid "Reference"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3078
-#: legacy/settings.php:3203
+#: legacy/quick-paypal-payments.php:3092
+#: legacy/settings.php:3202
 msgid "Date Sent"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3130
+#: legacy/quick-paypal-payments.php:3144
 #: legacy/settings.php:1401
 msgid "Consent"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3185
+#: legacy/quick-paypal-payments.php:3174
+msgid "Payment status"
+msgstr ""
+
+#: legacy/quick-paypal-payments.php:3208
 msgid "No payments yet."
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3200
+#: legacy/quick-paypal-payments.php:3223
 msgid "Coupons remaining"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3340
-#: legacy/quick-paypal-payments.php:3344
+#: legacy/quick-paypal-payments.php:3367
+#: legacy/quick-paypal-payments.php:3371
 msgid "Pending"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3341
+#: legacy/quick-paypal-payments.php:3368
 msgid "Order token, for posting a test IPN"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3628
+#: legacy/quick-paypal-payments.php:3655
 msgid "Order Details:"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3631
+#: legacy/quick-paypal-payments.php:3658
 msgid "Item"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3631
+#: legacy/quick-paypal-payments.php:3658
 #: legacy/settings.php:2994
 msgid "Qty"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3700
+#: legacy/quick-paypal-payments.php:3727
 msgid "Payment Notification"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3703
+#: legacy/quick-paypal-payments.php:3730
 #: legacy/settings.php:72
 #: legacy/settings.php:1311
 msgid "Personal Details"
@@ -1567,8 +1589,8 @@ msgid "Send Options"
 msgstr ""
 
 #: legacy/settings.php:103
-#: legacy/settings.php:3499
-#: legacy/settings.php:3500
+#: legacy/settings.php:3496
+#: legacy/settings.php:3497
 msgid "Payment Records"
 msgstr ""
 
@@ -1587,7 +1609,6 @@ msgstr ""
 
 #. translators: 1: feature name, 2: plan name such as Silver.
 #: legacy/settings.php:290
-#, php-format
 msgid "%1$s is available in the %2$s plan and above."
 msgstr ""
 
@@ -1597,7 +1618,6 @@ msgstr ""
 
 #. translators: %s: what the screen configures, e.g. "Coupons".
 #: legacy/settings.php:322
-#, php-format
 msgid "%s cannot be used on this form."
 msgstr ""
 
@@ -1607,13 +1627,11 @@ msgstr ""
 
 #. translators: 1: what the screen configures, e.g. "Coupons", 2: the row label on the Fields screen, 3: a link to the Fields screen.
 #: legacy/settings.php:332
-#, php-format
 msgid "%1$s are switched on for this form, so what you set here appears on it. Untick \"%2$s\" on %3$s to switch them off."
 msgstr ""
 
 #. translators: 1: what the screen configures, e.g. "Coupons", 2: the row label on the Fields screen, 3: a link to the Fields screen.
 #: legacy/settings.php:343
-#, php-format
 msgid "%1$s are switched off for this form, so nothing set here will appear on it. Tick \"%2$s\" on %3$s to switch them on. Your settings are kept either way."
 msgstr ""
 
@@ -1687,7 +1705,6 @@ msgstr ""
 
 #. translators: 1: plan name, 2: the plans beneath it, e.g. "Gold and Silver".
 #: legacy/settings.php:462
-#, php-format
 msgid "%1$s includes everything in %2$s as well:"
 msgstr ""
 
@@ -1702,6 +1719,10 @@ msgstr ""
 
 #: legacy/settings.php:511
 msgid "Start your free trial"
+msgstr ""
+
+#: legacy/settings.php:518
+msgid "See plans and prices"
 msgstr ""
 
 #: legacy/settings.php:560
@@ -1726,13 +1747,11 @@ msgstr ""
 
 #. translators: %s: plan name such as Silver.
 #: legacy/settings.php:580
-#, php-format
 msgid "Upgrade to %s"
 msgstr ""
 
 #. translators: %s: a list of what the next plan adds.
 #: legacy/settings.php:585
-#, php-format
 msgid "Upgrading gives %s."
 msgstr ""
 
@@ -1742,7 +1761,6 @@ msgstr ""
 
 #. translators: %s is the name of the deleted form.
 #: legacy/settings.php:673
-#, php-format
 msgid "The form named %s has been deleted."
 msgstr ""
 
@@ -1773,7 +1791,6 @@ msgstr ""
 
 #. translators: %s: form name.
 #: legacy/settings.php:713
-#, php-format
 msgid "Delete the form %s and all of its settings? This cannot be undone."
 msgstr ""
 
@@ -1927,7 +1944,6 @@ msgstr ""
 
 #. translators: %s: the shortcode, [qpp], in a code tag.
 #: legacy/settings.php:854
-#, php-format
 msgid "To add the basic payment form to your posts or pages use the shortcode: %s. Shortcodes for named forms are given on the left."
 msgstr ""
 
@@ -1946,7 +1962,6 @@ msgstr ""
 #. translators: %s: a link with the text "on this page".
 #: legacy/settings.php:862
 #: legacy/settings.php:1435
-#, php-format
 msgid "All the shortcodes are given %s."
 msgstr ""
 
@@ -1960,7 +1975,6 @@ msgstr ""
 
 #. translators: %s: a link with the text "on this page".
 #: legacy/settings.php:867
-#, php-format
 msgid "There are examples of payment forms %s."
 msgstr ""
 
@@ -2022,7 +2036,6 @@ msgstr ""
 
 #. translators: %s: the word "Payments" in bold, the dashboard menu item.
 #: legacy/settings.php:879
-#, php-format
 msgid "See all the payment records. Or click on the %s link in the dashboard menu."
 msgstr ""
 
@@ -2048,7 +2061,6 @@ msgstr ""
 
 #. translators: %s: a link with the text "upgrade to a paid plan".
 #: legacy/settings.php:893
-#, php-format
 msgid "If you require urgent or personal support please %s"
 msgstr ""
 
@@ -2074,7 +2086,6 @@ msgstr ""
 
 #. translators: %s: form name.
 #: legacy/settings.php:1125
-#, php-format
 msgid "Form settings for %s"
 msgstr ""
 
@@ -2176,7 +2187,6 @@ msgstr ""
 
 #. translators: %s: the heading "Fixed payment and shortcode labels", in bold.
 #: legacy/settings.php:1190
-#, php-format
 msgid "Set the price in %s further down this screen."
 msgstr ""
 
@@ -2515,7 +2525,6 @@ msgstr ""
 
 #. translators: %s: form name.
 #: legacy/settings.php:1575
-#, php-format
 msgid "Style options for %s"
 msgstr ""
 
@@ -2847,7 +2856,6 @@ msgstr ""
 
 #. translators: %s: the CSS id .qpp-style, in a code tag.
 #: legacy/settings.php:1851
-#, php-format
 msgid "The main style wrapper is the %s id."
 msgstr ""
 
@@ -2869,13 +2877,11 @@ msgstr ""
 
 #. translators: %s: a link with the text "on this page".
 #: legacy/settings.php:1879
-#, php-format
 msgid "There are some more examples of payment forms %s."
 msgstr ""
 
 #. translators: %s: a link with the text "on this page".
 #: legacy/settings.php:1884
-#, php-format
 msgid "And there are loads of shortcode options %s."
 msgstr ""
 
@@ -2889,7 +2895,6 @@ msgstr ""
 
 #. translators: %s: form name.
 #: legacy/settings.php:1968
-#, php-format
 msgid "Send settings for %s"
 msgstr ""
 
@@ -2995,7 +3000,6 @@ msgstr ""
 
 #. translators: %s: a link with the text "Auto Responder".
 #: legacy/settings.php:2029
-#, php-format
 msgid "You can send the payer a confirmation message using the %s options."
 msgstr ""
 
@@ -3057,7 +3061,6 @@ msgstr ""
 
 #. translators: %s: form name.
 #: legacy/settings.php:2104
-#, php-format
 msgid "Error message settings for %s"
 msgstr ""
 
@@ -3171,7 +3174,6 @@ msgstr ""
 
 #. translators: %s is the name of the form these settings apply to.
 #: legacy/settings.php:2252
-#, php-format
 msgid "These settings apply to %s."
 msgstr ""
 
@@ -3217,7 +3219,6 @@ msgstr ""
 
 #. translators: %s is a link to the Members plugin, with the link text "Members".
 #: legacy/settings.php:2292
-#, php-format
 msgid "A role only does something if a plugin acts on it. To turn paid accounts into a members area with restricted content, pair this with %s, which is free and lets you choose what each role can see."
 msgstr ""
 
@@ -3277,7 +3278,6 @@ msgstr ""
 
 #. translators: %s: the Stripe event name checkout.session.completed, in a code tag.
 #: legacy/settings.php:2375
-#, php-format
 msgid "Choose the event %s. Nothing else is needed."
 msgstr ""
 
@@ -3319,7 +3319,6 @@ msgstr ""
 
 #. translators: %s: the heading "Setting IPN up in PayPal", in bold.
 #: legacy/settings.php:2417
-#, php-format
 msgid "IPN needs a PayPal Business or Premier account, and IPN must be switched on in that account. See %s alongside."
 msgstr ""
 
@@ -3358,7 +3357,6 @@ msgstr ""
 
 #. translators: 1: the word "Payments" in bold, the dashboard menu item, 2: a link with the text "click here".
 #: legacy/settings.php:2452
-#, php-format
 msgid "To check completed payments click on the %1$s link in your dashboard menu or %2$s."
 msgstr ""
 
@@ -3376,7 +3374,6 @@ msgstr ""
 
 #. translators: %s: the word "Business" in bold.
 #: legacy/settings.php:2464
-#, php-format
 msgid "You need a %s account. If yours is Personal, follow PayPal's instructions to upgrade it first"
 msgstr ""
 
@@ -3386,7 +3383,6 @@ msgstr ""
 
 #. translators: %s: a link with the text "Business profile -> Notifications -> Instant payment notifications".
 #: legacy/settings.php:2469
-#, php-format
 msgid "Go to %s"
 msgstr ""
 
@@ -3396,7 +3392,6 @@ msgstr ""
 
 #. translators: 1, 2, 3: the PayPal button names Manage, Update and Choose IPN Settings, in bold.
 #: legacy/settings.php:2474
-#, php-format
 msgid "Click %1$s (or %2$s, then %3$s)"
 msgstr ""
 
@@ -3418,7 +3413,6 @@ msgstr ""
 
 #. translators: %s: the PayPal option name "Receive IPN messages (Enabled)", in bold.
 #: legacy/settings.php:2482
-#, php-format
 msgid "Select %s"
 msgstr ""
 
@@ -3428,7 +3422,6 @@ msgstr ""
 
 #. translators: %s: the button name "Save", in bold.
 #: legacy/settings.php:2487
-#, php-format
 msgid "Click %s"
 msgstr ""
 
@@ -3439,7 +3432,6 @@ msgstr ""
 
 #. translators: %s: a link with the text "IPN history".
 #: legacy/settings.php:2493
-#, php-format
 msgid "To see what PayPal actually sent, and to resend it, open your %s. That is the first place to look if a payment has not been marked complete."
 msgstr ""
 
@@ -3449,7 +3441,6 @@ msgstr ""
 
 #. translators: %s: a link with the text "IPN setup guide".
 #: legacy/settings.php:2498
-#, php-format
 msgid "PayPal's own reference is the %s."
 msgstr ""
 
@@ -3471,7 +3462,6 @@ msgstr ""
 
 #. translators: %s: a link with the text "plugin setup page".
 #: legacy/settings.php:2509
-#, php-format
 msgid "Enable the PayPal Sandbox on the %s"
 msgstr ""
 
@@ -3485,7 +3475,6 @@ msgstr ""
 
 #. translators: %s: a link with the text "Payments Report".
 #: legacy/settings.php:2515
-#, php-format
 msgid "Go to the %s and copy the long number in the last column from the payment you have just made"
 msgstr ""
 
@@ -3519,7 +3508,6 @@ msgstr ""
 
 #. translators: %s: form name.
 #: legacy/settings.php:2559
-#, php-format
 msgid "The autoresponder settings for %s have been updated."
 msgstr ""
 
@@ -3529,7 +3517,6 @@ msgstr ""
 
 #. translators: %s: form name.
 #: legacy/settings.php:2568
-#, php-format
 msgid "The autoresponder settings for the form called %s have been reset."
 msgstr ""
 
@@ -3539,7 +3526,6 @@ msgstr ""
 
 #. translators: %s: form name.
 #: legacy/settings.php:2583
-#, php-format
 msgid "Autoresponse settings for %s"
 msgstr ""
 
@@ -3553,7 +3539,6 @@ msgstr ""
 
 #. translators: %s: a link with the text "Form Settings".
 #: legacy/settings.php:2591
-#, php-format
 msgid "Note that the autoresponder only works if you collect an email address on the %s."
 msgstr ""
 
@@ -3563,7 +3548,6 @@ msgstr ""
 
 #. translators: %s: a link with the text "Send Options".
 #: legacy/settings.php:2596
-#, php-format
 msgid "If you want to receive notification messages use the option on the %s tab."
 msgstr ""
 
@@ -3577,7 +3561,6 @@ msgstr ""
 
 #. translators: %s: a link with the text "IPN".
 #: legacy/settings.php:2604
-#, php-format
 msgid "After payment (only works if %s is enabled)"
 msgstr ""
 
@@ -3593,7 +3576,6 @@ msgstr ""
 #. translators: %s: a link with the text "PayPal email address".
 #: legacy/settings.php:2609
 #: legacy/settings.php:2615
-#, php-format
 msgid "Defaults to your %s if left blank."
 msgstr ""
 
@@ -3631,13 +3613,11 @@ msgstr ""
 
 #. translators: %s: a link with the text "personal details".
 #: legacy/settings.php:2635
-#, php-format
 msgid "The registrants first name if you are using the %s option."
 msgstr ""
 
 #. translators: %s: a link with the text "personal details".
 #: legacy/settings.php:2643
-#, php-format
 msgid "The registrants first and last name if you are using the %s option."
 msgstr ""
 
@@ -3691,7 +3671,6 @@ msgstr ""
 
 #. translators: %s: form name.
 #: legacy/settings.php:2739
-#, php-format
 msgid "Personal Information Fields for %s"
 msgstr ""
 
@@ -3709,7 +3688,6 @@ msgstr ""
 
 #. translators: %s: the column heading "R", in bold.
 #: legacy/settings.php:2770
-#, php-format
 msgid "2. Check the %s box for mandatory/required fields."
 msgstr ""
 
@@ -3773,7 +3751,6 @@ msgstr ""
 
 #. translators: %s: form name.
 #: legacy/settings.php:2975
-#, php-format
 msgid "Coupon codes for %s"
 msgstr ""
 
@@ -3901,25 +3878,24 @@ msgstr ""
 msgid "Are you sure you want to reset the products?"
 msgstr ""
 
-#: legacy/settings.php:3184
+#: legacy/settings.php:3183
 msgid "You do not have permission to export payment records."
 msgstr ""
 
-#: legacy/settings.php:3380
+#: legacy/settings.php:3377
 msgid "Checking with PayPal..."
 msgstr ""
 
-#: legacy/settings.php:3447
+#: legacy/settings.php:3444
 msgid "Quick PayPal Payments cannot take a payment."
 msgstr ""
 
 #. translators: %s is a comma separated list of form names.
-#: legacy/settings.php:3451
-#, php-format
+#: legacy/settings.php:3448
 msgid "Affects: %s."
 msgstr ""
 
-#: legacy/settings.php:3472
+#: legacy/settings.php:3469
 msgid "You cannot do that."
 msgstr ""
 
@@ -3994,7 +3970,6 @@ msgstr ""
 
 #. translators: %1$s is the plugin logo markup, %2$s is the account email address.
 #: ui/admin/class-admin.php:182
-#, php-format
 msgid ""
 "%1$s<strong>Important action required - Your Pro Install was successful - but you need to activate your licence</strong>. <p>Version 6 has changed which features need a paid plan, and you MUST take action now to keep your premium features!!<br>\n"
 " You have installed the PREMIUM plugin, but have not activated your <strong>licence</strong>. Don't worry it is easy.\n"
@@ -4005,7 +3980,6 @@ msgstr ""
 
 #. translators: %1$s is the plugin logo markup, %2$s is an optional failure message, %3$s is the download request URL, %4$s is the account email address.
 #: ui/admin/class-admin.php:200
-#, php-format
 msgid ""
 "%1$s<strong>Important action required</strong>. %2$s<p>Version 6 has changed which features need a paid plan, and you MUST take action now to keep your premium features!!<br>\n"
 " You will need to <strong>download and install the PREMIUM</strong> plugin to keep your premium features. Don't worry it is easy.</p>\n"
@@ -4016,7 +3990,6 @@ msgstr ""
 
 #. translators: %1$s is the plugin logo markup, %2$s is the account email address.
 #: ui/admin/class-admin.php:213
-#, php-format
 msgid ""
 "%1$s<strong>Important action required - Your licence request was successful</strong>. <p>Version 6 has changed which features need a paid plan, and you MUST take action now to keep your premium features!!<br>\n"
 " You have requested the PREMIUM plugin, please install it to keep your premium features. Don't worry it is easy.\n"
@@ -4027,9 +4000,13 @@ msgid ""
 "</p>"
 msgstr ""
 
+#. translators: %s is the closing date of the free Gold offer.
+#: ui/admin/class-admin.php:251
+msgid "This offer closes on %s. Claim your free Gold licence before then. Licences already claimed are yours to keep."
+msgstr ""
+
 #. translators: %1$s is the plugin logo markup, %2$s is an optional failure message, %3$s is the account email address, %4$s is the download request URL.
-#: ui/admin/class-admin.php:239
-#, php-format
+#: ui/admin/class-admin.php:256
 msgid ""
 "%1$s<strong>Important NOTICE for FREE users of this plugin</strong>. %2$s<p>Version 6 has moved some features that used to be free to the paid plans, this is necessary to be able to continue to support the free version.\n"
 "</p><p>\n"
@@ -4039,8 +4016,7 @@ msgid ""
 msgstr ""
 
 #. translators: %1$s is the plugin logo markup, %2$s is the account email address.
-#: ui/admin/class-admin.php:249
-#, php-format
+#: ui/admin/class-admin.php:266
 msgid ""
 "%1$s<strong>Important action required - Your licence request was successful</strong>. <p>you MUST take action now!!<br>\n"
 " You have requested the Pro GOLD plugin free offer, please install it. Don't worry it is easy.\n"
@@ -4051,6 +4027,6 @@ msgid ""
 "</p>"
 msgstr ""
 
-#: ui/admin/class-admin.php:280
+#: ui/admin/class-admin.php:297
 msgid "Security check invalid, expired or missing"
 msgstr ""

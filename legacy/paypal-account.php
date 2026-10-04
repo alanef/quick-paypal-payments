@@ -102,9 +102,15 @@ function qpp_paypal_error_messages() {
  * Turns PayPal's answer to the check into a result.
  *
  * Split out from the request so it can be tested without a network. PayPal
- * answers a good account with the checkout page, and a bad one with a redirect
- * to an error page carrying a code in the query string. That code is the thing
- * worth showing: it is the only place the real reason is ever stated.
+ * answers a bad account with a redirect to an error page carrying a code in the
+ * query string. That code is the thing worth showing: it is the only place the
+ * real reason is ever stated.
+ *
+ * A good account is also a redirect, to the checkout with a token for the
+ * session it has just opened (/webapps/hermes?token=...). PayPal once answered
+ * with the checkout page itself, which is why a 200 is still a pass, but by
+ * 6.0.2 every real account was being reported as refused because only the 200
+ * was recognised.
  *
  * @param int    $status   HTTP status.
  * @param string $location Location header, if any.
@@ -115,17 +121,28 @@ function qpp_read_paypal_check( $status, $location ) {
 	$status   = (int) $status;
 	$location = (string) $location;
 
-	if ( 200 === $status ) {
+	$code = '';
+	if ( preg_match( '/[?&]code=([A-Za-z0-9_]+)/', $location, $match ) ) {
+		$code = $match[1];
+	}
+
+	/*
+	 * Any error page is a refusal, coded or not. The checkout path itself is
+	 * deliberately not pinned: PayPal has moved it before, and a check that
+	 * only knew the old page is what reported every real account as refused.
+	 */
+	$path        = (string) wp_parse_url( $location, PHP_URL_PATH );
+	$to_checkout = '' === $code
+		&& $status >= 300 && $status < 400
+		&& false === stripos( $path, 'error' )
+		&& preg_match( '/[?&]token=[A-Za-z0-9-]+/', $location );
+
+	if ( 200 === $status || $to_checkout ) {
 		return array(
 			'ok'      => true,
 			'code'    => '',
 			'message' => __( 'PayPal accepted this account. A payment to it will reach the checkout page.', 'quick-paypal-payments' ),
 		);
-	}
-
-	$code = '';
-	if ( preg_match( '/[?&]code=([A-Z_]+)/', $location, $match ) ) {
-		$code = $match[1];
 	}
 
 	$known = qpp_paypal_error_messages();

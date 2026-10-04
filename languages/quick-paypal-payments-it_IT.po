@@ -1339,10 +1339,6 @@ msgstr "Elimina i selezionati"
 msgid "Delete the selected payment records? This cannot be undone."
 msgstr "Eliminare i record di pagamento selezionati? L’operazione non può essere annullata."
 
-#: legacy/messages.php:260
-msgid "Payments are not confirmed automatically on your plan. Check a payment in your PayPal account, then select it above and mark it as paid."
-msgstr "Nel tuo piano i pagamenti non vengono confermati automaticamente. Verifica il pagamento nel tuo account PayPal, poi selezionalo qui sopra e contrassegnalo come pagato."
-
 #: legacy/options.php:105
 msgid "Consent Given"
 msgstr "Consenso dato"
@@ -4028,3 +4024,47 @@ msgstr "%1$s<strong>Azione importante richiesta: la richiesta di licenza è rius
 #: ui/admin/class-admin.php:280
 msgid "Security check invalid, expired or missing"
 msgstr "Controllo di sicurezza non valido, scaduto o mancante"
+
+#: legacy/messages.php
+#, php-format
+msgid "%d payment requires manual reconcile. Check whether it was paid, then select it below and mark it as paid, or delete it if the buyer never paid."
+msgid_plural "%d payments require manual reconcile. Check whether each was paid, then select the paid ones below and mark them as paid, and delete any the buyer never paid."
+msgstr[0] "%d pagamento richiede una riconciliazione manuale. Verifica se è stato pagato, poi selezionalo qui sotto e segnalo come pagato, oppure eliminalo se l'acquirente non ha mai pagato."
+msgstr[1] "%d pagamenti richiedono una riconciliazione manuale. Verifica se ciascuno è stato pagato, seleziona qui sotto quelli pagati e segnali come pagati, ed elimina quelli che l'acquirente non ha mai pagato."
+
+#: legacy/messages.php
+msgid "Silver confirms payments automatically."
+msgstr "Silver conferma i pagamenti automaticamente."
+
+#: legacy/payments-admin.php
+msgid "Paid"
+msgstr "Pagato"
+
+#: legacy/payments-admin.php
+msgid "Unpaid"
+msgstr "Non pagato"
+
+#: legacy/payments-admin.php
+msgid "Requires manual reconcile"
+msgstr "Richiede riconciliazione manuale"
+
+#: legacy/payments-admin.php
+msgid "Manually reconciled"
+msgstr "Riconciliato manualmente"
+
+#: legacy/payments-admin.php
+msgid "Confirmed by PayPal"
+msgstr "Confermato da PayPal"
+
+#: legacy/payments-admin.php
+msgid "Confirmed by Stripe"
+msgstr "Confermato da Stripe"
+
+#: legacy/quick-paypal-payments.php
+msgid "Payment status"
+msgstr "Stato del pagamento"
+
+#: ui/admin/class-admin.php
+#, php-format
+msgid "This offer closes on %s. Claim your free Gold licence before then. Licences already claimed are yours to keep."
+msgstr "Questa offerta termina il %s. Richiedi la tua licenza Gold gratuita entro quella data. Le licenze già richieste restano tue."

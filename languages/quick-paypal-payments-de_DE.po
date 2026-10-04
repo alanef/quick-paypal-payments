@@ -1339,10 +1339,6 @@ msgstr "Ausgewählte löschen"
 msgid "Delete the selected payment records? This cannot be undone."
 msgstr "Die ausgewählten Zahlungseinträge löschen? Das kann nicht rückgängig gemacht werden."
 
-#: legacy/messages.php:260
-msgid "Payments are not confirmed automatically on your plan. Check a payment in your PayPal account, then select it above and mark it as paid."
-msgstr "In Ihrem Tarif werden Zahlungen nicht automatisch bestätigt. Prüfen Sie eine Zahlung in Ihrem PayPal-Konto, wählen Sie sie oben aus und markieren Sie sie als bezahlt."
-
 #: legacy/options.php:105
 msgid "Consent Given"
 msgstr "Einwilligung erteilt"
@@ -4028,3 +4024,47 @@ msgstr "%1$s<strong>Wichtig, Handlung erforderlich: Ihre Lizenzanfrage war erfol
 #: ui/admin/class-admin.php:280
 msgid "Security check invalid, expired or missing"
 msgstr "Sicherheitsprüfung ungültig, abgelaufen oder fehlend"
+
+#: legacy/messages.php
+#, php-format
+msgid "%d payment requires manual reconcile. Check whether it was paid, then select it below and mark it as paid, or delete it if the buyer never paid."
+msgid_plural "%d payments require manual reconcile. Check whether each was paid, then select the paid ones below and mark them as paid, and delete any the buyer never paid."
+msgstr[0] "%d Zahlung muss manuell abgeglichen werden. Prüfen Sie, ob sie bezahlt wurde, und markieren Sie sie dann unten als bezahlt, oder löschen Sie sie, wenn der Käufer nie bezahlt hat."
+msgstr[1] "%d Zahlungen müssen manuell abgeglichen werden. Prüfen Sie jeweils, ob bezahlt wurde, markieren Sie die bezahlten unten als bezahlt und löschen Sie alle, die der Käufer nie bezahlt hat."
+
+#: legacy/messages.php
+msgid "Silver confirms payments automatically."
+msgstr "Silver bestätigt Zahlungen automatisch."
+
+#: legacy/payments-admin.php
+msgid "Paid"
+msgstr "Bezahlt"
+
+#: legacy/payments-admin.php
+msgid "Unpaid"
+msgstr "Unbezahlt"
+
+#: legacy/payments-admin.php
+msgid "Requires manual reconcile"
+msgstr "Manueller Abgleich erforderlich"
+
+#: legacy/payments-admin.php
+msgid "Manually reconciled"
+msgstr "Manuell abgeglichen"
+
+#: legacy/payments-admin.php
+msgid "Confirmed by PayPal"
+msgstr "Von PayPal bestätigt"
+
+#: legacy/payments-admin.php
+msgid "Confirmed by Stripe"
+msgstr "Von Stripe bestätigt"
+
+#: legacy/quick-paypal-payments.php
+msgid "Payment status"
+msgstr "Zahlungsstatus"
+
+#: ui/admin/class-admin.php
+#, php-format
+msgid "This offer closes on %s. Claim your free Gold licence before then. Licences already claimed are yours to keep."
+msgstr "Dieses Angebot endet am %s. Fordern Sie Ihre kostenlose Gold-Lizenz bis dahin an. Bereits angeforderte Lizenzen behalten Sie dauerhaft."

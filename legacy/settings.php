@@ -2766,7 +2766,6 @@ function qpp_change_form_update() {
 
 function qpp_generate_csv() {
     $qpp_setup = qpp_get_stored_setup();
-    $ipn = qpp_get_stored_ipn();
     if ( isset( $_POST['download_qpp_csv'] ) ) {
         check_admin_referer( 'qpp_download_form', 'qpp_download_form_nonce' );
         // The export contains every payer's name, email, address and phone. A
@@ -2842,9 +2841,10 @@ function qpp_generate_csv() {
                 array_push( $headerrow, $address['night_phone_b'] );
             }
         }
-        if ( $ipn['ipn'] ) {
-            array_push( $headerrow, 'Paid' );
-        }
+        // Every site settles orders now, by IPN or by hand, so every export says
+        // which are paid. It used to need IPN on, which from 6.0 means Silver,
+        // so a free site marking payments paid by hand could not export which.
+        array_push( $headerrow, 'Paid' );
         fputcsv(
             $outstream,
             $headerrow,
@@ -2925,10 +2925,7 @@ function qpp_generate_csv() {
                     array_push( $cells, $value['field17'] );
                 }
             }
-            if ( $ipn['ipn'] ) {
-                $paid = ( $value['field18'] == 'Paid' ? 'Paid' : '' );
-                array_push( $cells, $paid );
-            }
+            array_push( $cells, ( $value['field18'] == 'Paid' ? 'Paid' : '' ) );
             fputcsv(
                 $outstream,
                 $cells,

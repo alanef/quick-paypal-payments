@@ -103,6 +103,23 @@ function qpp_plan_gated_autoresponder() {
 }
 
 /**
+ * IPN options that need a paid plan.
+ *
+ * The listener itself has refused below Silver since 6.0, but the setting was
+ * still read as on. A site that had IPN switched on before 6.0 and stayed free
+ * therefore kept the IPN status column, every payment reading "Pending" for good
+ * because nothing would ever settle it, and kept sending PayPal a notify URL that
+ * answered nothing.
+ *
+ * @return array
+ */
+function qpp_plan_gated_ipn() {
+    return array(
+        'silver' => array('ipn'),
+    );
+}
+
+/**
  * Stripe options, which are Platinum.
  *
  * Deliberately above the free Gold licence offered to pre 6.0 installs. Gold is

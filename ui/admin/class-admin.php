@@ -212,6 +212,11 @@ https://fullworks.net/account/</a> to get your download and licence key
             // make good and no offer to show. It sees the normal upgrade
             // prompts on the settings screen instead.
             $notice .= '';
+        } elseif ( 'generated' !== $qpp_freemius_licence && !qpp_free_gold_offer_open() ) {
+            // The unclaimed offer has closed. A licence already claimed is
+            // still honoured and keeps its install reminder below; anyone
+            // else sees the ordinary upgrade prompts on the settings screen.
+            $notice .= '';
         } else {
             // start of free offer
             if ( 'generated' !== $qpp_freemius_licence ) {
@@ -221,6 +226,16 @@ https://fullworks.net/account/</a> to get your download and licence key
 if after several attempts you still get this message contact me at 
 <a target="_blank" href="mailto:support@fullworks.net">support</a> with your details, name , email, domain name etc</p>';
                 }
+                /*
+                 * The deadline is its own sentence rather than part of the
+                 * long notice below, so the existing translations of that
+                 * notice keep working.
+                 */
+                $notice .= '<p><strong>' . esc_html( sprintf( 
+                    /* translators: %s is the closing date of the free Gold offer. */
+                    __( 'This offer closes on %s. Claim your free Gold licence before then. Licences already claimed are yours to keep.', 'quick-paypal-payments' ),
+                    wp_date( get_option( 'date_format' ), qpp_free_gold_offer_deadline(), new \DateTimeZone('Etc/GMT+12') )
+                 ) ) . '</strong></p>';
                 /* translators: %1$s is the plugin logo markup, %2$s is an optional failure message, %3$s is the account email address, %4$s is the download request URL. */
                 $notice .= sprintf(
                     __( '%1$s<strong>Important NOTICE for FREE users of this plugin</strong>. %2$s<p>Version 6 has moved some features that used to be free to the paid plans, this is necessary to be able to continue to support the free version.
@@ -260,8 +275,14 @@ https://fullworks.net/account/</a> to get your download and licence key
         if ( !isset( $_REQUEST['action'] ) || 'qppfreemius' !== $_REQUEST['action'] ) {
             return;
         }
-        if ( !wp_verify_nonce( $_REQUEST['_wpnonce'], 'qpp_freemius_licence' ) ) {
+        $nonce = ( isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '' );
+        if ( !wp_verify_nonce( $nonce, 'qpp_freemius_licence' ) ) {
             die( esc_html__( 'Security check invalid, expired or missing', 'quick-paypal-payments' ) );
+        }
+        // The notice offering this is only shown to users who can install
+        // plugins, so the request is held to the same.
+        if ( !current_user_can( 'install_plugins' ) ) {
+            return;
         }
         $user = wp_get_current_user();
         $qpp_key = get_option( 'qpp_key' );
@@ -273,17 +294,33 @@ https://fullworks.net/account/</a> to get your download and licence key
             if ( !$this->is_pre_6_install() ) {
                 return;
             }
+            // Closed offers refuse here too, not just by hiding the button.
+            if ( !qpp_free_gold_offer_open() ) {
+                return;
+            }
             $qpp_key['key'] = 'free';
             $suffix = '-free';
         }
-        $request = wp_remote_get( 'https://fullworks.net/wp-json/fullworks-qpp-sync/v1/add/quick-paypal-payments' . $suffix . '/?key=' . $qpp_key['key'] . '&email=' . $user->data->user_email . '&domain=' . get_bloginfo( 'url' ) );
+        /*
+         * Encoded, not concatenated. An address with a plus in it reached the
+         * server with a space instead, and an ampersand could add a parameter
+         * of its own.
+         */
+        $request = wp_remote_get( add_query_arg( array(
+            'key'    => rawurlencode( (string) $qpp_key['key'] ),
+            'email'  => rawurlencode( $user->data->user_email ),
+            'domain' => rawurlencode( get_bloginfo( 'url' ) ),
+        ), 'https://fullworks.net/wp-json/fullworks-qpp-sync/v1/add/quick-paypal-payments' . $suffix . '/' ) );
         if ( is_wp_error( $request ) ) {
             update_option( 'qpp_licence_generated', 'failed' );
             return;
         }
         $response_code = wp_remote_retrieve_response_code( $request );
         if ( 200 !== $response_code ) {
+            // Returned nothing before, so a refusal was overwritten below and
+            // the notice told the user their licence was on its way.
             update_option( 'qpp_licence_generated', 'failed' );
+            return;
         }
         update_option( 'qpp_licence_generated', 'generated' );
     }

@@ -373,6 +373,12 @@ function qpp_get_stored_ipn () {
 		'default' => site_url('/?qpp_ipn')
     );
     $ipn = array_merge($default, $ipn);
+    // IPN became a Silver feature in 6.0. Read as off below it, the same way as
+    // the Auto Responder, so the payments list, the notify URL sent to PayPal and
+    // the listener all agree. The stored value is kept for an upgrade.
+    if (in_array('ipn', qpp_plan_locked_keys(qpp_plan_gated_ipn()), true)) {
+        $ipn['ipn'] = '';
+    }
     return $ipn;
 }
 
