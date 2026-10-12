@@ -30,6 +30,8 @@ add_filter(
 add_action( 'wp_enqueue_scripts', 'qpp_register_scripts' );
 add_action( 'template_redirect', 'qpp_ipn' );
 require_once __DIR__ . '/ipn-verification.php';
+require_once __DIR__ . '/shortcode-attributes.php';
+require_once __DIR__ . '/recurring-times.php';
 add_action( 'wp_head', 'qpp_head_css' );
 add_action( 'wp_ajax_qpp_validate_form', 'qpp_validate_form_callback' );
 add_action( 'wp_ajax_nopriv_qpp_validate_form', 'qpp_validate_form_callback' );
@@ -44,6 +46,7 @@ require_once plugin_dir_path( __FILE__ ) . '/accounts.php';
 require_once plugin_dir_path( __FILE__ ) . '/paypal-account.php';
 require_once plugin_dir_path( __FILE__ ) . '/payments-admin.php';
 require_once plugin_dir_path( __FILE__ ) . '/free-gold-offer.php';
+require_once plugin_dir_path( __FILE__ ) . '/review-prompt.php';
 require_once plugin_dir_path( __FILE__ ) . '/options.php';
 /*
  * Deferred to init. This file is required while the plugin is still loading, and
@@ -141,7 +144,11 @@ function qpp_validate_form_callback(  $degrade = false  ) {
         ) );
         wp_die();
     }
-    $sc = qpp_sanitize( $_POST['sc'] );
+    /*
+     * The shortcode attributes set the price, so only signed ones are used.
+     * See shortcode-attributes.php.
+     */
+    $sc = qpp_verified_shortcode_attributes( ( isset( $_POST['qpp_sc'] ) ? sanitize_text_field( wp_unslash( $_POST['qpp_sc'] ) ) : '' ) );
     $combine = isset( $_REQUEST['combine'] ) && 'checked' == $_REQUEST['combine'];
     $itemamount = ( isset( $_REQUEST['itemamount'] ) ? sanitize_text_field( $_REQUEST['itemamount'] ) : 0 );
     $setup = qpp_get_stored_setup();
@@ -163,9 +170,27 @@ function qpp_validate_form_callback(  $degrade = false  ) {
             'blurb'       => $error['errorblurb'],
             'error_color' => $style['error-colour'],
         );
+        /*
+         * Tampered attributes get the form's ordinary error message and nothing
+         * else: no order is recorded and no payment form is built. The posted
+         * form_id must also be the signed form, or the submission would be
+         * validated against one form's settings and priced with another's.
+         */
+        if ( false === $sc || qpp_get_element( $sc, 'form' ) !== $form ) {
+            $json->errors[] = (object) array(
+                'name'  => 'form',
+                'error' => 'error',
+            );
+            echo json_encode( $json );
+            wp_die();
+        }
         $info = qpp_default_merge_v( $_POST );
-        // dont bother validating if coupon being applied
-        if ( !isset( $_POST['qppapply' . $form] ) && !qpp_verify_form(
+        /*
+         * Always validate. Applying a coupon is an ordinary page post, never this
+         * ajax call, so a qppapply field here was only ever a way to skip
+         * validation and reach payment with an unchecked price.
+         */
+        if ( !qpp_verify_form(
             $info,
             $formerrors,
             $form,
@@ -468,11 +493,22 @@ function qpp_collect_data(  $form  ) {
                     $val = $d['amount'];
                     // can be a non numeric string 'other'
                     $returning['amount']['received'] = $val;
-                    // Is the value an acceptable fixed value?
-                    if ( in_array( $val, $returning['amount']['values'] ) || $val == 'other' && $returning['other']['use'] ) {
+                    /*
+                     * Is the value an acceptable fixed value? Use the configured
+                     * option, never the posted string: a loose match let '0.25e3'
+                     * through as 250, and the posted string was then parsed again
+                     * later as 0.25.
+                     */
+                    $returning['amount']['value'] = (float) $returning['amount']['values'][0];
+                    if ( $val == 'other' && $returning['other']['use'] ) {
                         $returning['amount']['value'] = $val;
-                    } else {
-                        $returning['amount']['value'] = (float) $returning['amount']['values'][0];
+                    } elseif ( is_numeric( $val ) ) {
+                        foreach ( $returning['amount']['values'] as $option ) {
+                            if ( (float) $val === (float) $option ) {
+                                $returning['amount']['value'] = $option;
+                                break;
+                            }
+                        }
                     }
                 } else {
                     $returning['amount']['value'] = $returning['amount']['values'][0];
@@ -594,9 +630,11 @@ function qpp_formulate_v(
         if ( isset( $_REQUEST["item"] ) ) {
             $qpp['stocklabel'] = sanitize_text_field( $_REQUEST["item"] );
         }
-        if ( isset( $_REQUEST["form"] ) ) {
-            $form = sanitize_text_field( $_REQUEST["form"] );
-        }
+        /*
+         * A posted 'form' used to switch which form's settings applied, letting
+         * a buyer price a submission with a cheaper form. The form comes from
+         * the shortcode only.
+         */
     }
     $arr = array(
         'email',
@@ -674,6 +712,15 @@ function qpp_formulate_v(
             if ( isset( $d[$item] ) ) {
                 $v[$item] = $d[$item];
             }
+        }
+        $v['srt'] = qpp_recurring_times( $qpp, $v['srt'] );
+        /*
+         * A form with no quantity field sells one. A posted quantity used to be
+         * taken anyway, and zero priced the item at nothing, leaving only
+         * postage in the order total and its expectation.
+         */
+        if ( !qpp_get_element( $qpp, 'use_quantity' ) ) {
+            $v['quantity'] = 1;
         }
     }
     // This is a soft application of the coupon -- validation happens later
@@ -822,12 +869,20 @@ function qpp_loop(  $atts, $from_admin_settings = false  ) {
         if ( $from_admin_settings ) {
             check_admin_referer( 'qpp_admin_form_nonce', 'qpp_admin_form_nonce' );
         }
-        $sc = qpp_sanitize( $_POST['sc'] );
+        /*
+         * The shortcode being rendered is right here, so validate against its
+         * own attributes. The posted copy is the buyer's to change.
+         */
+        $sc = ( is_array( $atts ) ? $atts : array() );
         $combine = isset( $_REQUEST['combine'] ) && 'checked' == $_REQUEST['combine'];
         $itemamount = ( isset( $_REQUEST['itemamount'] ) ? sanitize_text_field( $_REQUEST['itemamount'] ) : 0 );
         $formerrors = array();
-        // dont validate if only activating a coupon
-        if ( !isset( $_POST['qppapply' . $form] ) && !qpp_verify_form(
+        /*
+         * Always validate. A coupon being applied on its own posts qppapply
+         * without qppsubmit and never reaches this branch; posting both was only
+         * a way to skip validation and reach payment with an unchecked price.
+         */
+        if ( !qpp_verify_form(
             $v,
             $formerrors,
             $form,
@@ -1066,12 +1121,8 @@ function qpp_display_form(
     	Build shortcode value array
     */
     $attr['post'] = get_the_ID();
-    if ( count( $attr ) ) {
-        foreach ( $attr as $k => $v ) {
-            $content .= "<input type='hidden' name='sc[" . $k . "]' value='" . $v . "' />";
-        }
-    }
-    $content .= '<input type="hidden" name="form_id" value="' . $id . '" />';
+    $content .= '<input type="hidden" name="qpp_sc" value="' . esc_attr( qpp_sign_shortcode_attributes( $attr ) ) . '" />';
+    $content .= '<input type="hidden" name="form_id" value="' . esc_attr( $id ) . '" />';
     $content .= '<input type="hidden" name="currencybefore" value="' . $c['b'] . '" />';
     $content .= '<input type="hidden" name="currencyafter" value="' . $c['a'] . '" />';
     $content .= wp_nonce_field(
@@ -2111,9 +2162,17 @@ function qpp_process_values(
         $values['reference'] = $arr[0];
         $values['amount'] = (float) qpp_format_amount( $currency[$id], $qpp, $arr[1] );
     }
+    /*
+     * itemamount may raise the unit price, never lower it. Compare the parsed
+     * number: compared raw, PHP 8 ordered a string like 'z0.01' above 250 and
+     * the parse then charged 0.01.
+     */
     $amount = (float) $values['items'][0]['amount'];
-    if ( $itemamount >= $values['items'][0]['amount'] ) {
-        $amount = (float) qpp_format_amount( $currency[$id], $qpp, $itemamount );
+    if ( $itemamount ) {
+        $requested = (float) qpp_format_amount( $currency[$id], $qpp, $itemamount );
+        if ( $requested >= $amount ) {
+            $amount = $requested;
+        }
     }
     $quantity = (float) (( $values['items'][0]['quantity'] < 1 ? '1' : wp_strip_all_tags( $values['items'][0]['quantity'] ) ));
     $percent = $fixedpostage = $percentpostage = 0;

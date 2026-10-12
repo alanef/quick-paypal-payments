@@ -1,14 +1,14 @@
-=== Quick Paypal Payments ===
+=== Quick PayPal Payments: Payment Button & Form ===
 Contributors: Fullworks
-Tags: paypal payment form, paypal, payments
+Tags: paypal button, paypal, paypal payment form, donation, buy now button
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 6.0.3
+Stable tag: 6.0.4
 License: 	GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Take PayPal payments from a shortcode. Unlimited forms, any currency, no business account needed.
+Add a PayPal button, payment form or donation box with a shortcode. Unlimited forms, any currency, no business account needed.
 
 == Description ==
 
@@ -129,7 +129,7 @@ More [example forms](https://fullworks.net/docs/quick-paypal-payments/demos-quic
 == Installation ==
 
 1.  Login to your wordpress dashboard.
-2.  Go to 'Plugins', 'Add New' then search for 'Quick Paypal Payments'.
+2.  Go to 'Plugins', 'Add New' then search for 'Quick PayPal Payments'.
 3.  Follow the on screen instructions.
 4.  Activate the plugin.
 5.  Go to the plugin 'Settings' page to add your paypal email address and currency
@@ -140,7 +140,7 @@ More [example forms](https://fullworks.net/docs/quick-paypal-payments/demos-quic
 == Frequently Asked Questions ==
 
 = How do I change the labels and captions? =
-Go to your plugin list and scroll down until you see 'Quick Paypal Payments' and click on 'Settings'.
+Go to your plugin list and scroll down until you see 'Quick PayPal Payments' and click on 'Settings'.
 
 = What's the shortcode? =
 [qpp]
@@ -166,6 +166,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 [Change Log](https://fullworksplugins.com/docs/quick-paypal-payments/installation-quick-paypal-payments/change-log-qpp/)
 
 == Upgrade Notice ==
+
+= 6.0.4 =
+Security release: closes several ways a buyer could pay less than a form's price. Update now. If your site uses a page cache, clear it after updating.
 
 = 6.0.3 =
 Shows whether each payment has been reconciled when IPN is off, fixes the PayPal account check, and sets 3 November 2026 as the closing date for claiming the free Gold licence.

@@ -17,11 +17,6 @@ msgstr ""
 "PO-Revision-Date: 2026-08-23 00:00+0000\n"
 "X-Domain: quick-paypal-payments\n"
 
-#. Plugin Name of the plugin
-#: quick-paypal-payments.php
-msgid "Quick Paypal Payments"
-msgstr "Quick Paypal Payments"
-
 #. Plugin URI of the plugin
 #: quick-paypal-payments.php
 msgid "https://fullworksplugins.com/quick-paypal-payments/"
@@ -29,8 +24,8 @@ msgstr "https://fullworksplugins.com/quick-paypal-payments/"
 
 #. Description of the plugin
 #: quick-paypal-payments.php
-msgid "Accept any amount or payment ID before submitting to paypal."
-msgstr "Accetta qualsiasi importo o riferimento di pagamento prima dell’invio a PayPal."
+msgid "Add a PayPal button, payment form or donation box with a shortcode."
+msgstr "Aggiungi un pulsante PayPal, un modulo di pagamento o un riquadro per le donazioni con uno shortcode."
 
 #. Author of the plugin
 #: quick-paypal-payments.php
@@ -4068,3 +4063,26 @@ msgstr "Stato del pagamento"
 #, php-format
 msgid "This offer closes on %s. Claim your free Gold licence before then. Licences already claimed are yours to keep."
 msgstr "Questa offerta termina il %s. Richiedi la tua licenza Gold gratuita entro quella data. Le licenze già richieste restano tue."
+
+#: ui/admin/class-admin.php
+#, php-format
+msgid "Quick PayPal Payments has recorded %d payment through your forms. If it has been useful, would you leave a review on wordpress.org?"
+msgid_plural "Quick PayPal Payments has recorded %d payments through your forms. If it has been useful, would you leave a review on wordpress.org?"
+msgstr[0] "Quick PayPal Payments ha registrato %d pagamento tramite i tuoi moduli. Se ti è stato utile, lasceresti una recensione su wordpress.org?"
+msgstr[1] "Quick PayPal Payments ha registrato %d pagamenti tramite i tuoi moduli. Se ti è stato utile, lasceresti una recensione su wordpress.org?"
+
+#: ui/admin/class-admin.php
+msgid "Leave a review"
+msgstr "Lascia una recensione"
+
+#: ui/admin/class-admin.php
+msgid "Maybe later"
+msgstr "Forse più tardi"
+
+#: ui/admin/class-admin.php
+msgid "Don't ask again"
+msgstr "Non chiedere più"
+
+#: ui/admin/class-admin.php
+msgid "You do not have permission to do that."
+msgstr "Non hai il permesso di farlo."

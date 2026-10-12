@@ -2,21 +2,22 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Quick Paypal Payments 6.0.3\n"
+"Project-Id-Version: Quick PayPal Payments 6.0.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/quick-paypal-payments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-04T10:53:51+00:00\n"
+"POT-Creation-Date: 2026-10-12T15:18:01+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: quick-paypal-payments\n"
 
 #. Plugin Name of the plugin
 #: quick-paypal-payments.php
-msgid "Quick Paypal Payments"
+#: legacy/settings.php:52
+msgid "Quick PayPal Payments"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -26,7 +27,7 @@ msgstr ""
 
 #. Description of the plugin
 #: quick-paypal-payments.php
-msgid "Accept any amount or payment ID before submitting to paypal."
+msgid "Add a PayPal button, payment form or donation box with a shortcode."
 msgstr ""
 
 #. Author of the plugin
@@ -112,7 +113,7 @@ msgid "Coupon No Longer Available"
 msgstr ""
 
 #: core/class-utilities.php:490
-#: legacy/quick-paypal-payments.php:3876
+#: legacy/quick-paypal-payments.php:3877
 msgid "Coupon Code:"
 msgstr ""
 
@@ -1207,7 +1208,7 @@ msgid "Silver confirms payments automatically from PayPal, so you do not have to
 msgstr ""
 
 #: legacy/messages.php:91
-#: legacy/quick-paypal-payments.php:3072
+#: legacy/quick-paypal-payments.php:3073
 msgid "Default"
 msgstr ""
 
@@ -1422,108 +1423,104 @@ msgstr ""
 msgid "(in country accounts only)"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:1330
+#: legacy/quick-paypal-payments.php:1331
 msgid "No products selected."
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:2561
+#: legacy/quick-paypal-payments.php:2562
 msgid "Continue to the secure payment page"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:2818
+#: legacy/quick-paypal-payments.php:2819
 msgid "Paypal Payments"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:2819
+#: legacy/quick-paypal-payments.php:2820
 msgid "Add paypal payment form to your sidebar"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:2882
+#: legacy/quick-paypal-payments.php:2883
 msgid "DEPRECATION NOTICE"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:2884
+#: legacy/quick-paypal-payments.php:2885
 msgid "This is a legacy Widget and is limited in functionality and may be withdrawn in the future"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:2886
+#: legacy/quick-paypal-payments.php:2887
 msgid "Replace with a shortcode e.g. [qpp form=myform]"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3018
+#: legacy/quick-paypal-payments.php:3019
 #: legacy/settings.php:3509
 #: legacy/settings.php:3510
 msgid "Settings"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3076
-#: legacy/quick-paypal-payments.php:3105
+#: legacy/quick-paypal-payments.php:3077
+#: legacy/quick-paypal-payments.php:3106
 #: legacy/settings.php:1177
 #: legacy/settings.php:3205
 msgid "Amount"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3079
+#: legacy/quick-paypal-payments.php:3080
 #: legacy/settings.php:1145
 msgid "Reference"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3092
+#: legacy/quick-paypal-payments.php:3093
 #: legacy/settings.php:3202
 msgid "Date Sent"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3144
+#: legacy/quick-paypal-payments.php:3145
 #: legacy/settings.php:1401
 msgid "Consent"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3174
+#: legacy/quick-paypal-payments.php:3175
 msgid "Payment status"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3208
+#: legacy/quick-paypal-payments.php:3209
 msgid "No payments yet."
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3223
+#: legacy/quick-paypal-payments.php:3224
 msgid "Coupons remaining"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3367
-#: legacy/quick-paypal-payments.php:3371
+#: legacy/quick-paypal-payments.php:3368
+#: legacy/quick-paypal-payments.php:3372
 msgid "Pending"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3368
+#: legacy/quick-paypal-payments.php:3369
 msgid "Order token, for posting a test IPN"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3655
+#: legacy/quick-paypal-payments.php:3656
 msgid "Order Details:"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3658
+#: legacy/quick-paypal-payments.php:3659
 msgid "Item"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3658
+#: legacy/quick-paypal-payments.php:3659
 #: legacy/settings.php:2994
 msgid "Qty"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3727
+#: legacy/quick-paypal-payments.php:3728
 msgid "Payment Notification"
 msgstr ""
 
-#: legacy/quick-paypal-payments.php:3730
+#: legacy/quick-paypal-payments.php:3731
 #: legacy/settings.php:72
 #: legacy/settings.php:1311
 msgid "Personal Details"
-msgstr ""
-
-#: legacy/settings.php:52
-msgid "Quick PayPal Payments"
 msgstr ""
 
 #: legacy/settings.php:53
@@ -3969,7 +3966,7 @@ msgid "Description"
 msgstr ""
 
 #. translators: %1$s is the plugin logo markup, %2$s is the account email address.
-#: ui/admin/class-admin.php:182
+#: ui/admin/class-admin.php:197
 msgid ""
 "%1$s<strong>Important action required - Your Pro Install was successful - but you need to activate your licence</strong>. <p>Version 6 has changed which features need a paid plan, and you MUST take action now to keep your premium features!!<br>\n"
 " You have installed the PREMIUM plugin, but have not activated your <strong>licence</strong>. Don't worry it is easy.\n"
@@ -3979,7 +3976,7 @@ msgid ""
 msgstr ""
 
 #. translators: %1$s is the plugin logo markup, %2$s is an optional failure message, %3$s is the download request URL, %4$s is the account email address.
-#: ui/admin/class-admin.php:200
+#: ui/admin/class-admin.php:215
 msgid ""
 "%1$s<strong>Important action required</strong>. %2$s<p>Version 6 has changed which features need a paid plan, and you MUST take action now to keep your premium features!!<br>\n"
 " You will need to <strong>download and install the PREMIUM</strong> plugin to keep your premium features. Don't worry it is easy.</p>\n"
@@ -3989,7 +3986,7 @@ msgid ""
 msgstr ""
 
 #. translators: %1$s is the plugin logo markup, %2$s is the account email address.
-#: ui/admin/class-admin.php:213
+#: ui/admin/class-admin.php:228
 msgid ""
 "%1$s<strong>Important action required - Your licence request was successful</strong>. <p>Version 6 has changed which features need a paid plan, and you MUST take action now to keep your premium features!!<br>\n"
 " You have requested the PREMIUM plugin, please install it to keep your premium features. Don't worry it is easy.\n"
@@ -4001,12 +3998,12 @@ msgid ""
 msgstr ""
 
 #. translators: %s is the closing date of the free Gold offer.
-#: ui/admin/class-admin.php:251
+#: ui/admin/class-admin.php:266
 msgid "This offer closes on %s. Claim your free Gold licence before then. Licences already claimed are yours to keep."
 msgstr ""
 
 #. translators: %1$s is the plugin logo markup, %2$s is an optional failure message, %3$s is the account email address, %4$s is the download request URL.
-#: ui/admin/class-admin.php:256
+#: ui/admin/class-admin.php:271
 msgid ""
 "%1$s<strong>Important NOTICE for FREE users of this plugin</strong>. %2$s<p>Version 6 has moved some features that used to be free to the paid plans, this is necessary to be able to continue to support the free version.\n"
 "</p><p>\n"
@@ -4016,7 +4013,7 @@ msgid ""
 msgstr ""
 
 #. translators: %1$s is the plugin logo markup, %2$s is the account email address.
-#: ui/admin/class-admin.php:266
+#: ui/admin/class-admin.php:281
 msgid ""
 "%1$s<strong>Important action required - Your licence request was successful</strong>. <p>you MUST take action now!!<br>\n"
 " You have requested the Pro GOLD plugin free offer, please install it. Don't worry it is easy.\n"
@@ -4027,6 +4024,29 @@ msgid ""
 "</p>"
 msgstr ""
 
-#: ui/admin/class-admin.php:297
+#. translators: %d is the number of payments recorded, at least 10.
+#: ui/admin/class-admin.php:343
+msgid "Quick PayPal Payments has recorded %d payment through your forms. If it has been useful, would you leave a review on wordpress.org?"
+msgid_plural "Quick PayPal Payments has recorded %d payments through your forms. If it has been useful, would you leave a review on wordpress.org?"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ui/admin/class-admin.php:353
+msgid "Leave a review"
+msgstr ""
+
+#: ui/admin/class-admin.php:355
+msgid "Maybe later"
+msgstr ""
+
+#: ui/admin/class-admin.php:357
+msgid "Don't ask again"
+msgstr ""
+
+#: ui/admin/class-admin.php:372
+msgid "You do not have permission to do that."
+msgstr ""
+
+#: ui/admin/class-admin.php:405
 msgid "Security check invalid, expired or missing"
 msgstr ""

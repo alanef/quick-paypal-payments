@@ -38,6 +38,14 @@ class Admin {
      */
     private $freemius;
 
+    /**
+     * Whether the free Gold notice was printed on this request. The review ask
+     * waits for a request where it was not, so the two never stack.
+     *
+     * @var bool
+     */
+    private $gold_notice_shown = false;
+
     public function __construct( $plugin_name, $version, $freemius ) {
         $this->plugin_name = $plugin_name;
         $this->version = $version;
@@ -48,6 +56,10 @@ class Admin {
         add_action( 'admin_enqueue_scripts', array($this, 'enqueue_styles') );
         add_action( 'admin_enqueue_scripts', array($this, 'enqueue_scripts') );
         add_action( 'admin_notices', array($this, 'admin_notice_freemius') );
+        // Later priority, so it knows whether the Gold notice went out first.
+        add_action( 'admin_notices', array($this, 'review_prompt_notice'), 20 );
+        add_action( 'wp_ajax_qpp_review_prompt', array($this, 'review_prompt_answer') );
+        add_action( 'admin_post_qpp_review_prompt', array($this, 'review_prompt_answer') );
         add_action( 'init', array($this, 'generate_freemius_licence') );
         /*
          * qpp_legacy_free used to be written here on every admin page load. It has
@@ -100,6 +112,7 @@ class Admin {
         );
         wp_localize_script( $this->plugin_name, 'qpp_admin', array(
             'dismiss_nonce' => wp_create_nonce( 'qpp_dismiss_notice' ),
+            'review_nonce'  => wp_create_nonce( 'qpp_review_prompt' ),
         ) );
     }
 
@@ -264,8 +277,100 @@ https://fullworks.net/account/</a> to get your download and licence key
         if ( !defined( 'QPP_DEMO' ) || !QPP_DEMO ) {
             if ( !empty( $notice ) ) {
                 printf( '<div id="qpp_notice_1" class="qpp_notice is-dismissible notice notice-warning" style="overflow:hidden;font-size: 150%%;"><p>%1$s</p></div>', wp_kses_post( $notice ) );
+                $this->gold_notice_shown = true;
             }
         }
+    }
+
+    /**
+     * The one time request for a wordpress.org review. See legacy/review-prompt.php.
+     *
+     * Administrators only, on the Dashboard, the Plugins screen and the plugin's
+     * own screens, and never on a request that already showed the Gold notice.
+     */
+    public function review_prompt_notice() {
+        if ( $this->gold_notice_shown || !current_user_can( 'manage_options' ) ) {
+            return;
+        }
+        $screen = get_current_screen();
+        $base = ( $screen ? (string) $screen->base : '' );
+        if ( !in_array( $base, array('dashboard', 'plugins'), true ) && false === strpos( $base, 'quick-paypal-payments' ) ) {
+            return;
+        }
+        $state = qpp_review_prompt_state( get_option( 'qpp_review_prompt' ) );
+        if ( 'done' === $state['state'] ) {
+            return;
+        }
+        $count = ( $state['reached'] ? qpp_review_prompt_threshold() : qpp_review_prompt_payment_count() );
+        if ( !qpp_review_prompt_due( $state, $count, time() ) ) {
+            return;
+        }
+        if ( !$state['reached'] ) {
+            // Stop counting once there is nothing left to count for.
+            $state['reached'] = true;
+            update_option( 'qpp_review_prompt', $state, false );
+        }
+        $answer = function ( $action ) {
+            return wp_nonce_url( admin_url( 'admin-post.php?action=qpp_review_prompt&answer=' . $action ), 'qpp_review_prompt' );
+        };
+        $out = '<div id="qpp-review-prompt" class="notice notice-info is-dismissible"><p>';
+        $out .= esc_html( sprintf( 
+            /* translators: %d is the number of payments recorded, at least 10. */
+            _n(
+                'Quick PayPal Payments has recorded %d payment through your forms. If it has been useful, would you leave a review on wordpress.org?',
+                'Quick PayPal Payments has recorded %d payments through your forms. If it has been useful, would you leave a review on wordpress.org?',
+                $count,
+                'quick-paypal-payments'
+            ),
+            $count
+         ) );
+        $out .= '</p><p>';
+        $out .= '<a class="button button-primary" data-qpp-review="review" target="_blank" rel="noopener" href="' . esc_url( qpp_review_prompt_url() ) . '">' . esc_html__( 'Leave a review', 'quick-paypal-payments' ) . '</a> ';
+        if ( qpp_review_prompt_can_snooze( $state ) ) {
+            $out .= '<a class="button" data-qpp-review="later" href="' . esc_url( $answer( 'later' ) ) . '">' . esc_html__( 'Maybe later', 'quick-paypal-payments' ) . '</a> ';
+        }
+        $out .= '<a class="button-link" data-qpp-review="never" href="' . esc_url( $answer( 'never' ) ) . '">' . esc_html__( "Don't ask again", 'quick-paypal-payments' ) . '</a>';
+        $out .= '</p></div>';
+        echo wp_kses_post( $out );
+    }
+
+    /**
+     * Stores the answer to the review request.
+     *
+     * Reached by AJAX from the buttons and the close button, and by a plain link
+     * when scripts are off, so the answer sticks either way. Closing it counts as
+     * an answer: the guidelines require a dismissed notice to stay dismissed.
+     */
+    public function review_prompt_answer() {
+        if ( !current_user_can( 'manage_options' ) ) {
+            wp_die( esc_html__( 'You do not have permission to do that.', 'quick-paypal-payments' ), '', array(
+                'response' => 403,
+            ) );
+        }
+        $ajax = wp_doing_ajax();
+        if ( $ajax ) {
+            check_ajax_referer( 'qpp_review_prompt' );
+        } else {
+            check_admin_referer( 'qpp_review_prompt' );
+        }
+        $action = ( isset( $_REQUEST['answer'] ) ? sanitize_key( wp_unslash( $_REQUEST['answer'] ) ) : '' );
+        if ( !in_array( $action, array(
+            'review',
+            'later',
+            'never',
+            'dismiss'
+        ), true ) ) {
+            $action = 'dismiss';
+        }
+        $state = qpp_review_prompt_answer( qpp_review_prompt_state( get_option( 'qpp_review_prompt' ) ), $action, time() );
+        update_option( 'qpp_review_prompt', $state, false );
+        if ( $ajax ) {
+            wp_send_json_success( array(
+                'state' => $state['state'],
+            ) );
+        }
+        wp_safe_redirect( ( wp_get_referer() ? wp_get_referer() : admin_url() ) );
+        exit;
     }
 
     public function generate_freemius_licence() {

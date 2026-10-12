@@ -40,6 +40,28 @@
 				console.log(response, 'DONE!');
 			});
 		});
+
+		// The review request. Every way out is stored, so it does not come back.
+		// The buttons are real links that work without this; here they answer
+		// in place instead of reloading. The review link still opens its page.
+		function qppReviewAnswer( answer ) {
+			return $.post( ajaxurl, {
+				action: 'qpp_review_prompt',
+				answer: answer,
+				_ajax_nonce: ( typeof qpp_admin !== 'undefined' ) ? qpp_admin.review_nonce : ''
+			} );
+		}
+		$(document).on('click', '#qpp-review-prompt [data-qpp-review]', function( event ) {
+			var answer = $(this).data('qpp-review');
+			if ( 'review' !== answer ) {
+				event.preventDefault();
+			}
+			qppReviewAnswer( answer );
+			$('#qpp-review-prompt').fadeOut();
+		});
+		$(document).on('click', '#qpp-review-prompt .notice-dismiss', function() {
+			qppReviewAnswer( 'dismiss' );
+		});
 	})
 	$(document).ready(function () {
 		// Initially hide the fieldset
