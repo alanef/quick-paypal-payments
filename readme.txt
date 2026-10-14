@@ -4,7 +4,7 @@ Tags: paypal button, paypal, paypal payment form, donation, buy now button
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 6.0.4
+Stable tag: 6.0.5
 License: 	GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -166,6 +166,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 [Change Log](https://fullworksplugins.com/docs/quick-paypal-payments/installation-quick-paypal-payments/change-log-qpp/)
 
 == Upgrade Notice ==
+
+= 6.0.5 =
+Security release: stops a user who can write posts from adding script to a page through the payment form shortcode, and stops prefill links altering the form. Update now.
 
 = 6.0.4 =
 Security release: closes several ways a buyer could pay less than a form's price. Update now. If your site uses a page cache, clear it after updating.

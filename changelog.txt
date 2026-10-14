@@ -1,4 +1,9 @@
 == Changelog ==
+= 6.0.5 =
+* Security: the form name in a [qpp] or [qppreport] shortcode was written unescaped into a script on the page, so a user able to write posts, such as a Contributor, could add script that ran for anyone viewing the post, including an administrator previewing it. The ?form= link that opens a page on a particular form reached the same script without any login. Form names are now cut down to letters, digits, underscores and hyphens wherever they arrive, and encoded where they are written into the page. Existing forms are unaffected, since the settings screen has only ever created names from letters. Thanks to Wordfence PRISM for reporting this through the Wordfence Bug Bounty Program.
+* Security: a value in a link that prefills the form, such as ?coupon=, could add attributes to the form's fields, enough to lay a field over the whole page. Values written back into the form are now escaped.
+* Fix: a ?form= link to a page with a plain [qpp] showed the linked form with some of the default form's settings mixed in, and its payment was always refused. The link now switches the whole form, and only to a form you have set up; any other name leaves the default form showing.
+
 = 6.0.4 =
 * Updated Freemius SDK to the latest version.
 * Security: a buyer could change the price of a form by editing values the form sends back with the payment, and the order was then accepted as paid at the lower price. The shortcode's settings (amount, reference, form, stock) now travel signed and any change to them is refused, and a submission can no longer switch to a different form's prices. Forms keep working as before, including [qpp amount="..."] on a page. Thanks to Oly Hossen for reporting this through the Patchstack Vulnerability Disclosure Program.

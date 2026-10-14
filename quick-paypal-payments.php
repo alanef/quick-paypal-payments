@@ -25,7 +25,7 @@
  * Plugin Name: Quick PayPal Payments
  * Plugin URI: https://fullworksplugins.com/quick-paypal-payments/
  * Description: Add a PayPal button, payment form or donation box with a shortcode.
- * Version: 6.0.4
+ * Version: 6.0.5
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * License:          GPL-2.0-or-later
@@ -57,7 +57,7 @@ if ( ! defined( 'WPINC' ) ) {
 if ( ! function_exists( 'Quick_Paypal_Payments\run_Quick_Paypal_Payments' ) ) {
 	define( 'QUICK_PAYPAL_PAYMENTS_PLUGIN_DIR', trailingslashit( plugin_dir_path( __FILE__ ) ) );
 	define( 'QUICK_PAYPAL_PAYMENTS_PLUGIN_FILE', plugin_basename( __FILE__ ) );
-	define( 'QUICK_PAYPAL_PAYMENTS_VERSION', '6.0.4' );
+	define( 'QUICK_PAYPAL_PAYMENTS_VERSION', '6.0.5' );
 
 // Include the autoloader so we can dynamically include the classes.
 	require_once QUICK_PAYPAL_PAYMENTS_PLUGIN_DIR . 'control/autoloader.php';
